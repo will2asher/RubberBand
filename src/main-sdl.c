@@ -19,6 +19,7 @@
 #include "angband.h"
 #include "cmds.h"
 #include "files.h"
+#include "button.h"
 
 /*
  * Comments and suggestions are welcome. The UI probably needs some
@@ -298,6 +299,11 @@ static SDL_Surface *AppWin;
 static sdl_Window StatusBar;
 
 /*
+ * The mouse button bar
+ */
+static sdl_Window MouseBar;
+
+/*
  * The Popup window
  */
 static sdl_Window PopUp;
@@ -346,6 +352,9 @@ static int FontSelect;		/* Font selector button */
 static int VisibleSelect;	/* Hide/unhide window button*/
 static int MoreSelect;		/* Other options button */
 static int QuitSelect;		/* Quit button */
+
+/* Array of mouse buttons */
+static int MouseButton[MAX_MOUSE_BUTTONS];
 
 /* Buttons on the 'More' panel */
 static int MoreOK;			/* Accept changes */
