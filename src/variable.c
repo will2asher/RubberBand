@@ -791,6 +791,12 @@ void (*sound_hook)(int sound);
 
 
 /*
+ * Hooks for making and unmaking buttons
+ */
+button_add_f button_add_hook;
+button_kill_f button_kill_hook;
+
+/*
  * For autoinscriptions.
  */
 autoinscription *inscriptions = 0;

@@ -179,6 +179,10 @@ extern cptr inkey_next;
 /* birth.c */
 extern void player_birth(bool quickstart_allowed);
 
+/* button.c */
+button_add_f button_add_hook;
+button_kill_f button_kill_hook;
+
 /* cmd1.c */
 extern bool search(bool verbose);
 extern byte py_pickup(int pickup);

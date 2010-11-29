@@ -57,12 +57,6 @@ static int button_length;
 static int button_num;
 
 
-/*
- * Hooks for making and unmaking buttons
- */
-button_add_f button_add_hook;
-button_kill_f button_kill_hook;
-
 
 
 /*** Code ***/
@@ -238,8 +232,8 @@ void button_init(button_add_f add, button_kill_f kill)
 	button_backup = C_ZNEW(MAX_MOUSE_BUTTONS, button_mouse);
 
 	/* Initialise the hooks */
-	button_add_hook = add;
-	button_kill_hook = kill;
+	if (!button_add_hook) button_add_hook = add;
+	if (!button_kill_hook) button_kill_hook = kill;
 }
 
 
