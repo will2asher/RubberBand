@@ -130,6 +130,9 @@ static int full_h;
 /* Want fullscreen? */
 static bool fullscreen = FALSE;
 
+/* Want mouse bar? */
+static bool mousebar = FALSE;
+
 /* XXXXXXXXX */
 static char *ANGBAND_DIR_USER_SDL;
 
@@ -359,6 +362,7 @@ static int MouseButton[MAX_MOUSE_BUTTONS];
 /* Buttons on the 'More' panel */
 static int MoreOK;			/* Accept changes */
 static int MoreFullscreen;	/* Fullscreen toggle button */
+static int MoreMouseBar;        /* MouseBar toggle button */
 static int MoreSnapPlus;	/* Increase snap range */
 static int MoreSnapMinus;	/* Decrease snap range */
 
@@ -1565,6 +1569,15 @@ static void AcceptChanges(sdl_Button *sender)
 		do_video_reset = TRUE;
 	}
 	
+	button = sdl_ButtonBankGet(&PopUp.buttons, MoreMouseBar);
+	
+	if (button->tag != mousebar)
+	{
+		mousebar = !mousebar;
+		
+		
+	}
+	
 	
 	SetStatusButtons();
 	
@@ -1694,6 +1707,12 @@ static void MoreDraw(sdl_Window *win)
 	sdl_ButtonMove(button, 200, y);
 	y+= 20;
 	
+	button = sdl_ButtonBankGet(&win->buttons, MoreMouseBar);
+	sdl_WindowText(win, colour, 20, y, "Mouse bar is:");
+	
+	sdl_ButtonMove(button, 200, y);
+	y+= 20;
+	
 	sdl_WindowText(win, colour, 20, y, format("Snap range is %d.", SnapRange));
 	button = sdl_ButtonBankGet(&win->buttons, MoreSnapMinus);
 	sdl_ButtonMove(button, 200, y);
@@ -1791,6 +1810,17 @@ static void MoreActivate(sdl_Button *sender)
 	sdl_ButtonVisible(button, TRUE);
 	sdl_ButtonCaption(button, fullscreen ? "On" : "Off");
 	button->tag = fullscreen;
+	button->activate = FlipTag;
+	
+	MoreMouseBar = sdl_ButtonBankNew(&PopUp.buttons);
+	button = sdl_ButtonBankGet(&PopUp.buttons, MoreMouseBar);
+	
+	button->unsel_colour = ucolour;
+	button->sel_colour = scolour;
+	sdl_ButtonSize(button, 50 , PopUp.font.height + 2);
+	sdl_ButtonVisible(button, TRUE);
+	sdl_ButtonCaption(button, mousebar ? "On" : "Off");
+	button->tag = mousebar;
 	button->activate = FlipTag;
 	
 	MoreSnapPlus = sdl_ButtonBankNew(&PopUp.buttons);
@@ -2022,6 +2052,10 @@ static errr load_prefs(void)
 		{
 			fullscreen = atoi(s);
 		}
+		else if (strstr(buf, "Mousebar"))
+		{
+			mousebar = atoi(s);
+		}
 		else if (strstr(buf, "Graphics"))
 		{
 			use_graphics = atoi(s);
@@ -2106,6 +2140,7 @@ static errr save_prefs(void)
 
 	file_putf(fff, "Resolution = %dx%d\n", screen_w, screen_h);
 	file_putf(fff, "Fullscreen = %d\n", fullscreen);
+	file_putf(fff, "Mousebar = %d\n", mousebar);
 	file_putf(fff, "Graphics = %d\n", use_graphics);
 	file_putf(fff, "TileWidth = %d\n\n", tile_width);
         file_putf(fff, "TileHeight = %d\n\n", tile_height);
