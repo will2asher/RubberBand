@@ -18,15 +18,14 @@
 
 #include "angband.h"
 #include "button.h"
+#include "types.h"
 
 /*** Variables ***/
 
-static button_mouse *button_mse;
 static button_mouse *button_backup;
 
 static int button_start;
 static int button_length;
-static int button_num;
 
 
 
@@ -200,7 +199,6 @@ void button_kill_all(void)
 void button_init(button_add_f add, button_kill_f kill)
 {
 	/* Prepare mouse button arrays */
-	button_mse = C_ZNEW(MAX_MOUSE_BUTTONS, button_mouse);
 	button_backup = C_ZNEW(MAX_MOUSE_BUTTONS, button_mouse);
 
 	/* Initialise the hooks */

@@ -130,8 +130,8 @@ static int full_h;
 /* Want fullscreen? */
 static bool fullscreen = FALSE;
 
-/* Want mouse bar? */
-static bool mousebar = FALSE;
+/* Want command bar? */
+static bool commandbar = FALSE;
 
 /* XXXXXXXXX */
 static char *ANGBAND_DIR_USER_SDL;
@@ -302,9 +302,9 @@ static SDL_Surface *AppWin;
 static sdl_Window StatusBar;
 
 /*
- * The mouse button bar
+ * The command button bar
  */
-static sdl_Window MouseBar;
+static sdl_Window CommandBar;
 
 /*
  * The Popup window
@@ -356,13 +356,13 @@ static int VisibleSelect;	/* Hide/unhide window button*/
 static int MoreSelect;		/* Other options button */
 static int QuitSelect;		/* Quit button */
 
-/* Array of mouse buttons */
-static int MouseButton[MAX_MOUSE_BUTTONS];
+/* Array of command buttons */
+static int CommandButton[MAX_MOUSE_BUTTONS];
 
 /* Buttons on the 'More' panel */
 static int MoreOK;			/* Accept changes */
 static int MoreFullscreen;	/* Fullscreen toggle button */
-static int MoreMouseBar;        /* MouseBar toggle button */
+static int MoreCommandBar;        /* CommandBar toggle button */
 static int MoreSnapPlus;	/* Increase snap range */
 static int MoreSnapMinus;	/* Decrease snap range */
 
@@ -1232,6 +1232,29 @@ static void draw_statusbar(sdl_Window *window)
 	
 }
 
+static void draw_commandbar(sdl_Window *window)
+{
+	term_window *win = &windows[0];
+	int fw = window->font.width;
+	int i, x = 1;
+	sdl_Button *button;
+	
+	SDL_Rect rc;
+	
+	u32b c = SDL_MapRGB(window->surface->format, 160, 160, 60);
+
+	RECT(0, StatusBar.height + win->height - 1, CommandBar.width, 1, &rc);
+	SDL_FillRect(CommandBar.surface, &rc, c);
+	
+	for (i = 0; i < button_num; i++)
+	{
+	        button = sdl_ButtonBankGet(&StatusBar.buttons, CommandButton[i]);
+		button->pos.x = x;
+		x += button->pos.w;
+	}
+	
+}
+
 
 
 static void sdl_BlitWin(term_window *win)
@@ -1507,6 +1530,11 @@ static void FontActivate(sdl_Button *sender)
 	popped = TRUE;
 }
 
+static void CommandActivate(sdl_Button *sender)
+{
+
+}
+
 #ifdef USE_GRAPHICS
 static errr load_gfx(void);
 static bool do_update = FALSE;
@@ -1569,13 +1597,13 @@ static void AcceptChanges(sdl_Button *sender)
 		do_video_reset = TRUE;
 	}
 	
-	button = sdl_ButtonBankGet(&PopUp.buttons, MoreMouseBar);
+	button = sdl_ButtonBankGet(&PopUp.buttons, MoreCommandBar);
 	
-	if (button->tag != mousebar)
+	if (button->tag != commandbar)
 	{
-		mousebar = !mousebar;
+		commandbar = !commandbar;
 		
-		
+		do_video_reset = TRUE;
 	}
 	
 	
@@ -1707,7 +1735,7 @@ static void MoreDraw(sdl_Window *win)
 	sdl_ButtonMove(button, 200, y);
 	y+= 20;
 	
-	button = sdl_ButtonBankGet(&win->buttons, MoreMouseBar);
+	button = sdl_ButtonBankGet(&win->buttons, MoreCommandBar);
 	sdl_WindowText(win, colour, 20, y, "Mouse bar is:");
 	
 	sdl_ButtonMove(button, 200, y);
@@ -1812,15 +1840,15 @@ static void MoreActivate(sdl_Button *sender)
 	button->tag = fullscreen;
 	button->activate = FlipTag;
 	
-	MoreMouseBar = sdl_ButtonBankNew(&PopUp.buttons);
-	button = sdl_ButtonBankGet(&PopUp.buttons, MoreMouseBar);
+	MoreCommandBar = sdl_ButtonBankNew(&PopUp.buttons);
+	button = sdl_ButtonBankGet(&PopUp.buttons, MoreCommandBar);
 	
 	button->unsel_colour = ucolour;
 	button->sel_colour = scolour;
 	sdl_ButtonSize(button, 50 , PopUp.font.height + 2);
 	sdl_ButtonVisible(button, TRUE);
-	sdl_ButtonCaption(button, mousebar ? "On" : "Off");
-	button->tag = mousebar;
+	sdl_ButtonCaption(button, commandbar ? "On" : "Off");
+	button->tag = commandbar;
 	button->activate = FlipTag;
 	
 	MoreSnapPlus = sdl_ButtonBankNew(&PopUp.buttons);
@@ -2052,9 +2080,9 @@ static errr load_prefs(void)
 		{
 			fullscreen = atoi(s);
 		}
-		else if (strstr(buf, "Mousebar"))
+		else if (strstr(buf, "Commandbar"))
 		{
-			mousebar = atoi(s);
+			commandbar = atoi(s);
 		}
 		else if (strstr(buf, "Graphics"))
 		{
@@ -2140,7 +2168,7 @@ static errr save_prefs(void)
 
 	file_putf(fff, "Resolution = %dx%d\n", screen_w, screen_h);
 	file_putf(fff, "Fullscreen = %d\n", fullscreen);
-	file_putf(fff, "Mousebar = %d\n", mousebar);
+	file_putf(fff, "Commandbar = %d\n", commandbar);
 	file_putf(fff, "Graphics = %d\n", use_graphics);
 	file_putf(fff, "TileWidth = %d\n\n", tile_width);
         file_putf(fff, "TileHeight = %d\n\n", tile_height);
@@ -3345,6 +3373,49 @@ static void init_morewindows(void)
 	TermFocus(0);
 }
 
+/*
+ * Initialize the command bar:
+ *  Populate it with some buttons
+ *  Set the custom draw function for the bar
+ */
+static void init_commandbar(void)
+{
+	char buf[128];
+	sdl_Button *button;
+	int i, x = 1;
+	int buttonwidth = CommandBar.font.width * MAX_MOUSE_LABEL + 5;
+
+	popped = FALSE;
+	
+	/* Make sure */
+	sdl_WindowFree(&PopUp);
+	
+	/* Initialize the status bar */
+	sdl_WindowInit(&CommandBar, AppWin->w, StatusHeight, AppWin, DEFAULT_FONT_FILE);
+	
+	/* Custom drawing function */
+	CommandBar.draw_extra = draw_commandbar;
+	
+	/* Button array */
+	for (i = 0; i < button_num; i++)
+	{
+	        CommandButton[i] = sdl_ButtonBankNew(&CommandBar.buttons);
+		button = sdl_ButtonBankGet(&CommandBar.buttons, CommandButton[i]);
+	
+		my_strcpy(buf, button_mse[button_num].label, sizeof(buf));
+	
+		/* Initialize the button */
+		sdl_ButtonSize(button, buttonwidth, StatusHeight - 2);
+		sdl_ButtonMove(button, x, 1);
+		x += buttonwidth;
+		sdl_ButtonVisible(button, TRUE);
+		sdl_ButtonCaption(button, buf);
+		button->activate = CommandActivate;
+	}
+	
+	TermFocus(0);
+}
+
 #ifdef USE_GRAPHICS
 
 /*
@@ -3511,6 +3582,9 @@ static void init_windows(void)
 		
 		/* Term 0 is at the top */
 		Zorder[i] = ANGBAND_TERM_MAX - i - 1;
+
+		/* Command bar */
+		if ((i == 0) && commandbar) init_commandbar();
 	}
 	
 	/* Good to go... */

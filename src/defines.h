@@ -1806,3 +1806,17 @@ enum
 
 /* Whether to learn egos and flavors with less than complete information */
 #define EASY_LEARN 1
+
+/*** Mouse Constants ***/
+
+/**
+ * Maximum number of mouse buttons
+ */
+#define MAX_MOUSE_BUTTONS  20
+
+/**
+ * Maximum length of a mouse button label
+ */
+#define MAX_MOUSE_LABEL 10
+
+

@@ -182,6 +182,8 @@ extern void player_birth(bool quickstart_allowed);
 /* button.c */
 button_add_f button_add_hook;
 button_kill_f button_kill_hook;
+extern int button_num;
+extern button_mouse button_mse[MAX_MOUSE_BUTTONS];
 
 /* cmd1.c */
 extern bool search(bool verbose);
