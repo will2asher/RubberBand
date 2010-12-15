@@ -479,8 +479,6 @@ static void display_knowledge(const char *title, int *obj_list, int o_count,
 			if (visual_list) pvs = ", ENTER to accept";
 			else if (o_funcs.xattr) pvs = ", 'v' for visuals";
 
-
-
 			prt(format("<dir>%s%s%s, ESC", pvs, pedit, xtra), hgt - 1, 0);
 		}
 
@@ -495,7 +493,7 @@ static void display_knowledge(const char *title, int *obj_list, int o_count,
 		if (g_funcs.summary && !visual_list)
 		{
 			g_funcs.summary(g_cur, obj_list, g_o_count, g_offset[g_cur],
-			                object_menu.boundary.row + object_menu.boundary.page_rows,
+			                object_menu.active.row + object_menu.active.page_rows,
 			                object_region.col);
 		}
 
@@ -1179,8 +1177,6 @@ static void desc_art_fake(int a_idx)
 	object_type *o_ptr;
 	object_type object_type_body = { 0 };
 
-	oinfo_detail_t mode = OINFO_NONE;
-
 	char header[120];
 
 	textblock *tb;
@@ -1199,13 +1195,15 @@ static void desc_art_fake(int a_idx)
 		/* Check the history entry, to see if it was fully known before it
 		 * was lost */
 		if (history_is_artifact_known(a_idx))
-			mode = OINFO_FULL;
+		{
+			object_notice_everything(o_ptr);
+		}
 	}
 
 	/* Hack -- Handle stuff */
 	handle_stuff();
 
-	tb = object_info(o_ptr, mode);
+	tb = object_info(o_ptr, OINFO_NONE);
 	object_desc(header, sizeof(header), o_ptr, ODESC_PREFIX | ODESC_FULL);
 
 	textui_textblock_show(tb, area, format("%^s", header));
