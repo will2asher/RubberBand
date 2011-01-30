@@ -6,7 +6,6 @@ angband
 monster/*
 player/*
 object/*
-nds/*
 osx/*
 win/*
 Makefile.src
