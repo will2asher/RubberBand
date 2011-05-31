@@ -28,7 +28,6 @@ ui-birth.*
 xtra*
 attack.c
 config.h
-debug.*
 defines.h
 dungeon.c
 effects.*
