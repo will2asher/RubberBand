@@ -1292,7 +1292,7 @@ void project_m(struct source origin, int r, struct loc grid, int dam, int typ,
 
 	/* Is the source an extra charming player? */
 	bool charm = (origin.what == SRC_PLAYER) ?
-		player_has(player, PF_CHARM) : false;
+		player_has(player, PF_DRUCHARM) : false;
 
 	int m_idx = square(cave, grid)->mon;
 

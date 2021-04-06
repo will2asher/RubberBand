@@ -57,6 +57,9 @@ code:SEE_ORE
 name:Miner
 desc:You can sense ore in the walls.
 
+#RB: to add: 
+# POTION_LORE (alchemists and hobglibs)
+
 ## Class player flags
 
 type:player
@@ -96,8 +99,9 @@ code:NO_MANA
 name:No Magic
 desc:You cannot cast spells.
 
+# Had to change the flag for this because CHARM is also a monster blow effect
 type:player
-code:CHARM
+code:DRUCHARM
 name:Charms
 desc:You are extra persuasive to monsters.
 
@@ -117,11 +121,11 @@ code:SHIELD_BASH
 name:Shield Bash
 desc:You can bash monsters with a shield in melee.
 
+#Why would an evil character resist nether?
 type:player
 code:EVIL
-bindui:resist_ui_compact_0<NETHER>:0:1
 name:Evil
-desc:You resist nether, but are hurt by holy attacks.
+desc:You are evil. (You are hurt by holy attacks and some monsters who are normally non-agressive may not be)
 
 type:player
 code:COMBAT_REGEN
@@ -132,7 +136,7 @@ desc: Spell Points (SP). You gain SP when damaged by an enemy or
 desc: when you attack in melee. As your blood cools your power fades;
 desc: you lose SP at half the rate other classes gain them.
 desc: When you spend SP by casting a spell you regain some health, and
-desc: fading SP replenish your health more efficiently. The more damaged
+desc: fading SP replenish your health even more efficiently. The more damaged
 desc: you are, the bigger these health gains will be.
 
 
@@ -259,7 +263,7 @@ desc:You are afraid of melee, and bad at shooting and casting spells.
 
 type:object
 code:NO_TELEPORT
-bindui:noteleport_ui_compact_0:0:1
+bindui: noteleport_ui_compact_0:0:1
 name:Teleport Ban
 desc:You cannot teleport.
 

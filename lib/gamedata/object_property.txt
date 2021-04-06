@@ -120,7 +120,7 @@ power:5
 mult:6
 bindui:damage_reduction_ui_compact_0:0
 
-name:extra blows
+name:attack speed
 type:mod
 code:BLOWS
 power:0
@@ -186,7 +186,7 @@ type-mult:gloves:0
 type-mult:boots:0
 bindui:shooting_power_ui_compact_0:0
 
-name:extra moves
+name:movement speed
 type:mod
 code:MOVES
 power:0
@@ -365,6 +365,7 @@ power:35
 bindui:esp_ui_compact_0:0
 desc:Grants telepathy
 
+#Change this to have a pval like infravision
 name:see invisible
 type:flag
 subtype:misc ability
@@ -385,6 +386,29 @@ type-mult:boots:2
 power:6
 bindui:see_invis_ui_compact_0:0
 desc:Grants the ability to see invisible things
+
+#see through illusions, disguises, hallucenations, etc. in addition to see invisible
+name:true sight
+type:flag
+subtype:misc ability
+id-type:on wield
+code:TRUE_SIGHT
+type-mult:digger:0
+type-mult:ring:3
+type-mult:amulet:3
+type-mult:light:3
+type-mult:soft armor:2
+type-mult:hard armor:2
+type-mult:dragon armor:2
+type-mult:cloak:2
+type-mult:shield:2
+type-mult:helm:3
+type-mult:crown:3
+type-mult:gloves:0
+type-mult:boots:0
+power:20
+#bindui:see_invis_ui_compact_0:0
+desc:Grants true sight
 
 name:free action
 type:flag
@@ -636,9 +660,7 @@ type-mult:amulet:0
 type-mult:soft armor:0
 type-mult:hard armor:0
 type-mult:dragon armor:0
-type-mult:cloak:0
 type-mult:shield:0
-type-mult:helm:0
 type-mult:crown:0
 type-mult:gloves:0
 type-mult:boots:0

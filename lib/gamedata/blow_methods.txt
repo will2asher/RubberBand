@@ -92,20 +92,22 @@ msg:MON_CRUSH
 act:crushes {target}
 desc:crush
 
+#added phys
 name:ENGULF
 cut:0
 stun:0
 miss:1
-phys:0
+phys:1
 msg:MON_ENGULF
 act:engulfs {target}
 desc:engulf
 
+#added miss and phys
 name:CRAWL
 cut:0
 stun:0
-miss:0
-phys:0
+miss:1
+phys:1
 msg:MON_CRAWL
 act:crawls on {target}
 desc:crawl on you
@@ -119,10 +121,11 @@ msg:MON_DROOL
 act:drools on {target}
 desc:drool on you
 
+#added miss
 name:SPIT
 cut:0
 stun:0
-miss:0
+miss:1
 phys:0
 msg:MON_SPIT
 act:spits on {target}
@@ -177,9 +180,13 @@ act:humiliates {target}!
 act:defiles {target}!
 act:dances around {target}!
 act:makes obscene gestures!
+act:says "Your mother was a hampster!"
+act:says "Your father smelt of elderberries!"
+act:makes faces at {target}!
 act:moons {target}!!!
 desc:insult
 
+#obviously not for the moaning spirit...
 name:MOAN
 cut:0
 stun:0
@@ -189,7 +196,7 @@ msg:MON_MOAN
 act:wants his mushrooms back
 act:tells {target} to get off his land
 act:looks for his dogs
-act:says 'Did you kill my Fang?'
+act:says 'Did you beat up my Fang?'
 act:asks 'Do you want to buy any mushrooms?'
 act:seems sad about something
 act:asks if {target} {has} seen his dogs

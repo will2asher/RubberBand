@@ -56,6 +56,14 @@ on-end:You can move again.
 msgt:PARALYZED
 fail:1:FREE_ACT
 
+name:BHOLD
+desc:grabbed
+grade:o:10000:Grabbed:You are being held by a monster.
+on-end:You are no longer being held.
+msgt:GENERIC
+#should be "The X releases its hold on you."
+#fail:1:FREE_ACT (partial)
+
 name:CONFUSED
 desc:confusion
 grade:o:10000:Confused:You are confused!
@@ -65,6 +73,13 @@ on-decrease:You feel a little less confused.
 msgt:CONFUSED
 fail:1:PROT_CONF
 
+name:FRENZY
+desc:frenzy
+grade:o:10000:Frenzy:You break into a reckless frenzy!
+on-end:You are no longer in a frenzy.
+on-increase:You are even angrier!
+msgt:GENERIC
+
 name:AFRAID
 desc:fear
 grade:o:10000:Afraid:You are terrified!
@@ -72,6 +87,34 @@ on-end:You feel bolder now.
 on-increase:You are more scared!
 msgt:AFRAID
 fail:1:PROT_FEAR
+
+name:CHARMED
+desc:charm
+grade:o:10000:Charmed:You are charmed.
+on-end:You recognise your enemies once again.
+on-increase:You are more chamed.
+msgt:GENERIC
+
+name:INSANE
+desc:insanity
+grade:o:10000:INSANE:You have lost all sanity.
+on-end:You regain your sanity.
+on-increase:Sleeble deebop!
+msgt:GENERIC
+
+name:DISEASE
+desc:disease
+grade:o:10000:DISEASE:You have contracted a disease.
+on-end:You get over the disease.
+on-increase:You feel even sicker.
+msgt:GENERIC
+
+name:PCCURSED
+desc:cursed
+grade:o:10000:PCCURSED:You have been cursed.
+on-end:The curse on you expires.
+on-increase:You feel incredibly unlucky.
+msgt:GENERIC
 
 name:IMAGE
 desc:hallucination
@@ -170,6 +213,13 @@ grade:G:10000:SInvis:Your eyes feel very sensitive!
 on-end:Your eyes no longer feel so sensitive.
 on-increase:Your eyes feel more sensitive!
 msgt:SEE_INVIS
+
+name:TSIGHT
+desc:true sight
+grade:G:10000:TSIGHT:You begin to see what's really there.
+on-end:Your eyes no longer feel so sensitive.
+on-increase:Your eyes feel more sensitive!
+msgt:GENERIC
 
 name:SINFRA
 desc:enhanced infravision

@@ -49,7 +49,7 @@ name:poison
 verb:poison
 multiplier:3
 o-multiplier:25
-power:122
+power:121
 resist-flag:IM_POIS
 
 code:ACID_2

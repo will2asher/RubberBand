@@ -35,14 +35,14 @@ flavor:4:Light Blue:Aquamarine
 flavor:5:Light Blue:Azurite
 flavor:6:Light Green:Beryl
 flavor:7:Red:Bloodstone
-flavor:8:White:Calcite
+flavor:8:Umber:Calcite
 flavor:9:Red:Carnelian
-flavor:10:Slate:Corundum
-flavor:11:White:Diamond
+flavor:10:Umber:Corundum
+flavor:11:Light Umber:Diamond
 flavor:12:Green:Emerald
 flavor:13:Light Green:Fluorite
 flavor:14:Red:Garnet
-flavor:15:Light Slate:Hematite
+flavor:15:Light Umber:Hematite
 flavor:16:Light Green:Jade
 flavor:17:Umber:Jasper
 flavor:18:Blue:Lapis Lazuli
@@ -50,10 +50,10 @@ flavor:19:Green:Malachite
 flavor:20:White:Marble
 flavor:21:Light Slate:Moonstone
 flavor:22:Light Red:Onyx
-flavor:23:Light Slate:Opal
+flavor:23:Light Umber:Opal
 flavor:24:White:Pearl
-flavor:25:Light Slate:Quartz
-flavor:26:Light Slate:Quartzite
+flavor:25:Light Umber:Quartz
+flavor:26:Light Umber:Quartzite
 flavor:27:Light Red:Rhodonite
 #flavor:28:Red:Ruby
 #flavor:29:Blue:Sapphire
@@ -104,26 +104,26 @@ fixed:46:Jewel:White:White
 flavor:45:Light Umber:Driftwood
 #flavor:46:White:Coral
 flavor:47:Light Slate:Agate
-flavor:48:White:Ivory
+flavor:48:Light Umber:Ivory
 flavor:49:Light Dark:Obsidian
-flavor:50:White:Bone
+flavor:50:Light Umber:Bone
 flavor:51:Light Umber:Brass
 #flavor:52:Light Umber:Bronze
-flavor:53:Slate:Pewter
+flavor:53:Umber:Pewter
 flavor:54:Umber:Tortoise Shell
 #flavor:55:Yellow:Golden
 flavor:56:Light Blue:Azure
-flavor:57:White:Crystal
-flavor:58:Light Slate:Silver
+flavor:57:Light Umber:Crystal
+flavor:58:Light Umber:Silver
 flavor:59:Light Umber:Copper
 flavor:60:Umber:Carved Oak
-flavor:61:Light Slate:Dragon Tooth
+flavor:61:Light Umber:Dragon Tooth
 flavor:62:Red:Ruby
 flavor:63:Light Blue:Mithril
 flavor:64:Light Green:Adamant
-flavor:65:Slate:Flint Stone
+flavor:65:Umber:Flint Stone
 flavor:66:Light Blue:Sea Shell
-flavor:67:Light Slate:Mother-of-Pearl
+flavor:67:Light Umber:Mother-of-Pearl
 
 # Azure
 # Bead
@@ -180,12 +180,12 @@ flavor:92:Umber:Walnut
 flavor:93:Green:Mistletoe
 flavor:94:Light Umber:Hawthorn
 flavor:95:Light Umber:Bamboo
-flavor:96:Light Slate:Silver Birch
+flavor:96:Light Umber:Silver Birch
 flavor:97:Umber:Hazel
 flavor:98:Yellow:Golden
-flavor:99:Slate:Blackthorn
+flavor:99:Umber:Blackthorn
 flavor:100:Light Umber:Gnarled
-flavor:101:White:Ivory
+flavor:101:Light Umber:Ivory
 flavor:102:Light Umber:Willow
 
 # Alder
@@ -212,38 +212,38 @@ kind:wand:-
 
 flavor:103:Light Blue:Aluminium
 flavor:104:Light Dark:Cast Iron
-flavor:105:White:Chromium
+flavor:105:Light Umber:Chromium
 flavor:106:Light Umber:Copper
 flavor:107:Yellow:Gold
 flavor:108:Slate:Iron
-flavor:109:Light Slate:Magnesium
-flavor:110:Light Slate:Molybdenum
+flavor:109:Light Umber:Magnesium
+flavor:110:Light Umber:Molybdenum
 flavor:111:Light Umber:Nickel
 flavor:112:Red:Rusty
-flavor:113:Light Slate:Silver
-flavor:114:Light Slate:Steel
-flavor:115:Light Slate:Tin
-flavor:116:White:Titanium
-flavor:117:White:Tungsten
-flavor:118:Light Slate:Zirconium
-flavor:119:Light Slate:Zinc
+flavor:113:Light Umber:Silver
+flavor:114:Light Umber:Steel
+flavor:115:Light Umber:Tin
+flavor:116:Light Umber:Titanium
+flavor:117:Light Umber:Tungsten
+flavor:118:Light Umber:Zirconium
+flavor:119:Light Umber:Zinc
 flavor:120:Light Blue:Aluminium-Plated
 flavor:121:Light Umber:Copper-Plated
 flavor:122:Yellow:Gold-Plated
 flavor:123:Light Umber:Nickel-Plated
-flavor:124:Light Slate:Silver-Plated
-flavor:125:Light Slate:Steel-Plated
-flavor:126:Light Slate:Tin-Plated
-flavor:127:Light Slate:Zinc-Plated
+flavor:124:Light Blue:Silver-Plated
+flavor:125:Light Umber:Steel-Plated
+flavor:126:Light Umber:Tin-Plated
+flavor:127:Light Umber:Zinc-Plated
 flavor:128:Light Blue:Mithril-Plated
 flavor:129:Light Blue:Mithril
 flavor:130:Umber:Runed
 flavor:131:Light Umber:Bronze
 flavor:132:Light Umber:Brass
-flavor:133:White:Platinum
+flavor:133:Blue:Platinum
 flavor:134:Slate:Lead
 flavor:135:Slate:Lead-Plated
-flavor:136:White:Ivory
+flavor:136:Light Umber:Ivory
 flavor:137:Slate:Pewter
 
 # Adamantium
@@ -263,38 +263,38 @@ kind:rod:-
 
 flavor:138:Light Blue:Aluminium
 flavor:139:Light Dark:Cast Iron
-flavor:140:White:Chromium
+flavor:140:Light Umber:Chromium
 flavor:141:Light Umber:Copper
 flavor:142:Yellow:Gold
 flavor:143:Slate:Iron
-flavor:144:Light Slate:Magnesium
-flavor:145:Light Slate:Molybdenum
+flavor:144:Light Umber:Magnesium
+flavor:145:Light Umber:Molybdenum
 flavor:146:Light Umber:Nickel
 flavor:147:Red:Rusty Iron
-flavor:148:Light Slate:Silver
-flavor:149:Light Slate:Steel
-flavor:150:Light Slate:Tin
-flavor:151:White:Titanium
-flavor:152:White:Tungsten
-flavor:153:Light Slate:Zirconium
-flavor:154:Light Slate:Zinc
+flavor:148:Light Blue:Silver
+flavor:149:Light Umber:Steel
+flavor:150:Light Umber:Tin
+flavor:151:Light Umber:Titanium
+flavor:152:Light Umber:Tungsten
+flavor:153:Light Umber:Zirconium
+flavor:154:Light Umber:Zinc
 flavor:155:Light Blue:Aluminium-Plated
 flavor:156:Light Umber:Copper-Plated
 flavor:157:Yellow:Engraved Gold
 flavor:158:Light Umber:Nickel-Plated
-flavor:159:Light Slate:Silver-Gilt
-flavor:160:Light Slate:Polished Steel
-flavor:161:Light Slate:Tin-Plated
-flavor:162:White:White Gold
+flavor:159:Light Blue:Silver-Gilt
+flavor:160:Light Umber:Polished Steel
+flavor:161:Light Umber:Tin-Plated
+flavor:162:Light Yellow:White Gold
 flavor:163:Light Blue:Mithril-Plated
 flavor:164:Light Blue:Mithril
 flavor:165:Umber:Runed
 flavor:166:Light Umber:Bronze
 flavor:167:Light Umber:Brass
-flavor:168:White:Platinum
+flavor:168:Blue:Platinum
 flavor:169:Red:Rusted Steel
 flavor:170:Slate:Lead-Plated
-flavor:171:White:Ivory
+flavor:171:Light Umber:Ivory
 flavor:172:Slate:Pewter
 
 # Wrought Iron
@@ -312,7 +312,7 @@ flavor:177:Blue:Mottled
 flavor:178:Green:Firm
 flavor:179:Mud:Woody
 flavor:180:Yellow:Wrinkled
-flavor:181:Light Slate:Furry
+flavor:181:Light Umber:Furry
 flavor:182:Light Red:Fragile
 flavor:183:Slate:Marbled
 flavor:184:Light Blue:Gelatinous
@@ -321,8 +321,8 @@ flavor:186:Violet:Glowing
 flavor:187:Red:Striped
 flavor:188:Slate:Slimy
 flavor:189:Deep Light Blue:Moist
-flavor:190:White:Withered
-flavor:191:White:Waxy
+flavor:190:Light Umber:Withered
+flavor:191:Light Umber:Waxy
 flavor:192:Umber:Smelly
 
 # Fleshy

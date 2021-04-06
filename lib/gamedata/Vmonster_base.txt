@@ -11,7 +11,7 @@
 #
 # 'glyph' indicates the default display character. This is used for displaying
 # the monster in ASCII mode, and also for determining which monsters are
-# of the same "type" for things like the the S_KIN summon.
+# of the same "type" for things like the ESCORT flag or the S_KIN summon.
 #
 # 'pain' indicates which set of "pain messages" (from pain.txt) is used.
 #
@@ -27,19 +27,39 @@
 
 ##### Normal monster templates #####
 
-# Ants have lowish HP but highish armor class, and powerful melee for their depth
+# Dragons are the most important breathing monsters in Angband, and their
+# breaths are their most important quality.
+name:ancient dragon
+glyph:D
+pain:1
+flags:DRAGON | EVIL | POWERFUL | SMART | SPIRIT
+flags:DROP_4
+flags:MOVE_BODY | CLEAR_WEB
+flags:NO_CONF | NO_SLEEP | NO_HOLD
+flags:FORCE_SLEEP
+desc:Ancient Dragon/Wyrm
+
+# Ainur were the founding spirits of Arda, and could take any form they wished.
+# Ainur in Angband typically have shapechanges and many possibe other spells,
+# but typically don't breathe
+name:ainu
+glyph:A
+pain:1
+flags:POWERFUL | SPIRIT | SMART
+flags:ONLY_ITEM
+flags:OPEN_DOOR | BASH_DOOR | TAKE_ITEM | CLEAR_WEB
+flags:IM_COLD | IM_FIRE | IM_POIS | NO_CONF | NO_SLEEP | NO_HOLD
+flags:FORCE_SLEEP
+desc:Ainu/maia
+
+# Ants have lowish HP but highish armor class, and powerful melee for their
+# depth
 name:ant
 glyph:a
 pain:7
 flags:ANIMAL | WEIRD_MIND
+flags:BASH_DOOR
 desc:Ant
-
-# Amphibians (mostly frogs)
-name:amphibian
-glyph:A
-pain:5
-flags:ANIMAL | IM_WATER | CLEAR_WEB
-desc:Amphibian
 
 # Fast, not strong, annoying
 name:bat
@@ -63,12 +83,25 @@ pain:3
 flags:ANIMAL | CLEAR_WEB
 desc:Canine (Dog)
 
-# Centipedes
+# Centipedes are mastly weak, sometimes quick, and their melee attacks are often
+# early examples of different blow effects
 name:centipede
 glyph:c
 pain:5
 flags:ANIMAL | WEIRD_MIND
 desc:Centipede
+
+# Creeping coins are mimics which look like coins until they attack, hit to
+# poison, and drop the approriate type of treasure
+name:creeping coins
+glyph:$
+pain:1
+flags:COLD_BLOOD | METAL | UNAWARE | EMPTY_MIND
+flags:ONLY_GOLD
+flags:BASH_DOOR | CLEAR_WEB
+flags:IM_ELEC | IM_POIS | NO_CONF | NO_SLEEP
+flags:MIMIC_INV
+desc:Creeping Coins
 
 # Dragons are the most important breathing monsters in Angband, and their
 # breaths are their most important quality.
@@ -78,18 +111,15 @@ pain:1
 flags:DRAGON | EVIL | SPIRIT
 flags:FORCE_SLEEP | CLEAR_WEB
 desc:Dragon
-#S_EVIL instead? (probably different individually)
 
-# Dragons are the most important breathing monsters in Angband, and their
-# breaths are their most important quality.
-name:ancient dragon
-glyph:D
-pain:1
-flags:DRAGON | EVIL | POWERFUL | SMART | SPIRIT
-flags:DROP_4
-flags:MOVE_BODY | CLEAR_WEB
-flags:NO_HOLD | NO_CONF | FORCE_SLEEP
-desc:Ancient Dragon/Wyrm
+# Early, weak breathers which move quickly and erratically
+name:dragon fly
+glyph:F
+pain:7
+flags:ANIMAL | WEIRD_MIND
+flags:RAND_50 | BASH_DOOR
+flags:FORCE_SLEEP
+desc:Dragon Fly
 
 # These come in two stages:
 # 1. Motionless creatures which cause bad effects if you stand next to them
@@ -116,42 +146,41 @@ glyph:f
 pain:6
 flags:ANIMAL | CLEAR_WEB
 desc:Feline (Cat)
-#(code to make cats never enter water)
-
-# Early, weak breathers which move quickly and erratically
-name:fly
-glyph:F
-pain:7
-flags:ANIMAL | WEIRD_MIND
-flags:RAND_50 | FORCE_SLEEP
-desc:Dragon Fly (or other flying bug)
 
 # Wall-passing invisible spirits, frequently drain experience and/or stats.
 # Relatively weak to compensate for being hard to escape
 name:ghost
 glyph:G
 pain:1
-flags:UNDEAD | EVIL | COLD_BLOOD | SPIRIT
-flags:INVISIBLE
+flags:UNDEAD | EVIL | INVISIBLE | COLD_BLOOD | SPIRIT
 flags:PASS_WALL
-flags:IM_POIS | NO_CONF | NO_SLEEP
+flags:IM_COLD | IM_POIS | NO_CONF | NO_SLEEP | NO_STUN | NO_HOLD
 desc:Ghost
-#IM_COLD | NO_HOLD | NO_STUN  not by default
-# (not all ghosts should be invisible, though most will be)
+
+# Giants are big, strong humanoids which hit hard and throw boulders.  They
+# may be associated with an element and have some spells, but their focus is
+# powerful melee.
+name:giant
+glyph:P
+pain:1
+flags:GIANT | EVIL | SPIRIT
+flags:BASH_DOOR | CLEAR_WEB
+desc:Giant Humanoid
 
 # Mostly slow with lots of hitpoints and armor
 name:golem
 glyph:g
 pain:1
-flags:EMPTY_MIND | CLEAR_WEB | NONLIVING
-flags:NO_FEAR | NO_CONF | NO_SLEEP | NO_STUN
+flags:EMPTY_MIND | CLEAR_WEB
+flags:IM_ELEC | NO_FEAR | NO_CONF | NO_SLEEP
+flags:NONLIVING
 desc:Golem
 
 name:humanoid
 glyph:h
 pain:1
-flags:OPEN_DOOR | SPIRIT | CLEAR_WEB
-desc:Hobbit, Dwarf, or other humanoid.
+flags:OPEN_DOOR | BASH_DOOR | SPIRIT | CLEAR_WEB
+desc:Hobbit/Elf/Dwarf
 
 # Weird legendary stuff, mostly without spells, sometimes with breath
 name:hybrid
@@ -160,27 +189,30 @@ pain:1
 flags:CLEAR_WEB
 desc:Hybrid
 
-# Dark Fairies
-name:dark fairy
-glyph:i
-pain:1
-flags:SPIRIT
-flags:OPEN_DOOR | CLEAR_WEB
-desc:Dark Fairy
-#FEY
+# Quick monsters with strong melee, the higher level ones getting fire and/or
+# poison attacks
+name:hydra
+glyph:M
+pain:4
+flags:ANIMAL
+flags:ONLY_GOLD
+flags:BASH_DOOR | CLEAR_WEB
+flags:FORCE_SLEEP | HURT_COLD
+desc:Hydra
 
-# (or icky things if VISH option is turned on)
+# Non-descript early monsters that demonstrate some stuff but are mostly filler
 name:icky thing
 glyph:i
-pain:1
-flags:CLEAR_WEB
+pain:2
+flags:RAND_50
 desc:Icky Thing
 
 # Insects are small, a bit fast, weak breeders which bite for various effects
 name:insect
 glyph:I
 pain:7
-flags:ANIMAL | WEIRD_MIND
+flags:ANIMAL | WEIRD_MIND | MULTIPLY
+flags:RAND_50 | RAND_25
 desc:Insect
 
 # Mostly non-moving creatures which touch for various effects
@@ -191,34 +223,23 @@ flags:EMPTY_MIND | STUPID | CLEAR_WEB
 flags:NO_FEAR
 desc:Jelly
 
-# Snakes
-name:snake
-glyph:J
-pain:5
-flags:ANIMAL | HURT_COLD
-flags:CLEAR_WEB
-desc:Snake
-
-name:knight
+# Giant beetles with high armor class and fairly powerful bites, frequently
+# spitting.  No breaths or spells.
+name:killer beetle
 glyph:K
-pain:1
-flags:OPEN_DOOR | BASH_DOOR | SPIRIT | CLEAR_WEB
-desc:knight or other high-level human (or humanoid monster)
+pain:7
+flags:ANIMAL | WEIRD_MIND
+flags:BASH_DOOR
+desc:Killer Beetle
 
-# small doglike humanoid monsters
+# Early-game equivalents of things like orcs and trolls
 name:kobold
 glyph:k
 pain:1
+flags:EVIL
 flags:OPEN_DOOR | BASH_DOOR | SPIRIT | CLEAR_WEB
+flags:IM_POIS
 desc:Kobold
-
-# High hitpoints and armor class
-name:tree
-glyph:l
-pain:9
-flags:SPIRIT | CLEAR_WEB | COLD_BLOOD | NO_HOLD
-flags:HURT_FIRE | IM_WATER
-desc:Tree/Ent
 
 # Powerful undead spellcasters, tending to drain dexterity and charges in melee
 name:lich
@@ -226,60 +247,88 @@ glyph:L
 pain:1
 flags:UNDEAD | EVIL | COLD_BLOOD | SMART | SPIRIT
 flags:OPEN_DOOR | BASH_DOOR | CLEAR_WEB
-flags:IM_COLD | IM_POIS | NO_SLEEP | NO_HOLD
+flags:IM_COLD | IM_POIS | NO_CONF | NO_SLEEP | NO_STUN | NO_HOLD
 flags:FORCE_SLEEP
 desc:Lich
 
-# Quick monsters with strong melee, the higher level ones getting fire and/or
-# poison attacks. (Why are hydras counted as animals?)
-name:hydra
-glyph:M
-pain:4
-flags:ANIMAL | ONLY_GOLD | HURT_COLD
-flags:BASH_DOOR | CLEAR_WEB | FORCE_SLEEP
-desc:Hydra
+# Weird monsters tha look like floor.
+name:lurker
+glyph:.
+pain:1
+flags:COLD_BLOOD | EMPTY_MIND | INVISIBLE | UNAWARE
+flags:NEVER_MOVE
+flags:NO_FEAR | NO_CONF | NO_SLEEP
+flags:CHAR_CLEAR | ATTR_CLEAR
+desc:Lurker
 
-# Ainur were the founding spirits of Arda, and could take any form they wished.
-# Ainur in Angband typically have shapechanges and many possible other spells.
-name:maia
+# Demons are evil and tend to be fire-based.  Major demons frequently summon,
+# have a few powerful spells and/or breaths, and often dangerous melee.
+name:major demon
+glyph:U
+pain:1
+flags:DEMON | EVIL | SPIRIT
+flags:ONLY_ITEM
+flags:OPEN_DOOR | BASH_DOOR | CLEAR_WEB
+flags:NO_CONF | NO_SLEEP | NO_HOLD
+flags:FORCE_SLEEP
+desc:Major Demon
+
+# Monsters which pretend to be objects.  They don't move but do cast spells,
+# and attack if the player steps next to them.
+name:mimic
+glyph:?
+pain:1
+flags:COLD_BLOOD | EMPTY_MIND | UNAWARE
+flags:NEVER_MOVE
+flags:NO_FEAR | NO_CONF | NO_SLEEP
+flags:FORCE_SLEEP | ATTR_CLEAR
+desc:Mimic
+
+# Demons are evil and tend to be fire-based.  Minor demons are mostly
+# annoying rather than dangerous.
+name:minor demon
+glyph:u
+pain:1
+flags:DEMON | EVIL | SPIRIT
+flags:CLEAR_WEB
+flags:IM_FIRE
+desc:Minor Demon
+
+# Non-moving growths which release spores when stepped next to
+name:mold
 glyph:m
 pain:2
-flags:POWERFUL | SPIRIT | SMART | FORCE_SLEEP
-flags:ONLY_ITEM | TAKE_ITEM
-flags:OPEN_DOOR | BASH_DOOR | CLEAR_WEB
-flags:IM_COLD | IM_FIRE | IM_POIS | NO_CONF | NO_SLEEP | NO_HOLD
-desc:Ainu/maia
+flags:NEVER_MOVE
+flags:IM_POIS | HURT_FIRE | NO_FEAR | NO_CONF | NO_SLEEP
+desc:Mold
+
+# Small (mostly) non-moving (mostly) spore-releasing-for-effect creatures
+name:mushroom
+glyph:,
+pain:2
+flags:EMPTY_MIND | STUPID
+flags:HURT_FIRE | NO_FEAR | NO_CONF | NO_SLEEP
+desc:Mushroom
 
 # Female serpent-like monsters
 name:naga
 glyph:n
 pain:1
-flags:FEMALE | EVIL | SPIRIT
+flags:FEMALE | EVIL | HURT_COLD | SPIRIT
 flags:BASH_DOOR | CLEAR_WEB
 desc:Naga
-#HURT_COLD
-
-# Nulx are tentacled swamp monsters
-name:nulx
-glyph:n
-pain:2
-flags:BASH_DOOR | CLEAR_WEB
-flags:IM_ACID | IM_WATER
-desc:Nulx (swamp monsters) and other tentacled horrors
-#WATER_HIDE
 
 # Ogres are like small giants, or large orcs.  Mostly straightforward melee
 # fighters who come in packs, with occaisonal lone spellcasters.
 name:ogre
 glyph:O
 pain:1
-flags:GIANT | SPIRIT
+flags:GIANT | EVIL | SPIRIT
 flags:OPEN_DOOR | BASH_DOOR | CLEAR_WEB
 desc:Ogre
-#flags:S_EVIL?
 
 # Orcs are the foot-soldiers of Morgoth.  They melee and use archery, but 
-# mostly don't use magic. They tend to appear in groups.
+# mostly don't use magic.  They tend to appear in groups.
 name:orc
 glyph:o
 pain:1
@@ -290,21 +339,10 @@ desc:Orc
 name:person
 glyph:p
 pain:1
-flags:OPEN_DOOR | BASH_DOOR | SPIRIT | CLEAR_WEB
+flags:BASH_DOOR | SPIRIT | CLEAR_WEB
 desc:Person/Human
 
-# Giants are big, strong humanoids which hit hard and throw boulders.  They
-# may be associated with an element and have some spells, but their focus is
-# powerful melee.
-name:giant
-glyph:P
-pain:1
-flags:GIANT | SPIRIT
-flags:BASH_DOOR | CLEAR_WEB
-desc:Giant Humanoid
-
 # A grab-bag of four-legged things with no real defining quality
-# might add ANIMAL (I'll check to make sure it fits all of them first)
 name:quadruped
 glyph:q
 pain:4
@@ -321,13 +359,12 @@ flags:NO_FEAR | NO_CONF | NO_SLEEP | NO_HOLD
 flags:FORCE_SLEEP
 desc:Quylthulg
 
-# Mostly early monsters, but later ones are dangerous. 
+# Mostly early monsters, but later ones are dangerous.  Not fast for depth
 name:reptile
 glyph:R
 pain:5
-flags:ANIMAL | CLEAR_WEB
-desc:Reptile
-#HURT_COLD
+flags:ANIMAL | HURT_COLD | CLEAR_WEB
+desc:Reptile/Amphibian
 
 # Small, weak, early breeders, with one surprise non-breeder
 name:rodent
@@ -347,13 +384,21 @@ flags:UNDEAD | EVIL | COLD_BLOOD | CLEAR_WEB
 flags:IM_COLD | IM_POIS | NO_FEAR | NO_CONF | NO_SLEEP | NO_STUN
 desc:Skeleton
 
+# Snakes are typically slow, but have high armor class
+name:snake
+glyph:J
+pain:5
+flags:ANIMAL | HURT_COLD
+flags:BASH_DOOR | CLEAR_WEB
+desc:Snake
+
 # Spiders are frequently poisonous and weave webs, and tend to have an
 # affinity with darkness.  Any spells they have tend to focus on disabling
 # their prey so they can be finished off in melee, but they may also breathe.
 name:spider
 glyph:S
 pain:7
-flags:PASS_WEB
+flags:BASH_DOOR | PASS_WEB
 desc:Spider/Scorpion/Tick
 
 # Weak, except the odd one to surprise the unwary newcomer.  Always native to
@@ -361,8 +406,16 @@ desc:Spider/Scorpion/Tick
 name:townsfolk
 glyph:t
 pain:4
-flags:OPEN_DOOR | SPIRIT | CLEAR_WEB
+flags:SPIRIT | CLEAR_WEB
 desc:Townsfolk
+
+# High hitpoints and armor class
+name:tree
+glyph:l
+pain:9
+flags:CLEAR_WEB | COLD_BLOOD | REGENERATE
+flags:NO_FEAR | NO_CONF | HURT_FIRE | IM_WATER
+desc:Tree/Ent
 
 # Trolls are evil, larger than human-size humanoids. They have strong melee
 # combat, and many are hurt by light.  They fall roughly between ogres and
@@ -374,49 +427,32 @@ flags:TROLL | EVIL | SPIRIT
 flags:OPEN_DOOR | BASH_DOOR | CLEAR_WEB
 desc:Troll
 
-# Demons are evil and are often fire-based.  Major demons frequently summon,
-# have a few powerful spells and/or breaths, and often dangerous melee.
-name:major demon
-glyph:U
-pain:1
-flags:DEMON | EVIL | SPIRIT | FORCE_SLEEP
-flags:ONLY_ITEM | OPEN_DOOR | BASH_DOOR | CLEAR_WEB
-flags:NO_SLEEP | NO_HOLD
-desc:Major Demon
-
-# Demons are evil and sometimes fire-based.  Minor demons are mostly
-# annoying rather than dangerous.
-name:minor demon
-glyph:u
-pain:1
-flags:DEMON | EVIL | SPIRIT
-flags:CLEAR_WEB
-desc:Minor Demon
-
 # Powerful undead which drain experience
 name:vampire
 glyph:V
 pain:1
-flags:UNDEAD | EVIL | COLD_BLOOD | SPIRIT | FORCE_SLEEP
+flags:UNDEAD | EVIL | COLD_BLOOD | REGENERATE | SPIRIT
 flags:OPEN_DOOR | BASH_DOOR | CLEAR_WEB
-flags:HURT_LIGHT | IM_COLD | IM_POIS
-desc:Vampire or ghoul
-#removed: NO_CONF | NO_SLEEP | NO_STUN | HURT_FIRE | REGENERATE
+flags:HURT_LIGHT | HURT_FIRE | IM_COLD | IM_POIS | NO_CONF | NO_SLEEP | NO_STUN
+flags:FORCE_SLEEP
+desc:Vampire
 
 # Always awake, elemental objects which engulf and breathe their element(s)
 name:vortex
 glyph:v
 pain:11
-flags:EMPTY_MIND | POWERFUL | NONLIVING | FORCE_SLEEP
-flags:RAND_50 | BASH_DOOR
+flags:EMPTY_MIND | POWERFUL
+flags:RAND_50 | BASH_DOOR | CLEAR_WEB
 flags:NO_FEAR | NO_CONF | NO_SLEEP | NO_HOLD | IM_POIS
+flags:FORCE_SLEEP
+flags:NONLIVING
 desc:Vortex
-#CLEAR_WEB (a few should have PASS_WEB instead)
 
 # Worms are mostly low level slow breeders with crawl attacks for an effect
 name:worm
 glyph:w
 pain:1
+flags:ANIMAL
 desc:Worm/Worm Mass
 
 # Undead which range from wights to wraiths to the Ringwraiths.  Experience
@@ -429,31 +465,21 @@ flags:UNDEAD | EVIL | COLD_BLOOD | SPIRIT | CLEAR_WEB
 flags:HURT_LIGHT | IM_COLD | IM_POIS | NO_CONF | NO_SLEEP | NO_STUN | NO_HOLD
 desc:Wight/Wraith
 
-# xorns are strange part rock beings which can destroy or pass through walls
-# X now includes other elemental monsters too
-name:elemental monster
+# Strange part rock beings which can destroy or pass through walls
+name:xorn
 glyph:X
 pain:4
-flags:CLEAR_WEB
-flags:IM_POIS | NO_FEAR | NO_CONF | NO_SLEEP
-desc:Xorn or other elemental monster
-#NONLIVING (most but not all)
+flags:COLD_BLOOD | EMPTY_MIND | CLEAR_WEB
+flags:HURT_ROCK | IM_POIS | NO_CONF | NO_SLEEP
+desc:Xorn/Xaren
 
-#glyph:x is the only unused letter glyph (will probably be gargoyles later)
-
-# Light Fairies
-name:light fairy
-glyph:y
-pain:1
-flags:SPIRIT | OPEN_DOOR | CLEAR_WEB
-desc:Light Fairy
-#flags:FEY | CLIGHT
-
-# (or yeeks if VISH is turned on)
+# Small, weak, comical humanoids
 name:yeek
 glyph:y
 pain:1
-flags:SPIRIT | OPEN_DOOR | CLEAR_WEB
+flags:ANIMAL | SPIRIT
+flags:OPEN_DOOR | BASH_DOOR | CLEAR_WEB
+flags:IM_ACID
 desc:Yeek
 
 # Yetis are a couple of niche monsters, big furry bear-like creatures
@@ -462,12 +488,11 @@ glyph:Y
 pain:1
 flags:ANIMAL
 flags:OPEN_DOOR | BASH_DOOR | CLEAR_WEB
-desc:Yeti or ape-related
-#IM_COLD (most but not all)
+flags:IM_COLD
+desc:Yeti
 
 # Zephyr hounds come in packs and (with a couple of exceptions) breathe a
 # single element, with melee that matches where possible.  Simple.
-# (not sure zephyr hounds should count as animals. They're more like elemental monsters than animals.)
 name:zephyr hound
 glyph:Z
 pain:3
@@ -481,72 +506,8 @@ glyph:z
 pain:10
 flags:UNDEAD | EVIL | COLD_BLOOD
 flags:OPEN_DOOR | BASH_DOOR | CLEAR_WEB
-flags:IM_COLD | IM_POIS | NO_SLEEP | HURT_FIRE
+flags:IM_COLD | IM_POIS | HURT_FIRE | NO_CONF | NO_SLEEP | NO_STUN
 desc:Zombie/Mummy
-# NO_CONF | NO_STUN (most but not all)
-#remove HURT_FIRE from a few types
-
-# Small (mostly) non-moving (mostly) spore-releasing-for-effect creatures
-name:mushroom
-glyph:,
-pain:2
-flags:EMPTY_MIND | STUPID
-flags:NO_FEAR | NO_CONF | NO_SLEEP | NO_STUN | HURT_FIRE
-desc:Mushroom, mold, or other fungi.
-#remove HURT_FIRE from a few types
-
-# Weird monsters that look like floor.
-name:lurker
-glyph:.
-pain:1
-flags:COLD_BLOOD | EMPTY_MIND | INVISIBLE | UNAWARE
-flags:NO_FEAR | NO_CONF | NO_SLEEP
-flags:CHAR_CLEAR | ATTR_CLEAR
-desc:Lurker
-#MOVE_SLOW (add this flag for monsters that move slowly but attack at normal speed, maybe a flag for the opposite too)
-
-# Creeping coins are mimics which look like coins until they attack, hit to
-# poison, and drop the approriate type of treasure
-name:creeping coins
-glyph:$
-pain:1
-flags:COLD_BLOOD | METAL | UNAWARE | EMPTY_MIND
-flags:ONLY_GOLD
-flags:BASH_DOOR | CLEAR_WEB
-flags:IM_ELEC | IM_POIS | NO_CONF | NO_SLEEP
-flags:MIMIC_INV
-desc:Creeping Coins
-
-# Monsters which pretend to be objects.  They don't move but do cast spells,
-# and attack if the player steps next to them.
-name:mimic
-glyph:?
-pain:1
-flags:COLD_BLOOD | EMPTY_MIND | UNAWARE
-flags:NEVER_MOVE
-flags:NO_FEAR | NO_CONF | NO_SLEEP
-flags:FORCE_SLEEP | ATTR_CLEAR
-desc:Mimic
-
-# arrow launchers & such
-# mostly like golems that (usually) don't move
-name:trap monster
-glyph:^
-pain:1
-flags:COLD_BLOOD | FORCE_SLEEP
-flags:EMPTY_MIND | CLEAR_WEB | NONLIVING
-flags:NO_FEAR | NO_CONF | NO_SLEEP | NO_STUN
-desc:Trap Monster
-
-# mostly very deep
-name:wall monster
-glyph:#
-pain:1
-flags:COLD_BLOOD | EMPTY_MIND
-flags:BASH_DOOR | CLEAR_WEB | NON_LIVING
-flags:IM_POIS | NO_CONF | NO_SLEEP | NO_FEAR
-desc:Wall Monster
-
 
 ##### Special templates #####
 

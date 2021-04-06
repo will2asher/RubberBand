@@ -439,7 +439,7 @@ equip:food:Ration of Food:1:3
 equip:hafted:Whip:1:1
 equip:light:Wooden Torch:1:3
 equip:scroll:Word of Recall:1:1
-player-flags:ZERO_FAIL | CHOOSE_SPELLS | CHARM
+player-flags:ZERO_FAIL | CHOOSE_SPELLS | DRUCHARM
 title:Wanderer
 title:Tamer
 title:Nurturer
@@ -768,13 +768,13 @@ desc: light-sensitive monster in its path.
 spell:Dispel Undead:10:14:55:6
 effect:PROJECT_LOS_AWARE:DISP_UNDEAD
 dice:d$S
-expr:S:PLAYER_LEVEL:* 5
+expr:S:PLAYER_LEVEL:* 3
 desc:Inflicts unresistable damage on each undead monster within line of sight.
 
 spell:Dispel Evil:12:20:70:10
 effect:PROJECT_LOS_AWARE:DISP_EVIL
 dice:d$S
-expr:S:PLAYER_LEVEL:* 5
+expr:S:PLAYER_LEVEL:* 3
 desc:Inflicts unresistable damage on each evil monster within line of sight.
 
 spell:Protection from Evil:14:8:42:5
@@ -1605,13 +1605,14 @@ desc:Removes fear and grants you berserk strength (resistance to fear,
 desc: +75 melee skill, -10 to AC, and prevents healing
 desc: over time) for a level-dependent duration.
 
-spell:Whirlwind Attack:5:4:25:6
-effect:SWEEP
-dice:$S
-expr:S:PLAYER_LEVEL:+ 10 / 15
-desc:Deals a level-dependent number of melee blows to each adjacent enemy.
-desc:  At level 5 you do one blow and gain an additional blow every 15
-desc: levels (2 at 20, 3 at 35, and 4 at 50).
+spell:Leap into Battle:5:4:25:6
+effect:MOVE_ATTACK
+dice:$B
+expr:B:PLAYER_LEVEL:+ 10 / 15
+desc:You may run up to 4 spaces towards targeted enemy, then perform a
+desc: level-dependent number of melee blows. The number of blows starts at 1
+desc: and goes up every 15 levels (2 blows at 20, etc.). If you moved, the
+desc: number of blows is reduced by 25% for each space, then rounded.
 
 spell:Shatter Stone:7:3:20:8
 effect:SHORT_BEAM:KILL_WALL:1
@@ -1619,13 +1620,12 @@ dice:20+1d30
 desc:Destroys an adjacent section of wall or rubble, unless it is a permanent
 desc: wall.  Deals 20+1d30 damage to monsters vulnerable to rock remover.
 
-spell:Leap into Battle:10:5:30:10
-effect:MOVE_ATTACK
-dice:$B
-expr:B:PLAYER_LEVEL:+ 5 / 15
-desc:You run up to 4 spaces towards targeted enemy, then perform a
-desc: melee blow.  You gain an additional blow at levels 25 and 40.  If you
-desc: moved, the number of blows is reduced by 25% for each space, then rounded.
+spell:Whirlwind Attack:10:5:30:10
+effect:SWEEP
+dice:$S
+expr:S:PLAYER_LEVEL:+ 5 / 15
+desc:Deals a melee blow to each adjacent enemy. You gain an additional blow
+desc: at levels 25 and 40.
 
 spell:Grim Purpose:13:8:30:12
 effect:TIMED_INC:OPP_CONF
@@ -1638,12 +1638,13 @@ desc: for 12+d12 turns.
 book:shadow book:town:[Fear and Torment]:5:shadow
 
 spell:Maim Foe:15:6:35:14
-effect:MELEE_BLOWS:MON_STUN:6
+effect:MELEE_BLOWS
 dice:$S
 expr:S:PLAYER_LEVEL:/ 15
-desc:Attempts a level-dependent number of melee blows against the targeted
-desc: enemy.  You get 1 blow for every 15 levels.  If any of these blows
-desc: damage the enemy, it will be stunned for for 6 turns.
+effect:SHORT_BEAM:MON_STUN:1
+dice:5+1d5
+desc:Stuns an adjacent enemy for 5+1d5 turns. Attempts a level-dependent number
+desc: of melee blows against that enemy. You get 1 blow for every 15 levels.
 
 spell:Howl of the Damned:18:8:30:16
 effect:PROJECT_LOS:TURN_ALL
@@ -1664,7 +1665,7 @@ effect:TIMED_INC:ATT_POIS:0:5
 dice:18+d18
 desc:Coats all your melee weapons with poison for 18+d18 turns.
 
-spell:Werewolf Form:32:30:40:100
+spell:Werewolf Form:33:30:45:100
 effect:SHAPECHANGE:werewolf
 desc:With a blood-curdling cry you change into a half-man half-wolf!
 desc: In this form you move, attack, and heal faster.
@@ -1688,10 +1689,13 @@ dice:66
 desc:Restores STR, INT, CON, and experience at the cost of 66 HP.
 
 spell:Forceful Blow:38:16:50:150
-effect:MELEE_BLOWS:FORCE:200
+effect:MELEE_BLOWS
 dice:1
-desc:Attempts a melee blow that deals additional force damage when it hits,
-desc: knocking the target back with a chance to stun it.
+effect:SHORT_BEAM:FORCE:1
+dice:2d$B
+expr:B:PLAYER_LEVEL:* 4
+desc:Attempts 1 melee blow and hits the target with force, knocking it back
+desc: with a chance to stun it.
 
 spell:Quake:44:39:55:175
 effect:EARTHQUAKE:NONE:13

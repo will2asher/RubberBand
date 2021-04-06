@@ -8,6 +8,8 @@
 # Note that each body record must take the form of a body-name line,
 # followed by a sequence of alternating slot-type and slot-name lines.
 
+# WA: Dude, now I've gotta make a two-headed race or four-armed race...
+
 body:Humanoid
 slot:WEAPON:weapon
 slot:BOW:shooting

@@ -9,7 +9,7 @@
 
 # name: tval:name
 # graphics: default attr for inventory display
-# break: breakage chance when thrown
+# break: breakage chance when thrown (This should be different based on whether it hits something or not)
 # flags: default flags
 
 default:break-chance:10
@@ -164,13 +164,13 @@ flags:EASY_KNOW
 
 name:food:Food
 graphics:light umber
-break:100
+break:40
 # max-stack:10
 flags:EASY_KNOW
 
 name:mushroom:Mushroom~
 graphics:light umber
-break:100
+break:50
 # max-stack:10
 flags:EASY_KNOW
 

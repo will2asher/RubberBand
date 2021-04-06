@@ -20,7 +20,6 @@
 # pile: chance of being generated in a pile : dice for number of items
 # power: power of the effect for object power eveluations
 # msg: message on using the object
-# vis-msg: message on using the object, only when player is not blind
 # effect: effect when used : parameter (maybe) : paramater (maybe)
 # effect-yx: y value for effect : x value for effect
 # dice:dice string
@@ -37,13 +36,7 @@
 # optional, and the number of dice is optional and assumed to be 1
 # when not specified.  10+2d3M4 has the range 12-20.  10+M4 has the
 # range 10-14.  10+2d3 has the range 12-16.  10+d3 has the range 11-13.
-# 2d3, d3, M4, 2d3M4, and d3M4 are all acceptable as well.  Randomized
-# expressions which begin with "-" are currently handled differently in the
-# "values" line than they are elsewhere.  In the "values" line, the leading
-# "-" sets the sign on the base value (i.e. 10 in the example).  On other lines,
-# a leading "-" in the randomized expression means multiply the random result
-# from what follows by negative one.  As a result, something like "-d4" will
-# not work as you want when used for a "values" line.  Use "-5+1d4" instead.
+# 2d3, d3, M4, 2d3M4, and d3M4 are all acceptable as well.
 
 # 'name' indicates the beginning of an entry. The '&' and '~' symbols are use to
 # include articles and pluralization as necessary to ensure
@@ -155,7 +148,7 @@ graphics:*:r
 
 name:<unknown treasure>
 type:none
-graphics:*:w
+graphics:*:o
 
 name:<curse object>
 type:none
@@ -170,7 +163,7 @@ level:1
 weight:22
 cost:2
 alloc:70:1 to 40
-attack:1d1:0:0
+attack:1d2:0:0
 armor:0:0
 flags:BURNS_OUT | LIGHT_2 | EASY_KNOW
 
@@ -241,7 +234,7 @@ alloc:40:0 to 50
 power:0
 msg:That tastes good.
 effect:NOURISH:INC_BY
-dice:15
+dice:14
 desc:Fruit roughly chopped and sun-dried, prepared as marching rations for the
 desc: rangers of Ithilien.
 
@@ -256,7 +249,7 @@ pile:100:2d3
 power:0
 msg:That tastes better than nothing.
 effect:NOURISH:INC_BY
-dice:15
+dice:16
 desc:A strange fungal growth, prone to moving if not observed.  Not very tasty
 desc: but quite filling.
 
@@ -274,7 +267,7 @@ effect:NOURISH:INC_BY
 dice:30
 desc:This nutritious but fairly bland food, called cram by the Lake-men who
 desc: make it is familiar to anyone contemplating long journeys.  It is
-desc: sustaining, but very uninteresting except as a chewing exercise.
+desc: sustaining, but uninteresting except as a chewing exercise.
 
 name:& Scrap~ of Flesh
 type:food
@@ -300,7 +293,6 @@ effect:NOURISH:SET_TO
 dice:5+1d4
 desc:A grey-looking piece of dried flesh of you dare not guess what creature.
 desc:  You would have to be desperate to eat this.
-
 
 name:& Slice~ of Meat
 type:food
@@ -624,7 +616,7 @@ power:9
 effect:NOURISH:INC_BY
 dice:5
 effect:TIMED_INC:STEALTH
-dice:10+d10
+dice:13+d13
 desc:It makes you very stealthy for a short while.
 
 
@@ -897,10 +889,10 @@ desc: block one.
 name:& Throwing Hammer~
 type:hafted
 graphics:\:D
-level:40
+level:30
 weight:55
 cost:250
-alloc:10:40 to 100
+alloc:10:30 to 100
 attack:2d4:0:0
 armor:0:0
 flags:THROWING
@@ -968,6 +960,18 @@ armor:0:0
 flags:THROWING
 desc:The basic polearm, with a double-edged knife mounted on a light shaft.
 desc:  This weapon can be thrown effectively.
+
+name:& Javelin~
+type:polearm
+graphics:/:s
+level:20
+weight:30
+cost:95
+alloc:7:15 to 100
+attack:1d5:0:0
+armor:0:0
+flags:THROWING
+desc:A short spear balanced for throwing.
 
 name:& Awl-Pike~
 type:polearm
@@ -1367,7 +1371,7 @@ level:50
 weight:250
 cost:700
 alloc:20:50 to 100
-attack:1d8:0:0
+attack:1d9:0:0
 armor:0:0
 flags:DIG_3
 desc:A digging tool with a broad horizontal blade balanced by a smaller
@@ -1946,7 +1950,6 @@ desc:A shield of purest white, made of mithril.
 
 
 
-
 ##### Rings #####
 
 ### Stat rings ###
@@ -2496,7 +2499,6 @@ values:SPEED[-3+1d2]
 
 
 
-
 ##### Scrolls #####
 
 ### Teleportation ###
@@ -2985,7 +2987,6 @@ effect:TOUCH:MAKE_TRAP:3
 
 
 
-
 ##### Potions #####
 
 ### Statgain ###
@@ -3094,7 +3095,7 @@ alloc:80:1 to 15
 pile:90:2d3
 power:3
 effect:HEAL_HP
-dice:20
+dice:15+1d8
 effect:CURE:BLIND
 effect:TIMED_DEC:CUT
 dice:20
@@ -3113,9 +3114,10 @@ alloc:80:5 to 40
 pile:80:2d3
 power:6
 effect:HEAL_HP
-dice:40
+dice:32+2d8
 effect:CURE:BLIND
-effect:CURE:CUT
+effect:TIMED_DEC:CUT
+dice:40
 effect:CURE:CONFUSED
 effect:NOURISH:INC_BY
 dice:1
@@ -3130,7 +3132,7 @@ alloc:80:12 to 100
 pile:70:2d3
 power:9
 effect:HEAL_HP
-dice:60
+dice:50+3d8
 effect:CURE:BLIND
 effect:CURE:CUT
 effect:CURE:POISONED
@@ -3445,7 +3447,8 @@ effect:TIMED_INC:OPP_POIS
 dice:50+1d10
 effect:CURE:POISONED
 
-name:True Seeing
+#True Seeing is something different now (I'll add that potion later)
+name:See Invisible
 type:potion
 graphics:!:d
 level:3
@@ -3483,7 +3486,7 @@ alloc:10:1 to 10
 pile:70:2d3
 power:0
 effect:NOURISH:INC_BY
-dice:10
+dice:7+1d6
 
 name:Sleep
 type:potion
@@ -3501,6 +3504,7 @@ dice:5+1d5
 effect:NOURISH:INC_BY
 dice:1
 
+#reduced a little
 name:Blindness
 type:potion
 graphics:!:d
@@ -3513,7 +3517,9 @@ attack:3d4:0:0
 armor:0:0
 power:0
 effect:TIMED_INC:BLIND
-dice:75+4d25
+dice:65+4d25
+effect:NOURISH:INC_BY
+dice:1
 
 name:Confusion
 type:potion
@@ -3642,7 +3648,7 @@ graphics:-:d
 level:15
 weight:10
 cost:600
-alloc:20:15 to 60
+alloc:20:15 to 65
 attack:1d1:0:0
 armor:0:0
 charges:6+d8
@@ -3656,7 +3662,7 @@ graphics:-:d
 level:20
 weight:10
 cost:800
-alloc:20:20 to 60
+alloc:20:20 to 65
 attack:1d1:0:0
 armor:0:0
 charges:6+d5
@@ -3670,7 +3676,7 @@ graphics:-:d
 level:30
 weight:10
 cost:1000
-alloc:20:30 to 60
+alloc:20:30 to 65
 attack:1d1:0:0
 armor:0:0
 charges:6+d8
@@ -3684,7 +3690,7 @@ graphics:-:d
 level:30
 weight:10
 cost:950
-alloc:20:30 to 60
+alloc:20:30 to 65
 attack:1d1:0:0
 armor:0:0
 charges:6+d8
@@ -3692,6 +3698,22 @@ power:6
 effect:BOLT_OR_BEAM:ACID
 dice:10d8
 
+name:Holy Light
+type:wand
+graphics:-:y
+level:37
+weight:10
+cost:1400
+alloc:4:35 to 102
+attack:1d1:0:0
+armor:0:0
+charges:6+d8
+power:5
+effect:BEAM:LIGHT
+dice:4d12
+effect:BOLT_OR_BEAM:HOLY_ORB
+dice:8d8
+#roughly equivelent to 14d8 total
 
 ### Balls ###
 
@@ -3722,7 +3744,7 @@ charges:4+d8
 flags:IGNORE_ELEC
 power:9
 effect:BALL:ELEC:2
-dice:64
+dice:65
 
 name:Cold Balls
 type:wand
@@ -3855,7 +3877,7 @@ alloc:20:3 to 60
 attack:1d1:0:0
 armor:0:0
 charges:6+d10
-vis-msg:A line of shimmering blue light appears.
+msg:A line of shimmering blue light appears.
 power:6
 effect:LINE:LIGHT_WEAK
 dice:6d8
@@ -3898,10 +3920,12 @@ cost:100
 alloc:20:3 to 60
 attack:1d1:0:0
 armor:0:0
-charges:6+d10
+charges:5+d8
 power:4
 effect:LINE:DARK_WEAK
-dice:6d8
+dice:3d12
+effect:LINE:DARK
+dice:2d12
 
 name:Clone Monster
 type:wand
@@ -3976,7 +4000,7 @@ armor:0:0
 charges:1+d3
 flags:IGNORE_ACID | IGNORE_ELEC | IGNORE_FIRE | IGNORE_COLD
 power:13
-effect:ARC:FIRE:0:30
+effect:BREATH:FIRE:0:30
 dice:200
 
 name:Dragon's Frost
@@ -3991,7 +4015,7 @@ armor:0:0
 charges:1+d3
 flags:IGNORE_ACID | IGNORE_ELEC | IGNORE_FIRE | IGNORE_COLD
 power:12
-effect:ARC:COLD:0:30
+effect:BREATH:COLD:0:30
 dice:160
 
 name:Dragon's Breath
@@ -4008,15 +4032,15 @@ flags:IGNORE_ACID | IGNORE_ELEC | IGNORE_FIRE | IGNORE_COLD
 power:12
 effect:RANDOM
 dice:5
-effect:ARC:ACID:0:30
+effect:BREATH:ACID:0:30
 dice:160
-effect:ARC:ELEC:0:30
+effect:BREATH:ELEC:0:30
 dice:160
-effect:ARC:FIRE:0:30
+effect:BREATH:FIRE:0:30
 dice:160
-effect:ARC:COLD:0:30
+effect:BREATH:COLD:0:30
 dice:160
-effect:ARC:POIS:0:30
+effect:BREATH:POIS:0:30
 dice:160
 
 
@@ -4081,7 +4105,6 @@ charges:8+d20
 power:0
 effect:BOLT_STATUS:MON_SPEED
 dice:100
-
 
 
 
@@ -4412,7 +4435,7 @@ armor:0:0
 charges:6+d5
 power:5
 effect:STAR:LIGHT
-dice:6d8
+dice:7d7
 
 name:Teleportation
 type:staff
@@ -4530,8 +4553,8 @@ type:rod
 graphics:-:d
 level:35
 weight:15
-cost:1000
-alloc:20:35 to 100
+cost:800
+alloc:20:32 to 98
 attack:1d1:0:0
 armor:0:0
 power:8
@@ -4547,7 +4570,7 @@ graphics:-:d
 level:30
 weight:15
 cost:3000
-alloc:20:30 to 80
+alloc:20:30 to 95
 attack:1d1:0:0
 armor:0:0
 power:7
@@ -4561,13 +4584,13 @@ graphics:-:d
 level:25
 weight:15
 cost:2500
-alloc:20:25 to 80
+alloc:20:25 to 95
 attack:1d1:0:0
 armor:0:0
 power:7
-effect:BOLT:COLD
+effect:BOLT_OR_BEAM:COLD
 dice:12d8
-time:13
+time:15
 
 name:Lightning Bolts
 type:rod
@@ -4575,7 +4598,7 @@ graphics:-:d
 level:20
 weight:15
 cost:2000
-alloc:20:20 to 80
+alloc:20:20 to 95
 attack:1d1:0:0
 armor:0:0
 power:5
@@ -4589,13 +4612,13 @@ graphics:-:d
 level:40
 weight:15
 cost:3500
-alloc:20:40 to 80
+alloc:20:40 to 95
 attack:1d1:0:0
 armor:0:0
 power:7
 effect:BOLT_OR_BEAM:ACID
 dice:12d8
-time:12
+time:14
 
 
 ### Balls ###
@@ -4731,7 +4754,7 @@ graphics:-:d
 level:80
 weight:15
 cost:25000
-alloc:10:80 to 100
+alloc:10:80 to 110
 attack:1d1:0:0
 armor:0:0
 flags:IGNORE_ELEC
@@ -4753,7 +4776,7 @@ graphics:-:d
 level:35
 weight:15
 cost:1200
-alloc:20:35 to 80
+alloc:20:35 to 89
 attack:1d1:0:0
 armor:0:0
 power:7
@@ -4768,7 +4791,7 @@ graphics:-:d
 level:75
 weight:15
 cost:3600
-alloc:20:75 to 100
+alloc:20:75 to 120
 attack:1d1:0:0
 armor:0:0
 power:11
@@ -4796,7 +4819,7 @@ type:rod
 graphics:-:d
 level:35
 weight:15
-cost:2100
+cost:2000
 alloc:10:10 to 100
 attack:1d1:0:0
 armor:0:0
@@ -4813,7 +4836,7 @@ cost:500
 alloc:30:5 to 100
 attack:1d1:0:0
 armor:0:0
-vis-msg:A line of shimmering blue light appears.
+msg:A line of shimmering blue light appears.
 power:6
 effect:LINE:LIGHT_WEAK
 dice:6d8
@@ -4865,7 +4888,6 @@ time:100
 
 
 
-
 ##### Chests #####
 
 name:& Small wooden chest~
@@ -4874,7 +4896,7 @@ graphics:~:s
 level:5
 weight:250
 cost:20
-alloc:15:5 to 100
+alloc:5:5 to 100
 attack:2d3:0:0
 armor:0:0
 
@@ -4884,7 +4906,7 @@ graphics:~:s
 level:15
 weight:500
 cost:60
-alloc:10:15 to 100
+alloc:5:15 to 100
 attack:2d5:0:0
 armor:0:0
 
@@ -4894,7 +4916,7 @@ graphics:~:s
 level:25
 weight:300
 cost:100
-alloc:15:25 to 100
+alloc:5:25 to 100
 attack:2d4:0:0
 armor:0:0
 
@@ -4904,7 +4926,7 @@ graphics:~:s
 level:35
 weight:1000
 cost:150
-alloc:10:35 to 100
+alloc:5:35 to 100
 attack:2d6:0:0
 armor:0:0
 
@@ -4914,7 +4936,7 @@ graphics:~:s
 level:45
 weight:500
 cost:200
-alloc:15:45 to 100
+alloc:5:45 to 100
 attack:2d4:0:0
 armor:0:0
 
@@ -4924,7 +4946,7 @@ graphics:~:s
 level:55
 weight:1000
 cost:250
-alloc:10:55 to 100
+alloc:5:55 to 100
 attack:2d6:0:0
 armor:0:0
 
@@ -5132,7 +5154,7 @@ effect:BREATH:DISEN:0:20
 dice:220
 time:50
 desc:A suit of scales that ripples and twists through every color and shape
-desc: imaginable as you stare in fascination.
+desc:imaginable as you stare in fascination.
 
 name:Balance Dragon Scale Mail~
 type:dragon armor

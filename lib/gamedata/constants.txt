@@ -27,7 +27,7 @@ mon-gen:town-day:4
 mon-gen:town-night:8
 
 # Maximum number of breeding monsters allowed on a level
-mon-gen:repro-max:100
+mon-gen:repro-max:99
 
 # Chance of a generated monster's level being inflated is one-in-this
 mon-gen:ood-chance:25
@@ -55,7 +55,7 @@ mon-play:mult-rate:8
 mon-play:life-drain:2
 
 # Monsters will run up to this many grids out of sight
-mon-play:flee-range:5
+mon-play:flee-range:6
 
 # Terrified monsters will turn to fight if they are slower than the character,
 # and closer than this distance.
@@ -132,10 +132,10 @@ world:move-energy:100
 carry-cap:pack-size:23
 
 # Max number of quiver slots for carrying missiles
-carry-cap:quiver-size:10
+carry-cap:quiver-size:11
 
 # Max number of missiles per quiver slot
-carry-cap:quiver-slot-size:40
+carry-cap:quiver-slot-size:50
 
 # Maximum number of objects allowed in a single dungeon grid.
 #
@@ -158,6 +158,7 @@ store:turns:1000
 store:shuffle:25
 
 # Dungeon level to apply magic to objects for normal stores
+#(This should increase slightly with player level)
 store:magic-level:5
 
 
@@ -166,7 +167,7 @@ store:magic-level:5
 #---------------------------------------------------------------------
 
 # Maximum depth used in object allocation
-obj-make:max-depth:100
+obj-make:max-depth:110
 
 # 1/chance of inflating the requested object level
 obj-make:great-obj:20

@@ -92,7 +92,7 @@ desc:hydras
 name:AINU
 msgt:SUM_AINU
 uniques:0
-base:ainu
+base:maia
 desc:ainur
 
 name:DEMON

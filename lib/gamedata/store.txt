@@ -5,10 +5,10 @@
 # store: store number : store name
 # owner: max purse : name			- as many or few as you like >1
 # turnover: turnover				- how many items the store turns over
-# slots: min : max					- number of 'normal' slots to keep stocked
+# slots: min : max				- number of 'normal' slots to keep stocked
 # normal: type name : item name		- for the normal stocking list
 # always: type name : ?item name	- for things to always stock
-# buy: type name					- base types the store will buy
+# buy: type name				- base types the store will buy
 # buy-flag: flag : type name		- types to buy if the flag is present
 
 
@@ -16,6 +16,7 @@
 store:1:General Store
 owner:5000:Bilbo the Friendly (Hobbit)
 owner:10000:Rincewind the Chicken (Human)
+owner:14000:Herman the Drunk (Dwarf)
 owner:20000:Snafu the Midget (Gnome)
 owner:30000:Lyar-el the Comely (Elf)
 slots:0:4
@@ -40,10 +41,6 @@ buy:food
 buy:mushroom
 buy:flask
 buy:digger
-buy:cloak
-buy:shot
-buy:bolt
-buy:arrow
 
 # Armoury
 store:2:Armoury
@@ -205,6 +202,8 @@ buy:ring
 buy:staff
 buy:wand
 buy:rod
+buy:scroll
+buy:potion
 
 # Black Market - no stock given but we still need slot/turnover info
 store:7:Black Market
@@ -220,3 +219,4 @@ owner:0:Your home
 owner:0:Your home
 owner:0:Your home
 owner:0:Your home
+# Why does the Home have "owner" lines?
