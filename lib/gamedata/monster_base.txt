@@ -543,7 +543,7 @@ name:wall monster
 glyph:#
 pain:1
 flags:COLD_BLOOD | EMPTY_MIND
-flags:BASH_DOOR | CLEAR_WEB | NON_LIVING
+flags:BASH_DOOR | CLEAR_WEB | NONLIVING
 flags:IM_POIS | NO_CONF | NO_SLEEP | NO_FEAR
 desc:Wall Monster
 

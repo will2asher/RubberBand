@@ -25,13 +25,13 @@ desc:attack
 lore-color-base:Light Green
 lash-type:MISSILE
 
-#has extra chance to cause cuts
-name:PIERCE
-power:35
-eval:0
-desc:attack
-lore-color-base:Light Green
-lash-type:SHARDS
+#will have extra chance to cause cuts
+#name:PIERCE
+#power:35
+#eval:0
+#desc:attack
+#lore-color-base:Light Green
+#lash-type:SHARDS
 
 name:POISON
 power:20
@@ -44,23 +44,23 @@ resist:POIS
 lash-type:POIS
 
 #temporarily reduces CON and STR, rPOIS is partial resist
-name:DISEASE
-power:20
-eval:10
-desc:give you a disease
-lore-color-base:Orange
-lore-color-resist:Light Green
-resist:POIS
-lash-type:POIS
+#name:DISEASE
+#power:20
+#eval:10
+#desc:give you a disease
+#lore-color-base:Orange
+#lore-color-resist:Light Green
+#resist:POIS
+#lash-type:POIS
 
-name:HUNGER
-power:20
-eval:10
-desc:make you hungry
-lore-color-base:Orange
-lore-color-resist:Light Green
-resist:POIS
-lash-type:POIS
+#name:HUNGER
+#power:20
+#eval:10
+#desc:make you hungry
+#lore-color-base:Orange
+#lore-color-resist:Light Green
+#resist:POIS
+#lash-type:POIS
 
 name:DISENCHANT
 power:10
@@ -153,14 +153,14 @@ lore-color-resist:Yellow
 lore-color-immune:Light Green
 lash-type:ICE
 
-name:SLIME
-power:20
-eval:10
-desc:slime
-lore-color-base:Orange
-lore-color-resist:Yellow
-lore-color-immune:Light Green
-lash-type:ICE
+#name:SLIME
+#power:20
+#eval:10
+#desc:slime
+#lore-color-base:Orange
+#lore-color-resist:Yellow
+#lore-color-immune:Light Green
+#lash-type:ICE
 
 name:BLIND
 power:0
@@ -175,15 +175,15 @@ lash-type:DARK
 #SBLIND is blindness caused by being poked in the eye rather than light, dark, or magic
 #PROT_BLIND is only partial resistance, but it generally has shorter duration than normal BLIND
 #Also cured by most healing potions
-name:SBLIND
-power:30
-eval:20
-desc:poke your eyes
-lore-color-base:Yellow
-lore-color-resist:Light Green
-effect-type:flag
-resist:PROT_BLIND
-lash-type:MISSILE
+#name:SBLIND
+#power:30
+#eval:20
+#desc:poke your eyes
+#lore-color-base:Yellow
+#lore-color-resist:Light Green
+#effect-type:flag
+#resist:PROT_BLIND
+#lash-type:MISSILE
 
 name:CONFUSE
 power:20
@@ -196,46 +196,46 @@ resist:PROT_CONF
 lash-type:CHAOS
 
 #pCONF is only partial resist, also has a chance to cause FRENZY and HALLU
-name:XCONF
-power:20
-eval:20
-desc:powerfully confuse
-lore-color-base:Orange
-lore-color-resist:Light Green
-effect-type:flag
-resist:PROT_CONF
-lash-type:CHAOS
+#name:XCONF
+#power:20
+#eval:20
+#desc:powerfully confuse
+#lore-color-base:Orange
+#lore-color-resist:Light Green
+#effect-type:flag
+#resist:PROT_CONF
+#lash-type:CHAOS
 
 #temporarily reduces INT and WIS, pCONF is partial resist
-name:INSANITY
-power:20
-eval:20
-desc:drive you insane
-lore-color-base:Orange
-lore-color-resist:Light Green
-effect-type:flag
-resist:PROT_CONF
-lash-type:CHAOS
+#name:INSANITY
+#power:20
+#eval:20
+#desc:drive you insane
+#lore-color-base:Orange
+#lore-color-resist:Light Green
+#effect-type:flag
+#resist:PROT_CONF
+#lash-type:CHAOS
 
 #Put you in a reckless frenzy (+movement speed, penalty to to-hit, ac, and spellcasting fail rate)
-name:FRENZY
-power:20
-eval:20
-desc:put you in a frenzy
-lore-color-base:Orange
-lore-color-resist:Light Green
-effect-type:flag
-lash-type:CHAOS
+#name:FRENZY
+#power:20
+#eval:20
+#desc:put you in a frenzy
+#lore-color-base:Orange
+#lore-color-resist:Light Green
+#effect-type:flag
+#lash-type:CHAOS
 
-#minor penalties to just about everything
-name:UNLUCKY
-power:10
-eval:20
-desc:make you unlucky
-lore-color-base:Orange
-lore-color-resist:Light Green
-effect-type:flag
-lash-type:CHAOS
+#
+#name:UNLUCKY
+#power:10
+#eval:20
+#desc:make you unlucky
+#lore-color-base:Orange
+#lore-color-resist:Light Green
+#effect-type:flag
+#lash-type:CHAOS
 
 name:TERRIFY
 power:0
@@ -248,14 +248,14 @@ resist:PROT_FEAR
 lash-type:CHAOS
 
 #similar effect as fear, different cause/resist/cures
-name:CHARM
-power:0
-eval:10
-desc:charm you
-lore-color-base:Yellow
-lore-color-resist:Light Green
-effect-type:flag
-lash-type:CHAOS
+#name:CHARM
+#power:0
+#eval:10
+#desc:charm you
+#lore-color-base:Yellow
+#lore-color-resist:Light Green
+#effect-type:flag
+#lash-type:CHAOS
 
 name:PARALYZE
 power:0
@@ -270,26 +270,26 @@ lash-type:INERTIA
 #for monsters that grab you 
 #Being grabbed makes you unable to move, but you can still attack and cast, etc
 #(free action only gives partial resistance)
-name:BHOLD
-power:30
-eval:40
-desc:grab
-lore-color-base:Light Red
-lore-color-resist:Light Green
-effect-type:flag
-resist:FREE_ACT
-lash-type:INERTIA
+#name:BHOLD
+#power:30
+#eval:40
+#desc:grab
+#lore-color-base:Light Red
+#lore-color-resist:Light Green
+#effect-type:flag
+#resist:FREE_ACT
+#lash-type:INERTIA
 
 #turns you to stone (free action is only partial resistance)
-name:PETRIFY
-power:10
-eval:40
-desc:petrify
-lore-color-base:Light Red
-lore-color-resist:Light Green
-effect-type:flag
-resist:FREE_ACT
-lash-type:INERTIA
+#name:PETRIFY
+#power:10
+#eval:40
+#desc:petrify
+#lore-color-base:Light Red
+#lore-color-resist:Light Green
+#effect-type:flag
+#resist:FREE_ACT
+#lash-type:INERTIA
 
 name:LOSE_STR
 power:0

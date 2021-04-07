@@ -1453,7 +1453,7 @@ depth:3
 rarity:2
 experience:4
 blow:HIT:COLD:1d3
-flags:COLD_BLOOD | NON_LIVING | SEASONAL
+flags:COLD_BLOOD | NONLIVING | SEASONAL
 flags:RAND_50
 flags:IM_COLD | HURT_FIRE
 #PASS_DOOR | SCALE
@@ -1918,7 +1918,7 @@ desc:It has a copper head and sharp venomous fangs.
 
 name:giant white dragon fly
 plural:giant white dragon flies
-base:dragon fly
+base:fly
 color:w
 speed:112
 hit-points:14
@@ -1936,7 +1936,7 @@ desc:It is a large fly that drips frost.
 
 name:giant green dragon fly
 plural:giant green dragon flies
-base:dragon fly
+base:fly
 color:g
 speed:113
 hit-points:14
@@ -2198,7 +2198,7 @@ desc: to frighten its prey.
 
 name:giant black dragon fly
 plural:giant black dragon flies
-base:dragon fly
+base:fly
 color:s
 speed:114
 hit-points:16
@@ -2216,7 +2216,7 @@ desc:The size of a large bird, this fly drips caustic acid.
 
 name:giant gold dragon fly
 plural:giant gold dragon flies
-base:dragon fly
+base:fly
 color:y
 speed:115
 hit-points:17
@@ -2319,7 +2319,7 @@ flags:NO_FEAR
 #ROAM
 desc:a filthy diseased rat driven mad and extra-aggressive by rabies.
 
-name:zombified kobold
+name:kobold zombie
 base:zombie
 color:U
 speed:110
@@ -2604,7 +2604,7 @@ name:well lizard
 base:reptile
 color:B
 speed:112
-hit points:34
+hit-points:34
 light:1
 hearing:21
 smell:21
@@ -3599,7 +3599,7 @@ flags:GROUP_AI
 friends:98:2d10:Same
 desc:It howls and snaps at you.
 
-name:zombified human
+name:human zombie
 base:zombie
 color:u
 speed:108
@@ -4649,7 +4649,7 @@ depth:13
 rarity:4
 experience:53
 blow:TOUCH:HALLU
-flags:RAND_50 | WEIRD_MIND | NON_LIVING
+flags:RAND_50 | WEIRD_MIND | NONLIVING
 flags:PASS_WALL | NO_HOLD
 #ROAM | RUBBER
 spell-freq:5
@@ -5268,7 +5268,7 @@ experience:39
 blow:HIT:TERRIFY:1d5
 blow:HIT:HURT:1d8
 flags:DROP_40 | OPEN_DOOR | BASH_DOOR 
-flags:NON_LIVING | IM_POIS | HURT_LIGHT
+flags:NONLIVING | IM_POIS | HURT_LIGHT
 innate-freq:10
 spells:BR_DARK | BR_POIS
 friends:91:2d6:Same
@@ -5491,7 +5491,7 @@ depth:15
 rarity:2
 experience:43
 blow:HIT:HURT:1d7
-flags:COLD_BLOOD | INVISIBLE | NON_LIVING
+flags:COLD_BLOOD | INVISIBLE | NONLIVING
 flags:RAND_25 | RAND_50 
 #PASS_DOOR
 flags:IM_ELEC
@@ -6718,7 +6718,7 @@ rarity:4
 experience:109
 blow:HIT:HURT:1d9
 blow:HIT:HALLU:1d9
-flags:NON_LIVING | EMPTY_MIND | FORCE_SLEEP
+flags:NONLIVING | EMPTY_MIND | FORCE_SLEEP
 flags:RAND_50 | PASS_WALL
 flags:IM_ACID | IM_COLD | IM_ELEC
 spell-freq:4
@@ -6790,7 +6790,7 @@ sleepiness:33
 depth:19
 rarity:2
 experience:109
-blow:CLAW:HURT:1d6 
+blow:CLAW:HURT:1d6
 blow:CLAW:HURT:1d6
 #CLAWB
 blow:BITE:LOSE_WIS:2d6
@@ -6850,7 +6850,7 @@ innate-freq:10
 spells:ARROW
 friends:50:2d2:hill orc:servant
 friends:80:1d3:orc tracker:servant
-friends:100:2d3:half orc:servant
+friends:100:2d3:half-orc:servant
 friends:100:2d4:uruk:servant
 desc:an uruk of Isenguard who led a band of orcs to attack a band of
 desc: Rohirrim led by Eomer. (minor unique)
@@ -7341,7 +7341,7 @@ blow:CLAW:HURT:6d2
 blow:CLAW:HURT:7d2
 #CLAWB
 flags:DROP_40 | DROP_2 | IM_ACID
-flags:BASH_DOOR | NON_LIVING | NO_CONF | NO_SLEEP 
+flags:BASH_DOOR | NONLIVING | NO_CONF | NO_SLEEP 
 flags-off:METAL
 #What does the METAL flag do anyway?
 spell-freq:20
@@ -7443,7 +7443,7 @@ friends:50:1d3:hill orc:servant
 friends:40:3d2:snaga:servant
 friends:80:2d4:cave orc:servant
 friends:80:1d2:orc tracker:servant
-friends:100:3d2:half orc:servant
+friends:100:3d2:half-orc:servant
 friends:100:4d4:uruk:servant
 desc:He is an orc of power and great cunning, leader of the garrison at Minas
 desc: Morgul. His band battled Shagrat's band over a mithril coat.
@@ -7562,7 +7562,7 @@ experience:91
 blow:TOUCH:COLD:2d3
 blow:GAZE:TERRIFY:1d5
 flags:NO_FEAR | NO_STUN | RAND_25
-flags:HURT_LIGHT | STUPID | NON_LIVING
+flags:HURT_LIGHT | STUPID | NONLIVING
 #ROAM
 flags-off:INVISIBLE
 spell-freq:10
@@ -7906,7 +7906,7 @@ experience:161
 blow:CLAW:HURT:6d2
 blow:CLAW:LOSE_CON:3d2
 #CLAWB
-flags:DROP_1 | DROP_20 | FORCE_SLEEP | NON_LIVING | SMART
+flags:DROP_1 | DROP_20 | FORCE_SLEEP | NONLIVING | SMART
 flags:IM_COLD | HURT_LIGHT | NO_HOLD | NO_STUN
 #BR_STRONG | RUBBER
 innate-freq:6
@@ -7949,7 +7949,7 @@ sleepiness:2
 depth:23
 rarity:4
 experience:101
-flags:NEVER_MOVE | NEVER_BLOW | NON_LIVING | IM_POIS
+flags:NEVER_MOVE | NEVER_BLOW | IM_POIS
 flags:STUPID | INVISIBLE
 #RUBBER | SCALE
 innate-freq:3
@@ -8212,7 +8212,7 @@ experience:234
 blow:CLAW:POISON:4d3
 #CLAWB
 blow:PUNCH:HURT:4d4
-B:GAZE:PARALYZE:1d13
+blow:GAZE:PARALYZE:1d13
 #B:GAZEB:PARALYZE:2d8
 flags:BASH_DOOR | FORCE_SLEEP | IM_ELEC | IM_POIS
 #RUBBER | HURT_WATER
@@ -8807,7 +8807,7 @@ blow:CLAW:HURT:3d3
 #CLAWB
 blow:STING:POISON:3d4
 flags:DROP_60 | OPEN_DOOR | BASH_DOOR | FORCE_SLEEP
-flags:NON_LIVING | IM_POIS | IM_NETHER | HURT_LIGHT
+flags:NONLIVING | IM_POIS | IM_NETHER | HURT_LIGHT
 innate-freq:8
 spell-freq:6
 spells:BR_NETH | SCARE | WOUND | DARKNESS
@@ -9320,7 +9320,7 @@ rarity:3
 experience:123
 blow:HIT:HURT:1d9
 blow:HIT:LOSE_CON:3d6
-flags:OPEN_DOOR | BASH_DOOR | POWERFUL | NON_LIVING
+flags:OPEN_DOOR | BASH_DOOR | POWERFUL | NONLIVING
 flags:WEIRD_MIND | FORCE_SLEEP | REGENERATE
 innate-freq:10
 spell-freq:9
@@ -10572,7 +10572,7 @@ experience:463
 blow:TOUCH:FIRE:1d13
 blow:HIT:LOSE_DEX:1d13
 blow:HIT:HURT:4d6
-flags:OPEN_DOOR | BASH_DOOR | POWERFUL | NON_LIVING
+flags:OPEN_DOOR | BASH_DOOR | POWERFUL | NONLIVING
 flags:SPIRIT | IM_FIRE | FORCE_SLEEP | REGENERATE
 #RETURNS | TEMPLE | HURT_WATER
 innate-freq:6
@@ -10603,7 +10603,7 @@ flags:NO_FEAR | IM_ELEC | IM_NETHER
 #RUBBER | ROAM | RETURNS
 desc:An evil magical cat with nine lives and claws like knives.
 
-(Replaces the troll mummy)
+#(Replaces the troll mummy)
 name:undying troll
 base:troll
 color:w
@@ -10973,11 +10973,11 @@ sleepiness:14
 depth:32
 rarity:4
 experience:339
-B:WAIL:TERRIFY:1d6
-B:CLAW:HURT:5d3
-B:CLAW:HURT:5d3
+blow:WAIL:TERRIFY:1d6
+blow:CLAW:HURT:5d3
+blow:CLAW:HURT:5d3
 #CLAWB
-B:BITE:HURT:3d5
+blow:BITE:HURT:3d5
 flags:EVIL | INVISIBLE | RAND_25 | BASH_DOOR | DROP_1
 flags:IM_COLD | NO_FEAR | NO_SLEEP | NO_HOLD | FORCE_SLEEP
 #ROAM
@@ -11002,7 +11002,7 @@ blow:CLAW:HURT:1d9
 blow:CLAW:HURT:2d6
 blow:BITE:POISON:4d6
 #blow:TAIL:HURT:1d6
-flags:BASH_DOOR | FORCE_SLEEP | REGENERATE | 
+flags:BASH_DOOR | FORCE_SLEEP | REGENERATE
 flags:IM_POIS | IM_WATER | NO_HOLD
 #RUBBER | ROAM | CLIGHT | WATER_HIDE | TEMPLE
 innate-freq:6
@@ -11723,7 +11723,7 @@ blow:HIT:HURT:3d5
 blow:HIT:HURT:5d6
 blow:HIT:HURT:5d6
 flags:DROP_40 | OPEN_DOOR | BASH_DOOR
-flags:EMPTY_MIND | STUPID | NON_LIVING
+flags:EMPTY_MIND | STUPID | NONLIVING
 #RETURNS
 flags-off:NO_CONF | NO_STUN
 innate-freq:11
@@ -11749,7 +11749,7 @@ blow:TOUCH:PARALYZE:1d7
 blow:TOUCH:LOSE_STR:1d7
 blow:KICK:HURT:2d7
 flags:DROP_60 | SMART | FORCE_SLEEP
-flags:NO_HOLD | NO_CONF | IM_STUN | IM_POIS
+flags:NO_HOLD | NO_CONF | NO_STUN | IM_POIS
 #PASS_DOOR
 spell-freq:4
 spells:BLINK | HEAL | HOLD | BLIND | SCARE | FORGET
@@ -11838,7 +11838,7 @@ flags:DROP_2 | DROP_GOOD | ONLY_ITEM
 flags:OPEN_DOOR | TAKE_ITEM
 spell-freq:10
 spells:S_KIN
-friends:60:1d3:Mûmak
+friends:60:1d3:Mumak
 friends:100:3d3:Easterling champion:bodyguard
 friends:90:1d1:Ulfast, Son of Ulfang
 friends:90:1d1:Ulwarth, Son of Ulfang
@@ -12027,7 +12027,7 @@ experience:350
 blow:HIT:FIRE:5d5
 blow:HIT:FIRE:5d5
 flags:RAND_25 | BASH_DOOR | KILL_BODY | KILL_ITEM
-flags:IM_ACID | IM_ELEC | IM_FIRE | HURT_COLD | 
+flags:IM_ACID | IM_ELEC | IM_FIRE | HURT_COLD
 #HURT_WATER
 flags:FORCE_SLEEP
 spell-freq:6
@@ -12140,7 +12140,7 @@ flags:EVIL | NO_FEAR | IM_ELEC | IM_ACID | IM_POIS
 #PASS_DOOR | DISGUISE | HURT_WATER
 innate-freq:10
 spell-freq:8
-spells:SLOW | BLINK | DRAIN_MANA | BLIND | 
+spells:SLOW | BLINK | DRAIN_MANA | BLIND
 #S_ILLUSION | BR_AMNS
 friends-base:50:1d2:worm
 friends:16:1d3:vyrm
@@ -12599,6 +12599,7 @@ rarity:2
 experience:800
 blow:ENGULF:HURT:6d6
 #This needs a cutting melee attack
+flags:CLEAR_WEB
 innate-freq:4
 spells:BR_SHAR
 desc:A howling blast of razor-sharp mountain fragments, kept intact by perilous
@@ -12741,7 +12742,7 @@ depth:38
 rarity:5
 experience:799
 blow:ENGULF:EXP_20:5d5
-flags:RAND_25
+flags:RAND_25 | PASS_WEB
 #PASS_DOOR
 flags-off:BASH_DOOR
 innate-freq:4
@@ -12767,7 +12768,7 @@ blow:ENGULF:BLIND:4d3
 flags:RAND_25 | PASS_WEB | MOVE_BODY | ATTR_FLICKER
 flags:IM_ELEC | IM_FIRE | IM_ACID | IM_WATER
 #ROAM | PASS_DOOR | KEEP_DIST
-flags-off:NON_LIVING | BASH_DOOR
+flags-off:NONLIVING | BASH_DOOR
 innate-freq:4
 spell-freq:2
 spells:BR_LIGHT | SHRIEK | HEAL
@@ -12826,7 +12827,7 @@ experience:572
 blow:HIT:HURT:1d9
 blow:HIT:HURT:1d9
 blow:GAZE:HALLU:1d9
-flags:INVISIBLE | FORCE_SLEEP | NON_LIVING
+flags:INVISIBLE | FORCE_SLEEP | NONLIVING
 flags:RAND_50 | PASS_WALL | POWERFUL
 flags:IM_ACID | IM_COLD | IM_ELEC
 #ROAM
@@ -12856,7 +12857,7 @@ flags:DROP_60 | ONLY_GOLD
 flags:PASS_WALL | KILL_ITEM | WEIRD_MIND
 flags:IM_COLD | IM_FIRE | HURT_ROCK
 innate-freq:10
-spells:boulder
+spells:BOULDER
 desc:A huge creature of the element Earth.  Able to merge with its element, it
 desc: has four huge arms protruding from its enormous torso.
 
@@ -12927,7 +12928,7 @@ blow:CLAW:COLD:4d4
 flags:DROP_60 | ONLY_ITEM | COLD_BLOOD | FORCE_SLEEP
 flags:IM_POIS | IM_COLD | IM_ELEC | IM_ACID | IM_NETHER | HURT_LIGHT
 flags:NO_FEAR | NO_CONF | NO_SLEEP
-flags:RAND_25 | INVISIBLE | NON_LIVING
+flags:RAND_25 | INVISIBLE | NONLIVING
 #PASS_DOOR | ROAM
 spell-freq:5
 spells:BO_NETH | DARKNESS | WOUND | HOLD | DRAIN_MANA | S_DEMON
@@ -13008,7 +13009,7 @@ blow:KICK:CONFUSE:4d4
 blow:WAIL:LOSE_INT
 #blow:DROOL:FRENZY:1d9
 flags:RAND_25 | DROP_60 | FORCE_SLEEP
-flags:BASH_DOOR | NO_SLEEP | NO_FEAR | IM_STUN | IM_POIS
+flags:BASH_DOOR | NO_SLEEP | NO_FEAR | NO_STUN | IM_POIS
 #ROAM | RUBBER
 spell-freq:4
 spells:BLINK | HEAL | CONF | TELE_TO | SHRIEK | BLIND | MIND_BLAST
@@ -13089,7 +13090,7 @@ blow:CLAW:COLD:2d8
 flags:DROP_1 | ONLY_ITEM | COLD_BLOOD | FORCE_SLEEP
 flags:IM_POIS | IM_COLD | IM_NETHER | HURT_LIGHT
 flags:NO_FEAR | NO_CONF | NO_SLEEP | NO_STUN
-flags:RAND_25 | INVISIBLE | NON_LIVING | MOVE_BODY
+flags:RAND_25 | INVISIBLE | NONLIVING | MOVE_BODY
 #PASS_DOOR
 innate-freq:8
 spell-freq:9
@@ -13385,7 +13386,6 @@ spells:S_KIN
 friends:16:1d3:rhinocerous beetle
 friends:35:1d3:giant red ant:servant
 friends:45:2d3:Giant silver ant:servant
-friends:45:2d3:Giant grey ant:servant
 friends:60:2d3:Giant blue ant:servant
 friends:60:2d3:Giant fire ant:servant
 friends:100:3d4:soldier ant:servant
@@ -13667,7 +13667,7 @@ friends:35:2d2:snow troll:servant
 friends:45:2d3:forest troll:servant
 friends:35:2d3:troll scavenger:servant
 friends:35:1d3:undying troll:servant
-friends:35:1d2:troll priest:servant
+friends:35:1d2:troll shaman:servant
 friends:35:1d2:troll blackguard:servant
 friends:50:2d3:stone troll:servant
 friends:40:1d4:mountain troll:servant
@@ -13675,7 +13675,7 @@ friends:50:2d3:cave troll:servant
 friends:45:2d3:hill troll:servant
 friends:100:2d3:olog:servant
 innate-freq:11
-spells:boulder
+spells:BOULDER
 desc:This troll's great strength and size have won it the place of chieftain of
 desc: its tribe.  It fears nothing.
 
@@ -13721,7 +13721,7 @@ experience:800
 blow:CLAW:HURT:7d5
 blow:CLAW:HURT:7d5
 #CLAWB
-flags:PASS_WALL | NON_LIVING
+flags:PASS_WALL | NONLIVING
 flags:IM_FIRE | IM_COLD | IM_POIS | NO_STUN | HURT_ROCK
 #BLOCK_LOS
 desc:It's identical to a normal pillar until razor claws shoot
@@ -13826,7 +13826,7 @@ blow:TOUCH:TERRIFY
 blow:TOUCH:BLIND:1d11
 blow:TOUCH:EXP_40:3d11
 blow:ENGULF:EAT_LIGHT:2d19
-flags:DROP_1 | DROP_GOOD | WEIRD_MIND | SMART | NON_LIVING
+flags:DROP_1 | DROP_GOOD | WEIRD_MIND | SMART | NONLIVING
 flags:INVISIBLE | COLD_BLOOD | NO_FEAR | NO_CONF | NO_STUN | PASS_WEB
 flags:IM_POIS | IM_FIRE | IM_ELEC | HURT_LIGHT | RAND_25
 #ROAM | PASS_DOOR | PUDDLE | TEMPLE
@@ -14050,7 +14050,7 @@ blow:HIT:HURT:5d7
 blow:HIT:HURT:5d9
 #DISEASE
 flags:DROP_1 | OPEN_DOOR | BASH_DOOR
-flags:EMPTY_MIND | STUPID | NON_LIVING | IM_ELEC
+flags:EMPTY_MIND | STUPID | NONLIVING | IM_ELEC
 #RETURNS
 innate-freq:9
 spell-freq:9
@@ -14083,8 +14083,8 @@ flags:DROP_3 | ONLY_GOLD
 flags:IM_ELEC | IM_POIS | NO_SLEEP | NO_STUN
 spell-freq:15
 spells:CONF | MIND_BLAST
-friends:6:1d1:quadruped
-friends:22:1d1:quadruped
+friends-base:6:1d1:quadruped
+friends-base:22:1d1:quadruped
 desc:A hybrid with a human face on the body of a gigantic
 desc: winged lion. It likes telling riddles.
 
@@ -14181,7 +14181,7 @@ experience:600
 blow:BITE:FIRE:3d12
 blow:BITE:FIRE:3d12
 blow:BITE:FIRE:3d12
-flags:EVIL | FORCE_SLEEP | 
+flags:EVIL | FORCE_SLEEP
 #HURT_WATER
 flags:RAND_25 | BASH_DOOR | MOVE_BODY
 flags:IM_FIRE | GROUP_AI
@@ -14209,7 +14209,7 @@ blow:BITE:COLD:7d7
 blow:BITE:COLD:7d7
 flags:IM_COLD | BASH_DOOR
 #ROAM
-spell-freq:12
+spell-freq:14
 spells:BO_ICE
 desc:A magical white wildcat covered in frost.
 
@@ -14578,7 +14578,7 @@ blow:WAIL:LOSE_INT:3d6
 blow:CLAW:POISON:8d3
 blow:CLAW:POISON:8d3
 #CLAWB
-flags:DROP_60 | OPEN_DOOR | BASH_DOOR | FORCE_SLEEP | NON_LIVING
+flags:DROP_60 | OPEN_DOOR | BASH_DOOR | FORCE_SLEEP | NONLIVING
 flags:IM_POIS | IM_COLD | IM_NETHER | HURT_LIGHT | NO_SLEEP | NO_STUN
 innate-freq:5
 spells:BR_NETH | BR_DARK | BR_SOUN
@@ -14604,8 +14604,8 @@ blow:CLAW:HURT:3d7
 blow:CLAW:HURT:3d7
 blow:BITE:POISON:6d7
 #blow:TAIL:HURT:3d7
-flags:BASH_DOOR | FORCE_SLEEP | REGENERATE 
-flags:IM_POIS | IM_ACID | IM_COLD | IM_WATER | IM_NEXUS | 
+flags:SMART | BASH_DOOR | FORCE_SLEEP | REGENERATE
+flags:IM_POIS | IM_ACID | IM_COLD | IM_WATER | IM_NEXUS
 flags:NO_HOLD | NO_CONF | NO_SLEEP | NO_STUN
 #RUBBER | CLIGHT | WATER_HIDE | TEMPLE | GOODMON
 innate-freq:6
@@ -14639,7 +14639,7 @@ flags:IM_POIS | IM_ELEC | IM_COLD
 flags:NO_CONF | NO_SLEEP | NO_FEAR | NO_HOLD | NO_STUN
 spell-freq:5
 spells:WOUND | BLIND | BO_ELEC | BO_COLD | S_MONSTER
-#HEAL_OTHR
+#HEAL_OTHER
 desc:Demi-goddess warrior-women who incite war and pick out the greatest warriors.
 desc: Of course, in order to serve the purpose of the gods, the said greatest
 desc: warriors have to be dead.  Consider it a compliment if she tries to kill you.
@@ -14662,7 +14662,7 @@ blow:HIT:FIRE:4d6
 blow:HIT:FIRE:4d6
 flags:UNIQUE | POWERFUL | FORCE_SLEEP
 flags:RAND_25 | BASH_DOOR | KILL_BODY | KILL_ITEM
-flags:IM_ACID | IM_ELEC | IM_FIRE | 
+flags:IM_ACID | IM_ELEC | IM_FIRE
 #HURT_WATER
 spell-freq:4
 spells:BA_FIRE | BO_PLAS
@@ -14759,7 +14759,7 @@ blow:BITE:CONFUSE:3d8
 #FRENZY?
 blow:TOUCH:LOSE_CON:3d6
 flags:FEMALE | OPEN_DOOR | BASH_DOOR | NO_SLEEP | NO_HOLD
-flags:DROP_2 | ONLY ITEM
+flags:DROP_2 | ONLY_ITEM
 flags:IM_POIS | IM_FIRE | IM_ELEC
 innate-freq:6
 spell-freq:8
@@ -14813,7 +14813,7 @@ blow:CRUSH:HURT:3d10
 #blow:TAIL:CONFUSE:4d9
 flags:BASH_DOOR | DROP_20 | FORCE_SLEEP
 flags:NO_SLEEP | NO_FEAR | NO_STUN | IM_ELEC | IM_ACID | IM_POIS
-flags:EVIL | MOVE_BODY | RAND_25 | WEIRD_MIND
+flags:EVIL | RAND_25 | WEIRD_MIND
 #PUDDLE | TEMPLE | HURT_WATER
 innate-freq:6
 spells:BR_INER | BR_DARK | MIND_BLAST | DRAIN_MANA
@@ -14994,7 +14994,7 @@ blow:HIT:HURT:4d7
 blow:HIT:HURT:4d7
 blow:HIT:HURT:7d8
 blow:HIT:HURT:7d8
-flags:DROP_2 | ONLY_GOLD | NON_LIVING | POWERFUL
+flags:DROP_2 | ONLY_GOLD | NONLIVING | POWERFUL
 flags:PASS_WALL | KILL_ITEM | MOVE_BODY
 flags:IM_COLD | IM_FIRE | IM_ACID | HURT_ROCK
 innate-freq:12
@@ -15018,9 +15018,9 @@ blow:HIT:FIRE:5d7
 blow:HIT:FIRE:5d7
 blow:HIT:FIRE:7d8
 blow:SPIT:FIRE:5d5
-flags:DROP_2 | ONLY_GOLD | NON_LIVING | POWERFUL
+flags:DROP_2 | ONLY_GOLD | NONLIVING | POWERFUL
 flags:BASH_DOOR | KILL_ITEM | KILL_BODY
-flags:IM_ACID | IM_FIRE | 
+flags:IM_ACID | IM_FIRE
 #HURT_WATER
 spell-freq:12
 spells:BO_FIRE | BA_FIRE
@@ -15095,7 +15095,7 @@ blow:WAIL:TERRIFY
 blow:HIT:HURT:6d6
 blow:HIT:HURT:6d6
 blow:HIT:HURT:6d6
-flags:EVIL | UNDEAD | FORCE_SLEEP | NON_LIVING
+flags:EVIL | UNDEAD | FORCE_SLEEP | NONLIVING
 flags:ONLY_ITEM | DROP_2
 flags:OPEN_DOOR | BASH_DOOR | IM_ELEC | IM_POIS | IM_COLD
 #ROAM
@@ -15288,7 +15288,7 @@ spells:BR_NEXU | BR_SHAR | BR_INER
 desc:A shining red 9-headed reptillian creature similar to the hydra but more closely
 desc: related to the salamander.  Between its nine heads, it breathes a veriety of magics.
 
-bane:mastodon
+name:mastodon
 base:quadruped
 color:b
 speed:114
@@ -15570,7 +15570,7 @@ spell-freq:4
 spells:BR_INER | BR_TIME | DRAIN_MANA | BLIND | MIND_BLAST | BRAIN_SMASH
 spells:SHRIEK | BLINK | S_KIN
 #BR_AMNS | S_ILLUSION | INSANITY | INVIS
-friends-base:16:1d1:rastlig
+friends:16:1d1:rastlig
 friends-base:40:1d1:worm
 friends-base:50:1d2:worm
 friends:22:1d3:vyrm
@@ -17219,7 +17219,7 @@ rarity:9
 experience:3800
 blow:BUTT:HURT:5d4
 blow:BUTT:HURT:5d4
-flags:NON_LIVING | FORCE_SLEEP | KILL_BODY | KILL_ITEM
+flags:FORCE_SLEEP | KILL_BODY | KILL_ITEM
 flags:IM_NETHER | IM_FIRE | IM_COLD | IM_ELEC | IM_WATER | HURT_ROCK
 flags:REGENERATE
 #BLOCK_LOS | SMULTIPLY
@@ -17383,7 +17383,7 @@ innate-freq:6
 spell-freq:11
 spells:BLIND | CONF | S_DEMON
 spells:ARROW | BR_ACID | BR_POIS
-friends-base:3:1d1:wereworm
+friends:3:1d1:wereworm
 friends-base:16:1d2:jelly
 desc:It's big.  It's fat.  It's red.  It's ugly.  It's got a severe attack of
 desc: highly poisonous flatulence.  And its insides are corrosive.  All of
@@ -17499,7 +17499,7 @@ innate-freq:9
 spell-freq:9
 spells:ARROW | BO_FIRE | BO_PLAS | BA_FIRE
 #BR_FEAR
-friends-type:22:1d1:major demon:servant
+friends-base:22:1d1:major demon:servant
 friends:22:1d1:bile devil:servant
 friends:22:1d1:osyluth:servant
 friends:22:1d6:marilith:servant
@@ -18568,7 +18568,7 @@ friends:22:1d1:pit fiend
 friends:55:1d2:barbazu
 friends:90:2d3:horned devil
 friends:90:2d3:barbed devil
-friends:100:1d1:horned devil lord
+friends:100:1d1:horned devil captain
 desc:A large, winged, goat-headed hermaphroditic idol, generally considered the patron
 desc: and god of those who practice witchcraft.  Idols are blind, deaf, lame and dumb but for
 desc: the demon inside who hates its worshippers while attracting them to the side of evil.
@@ -18798,7 +18798,7 @@ spells:S_KIN | BLINK | BLIND
 friends-base:22:1d2:mushroom
 friends:22:1d3:sleepy willow tree
 friends:22:1d1:wem vyrm
-friends-base:22:1d2:rastlig
+friends:22:1d2:rastlig
 friends-base:50:1d3:worm
 friends:45:2d2:singing vyrm
 desc:You have to squint and concentrate to make your eyes
@@ -19416,7 +19416,8 @@ spell-freq:4
 spells:BR_SHAR | WOUND | BRAIN_SMASH
 spells:BLINK | TELE_SELF_TO | S_DEMON | S_HI_DEMON
 #BR_FEAR
-friends:100:2d2:furie
+friends:55:1d1:fury
+friends:100:1d2:fury
 desc:A female embodiment of rage, intent on tearing your mind and body apart.
 desc:  They are demons of merciless vengeance, the source of the furies.
 
@@ -20484,7 +20485,7 @@ blow:HIT:FIRE:11d11
 blow:HIT:ACID:11d11
 blow:HIT:SHATTER:11d11
 flags:WEIRD_MIND | BASH_DOOR | FORCE_SLEEP | POWERFUL
-flags:IM_COLD | IM_FIRE | IM_ACID | NO_STUN | NON_LIVING
+flags:IM_COLD | IM_FIRE | IM_ACID | NO_STUN | NONLIVING
 flags:KILL_ITEM | KILL_BODY | PASS_WALL | HURT_ROCK
 #BR_STRONG | PUDDLE
 innate-freq:5
@@ -20507,9 +20508,9 @@ rarity:3
 experience:25000
 blow:HIT:ELEC:10d11
 blow:HIT:COLD:10d11
-blow:HIT:POIS:10d11
+blow:HIT:POISON:10d11
 flags:FORCE_SLEEP | POWERFUL | WEIRD_MIND | BASH_DOOR
-flags:IM_COLD | IM_ELEC | IM_ACID | NO_STUN | NON_LIVING
+flags:IM_COLD | IM_ELEC | IM_ACID | NO_STUN | NONLIVING
 flags:KILL_ITEM | KILL_BODY
 #WATER_HIDE | BR_STRONG | PUDDLE
 innate-freq:5
@@ -20597,7 +20598,7 @@ friends:50:1d2:same
 desc:An huge acidic ooze that melts everything that comes near into a puddle of, well, ooze.
 
 name:behemoth mother
-base:Amphibian
+base:amphibian
 color:t
 speed:112
 hit-points:20394
@@ -20646,7 +20647,7 @@ experience:31000
 blow:TOUCH:DISENCHANT:8d8
 blow:TOUCH:LOSE_ALL:8d8
 blow:TOUCH:EXP_80:8d8
-flags:EVIL | NON_LIVING | POWERFUL | REGENERATE | IM_NETHER
+flags:EVIL | NONLIVING | POWERFUL | REGENERATE | IM_NETHER
 flags:IM_FIRE | IM_COLD | IM_ELEC | IM_ACID | IM_POIS | IM_WATER | NO_STUN
 #MOVE_SLOW
 innate-freq:30
@@ -20671,7 +20672,7 @@ experience:11000
 blow:GAZE:TERRIFY:2d11
 blow:BUTT:HURT:22d4
 blow:BUTT:HURT:22d4
-flags:NON_LIVING | FORCE_SLEEP | KILL_BODY | KILL_ITEM
+flags:FORCE_SLEEP | KILL_BODY | KILL_ITEM
 flags:IM_NETHER | IM_FIRE | IM_ELEC | IM_COLD | IM_ELEC | IM_WATER
 flags:REGENERATE | HURT_ROCK | NO_HOLD
 #BLOCK_LOS | SMULTIPLY | MOVE_SLOW
@@ -20682,7 +20683,7 @@ friends:90:1d3:same
 desc:In the deepest places in the dungeon, the walls themselves resist intruders.
 
 name:giant behemoth
-base:Amphibian
+base:amphibian
 color:b
 speed:114
 hit-points:32000
