@@ -7620,7 +7620,7 @@ desc: being impossible to see.
 name:xan
 base:insect
 color:D
-speed:121
+speed:120
 hit-points:39
 hearing:19
 armor-class:91
@@ -7631,7 +7631,6 @@ experience:91
 blow:BITE:LOSE_STR:2d6
 blow:STING:POISON:2d7
 flags:IM_POIS | IM_NETHER | EVIL | SMULTIPLY
-#(breeds slowly)
 spell-freq:13
 spells:DARKNESS | S_UNDEAD 
 desc:A mosquito bred by netherworld gods and sent on their errands.

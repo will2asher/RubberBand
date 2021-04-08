@@ -1039,7 +1039,7 @@ static bool monster_turn_multiply(struct chunk *c, struct monster *mon)
 
 	j = z_info->repro_monster_rate;
 	/* some monsters breed slower than others */
-	if (rf_on(lore->flags, RF_SMULTIPLY)) j = j * 2;
+	if (rf_on(lore->flags, RF_SMULTIPLY)) j = j * 3;
 
 	/* Multiply slower in crowded areas */
 	if ((k < 4) && (k == 0 || one_in_(k * j))) {
