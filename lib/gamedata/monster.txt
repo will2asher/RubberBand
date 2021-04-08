@@ -753,9 +753,8 @@ rarity:2
 experience:2
 blow:CRAWL:TERRIFY:1d1
 flags:WEIRD_MIND | STUPID | ANIMAL | TOWN_OR_DUN
-flags:RAND_25 | RAND_50
+flags:RAND_25 | RAND_50 | PASS_DOOR
 flags:HURT_LIGHT | IM_POIS | NO_FEAR
-#PASS_DOOR
 desc:It makes you shiver with digust.
 
 name:floating eye
@@ -1449,9 +1448,9 @@ rarity:2
 experience:4
 blow:HIT:COLD:1d3
 flags:COLD_BLOOD | NONLIVING | SEASONAL
-flags:RAND_50
+flags:RAND_50 | PASS_DOOR
 flags:IM_COLD | HURT_FIRE
-#PASS_DOOR | SCALE
+#SCALE
 friends:84:2d7:Same
 desc:A small elemental creature of winter.
 
@@ -1887,9 +1886,8 @@ rarity:2
 experience:6
 blow:CRAWL:FIRE:1d6
 flags:WEIRD_MIND | MULTIPLY | STUPID | ANIMAL
-flags:RAND_25 | RAND_50 
+flags:RAND_25 | RAND_50 | PASS_DOOR
 flags:HURT_LIGHT | IM_FIRE | NO_FEAR
-#PASS_DOOR
 desc:It is a large slimy mass of worms.
 
 name:copperhead snake
@@ -2093,9 +2091,8 @@ rarity:2
 experience:16
 blow:TOUCH:HURT:1d6
 #SLIME
-flags:RUBBER | SMULTIPLY | HURT_COLD
+flags:RUBBER | SMULTIPLY | HURT_COLD | PASS_DOOR
 flags:IM_ACID | IM_POIS | NO_CONF
-#PASS_DOOR
 desc:It is a large oozing pile of green slime.
 
 name:purple mushroom patch
@@ -2340,8 +2337,8 @@ depth:6
 rarity:3
 experience:18
 blow:ENGULF:EAT_LIGHT:1d4
-flags:RAND_50 | PASS_WEB
-#PASS_DOOR (maybe breath should be 1 in 10?)
+flags:RAND_50 | PASS_DOOR
+#(maybe breath should be more common?)
 innate-freq:11
 spells:BR_DARK
 desc:a dark moving cloud of cool moist air, it dims your view.
@@ -3115,8 +3112,7 @@ rarity:3
 experience:4
 blow:BITE:HURT:1d2
 blow:BITE:POISON:1d2
-flags:WEIRD_MIND | SMULTIPLY 
-#PASS_DOOR
+flags:WEIRD_MIND | SMULTIPLY | PASS_DOOR
 innate-freq:14
 spells:WEAVE
 desc:An eight-legged pest which fills attics or barns with webs.
@@ -3884,8 +3880,7 @@ experience:38
 blow:ENGULF:BLIND:2d3
 blow:ENGULF:BLIND:2d3
 #SBLIND
-flags:CLEAR_WEB
-#PASS_DOOR
+flags:CLEAR_WEB | PASS_DOOR
 desc:A whirlwind of blinding dust.
 
 name:chickatrice
@@ -4060,9 +4055,8 @@ rarity:4
 experience:8
 blow:TOUCH:EXP_10:1d3
 flags:WEIRD_MIND | MULTIPLY | STUPID
-flags:RAND_25 | RAND_50 | 
+flags:RAND_25 | RAND_50 | PASS_DOOR
 flags:HURT_LIGHT | NO_FEAR | IM_NETHER
-#PASS_DOOR
 desc:It is a disgusting mass of dark worms, eating each other, the floor, the
 desc: air, you....
 
@@ -4527,7 +4521,7 @@ name:small nulx
 plural:small nulx
 base:nulx
 color:o
-speed:101
+speed:110
 hit-points:60
 hearing:8
 armor-class:30
@@ -4538,7 +4532,7 @@ experience:39
 blow:HIT:HURT:1d3
 blow:HIT:HURT:1d4
 blow:BITE:HURT:2d4
-flags:WEIRD_MIND | RAND_25 | ANIMAL 
+flags:WEIRD_MIND | RAND_25 | ANIMAL | MOVE_SLOW
 #WATER_HIDE
 desc:A nulx is a tentacled swamp monster with acid under its skin. This one is about 5 feet
 desc: long (not including tentacles).
@@ -4908,7 +4902,7 @@ desc:A large swamp-dwelling lizard with extremely powerful jaws.
 name:lurker
 base:lurker
 color:w
-speed:107
+speed:110
 hit-points:178
 hearing:21
 armor-class:30
@@ -4916,7 +4910,8 @@ sleepiness:9
 depth:14
 rarity:3
 experience:80
-#flags:MOVE_SLOW (for monsters that move slow but attack at normal speed.)
+flags:MOVE_SLOW
+#(moves slow but attacks at normal speed.)
 blow:HIT:HURT:1d8
 blow:HIT:HURT:1d8
 desc:A strange creature that merges with the dungeon floor, trapping its
@@ -5049,10 +5044,10 @@ rarity:4
 experience:56
 blow:ENGULF:EAT_LIGHT:1d5
 blow:ENGULF:ELEC:3d2
-flags:CLEAR_WEB | NO_STUN | RUBBER
+flags:CLEAR_WEB | NO_STUN | RUBBER | PASS_DOOR
 flags:IM_COLD | IM_ELEC | IM_ACID | IM_WATER
 flags-off:POWERFUL
-#PASS_DOOR | SCALE | PUDDLE
+#SCALE | PUDDLE
 innate-freq:8
 spells:BR_ELEC | BR_DARK
 desc:Lighting flashes around this dark cloud.
@@ -5475,8 +5470,7 @@ rarity:2
 experience:43
 blow:HIT:HURT:1d7
 flags:COLD_BLOOD | INVISIBLE | NONLIVING
-flags:RAND_25 | RAND_50 
-#PASS_DOOR
+flags:RAND_25 | RAND_50 | PASS_DOOR
 flags:IM_ELEC
 desc:A whirlwind of sentient air.
 
@@ -5773,8 +5767,8 @@ blow:GAZE:HALLU
 blow:CLAW:POISON:2d2
 blow:BITE:LOSE_WIS:3d3
 flags:SPIRIT | RAND_25 | OPEN_DOOR | COLD_BLOOD | IM_POIS
-flags:EVIL | RUBBER | WEIRD_MIND | IM_NETHER | IM_DISEN
-#BR_STRONG | PASS_DOOR
+flags:EVIL | RUBBER | WEIRD_MIND | IM_NETHER | IM_DISEN | PASS_DOOR
+#BR_STRONG
 spell-freq:6
 spells:SLOW | BLINK | DRAIN_MANA | BLIND | FORGET | DARKNESS
 #S_ILLUSION | BR_AMNS | TINIVS
@@ -5786,7 +5780,7 @@ desc:looking bird, but its true form is a nasty flying worm.
 name:poison vines
 base:tree
 color:G
-speed:101
+speed:110
 hit-points:212
 hearing:14
 armor-class:32
@@ -6063,7 +6057,7 @@ name:nulx
 plural:nulx
 base:nulx
 color:u
-speed:104
+speed:110
 hit-points:94
 hearing:9
 smell:9
@@ -6076,7 +6070,7 @@ blow:HIT:HURT:1d3
 blow:CRUSH:HURT:3d4
 #BHOLD
 blow:BITE:ACID:2d6
-flags:WEIRD_MIND | RAND_25 | ANIMAL
+flags:WEIRD_MIND | RAND_25 | ANIMAL | MOVE_SLOW
 #WATER_HIDE
 desc:A nulx is a tentacled swamp monster with acid under its skin. This one is about 8 feet
 desc: long (not including tentacles).
@@ -7098,8 +7092,9 @@ blow:BUTT:HURT:5d3
 blow:GAZE:HALLU
 blow:GAZE:LOSE_INT
 #B:GAZEB:LOSE_INT
-flags:SILLY | FORCE_SLEEP | WEIRD_MIND | IM_POIS | IM_ACID
-#ROAM | PASS_DOOR | BR_WEAK? | SCALE
+flags:SILLY | FORCE_SLEEP | WEIRD_MIND | PASS_DOOR
+flags:IM_POIS | IM_ACID
+#ROAM | BR_WEAK? | SCALE
 flags-off:BASH_DOOR
 innate-freq:7
 spell-freq:8
@@ -7477,10 +7472,10 @@ blow:CRAWL:EAT_FOOD:1d5
 #blow:TOUCH:SLIME:2d8
 blow:CRAWL:POISON:1d11
 blow:TOUCH:ACID:2d6
-flags:EVIL | UNIQUE | WEIRD_MIND | SILLY
-flags:REGENERATE | TAKE_ITEM | ATTR_MULTI | RAND_50 | 
+flags:EVIL | UNIQUE | WEIRD_MIND | SILLY | PASS_DOOR
+flags:REGENERATE | TAKE_ITEM | ATTR_MULTI | RAND_50
 flags:NO_FEAR | NO_STUN | IM_ACID | IM_POIS
-#PASS_DOOR | SCALE
+#SCALE
 #innate-freq:10
 #spells:BR_SLIME
 friends-base:22:1d2:mushroom
@@ -7589,7 +7584,8 @@ blow:CLAW:POISON:1d11
 blow:BITE:EAT_FOOD:2d7
 blow:GAZE:CONFUSE:2d4
 flags:SILLY | RAND_25 | NO_FEAR | NO_STUN | IM_ELEC | IM_DISEN
-#ROAM | TEMPLE | PASS_DOOR
+flags:ROAM | PASS_DOOR
+#TEMPLE
 spell-freq:16
 spells:HASTE | CONF
 friends:11:1d3:same
@@ -7637,7 +7633,7 @@ desc:A mosquito bred by netherworld gods and sent on their errands.
 name:tangle tree
 base:tree
 color:o
-speed:99
+speed:107
 hit-points:1115
 hearing:14
 armor-class:40
@@ -7649,10 +7645,9 @@ blow:CRUSH:HURT:2d4
 blow:CRUSH:PARALYZE:4d4
 blow:CRUSH:HURT:4d4
 #BHOLD 2x
-flags:WEIRD_MIND | BASH_DOOR
-flags:NO_FEAR | NO_STUN 
-#MOVE_SLOW | CLIGHT
-friends:4:1d3:same
+flags:WEIRD_MIND | BASH_DOOR | MOVE_SLOW
+flags:NO_FEAR | NO_STUN | CLIGHT
+friends:5:1d3:same
 desc:It will tangle you in its branches until you can't breathe.
 
 name:cockatrice
@@ -8252,9 +8247,8 @@ experience:143
 blow:BUTT:BLIND:8d3
 #SBLIND
 blow:GAZE:CONFUSE:3d2
-flags:FORCE_SLEEP | 
+flags:FORCE_SLEEP | MOVE_SLOW
 flags:NO_FEAR | NO_SLEEP | HURT_LIGHT
-#MOVE_SLOW
 spell-freq:6
 spells:WOUND | SLOW | TELE_TO | TELE_SELF_TO | BLINK
 desc: It wants to make your eyes look like its eye.
@@ -8385,7 +8379,7 @@ experience:76
 blow:HIT:FIRE:1d8
 flags:FORCE_SLEEP | NO_FEAR | IM_FIRE | 
 flags:RAND_50 | OPEN_DOOR | ONLY_ITEM | DROP_60
-#HURT_WATER, maybe PASS_DOOR instead of OPEN
+#HURT_WATER, maybe PASS_DOOR instead of OPEN?
 innate-freq:3
 spell-freq:2
 spell-power:10
@@ -8943,10 +8937,10 @@ blow:GAZE:TERRIFY:2d3
 blow:CLAW:HURT:6d3
 blow:CLAW:HURT:6d3
 #CLAWB
-flags:RAND_25 | DROP_1 
+flags:RAND_25 | DROP_1 | PASS_DOOR
 flags:NO_FEAR | NO_STUN | IM_ELEC | HURT_LIGHT
 flags:POWERFUL | SMART | FORCE_SLEEP
-#BR_STRONG | TEMPLE | PASS_DOOR
+#BR_STRONG | TEMPLE
 flags-off:PASS_WALL | IM_POIS
 innate-freq:6
 spell-freq:8
@@ -9641,8 +9635,7 @@ blow:TOUCH:ACID:1d9
 #SLIME
 flags:IM_ACID | IM_POIS | IM_WATER | HURT_COLD
 flags:TAKE_ITEM | DROP_60 | DROP_40
-flags:NO_CONF | NO_SLEEP | MULTIPLY
-#PASS_DOOR | WATER_HIDE
+flags:NO_CONF | NO_SLEEP | MULTIPLY | PASS_DOOR | WATER_HIDE
 desc:Have you heard of puddings made for a tasty dessert, but enchanted to walk off
 desc: the dinner table and frighten the guests?
 
@@ -9650,7 +9643,7 @@ name:large nulx
 plural:large nulxes
 base:nulx
 color:U
-speed:107
+speed:111
 hit-points:364
 hearing:10
 smell:10
@@ -9663,7 +9656,7 @@ blow:HIT:HURT:2d4
 blow:CRUSH:HURT:4d5
 #BHOLD
 blow:BITE:ACID:4d7
-flags:ANIMAL | RAND_25
+flags:ANIMAL | RAND_25 | MOVE_SLOW
 desc:A nulx is a tentacled swamp monster with acid under its skin. This one is about 14 feet
 desc: long (not including tentacles).
 
@@ -9682,9 +9675,9 @@ blow:WAIL:TERRIFY
 blow:TOUCH:EXP_20
 blow:CLAW:LOSE_INT:2d3
 blow:CLAW:LOSE_WIS:2d3
-flags:DROP_40 | DROP_1 | FORCE_SLEEP
+flags:DROP_40 | DROP_1 | FORCE_SLEEP | PASS_DOOR
 flags:IM_COLD | RAND_25 
-#S_EVIL2 | PASS_DOOR
+#S_EVIL2
 flags-off:EVIL | PASS_WALL
 spell-freq:12
 spells:BLIND | DRAIN_MANA | SLOW | SCARE
@@ -10293,9 +10286,8 @@ experience:270
 blow:TOUCH:PARALYZE
 blow:HIT:HURT:3d9
 flags:ONLY_ITEM | DROP_2
-flags:FEMALE | SMART | FORCE_SLEEP
+flags:FEMALE | SMART | FORCE_SLEEP | GOODMON | PASS_DOOR
 flags:NO_SLEEP | NO_CONF | IM_COLD | IM_WATER | HURT_FIRE
-#GOODMON | PASS_DOOR
 innate-freq:7
 spell-freq:4
 spells:ARROW | HEAL | HOLD | TELE_AWAY | BLINK | S_ANIMAL
@@ -10810,7 +10802,7 @@ name:kalnulx
 plural:kalnulxes
 base:nulx
 color:y
-speed:108
+speed:112
 hit-points:374
 hearing:12
 smell:10
@@ -10824,7 +10816,7 @@ blow:CRUSH:HURT:5d4
 blow:CRUSH:HURT:6d4
 #BHOLD
 blow:BITE:ACID:4d7
-flags:ANIMAL
+flags:ANIMAL | MOVE_SLOW
 spell-freq:15
 spells:HASTE | CONF | SCARE | TELE_TO
 desc:It it a mass of large tentacle-like arms stretching out from a
@@ -10850,8 +10842,8 @@ blow:ENGULF:EAT_LIGHT:3d6
 blow:ENGULF:BLIND:3d6
 flags:WEIRD_MIND | INVISIBLE | COLD_BLOOD | DROP_60 | RAND_25
 flags:NO_FEAR | NO_CONF | NO_SLEEP | NO_STUN | FORCE_SLEEP
-flags:IM_COLD | IM_POIS | IM_ELEC | HURT_LIGHT
-#ROAM | PASS_DOOR
+flags:IM_COLD | IM_POIS | IM_ELEC | HURT_LIGHT | PASS_DOOR
+#ROAM
 spell-freq:6
 spells:BR_DARK | DRAIN_MANA | TPORT
 #BR_FEAR | CURSE_PC
@@ -11033,8 +11025,7 @@ blow:HIT:HURT:1d9
 blow:HIT:HURT:1d9
 blow:TOUCH:EXP_10
 blow:TOUCH:EXP_20
-flags:DROP_1 | FORCE_SLEEP
-#PASS_DOOR
+flags:DROP_1 | FORCE_SLEEP | PASS_DOOR
 spell-freq:8
 spells:WOUND | DARKNESS | SCARE
 desc:It is a tangible but ghostly form made of white fog.
@@ -11296,9 +11287,8 @@ experience:1400
 blow:CLAW:HURT:2d4
 blow:CLAW:HURT:2d4
 blow:BITE:EXP_10:3d6
-flags:DROP_3 | ONLY_ITEM 
+flags:DROP_3 | ONLY_ITEM | PASS_DOOR
 flags:NO_CONF | NO_SLEEP | IM_NETHER
-#PASS_DOOR
 innate-freq:10
 spell-freq:12
 spells:BR_NETH | BR_DARK | CONF | SLOW
@@ -11724,9 +11714,8 @@ experience:374
 blow:TOUCH:PARALYZE:1d7
 blow:TOUCH:LOSE_STR:1d7
 blow:KICK:HURT:2d7
-flags:DROP_60 | SMART | FORCE_SLEEP
+flags:DROP_60 | SMART | FORCE_SLEEP | PASS_DOOR
 flags:NO_HOLD | NO_CONF | NO_STUN | IM_POIS
-#PASS_DOOR
 spell-freq:4
 spells:BLINK | HEAL | HOLD | BLIND | SCARE | FORGET
 #S_ILLUSION | ILLUSION_CLONE | TINVIS
@@ -11775,7 +11764,7 @@ desc: this madly capering figure, as it leaps and whirls around and about you.
 name:spreading vines
 base:tree
 color:g
-speed:107
+speed:116
 hit-points:271
 hearing:14
 armor-class:32
@@ -11787,9 +11776,8 @@ blow:CRUSH:POISON:3d3
 blow:CRUSH:POISON:3d3
 blow:CRUSH:HURT:6d2
 #BHOLD
-flags:RUBBER | IM_POIS | WEIRD_MIND
-flags:NO_FEAR | NO_CONF | MULTIPLY
-#MOVE_SLOW | CLIGHT
+flags:RUBBER | WEIRD_MIND | MOVE_SLOW | CLIGHT
+flags:NO_FEAR | NO_CONF | IM_POIS | SMULTIPLY
 friends:34:1d4:same
 desc:These fast growing vines could become a problem.
 
@@ -12024,8 +12012,7 @@ experience:350
 blow:HIT:HURT:4d5
 blow:HIT:HURT:4d5
 flags:COLD_BLOOD | FORCE_SLEEP
-flags:RAND_25 | BASH_DOOR | KILL_BODY | KILL_ITEM
-#PASS_DOOR (instead of BASH)
+flags:RAND_25 | PASS_DOOR | KILL_BODY | KILL_ITEM
 flags:IM_ACID | IM_COLD | IM_FIRE | IM_WATER
 spell-freq:6
 spells:BO_COLD | BO_WATE
@@ -12066,9 +12053,8 @@ blow:HIT:HURT:1d10
 blow:HIT:CONFUSE:1d4
 blow:HIT:HURT:1d10
 flags:COLD_BLOOD | FORCE_SLEEP
-flags:RAND_50 | BASH_DOOR | KILL_BODY | KILL_ITEM
+flags:RAND_50 | PASS_DOOR | KILL_BODY | KILL_ITEM
 flags:IM_ACID | IM_COLD | IM_ELEC
-#PASS_DOOR (instead of BASH)
 spell-freq:8
 spells:BO_ELEC
 desc:It is a towering tornado of winds.
@@ -12112,8 +12098,8 @@ blow:WAIL:HALLU:1d13
 blow:WAIL:LOSE_WIS:1d13
 #blow:WAIL:CHARM
 flags:PASS_WEB | SPIRIT | RAND_25 | WEIRD_MIND | FORCE_SLEEP
-flags:EVIL | NO_FEAR | IM_ELEC | IM_ACID | IM_POIS
-#PASS_DOOR | DISGUISE | HURT_WATER
+flags:EVIL | NO_FEAR | IM_ELEC | IM_ACID | IM_POIS | PASS_DOOR
+#DISGUISE | HURT_WATER
 innate-freq:10
 spell-freq:8
 spells:SLOW | BLINK | DRAIN_MANA | BLIND
@@ -12307,8 +12293,7 @@ blow:HIT:HURT:4d6
 #BHOLD
 blow:HIT:PARALYZE:15d1
 blow:HIT:PARALYZE:15d1
-flags:NO_STUN
-#flags:MOVE_SLOW (attacks quickly, but moves slower)
+flags:NO_STUN | MOVE_SLOW
 desc:A larger cousin of the lurker, this creature traps unsuspecting victims and
 desc: paralyzes them, to be slowly digested later.
 
@@ -12675,7 +12660,7 @@ desc:A lump of rotting black flesh that slurrrrrrrps across the dungeon floor.
 name:The Watcher in the Water
 base:nulx
 color:v
-speed:108
+speed:114
 hit-points:1739
 hearing:18
 smell:16
@@ -12690,8 +12675,8 @@ blow:CRUSH:HURT:4d8
 #BHOLD
 blow:BITE:ACID:5d9
 flags:UNIQUE | EVIL | DEMON | WEIRD_MIND | FORCE_SLEEP
-flags:DROP_2 | DROP_GOOD | NO_FEAR | MOVE_BODY
-#WATER_HIDE | TEMPLE (maybe raise its speed and give it MOVE_SLOW?) and maybe SPIT
+flags:DROP_2 | DROP_GOOD | NO_FEAR | MOVE_BODY | MOVE_SLOW
+#WATER_HIDE | TEMPLE, maybe SPIT
 innate-freq:12
 spell-freq:9
 spells:TELE_TO | TELE_AWAY | BO_ACID | BO_WATE | SHRIEK
@@ -12718,8 +12703,7 @@ depth:38
 rarity:5
 experience:799
 blow:ENGULF:EXP_20:5d5
-flags:RAND_25 | PASS_WEB
-#PASS_DOOR
+flags:RAND_25 | PASS_DOOR
 flags-off:BASH_DOOR
 innate-freq:4
 spells:BR_TIME
@@ -12904,8 +12888,8 @@ blow:CLAW:COLD:4d4
 flags:DROP_60 | ONLY_ITEM | COLD_BLOOD | FORCE_SLEEP
 flags:IM_POIS | IM_COLD | IM_ELEC | IM_ACID | IM_NETHER | HURT_LIGHT
 flags:NO_FEAR | NO_CONF | NO_SLEEP
-flags:RAND_25 | INVISIBLE | NONLIVING
-#PASS_DOOR | ROAM
+flags:RAND_25 | INVISIBLE | NONLIVING | PASS_DOOR
+#ROAM
 spell-freq:5
 spells:BO_NETH | DARKNESS | WOUND | HOLD | DRAIN_MANA | S_DEMON
 #CURSE_PC
@@ -12931,10 +12915,10 @@ blow:CLAW:HURT:4d4
 blow:BITE:EXP_10:2d6
 #blow:GAZE:UNLUCKY:3d2
 #GAZEB
-flags:RUBBER | EVIL | BASH_DOOR | REGENERATE | FORCE_SLEEP 
+flags:RUBBER | EVIL | PASS_DOOR | REGENERATE | FORCE_SLEEP 
 flags:IM_POIS | IM_ELEC | IM_ACID | IM_NETHER
 flags:NO_FEAR | NO_CONF | NO_SLEEP
-#ROAM | PASS_DOOR | TEMPLE
+#ROAM | TEMPLE
 innate-freq:6
 spell-freq:5
 spells:BR_DARK | DRAIN_MANA | BLINK | WOUND | S_UNDEAD
@@ -13063,11 +13047,10 @@ experience:613
 blow:TOUCH:EXP_40:1d9
 blow:CLAW:LOSE_INT:1d9
 blow:CLAW:COLD:2d8
-flags:DROP_1 | ONLY_ITEM | COLD_BLOOD | FORCE_SLEEP
+flags:DROP_1 | ONLY_ITEM | COLD_BLOOD | FORCE_SLEEP | PASS_DOOR
 flags:IM_POIS | IM_COLD | IM_NETHER | HURT_LIGHT
 flags:NO_FEAR | NO_CONF | NO_SLEEP | NO_STUN
 flags:RAND_25 | INVISIBLE | NONLIVING | MOVE_BODY
-#PASS_DOOR
 innate-freq:8
 spell-freq:9
 spells:BR_DARK | BR_NETH | DARKNESS | BLIND | SLOW | TELE_TO | TELE_SELF_TO
@@ -13668,8 +13651,7 @@ blow:HIT:HURT:1d11
 blow:HIT:HURT:1d13
 blow:TOUCH:EXP_40
 flags:DROP_40 | DROP_60
-flags:FORCE_SLEEP
-#PASS_DOOR
+flags:FORCE_SLEEP | PASS_DOOR
 #innate-freq:10
 spell-freq:7
 spells:SCARE | WOUND | DARKNESS | HOLD | BO_COLD
@@ -13717,10 +13699,10 @@ blow:CLAW:COLD:6d3
 blow:CLAW:LOSE_DEX:6d3
 #CLAWB (maybe HUNGER instead of LOSE_DEX)
 blow:BITE:PARALYZE:4d6
-flags:RAND_50 | DROP_2 | FORCE_SLEEP | POWERFUL
+flags:RAND_50 | DROP_2 | FORCE_SLEEP | POWERFUL | PASS_DOOR
 flags:IM_COLD | IM_ELEC | IM_ACID | NO_FEAR | NO_HOLD | NO_STUN
 flags-off:PASS_WALL
-#ROAM | PASS_DOOR
+#ROAM
 innate-freq:8
 spell-freq:8
 spells:BR_SOUN | HOLD | DARKNESS | BLIND | MIND_BLAST
@@ -13773,8 +13755,7 @@ blow:BITE:PARALYZE:6d6
 blow:BITE:LOSE_CON:6d6
 flags:WEIRD_MIND | SMART | FORCE_SLEEP
 flags:IM_FIRE | IM_POIS | IM_ACID | NO_CONF | NO_SLEEP | NO_FEAR | NO_STUN
-flags:DROP_40 | IM_NETHER | REGENERATE | POWERFUL
-#PASS_DOOR
+flags:DROP_40 | IM_NETHER | REGENERATE | POWERFUL | PASS_DOOR
 innate-freq:7
 spell-freq:7
 spells:BR_POIS | BR_NETH | HOLD | SCARE | BO_POIS | TELE_SELF_TO
@@ -13799,10 +13780,10 @@ blow:TOUCH:TERRIFY
 blow:TOUCH:BLIND:1d11
 blow:TOUCH:EXP_40:3d11
 blow:ENGULF:EAT_LIGHT:2d19
-flags:DROP_1 | DROP_GOOD | WEIRD_MIND | SMART | NONLIVING
+flags:DROP_1 | DROP_GOOD | WEIRD_MIND | SMART | NONLIVING | PASS_DOOR
 flags:INVISIBLE | COLD_BLOOD | NO_FEAR | NO_CONF | NO_STUN | PASS_WEB
 flags:IM_POIS | IM_FIRE | IM_ELEC | HURT_LIGHT | RAND_25
-#ROAM | PASS_DOOR | PUDDLE | TEMPLE
+#ROAM | PUDDLE | TEMPLE
 flags-off:CLEAR_WEB
 innate-freq:8
 spell-freq:6
@@ -14744,7 +14725,7 @@ name:giant nulx
 plural:giant nulxes
 base:nulx
 color:b
-speed:108
+speed:111
 hit-points:1263
 hearing:12
 smell:10
@@ -14758,7 +14739,7 @@ blow:CRUSH:HURT:5d8
 blow:CRUSH:HURT:5d8
 #BHOLD
 blow:BITE:ACID:7d9
-flags:ANIMAL | RAND_25
+flags:ANIMAL | RAND_25 | MOVE_SLOW
 #flags-off: WATER_HIDE
 innate-freq:10
 spell-freq:11
@@ -14810,10 +14791,10 @@ blow:GAZE:CONFUSE:1d49
 blow:KICK:HURT:8d4
 blow:KICK:HURT:3d9
 #FRENZY
-flags:MALE | REGENERATE | FORCE_SLEEP
+flags:MALE | REGENERATE | FORCE_SLEEP | PASS_DOOR
 flags:ONLY_ITEM | DROP_2 | TAKE_ITEM | NO_SLEEP | NO_CONF 
 flags:NO_FEAR | NO_STUN | NO_HOLD
-#ROAM | PASS_DOOR | BR_STRONG
+#ROAM | BR_STRONG
 innate-freq:10
 spell-freq:5
 spells:BR_LIGHT | BLINK | HEAL | HOLD | HASTE | DRAIN_MANA
@@ -15426,8 +15407,7 @@ blow:HIT:HURT:1d12
 blow:TOUCH:EXP_40
 blow:TOUCH:EXP_40
 flags:DROP_2 | ONLY_ITEM
-flags:FORCE_SLEEP
-#PASS_DOOR
+flags:FORCE_SLEEP | PASS_DOOR
 #innate-freq:6
 spell-freq:8
 spells:BLIND | WOUND | HOLD | SCARE | BO_NETH
@@ -15534,7 +15514,8 @@ flags:EVIL | SMART | SPIRIT | POWERFUL | FORCE_SLEEP | WEIRD_MIND
 flags:ONLY_ITEM | DROP_1 | DROP_20 | RAND_25 | PASS_WEB
 flags:NO_FEAR | NO_SLEEP | IM_NETHER | IM_DISEN | REGENERATE
 flags:IM_ELEC | IM_POIS | IM_ACID
-#PASS_DOOR | TEMPLE | BR_STRONG | HURT_WATER
+flags:PASS_DOOR | HURT_WATER
+#TEMPLE | BR_STRONG
 innate-freq:5
 spell-freq:4
 spells:BR_INER | BR_TIME | DRAIN_MANA | BLIND | MIND_BLAST | BRAIN_SMASH
@@ -15596,10 +15577,10 @@ blow:GAZE:EXP_40:3d6
 blow:GAZE:DRAIN_CHARGES:3d6
 blow:GAZE:LOSE_INT:3d6
 blow:BITE:EXP_40:7d6
-flags:UNDEAD | EVIL | COLD_BLOOD | SPIRIT | FORCE_SLEEP
+flags:UNDEAD | EVIL | COLD_BLOOD | SPIRIT | FORCE_SLEEP | PASS_DOOR
 flags:DROP_60 | DROP_GOOD | NO_CONF | NO_SLEEP | NO_STUN
 flags:IM_ACID | IM_COLD | IM_ELEC | IM_FIRE
-#PASS_DOOR | TEMPLE
+#TEMPLE
 spell-freq:2
 spells:HOLD | BRAIN_SMASH | WOUND | CONF | DRAIN_MANA | FORGET | MIND_BLAST
 spells:BA_COLD | BA_FIRE | BO_ACID | BO_MANA | BO_NETH | S_UNDEAD
@@ -15891,7 +15872,7 @@ name:zalnulx
 plural:zalnulxes
 base:nulx
 color:r
-speed:109
+speed:113
 hit-points:1349
 hearing:16
 smell:12
@@ -15907,7 +15888,7 @@ blow:BITE:ACID:7d9
 blow:SPIT:BLIND:3d7
 #SBLIND
 flags:IM_POIS | IM_FIRE | NO_FEAR | NO_SLEEP | NO_CONF
-flags:RUBBER | POWERFUL | SPIRIT | FORCE_SLEEP | MOVE_BODY
+flags:RUBBER | POWERFUL | SPIRIT | FORCE_SLEEP | MOVE_BODY | MOVE_SLOW
 #S_EVIL2 | TEMPLE
 spell-freq:8
 spells:BO_ACID | BA_ACID | BO_WATE | BO_PLAS | BO_ICE | HASTE | BLIND
@@ -15968,9 +15949,8 @@ blow:CLAW:HURT:2d12
 blow:CLAW:HURT:2d12
 blow:BITE:HURT:2d12
 blow:BITE:HURT:2d12
-flags:FORCE_SLEEP
+flags:FORCE_SLEEP | PASS_DOOR
 flags:NO_CONF | NO_SLEEP | IM_NETHER
-#PASS_DOOR
 innate-freq:5
 spells:BR_NETH
 friends:100:2d7:Same
@@ -16788,10 +16768,9 @@ blow:TOUCH:EXP_40:4d7
 blow:HIT:HURT:6d7
 blow:HIT:HURT:7d7
 blow:TOUCH:DRAIN_CHARGES:3d11
-flags:UNIQUE | FORCE_SLEEP | 
+flags:UNIQUE | FORCE_SLEEP | PASS_DOOR
 flags:ONLY_ITEM | DROP_2 | DROP_GOOD
 flags:NO_STUN | NO_HOLD | IM_COLD
-#PASS_DOOR
 flags-off:PASS_WALL
 spell-freq:4
 spells:SCARE | BO_NETH | BO_ICE | BLINK | TELE_TO | WOUND | MIND_BLAST
@@ -16922,9 +16901,9 @@ blow:TOUCH:EXP_20:2d13
 blow:ENGULF:BLIND:3d13
 blow:ENGULF:EAT_LIGHT:2d19
 flags:DROP_1 | DROP_20 | MOVE_BODY | IM_NETHER
-flags:WEIRD_MIND | SMART | INVISIBLE | HURT_LIGHT
+flags:WEIRD_MIND | SMART | INVISIBLE | HURT_LIGHT | PASS_DOOR
 flags:RAND_25 | NO_FEAR | NO_CONF | NO_STUN | IM_POIS | IM_COLD | IM_ACID
-#ROAM | PASS_DOOR | BR_STRONG | PUDDLE | RETURNS?
+#ROAM | BR_STRONG | PUDDLE | RETURNS?
 innate-freq:8
 spell-freq:4
 spells:DRAIN_MANA | SLOW | TPORT | MIND_BLAST | S_MONSTER
@@ -17063,8 +17042,8 @@ blow:BITE:EXP_20:3d12
 blow:TOUCH:DISENCHANT:2d3
 #blow:GAZE:UNLUCKY
 flags:NO_FEAR | NO_CONF | NO_SLEEP | IM_ELEC | IM_POIS | IM_DISEN
-flags:EVIL | FORCE_SLEEP | POWERFUL
-#PASS_DOOR | ROAM | SCALE?
+flags:EVIL | FORCE_SLEEP | POWERFUL | PASS_DOOR
+#ROAM | SCALE?
 spell-freq:4
 spells:BLIND | DRAIN_MANA | BLINK | DARKNESS | WOUND
 spells:S_UNDEAD
@@ -17089,9 +17068,9 @@ blow:TOUCH:LOSE_CON:2d9
 #DISEASE
 blow:HIT:HURT:4d9
 blow:HIT:EXP_40:2d9
-flags:POWERFUL | SMART
+flags:POWERFUL | SMART | PASS_DOOR
 flags:FORCE_SLEEP | ONLY_ITEM | DROP_GREAT | DROP_1
-#PASS_DOOR | TEMPLE
+#TEMPLE
 innate-freq:5
 spell-freq:4
 spells:WOUND | HOLD | S_UNDEAD
@@ -17566,7 +17545,7 @@ desc: Nan Dungortheb beneath the mountains of Ered Gorgoroth.
 name:bronze idol
 base:golem
 color:U
-speed:115
+speed:116
 hit-points:3160
 light:1
 hearing:21
@@ -17578,9 +17557,9 @@ experience:16000
 blow:HIT:HURT:10d10
 blow:HIT:HURT:10d10
 blow:HIT:ELEC:5d20
-flags:DEMON | EVIL | FORCE_SLEEP | DROP_2
+flags:DEMON | EVIL | FORCE_SLEEP | DROP_2 | MOVE_SLOW
 flags:OPEN_DOOR | BASH_DOOR | IM_FIRE | IM_ELEC | IM_POIS | IM_ACID
-#MOVE_SLOW(~106/116) | TEMPLE
+#TEMPLE
 spell-freq:8
 spells:BO_PLAS | BA_FIRE | MIND_BLAST | BA_ELEC | S_DEMON | TELE_TO
 desc:A gigantic four-armed animated bronze statue of demonic shape, glowing with
@@ -17734,9 +17713,8 @@ blow:ENGULF:TERRIFY:6d5
 blow:ENGULF:PARALYZE:6d5
 blow:ENGULF:ACID:6d10
 blow:ENGULF:ACID:6d10
-flags:COLD_BLOOD | POWERFUL
+flags:COLD_BLOOD | POWERFUL | BASH_DOOR
 flags:KILL_BODY | KILL_ITEM
-#PASS_DOOR
 flags:IM_ACID | IM_WATER
 innate-freq:5
 spell-freq:5
@@ -17879,9 +17857,9 @@ blow:HIT:HURT:10d10
 #DISEASE?
 blow:HIT:EXP_40:10d10
 blow:HIT:COLD:5d20
-flags:EVIL | DEMON | FORCE_SLEEP | DROP_2 | DROP_GOOD
+flags:EVIL | DEMON | FORCE_SLEEP | DROP_2 | DROP_GOOD | MOVE_SLOW
 flags:OPEN_DOOR | BASH_DOOR | IM_COLD | IM_FIRE | IM_ELEC | IM_POIS
-#MOVE_SLOW(108/118) | TEMPLE (moves slower than it attacks / casts)
+#TEMPLE
 innate-freq:6
 spell-freq:6
 spells:BR_DISE | BR_CHAO | BR_DARK | BO_MANA | BA_COLD | CONF | TELE_TO | S_DEMON
@@ -18222,11 +18200,10 @@ blow:DROOL:DISENCHANT:2d59
 blow:SPIT:EAT_ITEM:3d29
 blow:KICK:CONFUSE:34d3
 #FRENZY
-flags:RAND_50 | TAKE_ITEM | POWERFUL | FORCE_SLEEP | ATTR_MULTI
+flags:RAND_50 | TAKE_ITEM | POWERFUL | FORCE_SLEEP | PASS_DOOR | ATTR_MULTI
 flags:DROP_20 | DROP_60 | DROP_1 | DROP_GOOD
-flags:MOVE_BODY | REGENERATE | WEIRD_MIND | IM_DISEN
+flags:ROAM | MOVE_BODY | REGENERATE | WEIRD_MIND | IM_DISEN
 flags:NO_SLEEP | NO_FEAR | NO_STUN | IM_POIS | IM_ACID | IM_FIRE | IM_ELEC
-#PASS_DOOR | ROAM
 innate-freq:4
 spell-freq:3
 spells:BOULDER | SHRIEK | HEAL | BLIND | DRAIN_MANA | HOLD | TRAPS
@@ -18384,9 +18361,9 @@ blow:HIT:HURT:6d9
 blow:HIT:BLACK_BREATH:6d9
 blow:TOUCH:EXP_80:5d6
 blow:TOUCH:EXP_80:5d6
-flags:UNIQUE | FEMALE | FORCE_SLEEP | MOVE_BODY
+flags:UNIQUE | FEMALE | FORCE_SLEEP | PASS_DOOR | MOVE_BODY
 flags:DROP_4 | DROP_GOOD | ONLY_ITEM
-#ROAM | PASS_DOOR
+#ROAM
 innate-freq:9
 spell-freq:3
 spells:BLIND | WOUND | FORGET | HOLD
@@ -18751,9 +18728,9 @@ blow:CLAW:HURT:12d4
 #CLAWB | INSANITY
 flags:EVIL | SMART | POWERFUL | REGENERATE | INVISIBLE | FORCE_SLEEP
 flags:ONLY_ITEM | DROP_60 | DROP_20 | DROP_GREAT | WEIRD_MIND
-flags:NO_FEAR | NO_SLEEP | IM_NETHER | NO_HOLD | RAND_50
+flags:NO_FEAR | NO_SLEEP | IM_NETHER | NO_HOLD | RAND_50 | PASS_DOOR
 flags:IM_ELEC | IM_ACID | IM_POIS
-#PASS_DOOR | BR_STRONG
+#BR_STRONG
 innate-freq:8
 spell-freq:4
 spells:BR_TIME | BR_CHAO | BR_NEXU | BRAIN_SMASH
@@ -18994,10 +18971,10 @@ blow:HIT:ELEC:10d9
 blow:HIT:EXP_20:10d10
 blow:HIT:LOSE_ALL:10d9
 blow:HIT:FIRE:5d20
-flags:EVIL | DEMON | FORCE_SLEEP | DROP_2 | DROP_GOOD
+flags:EVIL | DEMON | FORCE_SLEEP | DROP_2 | DROP_GOOD | MOVE_SLOW
 flags:OPEN_DOOR | BASH_DOOR | IM_COLD | IM_FIRE | IM_ELEC | IM_ACID | IM_POIS
-#MOVE_SLOW | TEMPLE
-spell-freq:7
+#TEMPLE
+spell-freq:6
 spells:BA_NETH | BA_FIRE | BRAIN_SMASH | BA_DARK | S_HI_DEMON | S_DEMON | TELE_TO
 #STORM?
 desc:A gigantic six-armed animated golden statue of demonic shape, glowing with
@@ -19140,10 +19117,9 @@ blow:TOUCH:EXP_80:6d12
 blow:HIT:HURT:9d9
 blow:HIT:HURT:9d9
 blow:TOUCH:DRAIN_CHARGES:6d12
-flags:UNIQUE | FORCE_SLEEP | SMART | MOVE_BODY
+flags:UNIQUE | FORCE_SLEEP | SMART | PASS_DOOR | MOVE_BODY
 flags:ONLY_ITEM | DROP_3 | DROP_GOOD | DROP_GREAT
 flags:IM_COLD | NO_HOLD | NO_STUN
-#PASS_DOOR
 flags-off:PASS_WALL
 innate-freq:6
 spell-freq:3
@@ -19372,9 +19348,9 @@ blow:CLAW:LOSE_DEX:9d7
 #CLAWB | DISEASE(?)
 blow:BITE:CONFUSE:5d10
 blow:BITE:LOSE_CON:4d10
-flags:FEMALE | DROP_4 | POWERFUL
+flags:FEMALE | DROP_4 | POWERFUL | PASS_DOOR
 flags:IM_FIRE | IM_POIS | IM_ELEC
-#ROAM | PASS_DOOR
+#ROAM
 innate-freq:8
 spell-freq:4
 spells:BR_SHAR | WOUND | BRAIN_SMASH
@@ -19401,9 +19377,8 @@ blow:HIT:HURT:9d9
 blow:HIT:BLACK_BREATH:9d9
 blow:TOUCH:EXP_80:6d7
 blow:WAIL:TERRIFY:6d7
-flags:UNIQUE | MALE | SMART | FORCE_SLEEP | MOVE_BODY
-flags:DROP_4 | DROP_GOOD | ONLY_ITEM
-#ROAM | PASS_DOOR
+flags:UNIQUE | MALE | SMART | FORCE_SLEEP | PASS_DOOR | MOVE_BODY
+flags:DROP_4 | DROP_GOOD | ONLY_ITEM | ROAM
 spell-freq:3
 spells:SCARE | BLIND | WOUND | HOLD | MIND_BLAST
 spells:BA_COLD | BA_NETH | BE_NETH | S_UNDEAD | S_WRAITH
@@ -19642,10 +19617,10 @@ blow:GAZE:EXP_80:5d5
 blow:TOUCH:POISON:5d5
 #DISEASE
 blow:TOUCH:LOSE_CON:5d6
-flags:UNIQUE | MALE | SMART | SPIRIT | ATTR_FLICKER
+flags:UNIQUE | MALE | SMART | SPIRIT | ATTR_FLICKER | MOVE_SLOW
 flags:DROP_4 | DROP_GOOD | DROP_GREAT | ONLY_ITEM
 flags:OPEN_DOOR | BASH_DOOR | IM_FIRE | FORCE_SLEEP
-#MOVE_SLOW (so it'll move at 130 speed and cast at 140 speed)
+#(MOVE_SLOW is a relative thing...)
 spell-freq:2
 spell-power:106
 spells:BRAIN_SMASH | WOUND | SCARE
@@ -20549,8 +20524,8 @@ blow:SPIT:POISON:6d16
 blow:ENGULF:ACID:9d13
 blow:ENGULF:LOSE_ALL:6d16
 flags:FORCE_SLEEP | POWERFUL | NO_STUN | KILL_ITEM | KILL_BODY
-flags:IM_POIS | IM_ACID | MULTIPLY
-#PASS_DOOR | PUDDLE
+flags:IM_POIS | IM_ACID | MULTIPLY | PASS_DOOR
+#PUDDLE
 innate-freq:6
 spell-freq:6
 spells:BR_POIS | BR_ACID | TELE_TO | S_KIN
@@ -20611,9 +20586,8 @@ experience:31000
 blow:TOUCH:DISENCHANT:8d8
 blow:TOUCH:LOSE_ALL:8d8
 blow:TOUCH:EXP_80:8d8
-flags:EVIL | NONLIVING | POWERFUL | REGENERATE | IM_NETHER
+flags:EVIL | NONLIVING | POWERFUL | REGENERATE | IM_NETHER | MOVE_SLOW
 flags:IM_FIRE | IM_COLD | IM_ELEC | IM_ACID | IM_POIS | IM_WATER | NO_STUN
-#MOVE_SLOW
 innate-freq:30
 spell-freq:2
 spells:S_MONSTERS | S_HI_DEMON | S_HI_DRAGON | S_HI_UNDEAD | S_WRAITH
