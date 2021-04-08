@@ -260,7 +260,7 @@ struct monster_race *get_mon_num(int level)
 
 		/* No seasonal monsters outside of Christmas */
 		if (rf_has(race->flags, RF_SEASONAL) &&
-			!(date->tm_mon == 11 && date->tm_mday >= 22 && date->tm_mday <= 26))
+			!(date->tm_mon == 11 && date->tm_mday >= 21 && date->tm_mday <= 27))
 			continue;
 
 		/* Only one copy of a unique must be around at the same time */

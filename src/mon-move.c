@@ -573,6 +573,8 @@ static bool get_move_find_safety(struct chunk *c, struct monster *mon)
 			/* Skip illegal locations */
 			if (!square_in_bounds_fully(c, grid)) continue;
 
+			/* PASS_DOOR monsters can also pass over rubble XX */
+
 			/* Skip locations in a wall */
 			if (!square_ispassable(c, grid)) continue;
 
@@ -1157,6 +1159,10 @@ static bool monster_turn_can_move(struct chunk *c, struct monster *mon,
 		return false;
 	}
 
+	/* PASS_DOOR monsters can pass rubble as well XX */
+	/* (this is more complicated than I thought it'd be. I'll do it later.)*/
+	/* if (rf_has(mon->race->flags, RF_PASS_WALL)) */
+
 	/* Floor is open? */
 	if (square_ispassable(c, new)) {
 		return true;
@@ -1210,16 +1216,23 @@ static bool monster_turn_can_move(struct chunk *c, struct monster *mon,
 		bool can_bash = rf_has(mon->race->flags, RF_BASH_DOOR) &&
 			(!confused || one_in_(3));
 		bool will_bash = false;
+		/* Some monsters can pass through (or under) doors */
+		bool can_passdoor = rf_has(mon->race->flags, RF_PASS_DOOR);
 
 		/* Take a turn */
-		if (can_open || can_bash) *did_something = true;
+		if (can_open || can_bash || can_passdoor) *did_something = true;
 
 		/* Learn about door abilities */
 		if (!confused && monster_is_visible(mon)) {
 			rf_on(lore->flags, RF_OPEN_DOOR);
 			rf_on(lore->flags, RF_BASH_DOOR);
+			rf_on(lore->flags, RF_PASS_DOOR);
 		}
 
+		/* PASS_DOOR monsters have no reason to open or bash */
+		if (can_passdoor) {
+			return true; 
+		}		
 		/* If creature can open or bash doors, make a choice */
 		if (can_open) {
 			/* Sometimes bash anyway (impatient) */
@@ -1362,8 +1375,7 @@ static bool monster_turn_try_push(struct chunk *c, struct monster *mon,
 				n_name);
 
 		/* Monster ate another monster */
-		if (kill_ok)
-			delete_monster(new);
+		if (kill_ok) delete_monster(new);
 
 		monster_swap(mon->grid, new);
 		return true;
@@ -1531,7 +1543,7 @@ static void monster_turn(struct chunk *c, struct monster *mon)
 			}
 
 			/* Now several possibilities */
-			if (rf_has(mon->race->flags, RF_PASS_WALL)) {
+			if (rf_has(mon->race->flags, RF_PASS_WALL) || rf_has(mon->race->flags, RF_PASS_DOOR)) {
 				/* Insubstantial monsters go right through */
 			} else if (monster_passes_walls(mon)) {
 				/* If you can destroy a wall, you can destroy a web */
@@ -1551,8 +1563,7 @@ static void monster_turn(struct chunk *c, struct monster *mon)
 	monster_group_rouse(c, mon);
 
 	/* Try to multiply - this can use up a turn */
-	if (monster_turn_multiply(c, mon))
-		return;
+	if (monster_turn_multiply(c, mon)) return;
 
 	/* Attempt a ranged attack */
 	if (make_ranged_attack(mon)) return;
@@ -1596,8 +1607,7 @@ static void monster_turn(struct chunk *c, struct monster *mon)
 				rf_on(lore->flags, RF_NEVER_BLOW);
 
 			/* Some monsters never attack */
-			if (rf_has(mon->race->flags, RF_NEVER_BLOW))
-				continue;
+			if (rf_has(mon->race->flags, RF_NEVER_BLOW)) continue;
 
 			/* Wait a minute... */
 			square_destroy_decoy(c, new);
@@ -1620,7 +1630,8 @@ static void monster_turn(struct chunk *c, struct monster *mon)
 
 			did_something = true;
 			break;
-		} else {
+		}
+		else {
 			/* Some monsters never move */
 			if (rf_has(mon->race->flags, RF_NEVER_MOVE)) {
 				/* Learn about lack of movement */
@@ -1628,6 +1639,13 @@ static void monster_turn(struct chunk *c, struct monster *mon)
 					rf_on(lore->flags, RF_NEVER_MOVE);
 
 				return;
+			}
+			/* Some monsters move slower than they cast/attack */
+			else if ((rf_has(mon->race->flags, RF_MOVE_SLOW)) && (one_in_(3))) {
+					/* Learn about lack of movement */
+					if (monster_is_visible(mon))
+						rf_on(lore->flags, RF_MOVE_SLOW);
+					return;
 			}
 		}
 
