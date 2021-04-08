@@ -41,6 +41,10 @@ buy:food
 buy:mushroom
 buy:flask
 buy:digger
+buy:cloak
+buy:shot
+buy:bolt
+buy:arrow
 
 # Armoury
 store:2:Armoury
