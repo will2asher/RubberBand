@@ -412,15 +412,15 @@ hit-points:9
 hearing:10
 armor-class:6
 sleepiness:99
-depth:1
+depth:0
 rarity:2
 experience:4
 blow:HIT:HURT:1d5
 blow:TOUCH:EAT_ITEM
 blow:INSULT
-flags:MALE | EVIL
+flags:MALE | EVIL | TOWN_OR_DUN
 flags:OPEN_DOOR | BASH_DOOR | TAKE_ITEM
-#TOWN_OR_DUN | ROAM | S_EVIL2
+#ROAM | S_EVIL2
 desc:A hardy, street-wise crook that knows an easy catch when it sees one.
 
 name:singing, happy drunk
@@ -496,10 +496,10 @@ depth:0
 rarity:1
 experience:9
 blow:HIT:HURT:1d4
-flags:FEMALE | EVIL 
+flags:FEMALE | EVIL | TOWN_OR_DUN
 flags:DROP_40 | ONLY_ITEM
 flags:RAND_25 | OPEN_DOOR | BASH_DOOR | TAKE_ITEM
-#ROAM | TOWN_OR_DUN
+#ROAM
 spell-freq:11
 spells:HEAL | WOUND | BA_POIS
 #CURSE_PC
@@ -562,12 +562,12 @@ experience:11
 blow:INSULT
 blow:HIT:HURT:1d3
 blow:HIT:HURT:1d6
-flags:UNIQUE | MALE | EVIL | FORCE_SLEEP
+flags:UNIQUE | MALE | EVIL | FORCE_SLEEP | TOWN_OR_DUN
 flags:ONLY_ITEM | DROP_1
 flags:OPEN_DOOR | BASH_DOOR | TAKE_ITEM
-#TOWN_OR_DUN | ROAM
-friends:30:1d1:squint-eyed rogue
-friends:40:1d3:mean-looking mercenary
+#ROAM
+friends:35:1d1:squint-eyed rogue
+friends:45:1d3:mean-looking mercenary
 desc:Gatekeeper of Bree and one of Bill Ferny's bandits.
 
 name:red-hatted elf
@@ -752,10 +752,10 @@ depth:1
 rarity:2
 experience:2
 blow:CRAWL:TERRIFY:1d1
-flags:WEIRD_MIND | STUPID | ANIMAL
+flags:WEIRD_MIND | STUPID | ANIMAL | TOWN_OR_DUN
 flags:RAND_25 | RAND_50
 flags:HURT_LIGHT | IM_POIS | NO_FEAR
-#PASS_DOOR | TOWN_OR_DUN
+#PASS_DOOR
 desc:It makes you shiver with digust.
 
 name:floating eye
@@ -1058,9 +1058,8 @@ depth:2
 rarity:3
 experience:4
 blow:HIT:HURT:1d7
-flags:TAKE_ITEM | BASH_DOOR | MALE | RUBBER
+flags:TAKE_ITEM | BASH_DOOR | MALE | RUBBER | TOWN_OR_DUN
 flags:RAND_25 | DROP_40 | ONLY_ITEM
-#TOWN_OR_DUN
 desc:A quiet and easily-angered drunkard who often wonders into the dungeon to see if the kobolds
 desc: have better booze.
 
@@ -1216,8 +1215,8 @@ experience:8
 blow:TOUCH:TERRIFY
 flags:DROP_40 | DROP_60
 flags:RAND_25 | RAND_50 | TAKE_ITEM
-flags:HURT_LIGHT | IM_COLD 
-#ROAM | TOWN_OR_DUN 
+flags:HURT_LIGHT | IM_COLD | TOWN_OR_DUN
+#ROAM
 #innate-freq:11
 spell-freq:14
 spells:BLINK
@@ -1291,9 +1290,9 @@ rarity:1
 experience:4
 blow:HIT:HURT:1d4
 blow:TOUCH:EAT_GOLD
-flags:MALE | TAKE_ITEM
-flags:DROP_60
-#S_EVIL1 | ROAM | TOWN_OR_DUN
+flags:MALE | TOWN_OR_DUN
+flags:DROP_60 | TAKE_ITEM
+#S_EVIL1 | ROAM
 desc:A short little guy, in bedraggled clothes.  He appears to be looking for a
 desc: good tavern.
 
@@ -1428,8 +1427,8 @@ rarity:5
 experience:9
 blow:HIT:HURT:1d2
 blow:KICK:HURT:2d2
-flags:MALE | DROP_40 | TAKE_ITEM 
-#ROAM | TOWN_OR_DUN
+flags:MALE | TOWN_OR_DUN | DROP_40 | TAKE_ITEM 
+#ROAM
 #innate-freq:11
 spell-freq:8
 spells:HASTE | BLINK
@@ -1731,9 +1730,8 @@ rarity:3
 experience:14
 blow:BUTT:HURT:2d2
 blow:BUTT:HURT:3d2
-flags:RAND_50 | NO_FEAR 
-flags:REGENERATE 
-#TOWN_OR_DUN
+flags:RAND_50 | NO_FEAR
+flags:REGENERATE | TOWN_OR_DUN
 desc:"Croak"
 
 name:straw golem
@@ -2037,8 +2035,8 @@ rarity:5
 experience:40
 blow:HIT:HURT:1d5
 blow:CRUSH:HURT:6d2
-flags:WEIRD_MIND | NO_FEAR 
-#BLOCK_LOS | TOWN_OR_DUN | S_EVIL1
+flags:WEIRD_MIND | NO_FEAR | TOWN_OR_DUN
+#BLOCK_LOS | S_EVIL1
 #innate-freq:11
 #spells:THROW
 desc:An mean apple tree that has gotten bored of dropping fruit on people's heads,
@@ -2739,7 +2737,8 @@ rarity:2
 experience:26
 blow:BITE:HURT:1d4
 blow:BITE:BLIND:1d6
-#ROAM | TOWN_OR_DUN | SBLIND
+flags:TOWN_OR_DUN
+#ROAM | SBLIND
 desc:A large black bird that pecks at your eyes.
 
 name:red naga
@@ -3939,8 +3938,8 @@ blow:CLAW:HURT:3d2
 #CLAWB
 blow:BITE:HURT:1d6
 flags:NO_FEAR | NO_CONF
-flags:EVIL | RUBBER | KEEP_DIST
-#TOWN_OR_DUN | ROAM | RETURNS
+flags:EVIL | RUBBER | KEEP_DIST | TOWN_OR_DUN
+#ROAM | RETURNS
 spell-freq:8
 spells:DRAIN_MANA | TELE_AWAY | WOUND 
 #| CURSE_PC

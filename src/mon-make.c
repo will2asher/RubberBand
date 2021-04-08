@@ -240,11 +240,22 @@ struct monster_race *get_mon_num(int level)
 		/* Default */
 		table[i].prob3 = 0;
 
-		/* No town monsters in dungeon */
-		if ((level > 0) && (table[i].level <= 0)) continue;
 
 		/* Get the chosen monster */
 		race = &r_info[table[i].index];
+
+		/* Some monsters can appear in the town or dungeon */
+		if (rf_has(race->flags, RF_TOWN_OR_DUN) && (race->level == 0)) {
+		    /* but they're less common in the dungeon if native to the town */
+		    if ((level > 0) && (randint(10) < 5)) continue;
+        }
+		/* No town monsters in dungeon (normally) */
+		else if ((level > 0) && (table[i].level <= 0)) continue;
+
+		/* and Dungeon-native TOWN_OR_DUN monster are less common in town (depending on player level) */
+		if (rf_has(race->flags, RF_TOWN_OR_DUN) && (race->level > 0)) {
+			if ((level > 0) && (randint(player->lev + 2) < race->level)) continue;
+		}
 
 		/* No seasonal monsters outside of Christmas */
 		if (rf_has(race->flags, RF_SEASONAL) &&
