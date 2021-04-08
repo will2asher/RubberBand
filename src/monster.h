@@ -339,7 +339,7 @@ struct monster_race {
 	int level;				/* Level of creature */
 	int rarity;				/* Rarity of creature */
 
-	byte d_attr;			/* Default monster attribute */
+	byte d_attr;			/* Default monster attribute (color) */
 	wchar_t d_char;			/* Default monster character */
 
 	byte max_num;			/* Maximum population allowed per level */

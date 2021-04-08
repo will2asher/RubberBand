@@ -671,7 +671,6 @@ rarity:1
 experience:1
 blow:TOUCH:HURT:1d2
 flags:EMPTY_MIND | RAND_25
-#VISH
 desc:It is a smallish, slimy, icky creature.
 
 name:clear icky thing
@@ -688,7 +687,6 @@ experience:2
 blow:TOUCH:HURT:1d2
 flags:INVISIBLE | EMPTY_MIND | RAND_25
 flags:ATTR_CLEAR
-#VISH
 desc:It is a smallish, slimy, icky, blobby creature.
 
 name:giant white mouse
@@ -878,7 +876,6 @@ blow:CRAWL:POISON:1d4
 blow:CRAWL:EAT_FOOD
 flags:EMPTY_MIND | KILL_BODY | TAKE_ITEM
 flags:IM_POIS
-#VISH
 desc:It is a smallish, slimy, icky, hungry creature.
 
 name:soldier
@@ -1042,7 +1039,7 @@ experience:7
 blow:GAZE:HURT:0d0
 blow:KICK:HURT:0d0
 flags:RAND_50 | RAND_25 | 
-#RUBBER | SILLY | KEEP_DIST | ROAM | BR_STRONG 
+#SILLY? | KEEP_DIST | ROAM | BR_STRONG 
 innate-freq:17
 spells:BR_LIGHT
 desc:This baby sprite likes to kick people but is isn't strong enough to do any damage.
@@ -1061,9 +1058,9 @@ depth:2
 rarity:3
 experience:4
 blow:HIT:HURT:1d7
-flags:TAKE_ITEM | BASH_DOOR | MALE
+flags:TAKE_ITEM | BASH_DOOR | MALE | RUBBER
 flags:RAND_25 | DROP_40 | ONLY_ITEM
-#TOWN_OR_DUN | RUBBER
+#TOWN_OR_DUN
 desc:A quiet and easily-angered drunkard who often wonders into the dungeon to see if the kobolds
 desc: have better booze.
 
@@ -1081,7 +1078,6 @@ rarity:1
 experience:4
 blow:HIT:HURT:1d5
 flags:DROP_60
-#VISH
 desc:A small humanoid thing.
 
 name:Grip, Farmer Maggot's Dog
@@ -1415,7 +1411,7 @@ experience:7
 blow:HIT:HURT:1d3
 blow:KICK:HURT:1d3
 flags:RAND_50
-#ROAM | RUBBER
+#ROAM
 desc:Sprites are somewhat silly, small, fast flying fairies a little bigger than the pixie.
 desc: Less intelligent and less magical than pixies, they are also less friendly.
 
@@ -1433,7 +1429,7 @@ experience:9
 blow:HIT:HURT:1d2
 blow:KICK:HURT:2d2
 flags:MALE | DROP_40 | TAKE_ITEM 
-#ROAM | RUBBER | TOWN_OR_DUN
+#ROAM | TOWN_OR_DUN
 #innate-freq:11
 spell-freq:8
 spells:HASTE | BLINK
@@ -1610,8 +1606,7 @@ experience:5
 blow:CRAWL:COLD:1d4
 flags:COLD_BLOOD | WEIRD_MIND | MULTIPLY | STUPID | ANIMAL
 flags:RAND_25 | RAND_50
-flags:HURT_LIGHT | IM_COLD | NO_FEAR
-#VISH
+flags:HURT_LIGHT | IM_COLD | NO_FEAR | VISH
 desc:It is a large slimy mass of worms.
 
 name:silver mouse
@@ -1862,7 +1857,6 @@ rarity:1
 experience:10
 blow:TOUCH:HURT:1d5
 flags:EMPTY_MIND
-#VISH
 desc:It is a smallish, slimy, icky, nasty creature.
 
 name:arrow launcher
@@ -1876,8 +1870,8 @@ sleepiness:1
 depth:5
 rarity:3
 experience:15
-flags:NEVER_MOVE | NEVER_BLOW 
-#RUBBER | SCALE
+flags:NEVER_MOVE | NEVER_BLOW
+#SCALE | RUBBER?
 innate-freq:5
 spells:ARROW
 desc:A piece of Angband's defence system.
@@ -2101,8 +2095,8 @@ rarity:2
 experience:16
 blow:TOUCH:HURT:1d6
 #SLIME
-flags:IM_ACID | IM_POIS | HURT_COLD | NO_CONF 
-#SMULTIPLY | RUBBER | PASS_DOOR
+flags:RUBBER | IM_ACID | IM_POIS | HURT_COLD | NO_CONF
+#SMULTIPLY | PASS_DOOR
 desc:It is a large oozing pile of green slime.
 
 name:purple mushroom patch
@@ -2134,8 +2128,7 @@ depth:6
 rarity:1
 experience:20
 blow:SPORE:CONFUSE:1d4
-flags:EMPTY_MIND | STUPID
-#VISH
+flags:EMPTY_MIND | STUPID | VISH
 desc:A strange brown growth on the dungeon floor.
 
 name:creeping silver coins
@@ -2368,8 +2361,7 @@ rarity:3
 experience:23
 blow:HIT:HURT:1d8
 blow:CRUSH:HURT:2d4
-flags:DROP_40 | RAND_25 | HURT_LIGHT | ORC
-#SILLY
+flags:DROP_40 | RAND_25 | HURT_LIGHT | ORC | SILLY
 desc:A large serpent with the torso of a lesser orc. It's a snaga naga.
 
 name:poison sprite
@@ -2386,7 +2378,7 @@ experience:21
 blow:HIT:POISON:1d3
 blow:KICK:HURT:1d3
 flags:RAND_50 | NO_SLEEP | BASH_DOOR
-#ROAM | RUBBER | S_EVIL1
+#ROAM | S_EVIL1
 #flags-off:CLIGHT
 innate-freq:10
 spells:BR_POIS | ARROW
@@ -2450,7 +2442,7 @@ desc:A large green serpent with a female's torso. Her green skin glistens with
 desc: acid.
 
 name:large red frog
-base:reptile
+base:amphibian
 color:r
 speed:110
 hit-points:22
@@ -2501,7 +2493,6 @@ blow:TOUCH:ACID:1d6
 #blow:TOUCH:SLIME:1d4
 flags:EMPTY_MIND
 flags:IM_ACID
-#VISH
 desc:It is a smallish, slimy, icky, acidic creature.
 
 name:red jelly
@@ -2517,9 +2508,8 @@ depth:7
 rarity:1
 experience:26
 blow:TOUCH:LOSE_STR:1d5
-flags:NEVER_MOVE
+flags:NEVER_MOVE | VISH
 flags:HURT_LIGHT | HURT_COLD | NO_CONF | NO_SLEEP
-#VISH
 desc:It is a large pulsating mound of red flesh.
 
 name:cave orc
@@ -2616,8 +2606,8 @@ experience:34
 blow:CLAW:HURT:1d4
 #CLAWB
 blow:BITE:HURT:1d6
-flags:NO_FEAR | REGENERATE | BASH_DOOR
-#RUBBER | CLIGHT | WATER_HIDE
+flags:RUBBER | NO_FEAR | REGENERATE | BASH_DOOR
+flags:CLIGHT | WATER_HIDE
 desc:A less magical form of the water-dwelling zhelung-lizard.
 
 name:baby salamander
@@ -2648,8 +2638,7 @@ depth:7
 rarity:4
 experience:26
 blow:TOUCH:ACID:1d7
-flags:IM_ACID
-#RUBBER
+flags:IM_ACID | RUBBER
 desc:a mindless blob of acid oozing along.
 
 name:ape
@@ -2666,7 +2655,7 @@ rarity:2
 experience:24
 blow:HIT:HURT:4d2
 blow:HIT:HURT:1d5
-#RUBBER
+flags:RUBBER
 desc:A big hairy primate, he's glad he's not human.
 
 name:goblin runt
@@ -2782,7 +2771,7 @@ depth:8
 rarity:1
 experience:11
 flags:DROP_40 | FRIGHTENED | NEVER_BLOW
-#ROAM | VISH
+#ROAM
 innate-freq:9
 spells:SHRIEK
 desc:It is a strange small humanoid in a constant state of extreme terror.
@@ -2894,8 +2883,8 @@ depth:8
 rarity:4
 experience:28
 blow:HIT:HURT:1d10
-flags:DROP_40 | TAKE_ITEM
-#S_EVIL1 | SILLY
+flags:DROP_40 | TAKE_ITEM | SILLY
+#S_EVIL1
 #innate-freq:11
 #spells:THROW
 friends:45:1d5:Same
@@ -3245,8 +3234,8 @@ depth:9
 rarity:4
 experience:29
 blow:BITE:EAT_LIGHT:2d3
-flags:EVIL | WEIRD_MIND | COLD_BLOOD | RAND_50 
-#RUBBER | ROAM
+flags:EVIL | RUBBER | WEIRD_MIND | COLD_BLOOD | RAND_50 
+#ROAM
 spell-freq:8
 spells:CONF | BLINK | DARKNESS
 #TINVIS
@@ -3529,8 +3518,7 @@ rarity:2
 experience:40
 blow:SPORE:DISENCHANT:1d6
 flags:EMPTY_MIND | STUPID
-flags:IM_DISEN | ATTR_MULTI
-#VISH
+flags:IM_DISEN | ATTR_MULTI | VISH
 spell-freq:11
 spells:DRAIN_MANA
 desc:It is a strange glowing growth on the dungeon floor.
@@ -3673,12 +3661,12 @@ blow:CLAW:HURT:1d4
 blow:BITE:EXP_10:2d4
 flags:DROP_60 | ONLY_GOLD | EVIL
 flags:OPEN_DOOR | BASH_DOOR
-flags:FORCE_SLEEP | REGENERATE
-#SILLY | S_EVIL2 | ROAM
+flags:FORCE_SLEEP | REGENERATE | SILLY
+#S_EVIL2 | ROAM
 spell-freq:13
 spells:WOUND | BA_POIS
 desc:A large hare with glowing red eyes. Technically, it's not a rabbit,
-desc: but 'werehare' just doesn't sound right.
+desc: but 'werehare' doesn't sound right.
 
 name:Orfax, Son of Boldor
 base:yeek
@@ -3699,7 +3687,6 @@ blow:INSULT
 flags:UNIQUE | MALE | EVIL | SMART
 flags:DROP_1 | DROP_GOOD | ONLY_ITEM
 flags:FORCE_SLEEP
-#VISH
 spell-freq:4
 spells:BLINK | CONF | HEAL | SLOW | TELE_TO
 spells:S_MONSTER
@@ -3824,8 +3811,8 @@ rarity:4
 experience:31
 blow:HIT:HURT:1d8
 blow:HIT:FIRE:1d4
-flags:DROP_20 | HURT_LIGHT
-#ROAM | RUBBER
+flags:RUBBER | DROP_20 | HURT_LIGHT
+#ROAM
 friends:35:1d3:Same
 friends:70:2d5:cave orc
 desc:A cave orc duel-weilding a torch along with his orcish sword.
@@ -3879,8 +3866,7 @@ rarity:3
 experience:36
 blow:HIT:HURT:1d7
 blow:HIT:HURT:4d2
-flags:NO_FEAR 
-#RUBBER
+flags:NO_FEAR | RUBBER
 desc:A large red-furred ape which has a powerful punch and hates being called a monkey.
 
 name:dust vortex
@@ -3900,7 +3886,7 @@ blow:ENGULF:BLIND:2d3
 blow:ENGULF:BLIND:2d3
 #SBLIND
 flags:CLEAR_WEB
-#PASS_DOOR | RUBBER?
+#PASS_DOOR
 desc:A whirlwind of blinding dust.
 
 name:chickatrice
@@ -3917,8 +3903,7 @@ experience:42
 blow:CLAW:POISON:2d4
 blow:GAZE:EAT_FOOD:0d0
 blow:GAZE:PARALYZE:0d0
-flags:RAND_25 | EVIL 
-#| RUBBER
+flags:RAND_25 | EVIL | RUBBER
 desc:a baby cockatrice.
 
 name:millipede
@@ -3953,8 +3938,8 @@ experience:39
 blow:CLAW:HURT:3d2
 #CLAWB
 blow:BITE:HURT:1d6
-flags:NO_FEAR | NO_CONF | EVIL
-#TOWN_OR_DUN | RUBBER | ROAM | RETURNS | KEEP_DIST
+flags:NO_FEAR | NO_CONF | EVIL | RUBBER
+#TOWN_OR_DUN | ROAM | RETURNS | KEEP_DIST
 spell-freq:9
 spells:DRAIN_MANA | TELE_AWAY | WOUND 
 #| CURSE_PC
@@ -4208,9 +4193,8 @@ depth:12
 rarity:3
 experience:60
 blow:TOUCH:EXP_10
-flags:NEVER_MOVE
+flags:NEVER_MOVE | VISH
 flags:HURT_LIGHT | HURT_COLD | IM_POIS | NO_CONF | NO_SLEEP
-#VISH
 spell-freq:11
 spells:DRAIN_MANA
 desc:Yum!  It looks quite tasty.  It is a pulsing mound of glowing flesh.
@@ -4229,7 +4213,6 @@ rarity:2
 experience:28
 blow:HIT:HURT:1d8
 flags:EVIL | DROP_40 | FORCE_SLEEP
-#VISH
 spell-freq:4
 spells:BLIND | BLINK | SLOW | TPORT
 spells:BA_POIS | S_MONSTER
@@ -4649,9 +4632,9 @@ depth:13
 rarity:4
 experience:53
 blow:TOUCH:HALLU
-flags:RAND_50 | WEIRD_MIND | NONLIVING
+flags:RAND_50 | WEIRD_MIND | NONLIVING | RUBBER
 flags:PASS_WALL | NO_HOLD
-#ROAM | RUBBER
+#ROAM
 spell-freq:5
 spells:SCARE | BLIND | BLINK | CONF | DARKNESS
 #TINVIS
@@ -4785,9 +4768,8 @@ blow:CLAW:HURT:3d2
 blow:CLAW:HURT:3d2
 #CLAWB
 blow:BITE:HURT:3d3
-flags:EVIL | MALE | TAKE_ITEM | DROP_40
+flags:EVIL | MALE | RUBBER | TAKE_ITEM | DROP_40
 flags:OPEN_DOOR | BASH_DOOR | NO_SLEEP 
-#RUBBER
 spell-freq:16
 spells:SCARE | WOUND
 friends:80:2d4:Same
@@ -4882,7 +4864,6 @@ blow:CRAWL:EAT_FOOD
 blow:HIT:HURT:1d5
 flags:EVIL | MULTIPLY | WEIRD_MIND | FORCE_SLEEP
 flags:OPEN_DOOR | BASH_DOOR | IM_POIS
-#VISH
 spell-freq:8
 spells:BLIND | CONF | SCARE
 desc:It is a strange, slimy, icky creature, with rudimentary intelligence, but
@@ -5068,9 +5049,10 @@ rarity:4
 experience:56
 blow:ENGULF:EAT_LIGHT:1d5
 blow:ENGULF:ELEC:3d2
-flags:CLEAR_WEB | NO_STUN | IM_COLD | IM_ELEC | IM_ACID | IM_WATER
+flags:CLEAR_WEB | NO_STUN | RUBBER
+flags:IM_COLD | IM_ELEC | IM_ACID | IM_WATER
 flags-off:POWERFUL
-#PASS_DOOR | RUBBER | SCALE 
+#PASS_DOOR | SCALE | PUDDLE
 innate-freq:8
 spells:BR_ELEC | BR_DARK
 desc:Lighting flashes around this dark cloud.
@@ -5090,8 +5072,8 @@ experience:59
 #blow:TOUCH:SLIME:1d2
 blow:TOUCH:EAT_LIGHT:1d3
 blow:BITE:POISON:1d6
-flags:WEIRD_MIND | EVIL | COLD_BLOOD | IM_POIS
-#ROAM | RUBBER
+flags:WEIRD_MIND | EVIL | RUBBER | COLD_BLOOD | IM_POIS
+#ROAM
 spell-freq:10
 spells:SLOW | DARKNESS | DRAIN_MANA
 desc:A magical giant worm kept as pets by the black dwarves.
@@ -5134,8 +5116,8 @@ depth:14
 rarity:8
 experience:51
 blow:BITE:CONFUSE:1d5
-flags:ATTR_MULTI | NO_FEAR | NO_STUN | POWERFUL
-#ROAM | RUBBER
+flags:ATTR_MULTI | NO_FEAR | NO_STUN | POWERFUL | RUBBER
+#ROAM
 spell-freq:9
 innate-freq:9
 spells:BR_CHAO | BLINK
@@ -5533,9 +5515,9 @@ blow:CLAW:HURT:1d7
 blow:CLAW:HURT:1d7
 blow:BITE:HURT:2d6
 flags:DROP_1 | DROP_20 | MOVE_BODY | IM_FIRE
-flags:ANIMAL | OPEN_DOOR | BASH_DOOR
+flags:ANIMAL | RUBBER | OPEN_DOOR | BASH_DOOR
 flags-off:EVIL
-#RUBBER | SCALE?
+#SCALE?
 innate-freq:10
 spells:BR_FIRE
 friends:16:1d5:Same
@@ -5720,7 +5702,7 @@ blow:INSULT
 #FRENZY
 flags:TAKE_ITEM | DROP_40 | BASH_DOOR
 flags:REGENERATE | HURT_LIGHT | NO_HOLD | NO_STUN
-#ROAM | S_EVIL2 | SCALE | RUBBER
+#ROAM | S_EVIL2 | SCALE?
 innate-freq:7
 spell-freq:11
 #spells:THROW | CURSE_PC
@@ -5745,8 +5727,8 @@ depth:16
 rarity:2
 experience:31
 blow:TOUCH:HURT:1d9
-#SLIME | SMULTIPLY | RUBBER
-flags:IM_ACID | IM_POIS | HURT_COLD | NO_CONF 
+#SLIME | SMULTIPLY
+flags:IM_ACID | IM_POIS | HURT_COLD | NO_CONF | RUBBER
 desc:It is a huge oozing pile of green slime.
 
 name:black cat
@@ -5765,9 +5747,9 @@ blow:CLAW:HURT:3d2
 blow:BITE:EXP_10:2d2
 blow:TOUCH:DISENCHANT
 #blow:GAZE:UNLUCKY, CLAWB
-flags:EVIL | ANIMAL | OPEN_DOOR | FORCE_SLEEP
+flags:EVIL | ANIMAL | OPEN_DOOR | FORCE_SLEEP | RUBBER
 flags:NO_FEAR | NO_CONF | NO_SLEEP | NO_STUN | IM_ELEC | IM_DISEN 
-#ROAM | RUBBER
+#ROAM
 spell-freq:4
 spells:BLIND | DRAIN_MANA | BLINK | DARKNESS | WOUND | S_UNDEAD 
 #CURSE_PC
@@ -5789,8 +5771,8 @@ blow:GAZE:HALLU
 blow:CLAW:POISON:2d2
 blow:BITE:LOSE_WIS:3d3
 flags:SPIRIT | RAND_25 | OPEN_DOOR | COLD_BLOOD | IM_POIS
-flags:EVIL | WEIRD_MIND | IM_NETHER | IM_DISEN
-#BR_STRONG | PASS_DOOR | RUBBER
+flags:EVIL | RUBBER | WEIRD_MIND | IM_NETHER | IM_DISEN
+#BR_STRONG | PASS_DOOR
 spell-freq:6
 spells:SLOW | BLINK | DRAIN_MANA | BLIND | FORGET | DARKNESS
 #S_ILLUSION | BR_AMNS | TINIVS
@@ -5814,8 +5796,9 @@ blow:CRUSH:POISON:2d2
 blow:CRUSH:POISON:2d3
 blow:CRUSH:HURT:5d2
 #BHOLD
-flags:WEIRD_MIND | NO_FEAR | NO_CONF | NO_SLOW | IM_POIS
-#RUBBER | MOVE_SLOW
+flags:WEIRD_MIND | RUBBER
+flags:NO_FEAR | NO_CONF | NO_SLOW | IM_POIS
+#MOVE_SLOW
 friends:70:1d6:Same
 desc:A mass of thick vines with poisonous leaves.
 
@@ -5834,8 +5817,8 @@ experience:53
 blow:HIT:HURT:1d5
 blow:HIT:HURT:1d5
 blow:INSULT:HURT:1d3
-flags:RAND_25 | SPIRIT | EVIL | TAKE_ITEM
-#ROAM | SILLY 
+flags:RAND_25 | SPIRIT | EVIL | SILLY | TAKE_ITEM
+#ROAM
 innate-freq:9
 spell-freq:13
 #spells:THROW
@@ -6020,8 +6003,8 @@ depth:10
 rarity:8
 experience:58
 blow:HIT:HURT:2d8
-flags:MALE | BASH_DOOR | DROP_1 | KILL_WALL
-#ROAM | S_EVIL2 | RUBBER
+flags:MALE | BASH_DOOR | DROP_1 | KILL_WALL | RUBBER
+#ROAM | S_EVIL2
 desc:A dwarf of the east mining for gold, wielding a dwarvish mattock.
 
 name:silver dust bunny
@@ -6037,8 +6020,7 @@ depth:17
 rarity:8
 experience:14
 blow:TOUCH:EAT_LIGHT:1d4
-flags:RAND_25 | IM_POIS 
-#SILLY
+flags:RAND_25 | IM_POIS | SILLY
 flags:WEIRD_MIND | MULTIPLY | NO_FEAR 
 #spell-freq:11
 #spells:TINVIS
@@ -6093,8 +6075,8 @@ blow:HIT:HURT:1d3
 blow:CRUSH:HURT:3d4
 #BHOLD
 blow:BITE:ACID:2d6
-flags:WEIRD_MIND | RAND_25 | ANIMAL 
-#RUBBER | WATER_HIDE
+flags:WEIRD_MIND | RAND_25 | ANIMAL
+#WATER_HIDE
 desc:A nulx is a tentacled swamp monster with acid under its skin. This one is about 8 feet
 desc: long (not including tentacles).
 
@@ -6483,7 +6465,7 @@ blow:INSULT
 #CLAWB, SBLIND, FRENZY
 flags:EVIL | TAKE_ITEM | DROP_20 | BASH_DOOR
 flags:REGENERATE | HURT_LIGHT | IM_POIS | NO_HOLD
-#ROAM | RUBBER | SCALE
+#ROAM | SCALE?
 innate-freq:6
 spell-freq:11
 #spells:THROW 
@@ -6513,8 +6495,8 @@ blow:BITE:POISON:2d4
 blow:BITE:ACID:2d4
 blow:BUTT:HURT:5d2
 flags:RAND_25 | NO_FEAR | BASH_DOOR
-flags:REGENERATE | IM_ACID | IM_POIS
-#RUBBER | WATER_HIDE | BR_STRONG
+flags:RUBBER | REGENERATE | IM_ACID | IM_POIS
+#WATER_HIDE | BR_STRONG
 innate-freq:8
 spells:BR_SOUN
 desc:A big frog covered in ugly oozing warts, it makes a loud "CROAK".
@@ -6743,9 +6725,9 @@ blow:CLAW:HURT:1d4
 blow:CLAW:HURT:1d4
 blow:BITE:POISON:1d9
 #blow:TAIL:HURT:1d3
-flags:BASH_DOOR | FORCE_SLEEP | REGENERATE | SPIRIT
+flags:RUBBER | BASH_DOOR | FORCE_SLEEP | REGENERATE | SPIRIT
 flags:IM_POIS | IM_WATER
-#RUBBER | ROAM | CLIGHT | WATER_HIDE | TEMPLE | GOODMON
+#ROAM | CLIGHT | WATER_HIDE | TEMPLE | GOODMON
 innate-freq:6
 spell-freq:7
 spells:BR_LIGHT | BLINK
@@ -6767,8 +6749,8 @@ rarity:4
 experience:105
 blow:HIT:POISON:2d6
 blow:TOUCH:EAT_ITEM:1d3
-flags:TAKE_ITEM | SPIRIT | EVIL | NO_FEAR 
-#ROAM | SILLY | SCALE
+flags:TAKE_ITEM | SPIRIT | EVIL | SILLY | NO_FEAR 
+#ROAM | SCALE
 #innate-freq:9
 spell-freq:9
 spells:WOUND | HASTE
@@ -7114,8 +7096,8 @@ blow:BUTT:HURT:5d3
 blow:GAZE:HALLU
 blow:GAZE:LOSE_INT
 #B:GAZEB:LOSE_INT
-flags:FORCE_SLEEP | WEIRD_MIND | IM_POIS | IM_ACID
-#ROAM | SILLY | PASS_DOOR | BR_WEAK? | SCALE
+flags:SILLY | FORCE_SLEEP | WEIRD_MIND | IM_POIS | IM_ACID
+#ROAM | PASS_DOOR | BR_WEAK? | SCALE
 flags-off:BASH_DOOR
 innate-freq:7
 spell-freq:8
@@ -7493,10 +7475,10 @@ blow:CRAWL:EAT_FOOD:1d5
 #blow:TOUCH:SLIME:2d8
 blow:CRAWL:POISON:1d11
 blow:TOUCH:ACID:2d6
-flags:EVIL | UNIQUE | WEIRD_MIND | 
+flags:EVIL | UNIQUE | WEIRD_MIND | SILLY
 flags:REGENERATE | TAKE_ITEM | ATTR_MULTI | RAND_50 | 
 flags:NO_FEAR | NO_STUN | IM_ACID | IM_POIS
-#PASS_DOOR | VISH | SILLY | SCALE
+#PASS_DOOR | SCALE
 #innate-freq:10
 #spells:BR_SLIME
 friends-base:22:1d2:mushroom
@@ -7604,11 +7586,11 @@ experience:132
 blow:CLAW:POISON:1d11
 blow:BITE:EAT_FOOD:2d7
 blow:GAZE:CONFUSE:2d4
-flags:RAND_25 | NO_FEAR | NO_STUN | IM_ELEC | IM_DISEN
-#ROAM | SILLY | TEMPLE | PASS_DOOR
+flags:SILLY | RAND_25 | NO_FEAR | NO_STUN | IM_ELEC | IM_DISEN
+#ROAM | TEMPLE | PASS_DOOR
 spell-freq:16
 spells:HASTE | CONF
-friends:9:1d3:same
+friends:11:1d3:same
 desc:With humped back, maw dripping drool, and glowing yellow eyes,
 desc: it's something out of a very strange dream...
 
@@ -7625,9 +7607,9 @@ depth:22
 rarity:17
 experience:23
 blow:TOUCH:BLIND:1d1
-flags:WEIRD_MIND | RAND_50 | IM_POIS | IM_ELEC
+flags:SILLY | WEIRD_MIND | RAND_50 | IM_POIS | IM_ELEC
 flags:MULTIPLY | NO_FEAR | HURT_FIRE | ATTR_CLEAR | CHAR_CLEAR
-#SILLY | HURT_WATER | TINVIS
+#HURT_WATER | TINVIS
 friends:12:1d4:same
 desc:A wisp of dust which will evade the brooms of the most meticulous sweepers by
 desc: being impossible to see.
@@ -7686,9 +7668,9 @@ experience:193
 blow:CLAW:POISON:6d2
 blow:GAZE:EAT_FOOD:2d2
 blow:GAZE:PARALYZE:2d2
-flags:EVIL | FORCE_SLEEP
+flags:EVIL | FORCE_SLEEP | RUBBER
 flags:RAND_25 | IM_POIS 
-#BR_STRONG | RUBBER
+#BR_STRONG
 innate-freq:6
 spells:BR_POIS
 desc:It appears to be a lizard with a rooster's head and wings.  It's poison is enough to
@@ -7860,8 +7842,7 @@ rarity:1
 experience:83
 blow:BITE:ACID:4d4
 blow:BITE:ACID:4d4
-flags:RAND_25
-#VISH
+flags:RAND_25 | VISH
 innate-freq:6
 spells:SPIT
 desc:A giant silver ant with a caustic bite and hard scales.
@@ -7906,9 +7887,10 @@ experience:161
 blow:CLAW:HURT:6d2
 blow:CLAW:LOSE_CON:3d2
 #CLAWB
-flags:DROP_1 | DROP_20 | FORCE_SLEEP | NONLIVING | SMART
+flags:DROP_1 | DROP_20
+flags:FORCE_SLEEP | NONLIVING | SMART | RUBBER
 flags:IM_COLD | HURT_LIGHT | NO_HOLD | NO_STUN
-#BR_STRONG | RUBBER
+#BR_STRONG
 innate-freq:6
 spell-freq:7
 spells:BR_SHAR | SCARE | BLINK | DARKNESS
@@ -7951,7 +7933,7 @@ rarity:4
 experience:101
 flags:NEVER_MOVE | NEVER_BLOW | IM_POIS
 flags:STUPID | INVISIBLE
-#RUBBER | SCALE
+#SCALE
 innate-freq:3
 spells:ARROW
 desc:A piece of Angband's hidden defence system.
@@ -7989,8 +7971,7 @@ experience:37
 blow:SPORE:POISON:2d3
 blow:SPORE:PARALYZE:2d2
 #blow:SPORE:CHARM
-flags:FORCE_SLEEP | NEVER_MOVE | STUPID
-#RUBBER
+flags:FORCE_SLEEP | NEVER_MOVE | STUPID | RUBBER
 spell-freq:6
 spells:TELE_TO | SLOW | BLIND
 desc: Its pleasant odor makes you feel sleepy.
@@ -8012,8 +7993,8 @@ blow:SPIT:BLIND:1d4
 blow:SPIT:POISON:2d3
 blow:BITE:POISON:3d6
 flags:BASH_DOOR | EVIL | DROP_40 
-flags:IM_POIS | IM_ACID | NO_FEAR | SPIRIT
-#ROAM | SILLY
+flags:IM_POIS | IM_ACID | NO_FEAR | SPIRIT | SILLY
+#ROAM
 flags-off:ANIMAL
 innate-freq:15
 spells:BR_POIS
@@ -8214,8 +8195,8 @@ blow:CLAW:POISON:4d3
 blow:PUNCH:HURT:4d4
 blow:GAZE:PARALYZE:1d13
 #B:GAZEB:PARALYZE:2d8
-flags:BASH_DOOR | FORCE_SLEEP | IM_ELEC | IM_POIS
-#RUBBER | HURT_WATER
+flags:RUBBER | BASH_DOOR | FORCE_SLEEP | IM_ELEC | IM_POIS
+#HURT_WATER
 spell-freq:7
 spells:HASTE | SLOW | BO_ELEC | BE_ELEC | BA_POIS | DARKNESS
 desc:A very strange type of golem with two heads, partly made from metal with one robotlike
@@ -8562,8 +8543,7 @@ rarity:2
 experience:95
 blow:BITE:LOSE_STR:4d4
 blow:BITE:HURT:4d4
-flags:RAND_25
-#VISH
+flags:RAND_25 | VISH
 desc:It is a giant beetle with poisonous mandibles.
 
 name:giant blinking dragonfly
@@ -8601,9 +8581,9 @@ experience:424
 blow:HIT:HURT:4d5
 blow:SPIT:HURT:2d6
 blow:SPIT:HURT:2d6
-flags:FORCE_SLEEP | NEVER_MOVE | WEIRD_MIND
+flags:FORCE_SLEEP | NEVER_MOVE | WEIRD_MIND | RUBBER
 flags:NO_FEAR | NO_STUN 
-#BLOCK_LOS | RUBBER
+#BLOCK_LOS
 #innate-freq:3
 #spells:THROW | SPIT
 friends:59:1d5:Same
@@ -8743,9 +8723,9 @@ experience:173
 blow:HIT:HURT:3d5
 blow:HIT:ELEC:3d6
 blow:HIT:EAT_GOLD:3d3
-flags:MALE | EVIL | SMART | FORCE_SLEEP | ATTR_FLICKER
+flags:MALE | EVIL | SMART | FORCE_SLEEP | RUBBER | ATTR_FLICKER
 flags:DROP_2 | TAKE_ITEM | IM_ELEC | IM_POIS
-#ROAM | RUBBER
+#ROAM
 spell-freq:12
 spells:BO_ELEC | BO_POIS | SLOW
 desc:A bandit and dabbler in magic who relies more on speed and
@@ -8784,8 +8764,7 @@ rarity:1
 experience:99
 blow:BITE:FIRE:4d5
 flags:ANIMAL | WEIRD_MIND
-flags:RAND_25 | IM_FIRE
-#VISH
+flags:RAND_25 | IM_FIRE | VISH
 innate-freq:19
 spells:SPIT
 desc:It is smoking and burning with great heat.
@@ -9129,8 +9108,7 @@ experience:140
 blow:SPORE:ELEC:5d4
 blow:SPORE:ELEC:5d4
 flags:EMPTY_MIND | STUPID | ATTR_FLICKER
-flags:IM_ELEC
-#VISH
+flags:IM_ELEC | VISH
 desc:It is a strange growth on the dungeon floor, glowing and crackling with
 desc: sparks.
 
@@ -9685,7 +9663,6 @@ blow:CRUSH:HURT:4d5
 #BHOLD
 blow:BITE:ACID:4d7
 flags:ANIMAL | RAND_25
-#RUBBER | WATER_HIDE
 desc:A nulx is a tentacled swamp monster with acid under its skin. This one is about 14 feet
 desc: long (not including tentacles).
 
@@ -10168,9 +10145,9 @@ blow:SPIT:POISON:2d3
 blow:BITE:LOSE_STR:2d5
 blow:BITE:POISON:3d6
 blow:BITE:PARALYZE:2d5
-flags:EVIL | SMART | BASH_DOOR | DROP_1
+flags:EVIL | SILLY | SMART | BASH_DOOR | DROP_1
 flags:NO_FEAR | IM_ACID | IM_POIS | IM_WATER
-#ROAM | SILLY (find out what SPIT does)
+#ROAM (find out what SPIT does)
 spell-freq:6
 spells:BA_POIS | BO_POIS | BO_ACID | BLIND | SLOW | SCARE
 desc:A green scaled humanoid with a highly venomous bite and spells to match.
@@ -10191,10 +10168,10 @@ blow:HIT:HALLU:2d3
 blow:HIT:POISON:2d8
 blow:HIT:LOSE_WIS:2d13
 #INSANITY
-flags:EVIL | SMART | MALE | FORCE_SLEEP
+flags:EVIL | SMART | MALE | RUBBER | FORCE_SLEEP
 flags:TAKE_ITEM | DROP_2 | 
 flags:IM_POIS | NO_FEAR | NO_SLEEP
-#RUBBER (or SILLY?)
+#(or SILLY instead of RUBBER?)
 spell-freq:3
 spells:SCARE | DARKNESS | WOUND | MIND_BLAST | BLINK | HASTE | S_UNDEAD
 #CURSE_PC | BR_FEAR | S_ILLUSION | S_EXTRA
@@ -10598,9 +10575,9 @@ blow:CLAW:HURT:8d2
 blow:CLAW:HURT:8d2
 blow:CLAW:HURT:6d3
 #CLAWB
-flags:EVIL | BASH_DOOR | REGENERATE | FORCE_SLEEP 
+flags:RUBBER | EVIL | BASH_DOOR | REGENERATE | FORCE_SLEEP 
 flags:NO_FEAR | IM_ELEC | IM_NETHER
-#RUBBER | ROAM | RETURNS
+#ROAM | RETURNS
 desc:An evil magical cat with nine lives and claws like knives.
 
 #(Replaces the troll mummy)
@@ -10619,9 +10596,9 @@ experience:186
 blow:HIT:HURT:2d5
 blow:HIT:HURT:2d5
 blow:BITE:HURT:2d6
-flags:DROP_60 | IM_POIS | IM_COLD | NO_FEAR |
-flags:REGENERATE | HURT_ROCK | HURT_LIGHT
-#RUBBER | ROAM | RETURNS
+flags:DROP_60 | IM_POIS | IM_COLD | NO_FEAR
+flags:RUBBER | REGENERATE | HURT_ROCK | HURT_LIGHT
+#ROAM | RETURNS
 desc:This troll looks like an average stone troll except that it is
 desc: covered with scars from the times it has been killed and has put
 desc: itself back together.
@@ -10848,7 +10825,6 @@ blow:CRUSH:HURT:6d4
 #BHOLD
 blow:BITE:ACID:4d7
 flags:ANIMAL
-#RUBBER
 spell-freq:15
 spells:HASTE | CONF | SCARE | TELE_TO
 desc:It it a mass of large tentacle-like arms stretching out from a
@@ -11002,9 +10978,9 @@ blow:CLAW:HURT:1d9
 blow:CLAW:HURT:2d6
 blow:BITE:POISON:4d6
 #blow:TAIL:HURT:1d6
-flags:BASH_DOOR | FORCE_SLEEP | REGENERATE
+flags:RUBBER | BASH_DOOR | FORCE_SLEEP | REGENERATE
 flags:IM_POIS | IM_WATER | NO_HOLD
-#RUBBER | ROAM | CLIGHT | WATER_HIDE | TEMPLE
+#ROAM | CLIGHT | WATER_HIDE | TEMPLE
 innate-freq:6
 spell-freq:7
 spells:BR_LIGHT | BR_NEXU 
@@ -11268,9 +11244,9 @@ sleepiness:1
 depth:33
 rarity:6
 experience:245
-flags:STUPID | RAND_25 | NEVER_BLOW | FORCE_SLEEP
+flags:RUBBER | STUPID | RAND_25 | NEVER_BLOW | FORCE_SLEEP
 flags:IM_FIRE | IM_ELEC | IM_POIS
-#RUBBER | KEEP_DIST | SCALE
+#KEEP_DIST | SCALE
 innate-freq:5
 spell-freq:3
 spells:ARROW | BOLT | BO_ELEC | BE_ELEC | BO_PLAS | TPORT
@@ -11699,9 +11675,9 @@ experience:476
 blow:CRUSH:HURT:7d4
 #BHOLD
 blow:BITE:POISON:4d7
-flags:EVIL | FEMALE | DROP_1
+flags:EVIL | FEMALE | RUBBER | DROP_1
 flags:NO_SLEEP | NO_CONF | NO_FEAR | IM_ACID | IM_POIS | IM_WATER
-#RUBBER | FEY | WATER_HIDE
+#WATER_HIDE
 innate-freq:9
 spell-freq:9
 spells:BR_INER | BO_POIS | BO_WATE | MIND_BLAST | FORGET | TELE_TO
@@ -11811,9 +11787,9 @@ blow:CRUSH:POISON:3d3
 blow:CRUSH:POISON:3d3
 blow:CRUSH:HURT:6d2
 #BHOLD
-flags:IM_POIS | WEIRD_MIND
+flags:RUBBER | IM_POIS | WEIRD_MIND
 flags:NO_FEAR | NO_CONF | MULTIPLY
-#RUBBER | MOVE_SLOW | CLIGHT
+#MOVE_SLOW | CLIGHT
 friends:34:1d4:same
 desc:These fast growing vines could become a problem.
 
@@ -12955,10 +12931,10 @@ blow:CLAW:HURT:4d4
 blow:BITE:EXP_10:2d6
 #blow:GAZE:UNLUCKY:3d2
 #GAZEB
-flags:EVIL | BASH_DOOR | REGENERATE | FORCE_SLEEP 
+flags:RUBBER | EVIL | BASH_DOOR | REGENERATE | FORCE_SLEEP 
 flags:IM_POIS | IM_ELEC | IM_ACID | IM_NETHER
 flags:NO_FEAR | NO_CONF | NO_SLEEP
-#RUBBER | ROAM | PASS_DOOR | TEMPLE
+#ROAM | PASS_DOOR | TEMPLE
 innate-freq:6
 spell-freq:5
 spells:BR_DARK | DRAIN_MANA | BLINK | WOUND | S_UNDEAD
@@ -13008,9 +12984,9 @@ blow:KICK:CONFUSE:4d4
 #INSANITY
 blow:WAIL:LOSE_INT
 #blow:DROOL:FRENZY:1d9
-flags:RAND_25 | DROP_60 | FORCE_SLEEP
+flags:RAND_25 | DROP_60 | FORCE_SLEEP | RUBBER
 flags:BASH_DOOR | NO_SLEEP | NO_FEAR | NO_STUN | IM_POIS
-#ROAM | RUBBER
+#ROAM
 spell-freq:4
 spells:BLINK | HEAL | CONF | TELE_TO | SHRIEK | BLIND | MIND_BLAST
 #INSANTIY
@@ -13112,10 +13088,9 @@ depth:39
 rarity:3
 experience:30
 blow:CRAWL:DISENCHANT:1d4
-flags:WEIRD_MIND | MULTIPLY | STUPID
+flags:WEIRD_MIND | MULTIPLY | STUPID | VISH
 flags:RAND_50 | BASH_DOOR | ATTR_MULTI
 flags:HURT_LIGHT | IM_DISEN | NO_FEAR
-#VISH
 desc:It is a strange mass of squirming worms.  Magical energy crackles around
 desc: its disgusting form.
 
@@ -13256,9 +13231,9 @@ experience:1600
 blow:BUTT:HURT:6d5
 blow:BUTT:HURT:6d5
 blow:CRUSH:EXP_10:4d5
-flags:EVIL | ANIMAL | FORCE_SLEEP | REGENERATE | KILL_BODY
+flags:EVIL | RUBBER | ANIMAL | FORCE_SLEEP | REGENERATE | KILL_BODY
 flags:IM_ELEC | IM_POIS | NO_SLEEP | NO_STUN
-#SILLY? or RUBBER | S_EVIL2
+#SILLY or RUBBER? | S_EVIL2
 spell-freq:12
 spells:BA_POIS | HASTE | S_KIN | DARKNESS
 friends:55:1d5:mumak
@@ -13281,9 +13256,8 @@ experience:1749
 blow:BITE:BLIND:4d7
 blow:BITE:FIRE:4d7
 blow:BITE:ELEC:4d8
-flags:DROP_4 | MOVE_BODY
+flags:DROP_4 | MOVE_BODY | RUBBER
 flags:IM_FIRE | IM_ELEC | IM_WATER | NO_CONF | NO_FEAR
-#RUBBER
 innate-freq:7
 spells:BR_FIRE | BR_ELEC | BR_LIGHT
 desc:A shining red and yello 3-headed reptillian creature similar to the
@@ -14349,8 +14323,7 @@ experience:515
 blow:HIT:ELEC:5d7
 blow:HIT:FIRE:5d9
 flags:NEVER_MOVE | IM_POIS | IM_FIRE | IM_COLD
-flags:STUPID | INVISIBLE
-#RUBBER
+flags:STUPID | INVISIBLE | RUBBER
 innate-freq:2
 spell-freq:4
 spells:BO_ELEC | BE_ELEC | BO_PLAS | TPORT
@@ -14607,7 +14580,8 @@ blow:BITE:POISON:6d7
 flags:SMART | BASH_DOOR | FORCE_SLEEP | REGENERATE
 flags:IM_POIS | IM_ACID | IM_COLD | IM_WATER | IM_NEXUS
 flags:NO_HOLD | NO_CONF | NO_SLEEP | NO_STUN
-#RUBBER | CLIGHT | WATER_HIDE | TEMPLE | GOODMON
+flags:RUBBER
+#CLIGHT | WATER_HIDE | TEMPLE | GOODMON
 innate-freq:6
 spell-freq:6
 spells:BR_LIGHT | BR_GRAV
@@ -14787,7 +14761,7 @@ blow:CRUSH:HURT:5d8
 #BHOLD
 blow:BITE:ACID:7d9
 flags:ANIMAL | RAND_25
-#RUBBER | WATER_HIDE
+#flags-off: WATER_HIDE
 innate-freq:10
 spell-freq:11
 spells:BR_ACID | BO_WATE
@@ -15155,8 +15129,8 @@ blow:CRAWL:HURT:3d6
 blow:CRAWL:EAT_FOOD:2d8
 flags:WEIRD_MIND | BASH_DOOR | EVIL | UNDEAD | COLD_BLOOD
 flags:IM_POIS | IM_COLD | NO_SLEEP | NO_FEAR | HURT_FIRE
-flags:RAND_25 | MOVE_BODY | REGENERATE | MULTIPLY
-#RETURNS | SILLY
+flags:RAND_25 | MOVE_BODY | REGENERATE | MULTIPLY | SILLY
+#RETURNS
 flags-off:ANIMAL
 friends:80:1d3:same
 desc:It's worse than a nightmare.
@@ -15233,10 +15207,9 @@ blow:SPORE:DISENCHANT:7d7
 blow:SPORE:DISENCHANT:7d7
 blow:SPORE:DISENCHANT:7d7
 blow:SPORE:EXP_80:5d6
-flags:EVIL | FORCE_SLEEP | ATTR_FLICKER
+flags:EVIL | FORCE_SLEEP | ATTR_FLICKER | VISH
 flags:IM_ACID | IM_COLD | IM_ELEC | IM_FIRE
 flags-off: HURT_FIRE
-#VISH
 desc:It is the epitome of all that is evil, in a mold.  Its lifeless form draws
 desc: power from sucking the souls of those that approach it, a nimbus of pure
 desc: evil surrounds it.  Luckily for you, it can't move.
@@ -15278,9 +15251,8 @@ blow:BITE:FIRE:5d7
 blow:BITE:ELEC:5d7
 blow:BITE:CONFUSE:5d7
 blow:BITE:BLIND:5d7
-flags:DROP_4 | NO_CONF | NO_FEAR | MOVE_BODY
+flags:DROP_4 | NO_CONF | NO_FEAR | MOVE_BODY | RUBBER
 flags:IM_POIS | IM_FIRE | IM_ELEC | IM_WATER
-#RUBBER
 innate-freq:5
 spells:BR_FIRE | BR_ELEC | BR_LIGHT | BR_SOUN | BR_PLAS
 spells:BR_NEXU | BR_SHAR | BR_INER
@@ -15904,10 +15876,9 @@ blow:KICK:HURT:10d2
 blow:HIT:PARALYZE:20d1
 blow:HIT:PARALYZE:15d1
 flags:MALE | INVISIBLE | FORCE_SLEEP | ATTR_FLICKER
-flags:DROP_2 | ONLY_ITEM
+flags:DROP_2 | ONLY_ITEM | VISH
 flags:IM_ACID | IM_COLD | IM_ELEC | IM_FIRE | IM_POIS
 flags:NO_SLEEP | NO_HOLD | NO_CONF
-#VISH
 spell-freq:3
 spells:HEAL | S_ANIMAL
 #HEAL_OTHER
@@ -15938,8 +15909,8 @@ blow:BITE:ACID:7d9
 blow:SPIT:BLIND:3d7
 #SBLIND
 flags:IM_POIS | IM_FIRE | NO_FEAR | NO_SLEEP | NO_CONF
-flags:POWERFUL | SPIRIT | FORCE_SLEEP | MOVE_BODY
-#RUBBER | S_EVIL2 | TEMPLE
+flags:RUBBER | POWERFUL | SPIRIT | FORCE_SLEEP | MOVE_BODY
+#S_EVIL2 | TEMPLE
 spell-freq:8
 spells:BO_ACID | BA_ACID | BO_WATE | BO_PLAS | BO_ICE | HASTE | BLIND
 friends-base:22:1d2:jelly
@@ -16358,7 +16329,6 @@ blow:CRUSH:ACID:3d13
 flags:SPIRIT | WEIRD_MIND | FORCE_SLEEP | POWERFUL
 flags:DROP_1 | DROP_40 | ONLY_ITEM | MOVE_BODY
 flags:IM_ELEC | IM_POIS | NO_CONF | NO_SLEEP | NO_FEAR
-#RUBBER
 spell-freq:9
 spells:MIND_BLAST
 #INSANITY
@@ -16557,8 +16527,7 @@ depth:54
 rarity:5
 experience:885
 flags:IM_POIS | IM_FIRE | IM_COLD | IM_ACID
-flags:NEVER_MOVE | NEVER_BLOW | STUPID | INVISIBLE
-#RUBBER
+flags:NEVER_MOVE | NEVER_BLOW | STUPID | INVISIBLE | RUBBER
 innate-freq:3
 spell-freq:5
 spells:BOULDER | BO_PLAS | TPORT
@@ -17349,10 +17318,9 @@ blow:TOUCH:POISON:6d5
 blow:TOUCH:POISON:6d5
 blow:HIT:DISENCHANT:6d8
 blow:HIT:DISENCHANT:6d8
-flags:SMART | ATTR_FLICKER | FORCE_SLEEP
+flags:SMART | ATTR_FLICKER | FORCE_SLEEP | VISH
 flags:DROP_2 | ONLY_ITEM
 flags:OPEN_DOOR | BASH_DOOR
-#VISH
 spell-freq:4
 spells:BLIND | BRAIN_SMASH | WOUND | SCARE
 spells:BA_NETH | BO_MANA | BO_NETH | S_UNDEAD
@@ -17979,9 +17947,8 @@ blow:BITE:EXP_80:6d6
 blow:GAZE:PARALYZE:5d5
 blow:GAZE:LOSE_INT:5d5
 blow:GAZE:DRAIN_CHARGES:5d5
-flags:FEMALE | EVIL | SMART | SPIRIT | BASH_DOOR | FORCE_SLEEP
-flags:NO_CONF | NO_SLEEP | NO_HOLD
-#VISH
+flags:FEMALE | EVIL | SMART | SPIRIT | FORCE_SLEEP | VISH
+flags:BASH_DOOR | NO_CONF | NO_SLEEP | NO_HOLD
 spell-freq:2
 spells:BLIND | BRAIN_SMASH | CONF | DRAIN_MANA | FORGET | SCARE
 spells:BA_ACID | BA_COLD | BA_DARK | BA_FIRE | BO_MANA | BO_NETH
@@ -18063,7 +18030,7 @@ flags:MALE | EVIL | SMART | REGENERATE | FORCE_SLEEP | ATTR_MULTI
 flags:RAND_25 | ONLY_ITEM | DROP_1 | DROP_60 | DROP_GOOD | DROP_GREAT
 flags:TAKE_ITEM | BASH_DOOR | POWERFUL | IM_NETHER
 flags:NO_FEAR | NO_SLEEP | NO_STUN | IM_POIS | IM_COLD | IM_ACID | IM_ELEC
-#ROAM | RUBBER | KEEP_DIST?
+#ROAM | KEEP_DIST?
 innate-freq:7
 spell-freq:3
 spells:BRAIN_SMASH | TELE_TO | BLINK | TPORT | WOUND
@@ -18117,9 +18084,8 @@ blow:HIT:HURT:10d10
 blow:HIT:HURT:10d10
 blow:HIT:LOSE_STR:4d6
 blow:HIT:LOSE_STR:4d6
-flags:UNIQUE | MALE | FORCE_SLEEP
+flags:UNIQUE | MALE | FORCE_SLEEP | VISH
 flags:DROP_4 | DROP_GOOD | ONLY_ITEM
-#VISH
 spell-freq:3
 spells:BLIND | CONF | HOLD | BA_DARK | BA_NETH | S_HI_UNDEAD | S_KIN
 desc:This huge affront to existence twists and tears at the fabric of space.  A

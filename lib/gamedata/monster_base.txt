@@ -164,7 +164,7 @@ desc:Hybrid
 name:dark fairy
 glyph:i
 pain:1
-flags:SPIRIT
+flags:SPIRIT | RUBBER
 flags:OPEN_DOOR | CLEAR_WEB
 desc:Dark Fairy
 #FEY
@@ -173,7 +173,7 @@ desc:Dark Fairy
 name:icky thing
 glyph:i
 pain:1
-flags:CLEAR_WEB
+flags:CLEAR_WEB | VISH
 desc:Icky Thing
 
 # Insects are small, a bit fast, weak breeders which bite for various effects
@@ -263,7 +263,7 @@ desc:Naga
 name:nulx
 glyph:n
 pain:2
-flags:BASH_DOOR | CLEAR_WEB
+flags:BASH_DOOR | CLEAR_WEB | RUBBER
 flags:IM_ACID | IM_WATER
 desc:Nulx (swamp monsters) and other tentacled horrors
 #WATER_HIDE
@@ -445,7 +445,7 @@ desc:Xorn or other elemental monster
 name:light fairy
 glyph:y
 pain:1
-flags:SPIRIT | OPEN_DOOR | CLEAR_WEB
+flags:SPIRIT | RUBBER | OPEN_DOOR | CLEAR_WEB
 desc:Light Fairy
 #flags:FEY | CLIGHT
 
@@ -453,7 +453,7 @@ desc:Light Fairy
 name:yeek
 glyph:y
 pain:1
-flags:SPIRIT | OPEN_DOOR | CLEAR_WEB
+flags:SPIRIT | VISH | OPEN_DOOR | CLEAR_WEB
 desc:Yeek
 
 # Yetis are a couple of niche monsters, big furry bear-like creatures

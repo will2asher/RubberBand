@@ -87,8 +87,10 @@ OP(birth_feelings,        "Show level feelings",
 BIRTH, true)
 OP(birth_no_selling,      "Increase gold drops but disable selling",
 BIRTH, true)
-OP(birth_start_kit,       "Start with a kit of useful gear",
-BIRTH, true)
+OP(birth_vish,            "Use vanilla-ish flavored monsters (removes fairies in favor of yeeks and icky things)",
+BIRTH, false)
+OP(birth_sillymon,        "Include silly monsters",
+BIRTH, false)
 OP(birth_ai_learn,        "Monsters learn from their mistakes",
 BIRTH, true)
 OP(birth_know_runes,      "Know all runes on birth",

@@ -538,13 +538,13 @@ static void player_outfit(struct player *p)
 		struct object_kind *kind = lookup_kind(si->tval, si->sval);
 		assert(kind);
 
-		/* Without start_kit, only start with 1 food and 1 light */
-		if (!OPT(p, birth_start_kit)) {
-			if (!tval_is_food_k(kind) && !tval_is_light_k(kind))
-				continue;
-
-			num = 1;
-		}
+		/* Without start_kit, only start with 1 food and 1 light
+		* if (!OPT(p, birth_start_kit)) {
+		* 	if (!tval_is_food_k(kind) && !tval_is_light_k(kind))
+		* 		continue;
+		*
+		*	num = 1;
+		* } (removing this option for Rubber) */
 
 		/* Prepare a new item */
 		obj = object_new();

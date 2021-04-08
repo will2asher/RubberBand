@@ -111,6 +111,10 @@ static void init_race_allocs(void) {
 			/* Extract the base probability */
 			p = (100 / race->rarity);
 
+			/* most VISH monsters are only much rarer if VISH is turned off */
+			if (rf_has(race->flags, RF_VISH) && (!OPT(player, birth_vish)))
+				p = (100 / (race->rarity + 4));
+
 			/* Multiply by depth factor (experimental) */
 			p *= (1 + lev / 10);
 
@@ -244,7 +248,7 @@ struct monster_race *get_mon_num(int level)
 
 		/* No seasonal monsters outside of Christmas */
 		if (rf_has(race->flags, RF_SEASONAL) &&
-			!(date->tm_mon == 11 && date->tm_mday >= 24 && date->tm_mday <= 26))
+			!(date->tm_mon == 11 && date->tm_mday >= 22 && date->tm_mday <= 26))
 			continue;
 
 		/* Only one copy of a unique must be around at the same time */
@@ -253,6 +257,18 @@ struct monster_race *get_mon_num(int level)
 
 		/* Some monsters never appear out of depth */
 		if (rf_has(race->flags, RF_FORCE_DEPTH) && race->level > player->depth)
+			continue;
+
+		/* Option to use vanilla-ish monsters or not */
+		/* most VISH monsters are only much rarer if VISH is turned off, but not 'y' or 'i' monsters */
+		if (rf_has(race->flags, RF_VISH) && (!OPT(player, birth_vish)) && 
+			(race->d_char == "y" || race->d_char == "i"))
+			continue;
+		/* No RUBBER monsters if VISH is turned on */
+		if (rf_has(race->flags, RF_RUBBER) && (OPT(player, birth_vish)))
+			continue;
+		/* Option to use silly monsters */
+		if (rf_has(race->flags, RF_SILLY) && (!OPT(player, birth_sillymon)))
 			continue;
 
 		/* Accept */
@@ -271,7 +287,7 @@ struct monster_race *get_mon_num(int level)
 	/* Try for a "harder" monster once (50%) or twice (10%) */
 	p = randint0(100);
 
-	if (p < 60) {
+	if (p < 55) {
 		struct monster_race *old = race;
 
 		/* Pick a new monster */
