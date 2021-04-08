@@ -273,6 +273,13 @@ static int monster_elemental_damage(melee_effect_handler_context_t *context,
 			*die_msg = MON_MSG_FREEZE_SHATTER;
 			break;
 		}
+		case PROJ_WATER: {
+			imm_flag = RF_IM_WATER;
+			hurt_flag = RF_HURT_WATER;
+			*hurt_msg = MON_MSG_SHUDDER;
+			*die_msg = MON_MSG_DISINTEGRATES;
+			break;
+		}
 		case PROJ_POIS: {
 			imm_flag = RF_IM_POIS;
 			break;

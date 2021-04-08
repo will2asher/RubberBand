@@ -137,7 +137,6 @@ obvious:1
 wake:1
 color:Green
 
-
 #code:SLIME
 #name:slime
 #type:element
@@ -148,7 +147,7 @@ color:Green
 #numerator:6
 #denominator:8+1d4
 #divisor:6
-#damage-cap:600
+#damage-cap:500
 #msgt:BR_ACID?
 #obvious:1
 #wake:1
@@ -289,7 +288,7 @@ desc:water
 player-desc:water
 blind-desc:water
 lash-desc:water
-divisor:6
+divisor:10
 damage-cap:0
 msgt:GENERIC
 obvious:1

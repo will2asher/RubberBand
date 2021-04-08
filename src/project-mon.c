@@ -539,7 +539,23 @@ static void project_monster_handler_LIGHT(project_monster_handler_context_t *con
 /* Dark -- opposite of Light */
 static void project_monster_handler_DARK(project_monster_handler_context_t *context)
 {
-	project_monster_breath(context, RSF_BR_DARK, 2);
+	if (context->seen) rf_on(context->lore->flags, RF_CLIGHT);
+
+	if (rsf_has(context->mon->race->spell_flags, RSF_BR_DARK)) {
+		/* Learn about breathers through resistance */
+		if (context->seen) rsf_on(context->lore->spell_flags, RSF_BR_DARK);
+
+		context->hurt_msg = MON_MSG_RESIST;
+		context->dam *= 2;
+		context->dam /= randint1(6) + 6;
+	}
+	/* Creatures of light are hurt by dark  (not quite 2x damage though) */
+	else if (rf_has(context->mon->race->flags, RF_CLIGHT)) {
+		context->hurt_msg = MON_MSG_SHUDDER;
+		context->die_msg = MON_MSG_DISINTEGRATES;
+		context->dam *= 7;
+		context->dam /= 4;
+	}
 }
 
 /* Sound -- Sound breathers resist */
@@ -604,8 +620,10 @@ static void project_monster_handler_NETHER(project_monster_handler_context_t *co
 		context->dam *= 3;
 		context->dam /= (randint1(6)+6);
 	}
+	/* Why should EVIL characters get halved damage from nether? Now it's 5/6 damage. */
 	else if (rf_has(context->mon->race->flags, RF_EVIL)) {
-		context->dam /= 2;
+		context->dam *= 5;
+		context->dam /= 6;
 		context->hurt_msg = MON_MSG_RESIST_SOMEWHAT;
 	}
 }
@@ -641,8 +659,11 @@ static void project_monster_handler_DISEN(project_monster_handler_context_t *con
 /* Water damage */
 static void project_monster_handler_WATER(project_monster_handler_context_t *context)
 {
-	/* Zero out the damage because this is an immunity flag. */
-	project_monster_resist_other(context, RF_IM_WATER, 0, false, MON_MSG_IMMUNE);
+	/* Vanilla: Zero out the damage because this is an immunity flag. */
+	/* Vanilla: project_monster_resist_other(context, RF_IM_WATER, 0, false, MON_MSG_IMMUNE); */
+	/* XX TODO: fix message */
+	project_monster_hurt_immune(context, RF_HURT_WATER, RF_IM_WATER, 2, 20, MON_MSG_SHUDDER, MON_MSG_DISINTEGRATES);
+
 }
 
 /* Ice -- Cold + Stun */
@@ -735,10 +756,10 @@ static void project_monster_handler_LIGHT_WEAK(project_monster_handler_context_t
 	project_monster_hurt_only(context, RF_HURT_LIGHT, MON_MSG_CRINGE_LIGHT, MON_MSG_SHRIVEL_LIGHT);
 }
 
-static void project_monster_handler_DARK_WEAK(project_monster_handler_context_t *context)
+/* Weak Dark, only hurts susceptible creatures */
+static void project_monster_handler_DARK_WEAK(project_monster_handler_context_t* context)
 {
-	context->skipped = true;
-	context->dam = 0;
+	project_monster_hurt_only(context, RF_CLIGHT, MON_MSG_SHUDDER, MON_MSG_DISINTEGRATES);
 }
 
 /* Stone to Mud */

@@ -3836,19 +3836,23 @@ power:3
 effect:BOLT_AWARE:MON_HOLD
 dice:3+1d5
 
-name:Stun Monster
+#Changed Stun monster to Water Bolts
+name:Water Bolts
 type:wand
 graphics:-:d
-level:5
+level:12
 weight:10
-cost:500
-alloc:20:5 to 100
+cost:810
+alloc:8:11 to 102
 attack:1d1:0:0
 armor:0:0
-charges:2+d6
-power:3
+charges:3+d6
+power:4
+effect:BOLT:WATER
+dice:3d8
 effect:BOLT_AWARE:MON_STUN
 dice:5+1d5
+#dice should depend on device skill (for pretty much all of these)
 
 name:Scare Monster
 type:wand
@@ -3918,7 +3922,7 @@ graphics:-:d
 level:8
 weight:10
 cost:480
-alloc:20:8 to 65
+alloc:16:8 to 65
 attack:1d1:0:0
 armor:0:0
 charges:5+d8
