@@ -5400,52 +5400,59 @@ bool effect_handler_WONDER(effect_handler_context_t *context)
 		value.dice = 3 + ((plev - 5) / 6);
 		value.sides = 6;
 		handler = effect_handler_BEAM;
-	} else if (die < 61) {
+	} 
+	else if (die < 58) {
+		subtype = PROJ_DARK;
+		value.dice = 2 + ((plev - 5) / 6);
+		value.sides = 8;
+		handler = effect_handler_LINE;
+	}
+	else if (die < 63) {
 		beam -= 10;
 		subtype = PROJ_COLD;
 		value.dice = 5 + ((plev - 5) / 4);
 		value.sides = 8;
 		handler = effect_handler_BOLT_OR_BEAM;
-	} else if (die < 66) {
+	} else if (die < 68) {
 		subtype = PROJ_ACID;
 		value.dice = 6 + ((plev - 5) / 4);
 		value.sides = 8;
 		handler = effect_handler_BOLT_OR_BEAM;
-	} else if (die < 71) {
+	} else if (die < 73) {
 		subtype = PROJ_FIRE;
 		value.dice = 8 + ((plev - 5) / 4);
 		value.sides = 8;
 		handler = effect_handler_BOLT_OR_BEAM;
-	} else if (die < 76) {
+	} else if (die < 78) {
 		subtype = PROJ_MON_DRAIN;
 		value.base = 75;
 		handler = effect_handler_BOLT;
-	} else if (die < 81) {
+	} else if (die < 83) {
 		subtype = PROJ_ELEC;
 		value.base = 30 + plev / 2;
 		radius = 2;
 		handler = effect_handler_BALL;
-	} else if (die < 86) {
+	} else if (die < 88) {
 		subtype = PROJ_ACID;
 		value.base = 40 + plev;
 		radius = 2;
 		handler = effect_handler_BALL;
-	} else if (die < 91) {
+	} else if (die < 93) {
 		subtype = PROJ_ICE;
 		value.base = 70 + plev;
 		radius = 3;
 		handler = effect_handler_BALL;
-	} else if (die < 96) {
+	} else if (die < 98) {
 		subtype = PROJ_FIRE;
 		value.base = 80 + plev;
 		radius = 3;
 		handler = effect_handler_BALL;
-	} else if (die < 101) {
+	} else if (die < 102) {
 		subtype = PROJ_MON_DRAIN;
 		value.base = 100 + plev;
 		handler = effect_handler_BOLT;
 	} else if (die < 104) {
-		radius = 12;
+		radius = 11;
 		handler = effect_handler_EARTHQUAKE;
 	} else if (die < 106) {
 		radius = 15;
