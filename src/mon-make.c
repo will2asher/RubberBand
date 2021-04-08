@@ -33,6 +33,7 @@
 #include "obj-util.h"
 #include "player-calcs.h"
 #include "player-timed.h"
+#include "player.h"
 #include "target.h"
 
 /**
@@ -247,14 +248,14 @@ struct monster_race *get_mon_num(int level)
 		/* Some monsters can appear in the town or dungeon */
 		if (rf_has(race->flags, RF_TOWN_OR_DUN) && (race->level == 0)) {
 		    /* but they're less common in the dungeon if native to the town */
-		    if ((level > 0) && (randint(10) < 5)) continue;
+		    if ((level > 0) && (randint0(level + 6) > 5)) continue;
         }
 		/* No town monsters in dungeon (normally) */
 		else if ((level > 0) && (table[i].level <= 0)) continue;
 
 		/* and Dungeon-native TOWN_OR_DUN monster are less common in town (depending on player level) */
-		if (rf_has(race->flags, RF_TOWN_OR_DUN) && (race->level > 0)) {
-			if ((level > 0) && (randint(player->lev + 2) < race->level)) continue;
+		if (rf_has(race->flags, RF_TOWN_OR_DUN) && (race->level > 0) && (level > 0)) {
+			if (randint0(player->lev + 2) < race->level) continue;
 		}
 
 		/* No seasonal monsters outside of Christmas */
@@ -879,7 +880,7 @@ static bool mon_create_drop(struct chunk *c, struct monster *mon, byte origin)
 
 
 /**
- * Creates the onbject a mimic is imitating.
+ * Creates the object a mimic is imitating.
  */
 void mon_create_mimicked_object(struct chunk *c, struct monster *mon, int index)
 {
