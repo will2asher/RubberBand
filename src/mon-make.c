@@ -248,13 +248,13 @@ struct monster_race *get_mon_num(int level)
 		/* Some monsters can appear in the town or dungeon */
 		if (rf_has(race->flags, RF_TOWN_OR_DUN) && (race->level == 0)) {
 		    /* but they're less common in the dungeon if native to the town */
-		    if ((level > 0) && (randint0(level + 6) > 5)) continue;
+		    if ((level > 0) && (randint0(level*2/3 + 6) > 4)) continue;
         }
 		/* No town monsters in dungeon (normally) */
 		else if ((level > 0) && (table[i].level <= 0)) continue;
 
-		/* and Dungeon-native TOWN_OR_DUN monster are less common in town (depending on player level) */
-		if (rf_has(race->flags, RF_TOWN_OR_DUN) && (race->level > 0) && (level > 0)) {
+		/* and Dungeon-native TOWN_OR_DUN monsters are less common in town (depending on player level) */
+		if (rf_has(race->flags, RF_TOWN_OR_DUN) && (race->level > 0) && (level == 0)) {
 			if (randint0(player->lev + 2) < race->level) continue;
 		}
 
