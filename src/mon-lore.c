@@ -594,8 +594,9 @@ static const char *lore_describe_speed(byte speed)
 		{130,	"incredibly quickly"},
 		{120,	"very quickly"},
 		{115,	"quickly"},
-		{110,	"fairly quickly"},
+		{111,	"fairly quickly"},
 		{109,	"normal speed"}, /* 110 is normal speed */
+		{105,	"somewhat slowly"},
 		{99,	"slowly"},
 		{89,	"very slowly"},
 		{0,		"incredibly slowly"},
@@ -1275,6 +1276,9 @@ void lore_append_abilities(textblock *tb, const struct monster_race *race,
 	if (rf_has(known_flags, RF_MULTIPLY))
 		textblock_append_c(tb, COLOUR_ORANGE, "%s breeds explosively.  ",
 						   initial_pronoun);
+	if (rf_has(known_flags, RF_MULTIPLY))
+		textblock_append_c(tb, COLOUR_ORANGE, "%s breeds.  ",
+			initial_pronoun);
 	if (rf_has(known_flags, RF_REGENERATE))
 		textblock_append(tb, "%s regenerates quickly.  ", initial_pronoun);
 

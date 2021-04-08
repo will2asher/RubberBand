@@ -3911,19 +3911,20 @@ effect:BOLT_AWARE:MON_POLY
 dice:$B
 expr:B:PLAYER_LEVEL:+ 0
 
+#not much weaker than -lightning bolt now
 name:Darkness
 type:wand
 graphics:-:d
-level:3
+level:8
 weight:10
-cost:100
-alloc:20:3 to 60
+cost:480
+alloc:20:8 to 65
 attack:1d1:0:0
 armor:0:0
 charges:5+d8
 power:4
 effect:LINE:DARK_WEAK
-dice:3d12
+dice:2d12
 effect:LINE:DARK
 dice:2d12
 

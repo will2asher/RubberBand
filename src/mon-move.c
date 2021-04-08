@@ -1015,7 +1015,7 @@ bool multiply_monster(struct chunk *c, const struct monster *mon)
  */
 static bool monster_turn_multiply(struct chunk *c, struct monster *mon)
 {
-	int k = 0, y, x;
+	int k = 0, y, x, j;
 
 	struct monster_lore *lore = get_lore(mon->race);
 
@@ -1030,14 +1030,18 @@ static bool monster_turn_multiply(struct chunk *c, struct monster *mon)
 		for (x = mon->grid.x - 1; x <= mon->grid.x + 1; x++)
 			if (square(c, loc(x, y))->mon > 0) k++;
 
+	j = z_info->repro_monster_rate;
+	/* some monsters breed slower than others */
+	if (rf_on(lore->flags, RF_SMULTIPLY)) j = j * 2;
+
 	/* Multiply slower in crowded areas */
-	if ((k < 4) && (k == 0 || one_in_(k * z_info->repro_monster_rate))) {
+	if ((k < 4) && (k == 0 || one_in_(k * j))) {
 		/* Successful breeding attempt, learn about that now */
-		if (monster_is_visible(mon))
-			rf_on(lore->flags, RF_MULTIPLY);
+		if (monster_is_visible(mon)) rf_on(lore->flags, RF_MULTIPLY);
+		if (monster_is_visible(mon)) rf_on(lore->flags, RF_SMULTIPLY);
 
 		/* Leave now if not a breeder */
-		if (!rf_has(mon->race->flags, RF_MULTIPLY))
+		if (!rf_has(mon->race->flags, RF_MULTIPLY) && !rf_has(mon->race->flags, RF_SMULTIPLY))
 			return false;
 
 		/* Try to multiply */

@@ -61,31 +61,34 @@ $  Gold or gems                  ]  Misc. armour
 Monsters
 --------
 
-$  Creeping Coins             ,  Mushroom Patch
-a  Giant Ant                  A  Ainu
-b  Giant Bat                  B  Bird
-c  Giant Centipede            C  Canine (Dog)
+$  Creeping Coins             ,  Mushroom Patch or Mold
+^  Trap monster (or trap)
+a  Ant or Beetle              A  Amphibian
+b  Bat                        B  Bird
+c  Centipede                  C  Canine (Dog)
 d  Dragon                     D  Ancient Dragon
 e  Floating Eye               E  Elemental
-f  Feline (Cat)               F  Dragon Fly
+f  Feline (Cat)               F  Fly or Bee
 g  Golem                      G  Ghost
 h  Humanoid                   H  Hybrid
-i  Icky-Thing                 I  Insect
-j  Jelly                      J  Snake
-k  Kobold                     K  Killer Beetle
+i  Dark Fairy or Icky-Thing (depending on VISH option)
+I  Insect
+j  Jelly or Slime             J  Snake
+k  Kobold                     K  Knight or other higher-level humanoid
 l  Tree/Ent                   L  Lich
-m  Mold                       M  Multi-Headed Hydra
-n  Naga                       N  -
+m  Ainu/maia                  M  Multi-Headed Hydra
+n  Naga                       N  Nulx
 o  Orc                        O  Ogre
 p  Human "person"             P  Giant "person"
 q  Quadruped                  Q  Quylthulg (Pulsing Flesh Mound)
-r  Rodent                     R  Reptile/Amphibian
+r  Rodent                     R  Reptile
 s  Skeleton                   S  Spider/Scorpion/Tick
 t  Townsperson                T  Troll
 u  Minor Demon                U  Major Demon
-v  Vortex                     V  Vampire
+v  Vortex                     V  Vampire or Ghoul
 w  Worm or Worm Mass          W  Wight/Wraith
-x  -                          X  Xorn/Xaren
-y  Yeek                       Y  Yeti
+x  -                          X  Xorn or other elemental monster
+y  Light Fairy or Yeek (depending on VISH option)
+Y  Yeti
 z  Zombie/Mummy               Z  Zephyr Hound
 

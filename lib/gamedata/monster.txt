@@ -1389,7 +1389,7 @@ experience:14
 blow:HIT:HURT:1d3
 blow:HIT:HURT:2d3
 #CLAWB
-flags:DROP_40
+flags:DROP_40 | RUBBER
 #ROAM | S_EVIL2
 #spell-freq:12
 #spells:TINVIS
@@ -1713,8 +1713,8 @@ depth:4
 rarity:2
 experience:16
 blow:BITE:HURT:2d4
-flags:BASH_DOOR
-#ROAM | SMULTIPLY (multiplies slowly)
+flags:BASH_DOOR | SMULTIPLY
+#ROAM (multiplies slowly)
 desc:It's a rodent of unusual size.
 
 name:ugly bullfrog
@@ -2002,7 +2002,7 @@ experience:21
 blow:HIT:EAT_GOLD:1d3
 blow:HIT:HURT:3d3
 #CLAWB
-flags:DROP_40
+flags:DROP_40 | RUBBER
 #ROAM | S_EVIL2
 #spell-freq:9
 #spells:TINVIS
@@ -2095,8 +2095,9 @@ rarity:2
 experience:16
 blow:TOUCH:HURT:1d6
 #SLIME
-flags:RUBBER | IM_ACID | IM_POIS | HURT_COLD | NO_CONF
-#SMULTIPLY | PASS_DOOR
+flags:RUBBER | SMULTIPLY | HURT_COLD
+flags:IM_ACID | IM_POIS | NO_CONF
+#PASS_DOOR
 desc:It is a large oozing pile of green slime.
 
 name:purple mushroom patch
@@ -2128,7 +2129,7 @@ depth:6
 rarity:1
 experience:20
 blow:SPORE:CONFUSE:1d4
-flags:EMPTY_MIND | STUPID | VISH
+flags:EMPTY_MIND | STUPID | VISH | NEVER_MOVE
 desc:A strange brown growth on the dungeon floor.
 
 name:creeping silver coins
@@ -2722,7 +2723,7 @@ depth:8
 rarity:1
 experience:28
 blow:SPORE:TERRIFY:1d4
-flags:IM_ACID
+flags:IM_ACID | NEVER_MOVE
 desc:It is a strange growth on the dungeon floor.
 
 name:raven
@@ -3115,8 +3116,8 @@ rarity:3
 experience:4
 blow:BITE:HURT:1d2
 blow:BITE:POISON:1d2
-flags:WEIRD_MIND | MULTIPLY 
-#PASS_DOOR | SMULTIPLY
+flags:WEIRD_MIND | SMULTIPLY 
+#PASS_DOOR
 innate-freq:14
 spells:WEAVE
 desc:An eight-legged pest which fills attics or barns with webs.
@@ -3486,8 +3487,9 @@ depth:10
 rarity:2
 experience:3
 blow:SPORE:HURT:1d1
-flags:COLD_BLOOD | INVISIBLE | MULTIPLY
+flags:INVISIBLE | MULTIPLY
 flags:NEVER_MOVE | ATTR_CLEAR
+#removed COLD_BLOOD Otherwise, they're just too pointlessly annoying.
 desc:Yum!  It looks quite tasty.
 
 name:hairy mold
@@ -3502,7 +3504,7 @@ depth:10
 rarity:1
 experience:32
 blow:SPORE:POISON:1d3
-flags:IM_POIS
+flags:IM_POIS | NEVER_MOVE
 desc:It is a strange hairy growth on the dungeon floor.
 
 name:disenchanter mold
@@ -3518,7 +3520,7 @@ rarity:2
 experience:40
 blow:SPORE:DISENCHANT:1d6
 flags:EMPTY_MIND | STUPID
-flags:IM_DISEN | ATTR_MULTI | VISH
+flags:IM_DISEN | ATTR_MULTI | VISH | NEVER_MOVE
 spell-freq:11
 spells:DRAIN_MANA
 desc:It is a strange glowing growth on the dungeon floor.
@@ -4062,7 +4064,7 @@ blow:TOUCH:EXP_10:1d3
 flags:WEIRD_MIND | MULTIPLY | STUPID
 flags:RAND_25 | RAND_50 | 
 flags:HURT_LIGHT | NO_FEAR | IM_NETHER
-#PASS_DOOR | SMULTIPLY | ROAM
+#PASS_DOOR
 desc:It is a disgusting mass of dark worms, eating each other, the floor, the
 desc: air, you....
 
@@ -4465,7 +4467,7 @@ desc:A type of zhelung-lizard which is much like a reptillian wolf with a spiked
 name:shrieking worm mass
 base:worm
 color:B
-speed:101
+speed:105
 hit-points:21
 hearing:11
 armor-class:22
@@ -4475,8 +4477,7 @@ rarity:5
 experience:9
 blow:CRAWL:TERRIFY:1d2
 flags:RAND_50 | RAND_25
-flags:STUPID | WEIRD_MIND | MULTIPLY | NO_FEAR
-#SMULTIPLY
+flags:STUPID | WEIRD_MIND | SMULTIPLY | NO_FEAR
 innate-freq:5
 spells:SHRIEK
 desc:A nasty ball of worms, bred to wake more dangerous monsters.
@@ -5447,7 +5448,7 @@ desc:It is a small roughly human-shaped demonic spirit full of malevolence.
 name:grey ooze
 base:jelly
 color:s
-speed:104
+speed:106
 hit-points:91
 hearing:8
 armor-class:23
@@ -5458,7 +5459,7 @@ experience:39
 blow:TOUCH:ACID:2d8
 #blow:TOUCH:SLIME
 flags:RAND_25 | TAKE_ITEM | NO_FEAR
-#SMULTIPLY | PASS_DOOR | WATER_HIDE 
+flags:PASS_DOOR | WATER_HIDE | SMULTIPLY
 desc: a slow-moving acidic lump.
 
 name:air spirit
@@ -5727,8 +5728,9 @@ depth:16
 rarity:2
 experience:31
 blow:TOUCH:HURT:1d9
-#SLIME | SMULTIPLY
-flags:IM_ACID | IM_POIS | HURT_COLD | NO_CONF | RUBBER
+#SLIME
+flags:IM_ACID | IM_POIS | HURT_COLD | NO_CONF | 
+flags:RUBBER | SMULTIPLY
 desc:It is a huge oozing pile of green slime.
 
 name:black cat
@@ -6166,7 +6168,7 @@ depth:18
 rarity:2
 experience:63
 blow:SPORE:FIRE:4d4
-flags:EMPTY_MIND | STUPID
+flags:EMPTY_MIND | STUPID | NEVER_MOVE
 flags:IM_FIRE
 #VISH?
 flags-off:HURT_FIRE
@@ -7627,8 +7629,8 @@ rarity:4
 experience:91
 blow:BITE:LOSE_STR:2d6
 blow:STING:POISON:2d7
-flags:IM_POIS | IM_NETHER | EVIL 
-#SMULTIPLY (breeds slowly)
+flags:IM_POIS | IM_NETHER | EVIL | SMULTIPLY
+#(breeds slowly)
 spell-freq:13
 spells:DARKNESS | S_UNDEAD 
 desc:A mosquito bred by netherworld gods and sent on their errands.
@@ -8704,8 +8706,8 @@ depth:26
 rarity:4
 experience:7
 blow:BITE:BLIND:1d3
-flags:MULTIPLY | RAND_50 | ATTR_FLICKER
-#Maybe change MULTIPLY to SMULTIPLY (slower breeding) and have them come in groups)
+flags:SMULTIPLY | RAND_50 | ATTR_FLICKER
+friends:98:1d5:same
 desc:Clouds of these monsters light up the dungeon - so brightly that you can
 desc: barely see through them.
 
@@ -9107,7 +9109,7 @@ rarity:1
 experience:140
 blow:SPORE:ELEC:5d4
 blow:SPORE:ELEC:5d4
-flags:EMPTY_MIND | STUPID | ATTR_FLICKER
+flags:EMPTY_MIND | STUPID | ATTR_FLICKER | NEVER_MOVE
 flags:IM_ELEC | VISH
 desc:It is a strange growth on the dungeon floor, glowing and crackling with
 desc: sparks.
@@ -12668,7 +12670,7 @@ blow:TOUCH:ACID:2d9
 flags:TAKE_ITEM | MULTIPLY
 flags:DROP_20 | DROP_1
 flags:NO_CONF | NO_SLEEP | IM_ACID | IM_POIS
-#PASS_DOOR | SMULTIPLY | WATER_HIDE
+flags:PASS_DOOR | SMULTIPLY | WATER_HIDE
 friends:22:1d2:same
 desc:A lump of rotting black flesh that slurrrrrrrps across the dungeon floor.
 
@@ -14304,9 +14306,8 @@ blow:SPIT:ACID:3d4
 blow:SPIT:POISON:3d6
 blow:ENGULF:ACID:3d6
 #blow:ENGULF:SLIME:3d6
-flags:MULTIPLY
+flags:SMULTIPLY | PASS_DOOR
 flags:NO_STUN | IM_POIS | IM_ACID
-#PASS_DOOR | SMULTIPLY (multiplies slower)
 desc:A giant acidic slime spreading itself over the dungeon.
 
 name:flame thrower
@@ -15207,7 +15208,7 @@ blow:SPORE:DISENCHANT:7d7
 blow:SPORE:DISENCHANT:7d7
 blow:SPORE:DISENCHANT:7d7
 blow:SPORE:EXP_80:5d6
-flags:EVIL | FORCE_SLEEP | ATTR_FLICKER | VISH
+flags:EVIL | FORCE_SLEEP | ATTR_FLICKER | VISH | NEVER_MOVE
 flags:IM_ACID | IM_COLD | IM_ELEC | IM_FIRE
 flags-off: HURT_FIRE
 desc:It is the epitome of all that is evil, in a mold.  Its lifeless form draws
@@ -15566,7 +15567,7 @@ blow:ENGULF:ACID:2d8
 #blow:ENGULF:SLIME:3d6
 flags:DROP_40 | TAKE_ITEM | ATTR_FLICKER
 flags:NO_CONF | NO_SLEEP | IM_COLD | IM_POIS | IM_ACID
-#PASS_DOOR | WATER_HIDE | SMULTIPLY
+flags:PASS_DOOR | WATER_HIDE | SMULTIPLY
 spell-freq:9
 spell-power:36
 spells:BO_ACID | SCARE | DRAIN_MANA | S_KIN | HEAL_KIN
@@ -17190,8 +17191,7 @@ blow:BUTT:HURT:5d4
 blow:BUTT:HURT:5d4
 flags:FORCE_SLEEP | KILL_BODY | KILL_ITEM
 flags:IM_NETHER | IM_FIRE | IM_COLD | IM_ELEC | IM_WATER | HURT_ROCK
-flags:REGENERATE
-#BLOCK_LOS | SMULTIPLY
+flags:REGENERATE | BLOCK_LOS | SMULTIPLY
 innate-freq:14
 spell-freq:6
 spells:BR_WALL | DARKNESS | BLIND | DRAIN_MANA
@@ -18247,6 +18247,7 @@ desc: feels like it, this battle is all chance.
 
 ### Dungeon level 70 ###
 
+#Not sure if they should have MULTIPLY or SMULTIPLY
 name:gnawing bug
 base:centipede
 color:u
@@ -18263,7 +18264,7 @@ blow:CRAWL:PARALYZE:9d3
 blow:STING:POISON:9d4
 flags:STUPID | KILL_WALL | MULTIPLY | WEIRD_MIND | RAND_50
 flags:NO_SLEEP | IM_ACID | IM_POIS
-#ROAM | SMULTIPLY?
+#ROAM
 desc:A giant acidic centapede native to the deepest depths.
 desc:  It gnaws through the walls.
 
@@ -20641,7 +20642,7 @@ blow:BUTT:HURT:22d4
 flags:FORCE_SLEEP | KILL_BODY | KILL_ITEM
 flags:IM_NETHER | IM_FIRE | IM_ELEC | IM_COLD | IM_ELEC | IM_WATER
 flags:REGENERATE | HURT_ROCK | NO_HOLD
-#BLOCK_LOS | SMULTIPLY | MOVE_SLOW
+flags:BLOCK_LOS | SMULTIPLY | MOVE_SLOW
 innate-freq:11
 spell-freq:5
 spells:DARKNESS | BLIND | DRAIN_MANA | BR_WALL

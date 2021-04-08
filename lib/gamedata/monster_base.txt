@@ -164,10 +164,9 @@ desc:Hybrid
 name:dark fairy
 glyph:i
 pain:1
-flags:SPIRIT | RUBBER
+flags:SPIRIT | RUBBER | FEY
 flags:OPEN_DOOR | CLEAR_WEB
 desc:Dark Fairy
-#FEY
 
 # (or icky things if VISH option is turned on)
 name:icky thing
@@ -264,9 +263,9 @@ name:nulx
 glyph:n
 pain:2
 flags:BASH_DOOR | CLEAR_WEB | RUBBER
-flags:IM_ACID | IM_WATER
+flags:IM_ACID | IM_WATER | WATER_HIDE
 desc:Nulx (swamp monsters) and other tentacled horrors
-#WATER_HIDE
+#(WATER_HIDE doesn't do anything yet)
 
 # Ogres are like small giants, or large orcs.  Mostly straightforward melee
 # fighters who come in packs, with occaisonal lone spellcasters.
@@ -445,9 +444,9 @@ desc:Xorn or other elemental monster
 name:light fairy
 glyph:y
 pain:1
-flags:SPIRIT | RUBBER | OPEN_DOOR | CLEAR_WEB
+flags:SPIRIT | RUBBER | FEY | CLIGHT
+flags:OPEN_DOOR | CLEAR_WEB
 desc:Light Fairy
-#flags:FEY | CLIGHT
 
 # (or yeeks if VISH is turned on)
 name:yeek

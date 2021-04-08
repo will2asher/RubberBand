@@ -27,7 +27,7 @@ mon-gen:town-day:4
 mon-gen:town-night:8
 
 # Maximum number of breeding monsters allowed on a level
-mon-gen:repro-max:99
+mon-gen:repro-max:100
 
 # Chance of a generated monster's level being inflated is one-in-this
 mon-gen:ood-chance:25
@@ -48,7 +48,7 @@ mon-gen:group-dist:5
 # Rune of protection resistance to monster breaking
 mon-play:break-glyph:550
 
-# High value slows multiplication
+# High value slows multiplication (this is doubled for SMULTIPLY monsters)
 mon-play:mult-rate:8
 
 # Percent of player exp drained per hit

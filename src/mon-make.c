@@ -335,7 +335,7 @@ void delete_monster_idx(int m_idx)
 	else mon->race->cur_num--;
 
 	/* Count the number of "reproducers" */
-	if (rf_has(mon->race->flags, RF_MULTIPLY)) {
+	if (rf_has(mon->race->flags, RF_MULTIPLY) || rf_has(mon->race->flags, RF_SMULTIPLY)) {
 		cave->num_repro--;
 	}
 
@@ -1009,7 +1009,8 @@ s16b place_monster(struct chunk *c, struct loc grid, struct monster *mon,
 	update_mon(new_mon, c, true);
 
 	/* Count the number of "reproducers" */
-	if (rf_has(new_mon->race->flags, RF_MULTIPLY)) c->num_repro++;
+	if (rf_has(new_mon->race->flags, RF_MULTIPLY) || rf_has(mon->race->flags, RF_SMULTIPLY)) 
+		c->num_repro++;
 
 	/* Count racial occurrences */
 	if (new_mon->original_race) new_mon->original_race->cur_num++;
