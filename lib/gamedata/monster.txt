@@ -1038,8 +1038,8 @@ rarity:4
 experience:7
 blow:GAZE:HURT:0d0
 blow:KICK:HURT:0d0
-flags:RAND_50 | RAND_25 | 
-#SILLY? | KEEP_DIST | ROAM | BR_STRONG 
+flags:RAND_50 | RAND_25 | KEEP_DIST
+#SILLY? | ROAM | BR_STRONG 
 innate-freq:17
 spells:BR_LIGHT
 desc:This baby sprite likes to kick people but is isn't strong enough to do any damage.
@@ -3188,9 +3188,8 @@ rarity:2
 experience:30
 blow:HIT:HURT:1d5
 blow:HIT:HURT:1d6
-flags:MALE | DROP_60
-#KEEP_DIST
-innate-freq:4
+flags:MALE | DROP_60 | KEEP_DIST
+innate-freq:3
 spells:ARROW
 friends:20:1d3:ruffian
 friends:35:1d4:soldier
@@ -3758,8 +3757,7 @@ rarity:1
 experience:35
 blow:HIT:HURT:1d7
 blow:HIT:HURT:2d4
-flags:DROP_20
-#KEEP_DIST
+flags:DROP_20 | KEEP_DIST
 innate-freq:5
 spells:ARROW
 friends:46:2d4:snaga
@@ -3940,9 +3938,10 @@ experience:39
 blow:CLAW:HURT:3d2
 #CLAWB
 blow:BITE:HURT:1d6
-flags:NO_FEAR | NO_CONF | EVIL | RUBBER
-#TOWN_OR_DUN | ROAM | RETURNS | KEEP_DIST
-spell-freq:9
+flags:NO_FEAR | NO_CONF
+flags:EVIL | RUBBER | KEEP_DIST
+#TOWN_OR_DUN | ROAM | RETURNS
+spell-freq:8
 spells:DRAIN_MANA | TELE_AWAY | WOUND 
 #| CURSE_PC
 desc:This cat appears to be a normal cat but for its unmistakable look of scorn and
@@ -4102,7 +4101,7 @@ experience:48
 blow:HIT:HURT:1d5
 flags:MALE | DROP_60
 flags:FORCE_SLEEP
-#KEEP_DIST
+#KEEP_DIST?
 spell-freq:4
 spells:BLINK | DARKNESS | MISSILE
 spells:BO_COLD | S_MONSTER
@@ -4434,7 +4433,8 @@ experience:39
 blow:GAZE:CONFUSE
 blow:KICK:HURT:2d3
 flags:RAND_25 | NO_SLEEP | NO_FEAR | NO_HOLD
-#ROAM | KEEP_DIST | BR_STRONG
+flags:KEEP_DIST
+#ROAM | BR_STRONG
 innate-freq:7
 spells:BR_LIGHT | ARROW
 friends:2:1d2:confused baby bright sprite
@@ -5383,10 +5383,11 @@ experience:59
 blow:HIT:POISON:1d5
 blow:HIT:ACID:1d6
 flags:ONLY_ITEM | BASH_DOOR | DROP_1 | ONLY_ITEM
-flags:NO_FEAR | IM_POIS | IM_ACID
-#KEEP_DIST | ROAM | S_EVIL1
+flags:NO_FEAR | IM_POIS | IM_ACID | KEEP_DIST
+#ROAM | S_EVIL1
 spell-freq:4
 spells:WOUND | SLOW | CONF | BLIND | HOLD | BA_POIS
+#BE_ACID
 desc:A strange humanoid race, hobglibs are experimenters in magic and alchemy
 desc: and claim to be completely neutral and care for no one.
 
@@ -5798,9 +5799,8 @@ blow:CRUSH:POISON:2d2
 blow:CRUSH:POISON:2d3
 blow:CRUSH:HURT:5d2
 #BHOLD
-flags:WEIRD_MIND | RUBBER
+flags:WEIRD_MIND | RUBBER | MOVE_SLOW
 flags:NO_FEAR | NO_CONF | NO_SLOW | IM_POIS
-#MOVE_SLOW
 friends:70:1d6:Same
 desc:A mass of thick vines with poisonous leaves.
 
@@ -6118,10 +6118,10 @@ rarity:4
 experience:79
 blow:HIT:HURT:1d9
 #blow:TOUCH:CHARM
-flags:MALE | SMART | FORCE_SLEEP | 
-flags:TAKE_ITEM | NO_SLEEP | NO_CONF 
-flags:ONLY_ITEM | DROP_60 
-#ROAM | KEEP_DIST | GOODMON
+flags:MALE | SMART | FORCE_SLEEP | KEEP_DIST
+flags:TAKE_ITEM | NO_SLEEP | NO_CONF
+flags:ONLY_ITEM | DROP_60
+#ROAM | GOODMON
 innate-freq:12
 spell-freq:5
 spells:BR_LIGHT | BLINK | HEAL | SLOW | S_ANIMAL | S_KIN | HEAL_KIN
@@ -6631,9 +6631,10 @@ rarity:4
 experience:91
 blow:HIT:POISON:3d3
 blow:HIT:HURT:3d5
-flags:MALE | SMART | DROP_1 | DROP_20 
+flags:MALE | SMART | DROP_1 | DROP_20
 flags:IM_POIS | TAKE_ITEM | NO_SLEEP
-#ROAM | S_EVIL2 | DISGUISE | KEEP_DIST | SCALE
+flags:KEEP_DIST
+#ROAM | S_EVIL2 | DISGUISE | SCALE
 spell-freq:6
 innate-freq:7
 spells:BOLT | SHRIEK
@@ -6856,9 +6857,9 @@ blow:HIT:HURT:3d3
 flags:EVIL | UNIQUE | FEMALE | FORCE_SLEEP 
 flags:ONLY_ITEM | DROP_2 | DROP_GOOD
 flags:NO_CONF | NO_SLEEP | IM_FIRE
-#KEEP_DIST | HURT_WATER
+flags:KEEP_DIST | HURT_WATER
 spell-freq:2
-spells:WOUND | SCARE | CONF | BO_POIS | TRAPS 
+spells:WOUND | SCARE | CONF | BA_POIS | TRAPS
 friends:100:2d5:winged monkey
 friends:100:2d3:elite winged monkey
 desc:Green skin, crooked nose, pointy hat, she's got the classic witch look, but not every
@@ -7153,8 +7154,8 @@ experience:104
 blow:HIT:HURT:4d5
 blow:HIT:HURT:5d4
 flags:MALE | DROP_1 | DROP_20
-flags:TAKE_ITEM | SMART
-#ROAM | KEEP_DIST
+flags:TAKE_ITEM | SMART | KEEP_DIST
+#ROAM
 innate-freq:3
 spell-freq:5
 spells:ARROW | BLINK | HASTE
@@ -8970,9 +8971,9 @@ rarity:4
 experience:141
 blow:HIT:HURT:3d5
 blow:HIT:POISON:4d4
-flags:MALE | SMART | INVISIBLE
+flags:MALE | SMART | INVISIBLE | KEEP_DIST
 flags:TAKE_ITEM | DROP_60 | DROP_20
-#S_EVIL2 | KEEP_DIST | SCALE
+#S_EVIL2 | SCALE
 innate-freq:3
 spell-freq:6
 spells:ARROW | BO_POIS | BLINK | TPORT
@@ -9401,9 +9402,9 @@ rarity:1
 experience:155
 blow:HIT:HURT:2d5
 blow:HIT:HURT:2d5
-flags:MALE | SMART | FORCE_SLEEP
+flags:MALE | SMART | FORCE_SLEEP | KEEP_DIST
 flags:OPEN_DOOR | DROP_1 | ONLY_ITEM
-#ROAM | S_EVIL2 | KEEP_DIST
+#ROAM | S_EVIL2
 spell-freq:3
 spells:BLIND | CONF | TPORT | TELE_AWAY
 spells:BO_COLD | BO_ELEC | BO_FIRE | S_MONSTER
@@ -9933,9 +9934,8 @@ experience:447
 blow:HIT:HURT:1d7
 blow:HIT:HURT:2d7
 flags:MALE | SMART | BASH_DOOR | FORCE_SLEEP
-flags:DROP_1 | ONLY_ITEM
+flags:DROP_1 | ONLY_ITEM | KEEP_DIST
 flags:IM_POIS | NO_CONF | NO_SLEEP | NO_HOLD
-#KEEP_DIST
 innate-freq:3
 spell-freq:14
 spells:ARROW | CONF | HEAL | BLINK
@@ -11247,8 +11247,8 @@ depth:33
 rarity:6
 experience:245
 flags:RUBBER | STUPID | RAND_25 | NEVER_BLOW | FORCE_SLEEP
-flags:IM_FIRE | IM_ELEC | IM_POIS
-#KEEP_DIST | SCALE
+flags:IM_FIRE | IM_ELEC | IM_POIS | KEEP_DIST
+# | SCALE
 innate-freq:5
 spell-freq:3
 spells:ARROW | BOLT | BO_ELEC | BE_ELEC | BO_PLAS | TPORT
@@ -12745,7 +12745,7 @@ blow:ENGULF:BLIND:4d3
 blow:ENGULF:BLIND:4d3
 flags:RAND_25 | PASS_WEB | MOVE_BODY | ATTR_FLICKER
 flags:IM_ELEC | IM_FIRE | IM_ACID | IM_WATER
-#ROAM | PASS_DOOR | KEEP_DIST
+flags:ROAM | PASS_DOOR | KEEP_DIST
 flags-off:NONLIVING | BASH_DOOR
 innate-freq:4
 spell-freq:2
@@ -13109,9 +13109,8 @@ rarity:4
 experience:672
 blow:HIT:POISON:3d7
 blow:HIT:POISON:4d5
-flags:MALE | EVIL | OPEN_DOOR
+flags:MALE | EVIL | OPEN_DOOR | KEEP_DIST
 flags:DROP_1 | NO_CONF | NO_SLEEP
-#KEEP_DIST
 innate-freq:2
 spells:ARROW
 friends:16:1d3:same
@@ -13929,10 +13928,10 @@ experience:1675
 blow:HIT:HURT:5d5
 blow:HIT:HURT:5d5
 blow:HIT:HURT:5d6
-flags:MALE | SMART | INVISIBLE
+flags:MALE | SMART | INVISIBLE | KEEP_DIST
 flags:DROP_2 | ONLY_ITEM | OPEN_DOOR | TAKE_ITEM
 flags:IM_COLD | IM_ELEC | IM_FIRE | IM_POIS | NO_CONF | NO_SLEEP | NO_HOLD
-#ROAM | KEEP_DIST
+#ROAM
 innate-freq:2
 spell-freq:5
 spells:ARROW | BLINK | HASTE | HEAL | BO_ELEC | BA_COLD | S_ANIMAL
@@ -16406,7 +16405,7 @@ blow:HIT:FIRE:9d12
 flags:BASH_DOOR  | FORCE_SLEEP
 flags:DROP_2 | DROP_GOOD | ONLY_ITEM | NO_SLEEP | NO_HOLD
 flags:IM_ACID | IM_ELEC | IM_FIRE | IM_POIS | IM_PLASMA | NO_CONF
-#ROAM | GOOD | KEEP_DIST
+flags:ROAM | GOODMON | KEEP_DIST
 innate-freq:7
 spell-freq:8
 spells:BO_ELEC | BO_FIRE | BO_PLAS | S_KIN

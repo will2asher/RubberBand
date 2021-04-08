@@ -23,6 +23,8 @@
 # message-invis - Message printed when spell is cast by an unseen monster,
 #                 e.g. Something utters a terrible incantation!
 
+# TODO: add maximum range for each spell. -Actually I think it already has a spot for this in effect:
+
 # Text in braces {} will be replaced with the appropriate word when the message
 # is displayed :
 # - {name} is the acting monster's name
@@ -50,6 +52,7 @@ lore-color-base:Orange
 message-vis:{name} lashes at you with a whip{oftype}.
 message-invis:You hear a crack.
 
+# Where does the type come from?
 name:SPIT
 hit:100
 effect:LASH:MISSILE:3
@@ -765,6 +768,32 @@ lore-color-base:Orange
 lore-color-resist:Light Green
 message-vis:{name} shoots a spark of lightning at {target}.
 message-invis:You feel a crackling in the air.
+
+#Weak acid bolt for low-level alchemists and such
+#name:BE_ACID
+#hit:82
+#effect:BOLT:ACID
+#dice:$B+2d9
+#expr:B:SPELL_POWER:/ 3
+#lore:shoot drops of acid
+#lore-color-base:Orange
+#lore-color-resist:Yellow
+#lore-color-immune:Light Green
+#message-vis:{name} shoots a drop of acid.
+#message-invis:Something mumbles.
+
+#Projectile Slime 
+#name:BE_SLIME
+#hit:81
+#effect:BOLT:SLIME
+#dice:$B+3d6
+#expr:B:SPELL_POWER:/ 3
+#lore:shoot drops of slime
+#lore-color-base:Orange
+#lore-color-resist:Yellow
+#lore-color-immune:Light Green
+#message-vis:{name} shoots a drop of slime.
+#message-invis:Something mumbles.
 
 name:BE_NETH
 hit:100

@@ -272,6 +272,10 @@ static void get_move_find_range(struct monster *mon)
 		/* Spellcasters that don't strike never like to get too close */
 		if (rf_has(mon->race->flags, RF_NEVER_BLOW))
 			mon->min_range += 3;
+
+		/* KEEP_DIST monsters don't like to get close (but don't double up with NEVER_BLOW) */
+		else if (rf_has(mon->race->flags, RF_KEEP_DIST))
+			mon->min_range += 3;
 	}
 
 	/* Maximum range to flee to */
@@ -286,9 +290,12 @@ static void get_move_find_range(struct monster *mon)
 	mon->best_range = mon->min_range;
 
 	/* Archers are quite happy at a good distance */
+	/* (but KEEP_DIST monsters have already had min_range increased so don't increase it as much) */
 	if (monster_loves_archery(mon)) {
-		mon->best_range += 3;
+		if (mon->best_range >= 3) mon->best_range += 2;
+		else mon->best_range += 3;
 	}
+	else if (rf_has(mon->race->flags, RF_KEEP_DIST)) mon->best_range += 1;
 
 	/* Breathers like point blank range */
 	if (mon->race->freq_innate > 24) {
