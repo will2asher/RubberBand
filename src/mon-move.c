@@ -1161,7 +1161,7 @@ static bool monster_turn_can_move(struct chunk *c, struct monster *mon,
 
 	/* PASS_DOOR monsters can pass rubble as well XX */
 	/* (this is more complicated than I thought it'd be. I'll do it later.)*/
-	/* if (rf_has(mon->race->flags, RF_PASS_WALL)) */
+	/* if (rf_has(mon->race->flags, RF_PASS_DOOR)) */
 
 	/* Floor is open? */
 	if (square_ispassable(c, new)) {

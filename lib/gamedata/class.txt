@@ -1665,7 +1665,7 @@ effect:TIMED_INC:ATT_POIS:0:5
 dice:18+d18
 desc:Coats all your melee weapons with poison for 18+d18 turns.
 
-spell:Werewolf Form:33:30:45:100
+spell:Werewolf Form:33:30:43:100
 effect:SHAPECHANGE:werewolf
 desc:With a blood-curdling cry you change into a half-man half-wolf!
 desc: In this form you move, attack, and heal faster.

@@ -1276,7 +1276,7 @@ void lore_append_abilities(textblock *tb, const struct monster_race *race,
 	if (rf_has(known_flags, RF_MULTIPLY))
 		textblock_append_c(tb, COLOUR_ORANGE, "%s breeds explosively.  ",
 						   initial_pronoun);
-	if (rf_has(known_flags, RF_MULTIPLY))
+	if (rf_has(known_flags, RF_SMULTIPLY))
 		textblock_append_c(tb, COLOUR_ORANGE, "%s breeds.  ",
 			initial_pronoun);
 	if (rf_has(known_flags, RF_REGENERATE))

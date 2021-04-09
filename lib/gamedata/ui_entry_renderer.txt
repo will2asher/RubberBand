@@ -187,6 +187,12 @@ colors:wwwwGWWWWG
 labelcolors:swBw
 symbols:?..+!
 
+name:char_screen1_flag_with_cancel_renderer
+code:COMPACT_FLAG_WITH_CANCEL_RENDERER_WITH_COMBINED_AUX
+colors:wwwwwGwwGGwWWWWWGWWGGW
+labelcolors:swwwwBw
+symbols:?..+-!+-=.-
+
 name:char_screen1_numeric_as_sign_renderer
 code:NUMERIC_AS_SIGN_RENDERER_WITH_COMBINED_AUX
 colors:wwwwwGwWWWWWGW

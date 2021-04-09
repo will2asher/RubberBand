@@ -1048,7 +1048,7 @@ name:sullen drunkard
 plural:sullen drunks
 base:townsfolk
 color:s
-speed:104
+speed:106
 hit-points:8
 hearing:18
 armor-class:14
@@ -1255,7 +1255,7 @@ flags:NEVER_MOVE | IM_POIS
 desc:Yuk! I bet something funky will happen if you eat this..
 
 name:photoplasm
-plural:silver jellies
+plural:photoplasms
 base:jelly
 color:W
 speed:120
@@ -1971,7 +1971,7 @@ smell:9
 armor-class:21
 sleepiness:31
 depth:5
-rarity:5
+rarity:3
 experience:17
 blow:BITE:HURT:1d4
 flags:EVIL | WEIRD_MIND | RAND_50 | STUPID
@@ -1993,7 +1993,7 @@ smell:20
 armor-class:24
 sleepiness:42
 depth:5
-rarity:3
+rarity:4
 experience:21
 blow:HIT:EAT_GOLD:1d3
 blow:HIT:HURT:3d3

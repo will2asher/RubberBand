@@ -661,7 +661,7 @@ static void project_monster_handler_WATER(project_monster_handler_context_t *con
 {
 	/* Vanilla: Zero out the damage because this is an immunity flag. */
 	/* Vanilla: project_monster_resist_other(context, RF_IM_WATER, 0, false, MON_MSG_IMMUNE); */
-	/* XX TODO: fix message */
+	/* Works more like basic 4 now */
 	project_monster_hurt_immune(context, RF_HURT_WATER, RF_IM_WATER, 2, 20, MON_MSG_SHUDDER, MON_MSG_DISINTEGRATES);
 
 }

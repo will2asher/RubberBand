@@ -109,13 +109,6 @@ on-end:You get over the disease.
 on-increase:You feel even sicker.
 msgt:GENERIC
 
-name:PCCURSED
-desc:cursed
-grade:o:10000:PCCURSED:You have been cursed.
-on-end:The curse on you expires.
-on-increase:You feel incredibly unlucky.
-msgt:GENERIC
-
 name:IMAGE
 desc:hallucination
 grade:o:10000:Halluc:You feel drugged!
