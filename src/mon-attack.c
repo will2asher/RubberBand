@@ -155,6 +155,7 @@ static void remove_bad_spells(struct monster *mon, bitflag f[RSF_SIZE])
 {
 	bitflag f2[RSF_SIZE];
 	int tdist;
+	int throwr = 0;
 
 	monster_get_target_dist_grid(mon, cave, &tdist, NULL);
 
@@ -175,6 +176,8 @@ static void remove_bad_spells(struct monster *mon, bitflag f[RSF_SIZE])
 	if (mon->m_timed[MON_TMD_FAST] > 10) {
 		rsf_off(f2, RSF_HASTE);
 	}
+	/* Don't turn invisible if already invisible */
+	if (mon->m_timed[MON_TMD_TINVIS] > 5) rsf_off(f2, RSF_TINVIS);
 
 	/* Don't teleport to if the player is already next to us */
 	if (tdist == 1) {
@@ -188,6 +191,13 @@ static void remove_bad_spells(struct monster *mon, bitflag f[RSF_SIZE])
 	}
 	if (tdist > 3) {
 		rsf_off(f2, RSF_SPIT);
+	}
+	/* THROW range depends on spell power */
+	if ((mon->race->spell_power / 8) > 5) throwr = 9;
+	else throwr = (mon->race->spell_power / 8) + 3;
+	if (tdist > throwr) 
+	{	
+		rsf_off(f2, RSF_THROW);
 	}
 
 	/* Update acquired knowledge */

@@ -1216,10 +1216,10 @@ flags:DROP_40 | DROP_60
 flags:RAND_25 | RAND_50 | TAKE_ITEM
 flags:HURT_LIGHT | IM_COLD | TOWN_OR_DUN
 #ROAM
-#innate-freq:11
+innate-freq:11
 spell-freq:14
-spells:BLINK
-#THROW (innate)
+spell-power:6
+spells:BLINK | THROW
 desc:a ghost that reveals its presence by creating disturbances.  It enjoys throwing things,
 desc: knocking things over, and making strange noises.
 
@@ -1430,8 +1430,7 @@ flags:MALE | TOWN_OR_DUN | DROP_40 | TAKE_ITEM
 #ROAM
 #innate-freq:11
 spell-freq:8
-spells:HASTE | BLINK
-#THROW | TINVIS
+spells:THROW | HASTE | BLINK | TINVIS
 desc:A little bearded man running around burrowing holes too small for humans.  They are
 desc: infamous for destroying peoples' gardens.
 
@@ -2035,8 +2034,8 @@ blow:HIT:HURT:1d5
 blow:CRUSH:HURT:6d2
 flags:WEIRD_MIND | NEVER_MOVE | NO_FEAR | TOWN_OR_DUN | CLIGHT
 #BLOCK_LOS | S_EVIL1
-#innate-freq:11
-#spells:THROW
+innate-freq:11
+spells:THROW
 desc:An mean apple tree that has gotten bored of dropping fruit on people's heads,
 desc: so it learned to move its branches.
 
@@ -2635,6 +2634,8 @@ rarity:4
 experience:26
 blow:TOUCH:ACID:1d7
 flags:IM_ACID | RUBBER
+innate-freq:14
+spells:SPIT
 desc:a mindless blob of acid oozing along.
 
 name:ape
@@ -2673,8 +2674,9 @@ blow:KICK:HURT:2d3
 flags:TAKE_ITEM | DROP_40 | RAND_25
 flags:REGENERATE | EVIL | HURT_LIGHT
 #ROAM | S_EVIL2
-#innate-freq:11
-#spells:THROW
+innate-freq:11
+spell-power:6
+spells:THROW
 desc:It is a lesser type of dark fairy, unrelated to orcs.
 desc: Its ugly head and hands seem oversized compared to its small body.
 
@@ -2882,8 +2884,8 @@ experience:28
 blow:HIT:HURT:1d10
 flags:DROP_40 | TAKE_ITEM | SILLY
 #S_EVIL1
-#innate-freq:11
-#spells:THROW
+innate-freq:11
+spells:THROW
 friends:45:1d5:Same
 desc:An uncultured brute with a club, but no sling or whip.
 desc: It's only about as tall as the average man.
@@ -3964,9 +3966,8 @@ flags:TAKE_ITEM | DROP_40 | RAND_25
 flags:REGENERATE | HURT_LIGHT | NO_HOLD
 #ROAM | S_EVIL2
 innate-freq:7
-spell-freq:12
-#spells:THROW 
-spells:WHIP | SCARE 
+spell-freq:13
+spells:THROW | WHIP | SCARE 
 friends:45:1d4:goblin runt
 friends:45:2d3:Same
 desc:It is a lesser type of dark fairy, unrelated to orcs.
@@ -3988,11 +3989,12 @@ blow:HIT:HURT:1d3
 blow:HIT:HURT:1d3
 flags:DROP_20 | TAKE_ITEM | NO_HOLD | RAND_25
 #S_EVIL2 | ROAM1 
-innate-freq:11
+innate-freq:9
 spell-freq:13
+spell-power:6
 spells:ARROW | BLINK | DARKNESS | CONF
 friends:6:1d2:goblin runt
-friends:75:4d3:Same
+friends:80:2d6:Same
 desc:A little brown man, barbaric, impish, and magical.
 
 name:greater poltergeist
@@ -4013,9 +4015,8 @@ flags:IM_COLD | NO_HOLD | HURT_LIGHT | FORCE_SLEEP
 #| ROAM | SCALE
 innate-freq:9
 spell-freq:10
-spells:BR_DARK
+spells:BR_DARK | THROW
 spells:BLINK | DARKNESS | SLOW | SCARE 
-#THROW
 desc:A malevolent spirit of darkness.  It can do more than just throw things and
 desc: make spooky noises.
 
@@ -5697,8 +5698,8 @@ flags:REGENERATE | HURT_LIGHT | NO_HOLD | NO_STUN
 #ROAM | S_EVIL2 | SCALE?
 innate-freq:7
 spell-freq:11
-#spells:THROW | CURSE_PC
-spells:WHIP | SHOT | SCARE | DARKNESS 
+#spells:CURSE_PC
+spells:THROW | WHIP | SHOT | SCARE | DARKNESS 
 friends:2:1d3:hobgoblin
 friends:16:1d2:goblin runt
 friends:40:1d5:goblin
@@ -5812,8 +5813,7 @@ flags:RAND_25 | SPIRIT | EVIL | SILLY | TAKE_ITEM
 #ROAM
 innate-freq:9
 spell-freq:13
-#spells:THROW
-spells:SCARE | WOUND | HASTE
+spells:THROW | SCARE | WOUND | HASTE
 friends:65:1d4:Same
 friends:85:1d8:Same
 #(I think this should make it less likely to come in large groups?)
@@ -6457,8 +6457,7 @@ flags:REGENERATE | HURT_LIGHT | IM_POIS | NO_HOLD
 #ROAM | SCALE?
 innate-freq:6
 spell-freq:11
-#spells:THROW 
-spells:WHIP | SHOT | SCARE | WOUND 
+spells:THROW | WHIP | SHOT | SCARE | WOUND 
 friends:9:1d3:city goblin
 friends:12:1d3:goblin runt
 friends:40:1d5:goblin
@@ -6508,8 +6507,7 @@ flags:BASH_DOOR | FORCE_SLEEP | COLD_BLOOD | UNAWARE
 flags:HURT_ROCK | IM_POIS | IM_COLD | IM_FIRE
 #BLOCK_LOS | ATTR_CLEAR?
 innate-freq:8
-spells:BOULDER
-#THROW
+spells:THROW | BOULDER
 desc:This pile of rubble moves on its own and becomes a gigantic humanoid form.
 
 name:Bolg, Son of Azog
@@ -6877,9 +6875,9 @@ flags:NO_STUN | NO_SLEEP | IM_POIS
 #ROAM
 innate-freq:6
 spell-freq:4
-spells:WHIP | SHOT
-spells:CONF | DARKNESS | TRAPS | SCARE | BO_POIS | WOUND
-#THROW | TINVIS | CURSE_PC | S_ILLUSION
+spells:WHIP | SHOT | THROW
+spells:CONF | DARKNESS | TRAPS | SCARE | BO_POIS | WOUND | TINVIS
+# | CURSE_PC | S_ILLUSION
 desc:Dominick is a partilarly cruel and sadistic goblin in his goblin city.
 desc:  Among his favorite things to do is tickle people with burning coals.
 
@@ -8568,8 +8566,8 @@ blow:SPIT:HURT:2d6
 flags:FORCE_SLEEP | NEVER_MOVE | WEIRD_MIND | RUBBER
 flags:NO_FEAR | NO_STUN | CLIGHT
 #BLOCK_LOS
-#innate-freq:3
-#spells:THROW | SPIT
+innate-freq:4
+spells:THROW | SPIT
 friends:59:1d5:Same
 desc:These trees are restless and angry.
 desc: It would chase you if it could.
@@ -8905,8 +8903,8 @@ flags:NO_STUN | EVIL | REGENERATE
 #ROAM | SCALE? | FEY | DISGUISE
 spell-freq:8
 innate-freq:8
-spells:BR_DARK | SCARE
-#THROW, (BR_FEAR instead of SCARE)
+spells:THROW | BR_DARK | SCARE
+#(BR_FEAR instead of SCARE)
 friends:10:1d5:Same
 desc:Fairy ogres are faster and not as stupid as normal ogres.
 desc:  They're just as ugly too, but they can shapechange into a less hideous form.
@@ -8933,8 +8931,8 @@ flags:POWERFUL | SMART | FORCE_SLEEP | BR_STRONG
 flags-off:PASS_WALL | IM_POIS
 innate-freq:6
 spell-freq:8
-#spells:THROW | BR_FEAR
-spells:BR_DARK | CONF | HOLD | S_UNDEAD
+spells:THROW | BR_FEAR | BR_DARK
+spells:CONF | HOLD | S_UNDEAD
 #summon nightmare
 desc:It is a spirit of fear out of your darkest dreams. Get out your
 desc: fireplace poker and check the closet and under your bed.
@@ -11678,8 +11676,7 @@ flags:EMPTY_MIND | STUPID | NONLIVING
 #RETURNS
 flags-off:NO_CONF | NO_STUN
 innate-freq:11
-spells:ARROW
-#THROW
+spells:THROW | ARROW
 friends:70:2d5:same
 desc:These undead soldiers never get tired, hungry or afraid. They are
 desc: unrelenting and do not like to stay dead.
@@ -12116,8 +12113,7 @@ flags:EMPTY_MIND | STUPID | NO_FEAR
 spell-power:26
 innate-freq:10
 spell-freq:11
-spells:DARKNESS | WOUND | BA_POIS
-#THROW
+spells:THROW | DARKNESS | WOUND | BA_POIS
 friends:70:2d3:same
 desc:It is an animated corpse which can both eat your brain and rot your body.
 desc: It doesn't like to stay dead.
@@ -18186,11 +18182,11 @@ flags:ROAM | MOVE_BODY | REGENERATE | WEIRD_MIND | IM_DISEN
 flags:NO_SLEEP | NO_FEAR | NO_STUN | IM_POIS | IM_ACID | IM_FIRE | IM_ELEC
 innate-freq:4
 spell-freq:3
-spells:BOULDER | SHRIEK | HEAL | BLIND | DRAIN_MANA | HOLD | TRAPS
+spells:THROW | BOULDER | SHRIEK | HEAL | BLIND | DRAIN_MANA | HOLD | TRAPS
 spells:BR_LIGHT | BR_SOUN | BR_TIME | BR_INER | BR_GRAV | BR_NEXU
 spells:BO_ICE | BO_PLAS | BA_MANA | BRAIN_SMASH | TELE_LEVEL | TELE_TO | TELE_AWAY | TPORT
 spells:S_SPIDER | S_KIN | S_MONSTER | S_ANIMAL | S_DRAGON
-#THROW | BR_AMNS | 
+#BR_AMNS | 
 #EXPLODE | S_ILLUSION | ILLUSION_CLONE | S_EXTRA | HEAL_OTHER | TINVIS | INSANTIY
 desc:A rayem is the most powerful type of fairy, distantly related to the gnome. It loves
 desc: randomness and has a wide selection of magical abilities. Not fully on the side of
@@ -20088,9 +20084,9 @@ flags:WEIRD_MIND | MOVE_BODY | POWERFUL |
 #ROAM
 innate-freq:6
 spell-freq:13
-spells:WHIP | BR_CHAO | BR_DARK | 
+spells:WHIP | THROW | BR_CHAO | BR_DARK | 
 spells:BLINK | TELE_TO | BO_PLAS | MIND_BLAST | TRAPS | S_DEMON | S_HI_DEMON
-#THROW | INSANITY | S_ILLUSION
+#INSANITY | S_ILLUSION
 friends:98:2d5:same
 desc:These are the demons who primarily populate Pandemonium, the city of chaos.
 desc: You'll soon find out why you never want to go there.

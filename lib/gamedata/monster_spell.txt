@@ -23,7 +23,8 @@
 # message-invis - Message printed when spell is cast by an unseen monster,
 #                 e.g. Something utters a terrible incantation!
 
-# TODO: add maximum range for each spell. -Actually I think it already has a spot for this in effect:
+# TODO: add maximum range for each spell. 
+# Actually I think it already has a spot for this in effect -no, that's unused.
 
 # Text in braces {} will be replaced with the appropriate word when the message
 # is displayed :
@@ -45,21 +46,36 @@ message-vis:{name} makes a high-pitched shriek.
 message-invis:Something makes a high-pitched shriek.
 
 name:WHIP
-hit:100
+hit:95
 effect:LASH:MISSILE:2
 lore:lash you if nearby
 lore-color-base:Orange
 message-vis:{name} lashes at you with a whip{oftype}.
+message-miss:{name} lashes at you with a whip but misses.
 message-invis:You hear a crack.
 
 # Where does the type come from?
 name:SPIT
-hit:100
+hit:85
 effect:LASH:MISSILE:3
 lore:spit at you from a distance
 lore-color-base:Orange
 message-vis:{name} spits {type} at you.
+message-miss:{name} spits at you but misses.
 message-invis:You hear a soft sound.
+
+name:THROW
+hit:60
+effect:BOLT:ARROW:4
+dice:$Dd4
+expr:D:SPELL_POWER:/ 8 + 1
+lore:throw things at you
+lore-color-base:Orange
+#I'd like to change the message based on the monster base. hmmm. I guess I'll just call them rocks.
+#message-vis:{name} throws a piece of fruit at you. (for trees)
+message-vis:{name} throws a rock at you.
+message-miss:{name} throws a rock at you but misses.
+message-invis:You hear something fly through the air.
 
 name:SHOT
 hit:50
@@ -964,6 +980,16 @@ lore:create darkness
 lore-color-base:Light Green
 message-vis:{name} surrounds {target} in darkness.
 message-invis:Something mumbles.
+
+name:TINVIS
+hit:100
+effect:MON_TIMED_INC:TINVIS
+dice:$B+d8
+expr:B:SPELL_POWER:/ 4
+lore:turn itself invisible
+lore-color-base:Yellow
+message-vis:{name} vanishes from sight.
+message-invis:Something mutters.
 
 name:TRAPS
 msgt:CREATE_TRAP

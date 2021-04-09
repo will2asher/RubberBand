@@ -2107,6 +2107,7 @@ static bool detect_monsters(int y_dist, int x_dist, monster_predicate pred)
 			if (monster_is_invisible(mon)) {
 				struct monster_lore *lore = get_lore(mon->race);
 				rf_on(lore->flags, RF_INVISIBLE);
+				rsf_on(lore->spell_flags, RSF_TINVIS);
 			}
 
 			/* Update monster recall window */
@@ -4209,7 +4210,7 @@ bool effect_handler_LASH(effect_handler_context_t *context)
 			random_value dice = mon->race->blow[i].dice;
 
 			/* Full damage of first blow, plus half damage of others */
-			dam += randcalc(dice, mon->race->level, RANDOMISE) / (i ? 2 : 1);
+			dam += randcalc(dice, mon->race->level, RANDOMISE) / (i ? 2 : 1.2);
 			if (!mon->race->blow[i].next) break;
 		}
 
@@ -4306,8 +4307,7 @@ bool effect_handler_STAR(effect_handler_context_t *context)
 	int flg = PROJECT_THRU | PROJECT_BEAM | PROJECT_GRID | PROJECT_KILL;
 
 	/* Describe */
-	if (!player->timed[TMD_BLIND])
-		msg("Light shoots in all directions!");
+	if (!player->timed[TMD_BLIND]) msg("Light shoots in all directions!");
 
 	for (i = 0; i < 8; i++) {
 		/* Use the current direction */

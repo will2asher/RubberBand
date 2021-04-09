@@ -74,15 +74,16 @@ bool monster_passes_walls(const struct monster *mon)
  */
 bool monster_is_invisible(const struct monster *mon)
 {
-	return rf_has(mon->race->flags, RF_INVISIBLE);
+	if (rf_has(mon->race->flags, RF_INVISIBLE) || mon->m_timed[MON_TMD_TINVIS]) return true;
 }
 
 /**
  * Monster is visible, in principle
+ * (It seems dumb to have both of these functions...)
  */
 bool monster_is_not_invisible(const struct monster *mon)
 {
-	return !rf_has(mon->race->flags, RF_INVISIBLE);
+	if (rf_has(mon->race->flags, RF_INVISIBLE) || mon->m_timed[MON_TMD_TINVIS]) return false;
 }
 
 /**
