@@ -476,13 +476,20 @@ int breath_dam(int type, int hp)
  * \param race is the race of the casting monster.
  * \param dam_aspect is the damage calc we want (min, max, avg, random).
  */
-static int mon_spell_dam(int index, int hp, const struct monster_race *race,
-						 aspect dam_aspect)
+static int mon_spell_dam(int index, int hp, const struct monster_race* race,
+	aspect dam_aspect)
 {
-	const struct monster_spell *spell = monster_spell_by_index(index);
+	const struct monster_spell* spell = monster_spell_by_index(index);
 
 	if (monster_spell_is_breath(index))
+	{
+		/* BR_STRONG flag lets low HP monsters do damage with their breath */
+		if (rf_has(race->flags, RF_BR_STRONG)) {
+			hp = hp * 7 / 4;
+			if (hp < 12) hp = 12;
+		}
 		return breath_dam(spell->effect->subtype, hp);
+	}
 	else
 		return nonhp_dam(spell, race, dam_aspect);
 }

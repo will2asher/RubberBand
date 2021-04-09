@@ -1029,7 +1029,7 @@ color:Y
 speed:129
 hit-points:4
 hearing:15
-armor-class:14
+armor-class:17
 light:2
 sleepiness:27
 depth:2
@@ -1038,7 +1038,7 @@ experience:7
 blow:GAZE:HURT:0d0
 blow:KICK:HURT:0d0
 flags:RAND_50 | RAND_25 | KEEP_DIST
-#SILLY? | ROAM | BR_STRONG 
+flags:SILLY | ROAM | BR_STRONG
 innate-freq:17
 spells:BR_LIGHT
 desc:This baby sprite likes to kick people but is isn't strong enough to do any damage.
@@ -1400,7 +1400,7 @@ color:u
 speed:127
 hit-points:9
 hearing:23
-armor-class:19
+armor-class:22
 light:2
 sleepiness:22
 depth:3
@@ -2905,7 +2905,7 @@ blow:CLAW:HURT:3d2
 blow:BITE:HURT:1d4
 #CLAWB
 flags:ATTR_CLEAR | BASH_DOOR
-#ROAM | BR_STRONG
+flags:ROAM | BR_STRONG
 innate-freq:9
 spells:BR_SHAR
 desc:A magical cat made of glass with sharp claws and teeth.
@@ -4066,7 +4066,7 @@ color:o
 speed:114
 hit-points:47
 hearing:21
-armor-class:42
+armor-class:47
 sleepiness:24
 depth:11
 rarity:3
@@ -4417,7 +4417,7 @@ speed:127
 hit-points:27
 light:3
 hearing:23
-armor-class:42
+armor-class:51
 sleepiness:17
 depth:12
 rarity:3
@@ -4425,8 +4425,7 @@ experience:39
 blow:GAZE:CONFUSE
 blow:KICK:HURT:2d3
 flags:RAND_25 | NO_SLEEP | NO_FEAR | NO_HOLD
-flags:KEEP_DIST
-#ROAM | BR_STRONG
+flags:KEEP_DIST | ROAM | BR_STRONG
 innate-freq:7
 spells:BR_LIGHT | ARROW
 friends:2:1d2:confused baby bright sprite
@@ -4557,7 +4556,7 @@ speed:124
 hit-points:31
 light:2
 hearing:21
-armor-class:51
+armor-class:53
 sleepiness:16
 depth:13
 rarity:4
@@ -5764,9 +5763,8 @@ experience:62
 blow:GAZE:HALLU
 blow:CLAW:POISON:2d2
 blow:BITE:LOSE_WIS:3d3
-flags:SPIRIT | RAND_25 | OPEN_DOOR | COLD_BLOOD | IM_POIS
-flags:EVIL | RUBBER | WEIRD_MIND | IM_NETHER | IM_DISEN | PASS_DOOR
-#BR_STRONG
+flags:SPIRIT | RAND_25 | OPEN_DOOR | COLD_BLOOD | IM_POIS | IM_NETHER
+flags:EVIL | RUBBER | WEIRD_MIND | IM_DISEN | PASS_DOOR | BR_STRONG
 spell-freq:6
 spells:SLOW | BLINK | DRAIN_MANA | BLIND | FORGET | DARKNESS
 #S_ILLUSION | BR_AMNS | TINIVS
@@ -6487,7 +6485,7 @@ blow:BITE:ACID:2d4
 blow:BUTT:HURT:5d2
 flags:RAND_25 | NO_FEAR | BASH_DOOR
 flags:RUBBER | REGENERATE | IM_ACID | IM_POIS
-#WATER_HIDE | BR_STRONG
+flags:WATER_HIDE | BR_STRONG
 innate-freq:8
 spells:BR_SOUN
 desc:A big frog covered in ugly oozing warts, it makes a loud "CROAK".
@@ -7660,8 +7658,7 @@ blow:CLAW:POISON:6d2
 blow:GAZE:EAT_FOOD:2d2
 blow:GAZE:PARALYZE:2d2
 flags:EVIL | FORCE_SLEEP | RUBBER
-flags:RAND_25 | IM_POIS 
-#BR_STRONG
+flags:RAND_25 | IM_POIS | BR_STRONG
 innate-freq:6
 spells:BR_POIS
 desc:It appears to be a lizard with a rooster's head and wings.  It's poison is enough to
@@ -7879,8 +7876,7 @@ blow:CLAW:LOSE_CON:3d2
 #CLAWB
 flags:DROP_1 | DROP_20
 flags:FORCE_SLEEP | NONLIVING | SMART | RUBBER
-flags:IM_COLD | HURT_LIGHT | NO_HOLD | NO_STUN
-#BR_STRONG
+flags:IM_COLD | HURT_LIGHT | NO_HOLD | NO_STUN | BR_STRONG
 innate-freq:6
 spell-freq:7
 spells:BR_SHAR | SCARE | BLINK | DARKNESS
@@ -7903,8 +7899,7 @@ blow:BUTT:HURT:6d2
 blow:BITE:EAT_FOOD:1d6
 blow:BITE:ACID:2d6
 flags:RAND_25 | NO_FEAR | BASH_DOOR | FORCE_SLEEP
-flags:REGENERATE | POWERFUL | IM_ACID | IM_POIS
-#BR_STRONG
+flags:REGENERATE | POWERFUL | IM_ACID | IM_POIS | BR_STRONG
 innate-freq:6
 spells:BR_SOUN
 desc:"CROAK"  Magical radiation has made it grow to almost the size of a man,
@@ -8933,8 +8928,8 @@ blow:CLAW:HURT:6d3
 #CLAWB
 flags:RAND_25 | DROP_1 | PASS_DOOR
 flags:NO_FEAR | NO_STUN | IM_ELEC | HURT_LIGHT
-flags:POWERFUL | SMART | FORCE_SLEEP
-#BR_STRONG | TEMPLE
+flags:POWERFUL | SMART | FORCE_SLEEP | BR_STRONG
+#TEMPLE
 flags-off:PASS_WALL | IM_POIS
 innate-freq:6
 spell-freq:8
@@ -10478,7 +10473,6 @@ blow:BITE:EAT_FOOD:2d8
 blow:BITE:ACID:2d8
 flags:RAND_25 | IM_ACID | NO_FEAR | FORCE_SLEEP
 flags:REGENERATE | POWERFUL | BASH_DOOR | MOVE_BODY
-#BR_STRONG
 innate-freq:8
 spells:BR_SOUN
 desc:This bullfrog is twice the size of a bull.  It's also twice as mean.
@@ -14779,10 +14773,9 @@ blow:GAZE:CONFUSE:1d49
 blow:KICK:HURT:8d4
 blow:KICK:HURT:3d9
 #FRENZY
-flags:MALE | REGENERATE | FORCE_SLEEP | PASS_DOOR
+flags:MALE | REGENERATE | FORCE_SLEEP | PASS_DOOR | ROAM
 flags:ONLY_ITEM | DROP_2 | TAKE_ITEM | NO_SLEEP | NO_CONF 
-flags:NO_FEAR | NO_STUN | NO_HOLD
-#ROAM | BR_STRONG
+flags:NO_FEAR | NO_STUN | NO_HOLD | BR_STRONG
 innate-freq:10
 spell-freq:5
 spells:BR_LIGHT | BLINK | HEAL | HOLD | HASTE | DRAIN_MANA
@@ -15424,7 +15417,7 @@ blow:HIT:HURT:8d8
 blow:HIT:HURT:8d8
 flags:IM_COLD | IM_POIS | IM_NETHER | FORCE_SLEEP
 flags:DROP_2 | OPEN_DOOR | NO_STUN
-#TEMPLE | BR_STRONG
+#TEMPLE | BR_STRONG?
 innate-freq:6
 spell-freq:8
 spell-power:60
@@ -15502,8 +15495,8 @@ flags:EVIL | SMART | SPIRIT | POWERFUL | FORCE_SLEEP | WEIRD_MIND
 flags:ONLY_ITEM | DROP_1 | DROP_20 | RAND_25 | PASS_WEB
 flags:NO_FEAR | NO_SLEEP | IM_NETHER | IM_DISEN | REGENERATE
 flags:IM_ELEC | IM_POIS | IM_ACID
-flags:PASS_DOOR | HURT_WATER
-#TEMPLE | BR_STRONG
+flags:PASS_DOOR | HURT_WATER | BR_STRONG
+#TEMPLE
 innate-freq:5
 spell-freq:4
 spells:BR_INER | BR_TIME | DRAIN_MANA | BLIND | MIND_BLAST | BRAIN_SMASH
@@ -16094,7 +16087,7 @@ blow:BUTT:LOSE_STR:12d10
 flags:NO_CONF | NO_FEAR | NO_STUN | POWERFUL | MOVE_BODY
 flags:IM_POIS | IM_ELEC | IM_ACID | IM_DISEN
 flags:ANIMAL | DROP_2 | DROP_GOOD | RAND_25 | SMART | FORCE_SLEEP
-#ROAM | FEY | BR_STRONG | GOODMON | NONAGR
+flags:ROAM | FEY | BR_STRONG | GOODMON | NONAGR
 innate-freq:21
 spell-freq:6
 spells:BR_LIGHT | HEAL | BLIND | HOLD | BO_PLAS | BO_MANA | MIND_BLAST | TELE_AWAY
