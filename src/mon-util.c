@@ -373,7 +373,6 @@ void update_mon(struct monster *mon, struct chunk *c, bool full)
 			if (square_isseen(c, mon->grid)) {
 				/* Learn about invisibility */
 				rf_on(lore->flags, RF_INVISIBLE);
-				rsf_on(lore->spell_flags, RSF_TINVIS);
 
 				/* Handle invisibility */
 				if (monster_is_invisible(mon)) {
@@ -381,6 +380,7 @@ void update_mon(struct monster *mon, struct chunk *c, bool full)
 					if (player_of_has(player, OF_SEE_INVIS)) {
 						/* Easy to see */
 						easy = flag = true;
+						rsf_on(lore->spell_flags, RSF_TINVIS);
 					}
 				} else {
 					/* Easy to see */
