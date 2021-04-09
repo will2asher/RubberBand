@@ -4919,6 +4919,7 @@ base:amphibian
 color:y
 speed:110
 hit-points:49
+light:1
 hearing:7
 smell:20
 armor-class:70
@@ -6547,6 +6548,7 @@ base:amphibian
 color:Y
 speed:112
 hit-points:92
+light:1
 hearing:7
 smell:20
 armor-class:75
@@ -15204,6 +15206,7 @@ base:hydra
 color:M
 speed:121
 hit-points:1279
+light:2
 hearing:21
 smell:15
 armor-class:121
