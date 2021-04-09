@@ -1718,7 +1718,7 @@ desc:It's a rodent of unusual size.
 name:ugly bullfrog
 base:amphibian
 color:u
-speed:107
+speed:109
 hit-points:11
 hearing:14
 smell:8
@@ -1736,8 +1736,8 @@ desc:"Croak"
 name:straw golem
 base:golem
 color:U
-speed:106
-hit-points:32
+speed:107
+hit-points:34
 hearing:10
 armor-class:27
 sleepiness:14
@@ -2664,7 +2664,7 @@ smell:13
 armor-class:36
 sleepiness:31
 depth:8
-rarity:5
+rarity:4
 experience:26
 blow:INSULT
 blow:HIT:HURT:1d4
@@ -3440,7 +3440,7 @@ depth:10
 rarity:3
 experience:31
 blow:BUTT:HURT:4d2
-blow:HIT:HURT:2d2
+blow:HIT:HURT:2d3
 flags:RAND_25 | REGENERATE | BASH_DOOR
 flags:NO_FEAR | NO_STUN
 innate-freq:10
@@ -3954,7 +3954,7 @@ smell:19
 armor-class:37
 sleepiness:26
 depth:11
-rarity:3
+rarity:2
 experience:34
 blow:INSULT
 blow:HIT:HURT:1d6
@@ -5378,7 +5378,7 @@ flags:ONLY_ITEM | BASH_DOOR | DROP_1 | ONLY_ITEM
 flags:NO_FEAR | IM_POIS | IM_ACID | KEEP_DIST
 #ROAM | S_EVIL1
 spell-freq:4
-spells:WOUND | SLOW | CONF | BLIND | HOLD | BA_POIS
+spells:WOUND | SLOW | CONF | BLIND | HOLD | HASTE | BA_POIS
 #BE_ACID
 desc:A strange humanoid race, hobglibs are experimenters in magic and alchemy
 desc: and claim to be completely neutral and care for no one.
@@ -5732,7 +5732,7 @@ speed:116
 hit-points:44
 hearing:35
 smell:29
-armor-class:39
+armor-class:42
 sleepiness:13
 depth:16
 rarity:4
@@ -6447,7 +6447,7 @@ smell:19
 armor-class:44
 sleepiness:13
 depth:18
-rarity:4
+rarity:3
 experience:73
 blow:CLAW:BLIND:4d3
 blow:KICK:HURT:2d4
@@ -11244,7 +11244,7 @@ smell:20
 armor-class:63
 sleepiness:16
 depth:33
-rarity:5
+rarity:4
 experience:693
 blow:GAZE:TERRIFY
 #blow:TOUCH:CHARM
@@ -11253,7 +11253,7 @@ blow:BITE:LOSE_WIS:3d6
 flags:EVIL | FEMALE | SMART | BASH_DOOR | DROP_2
 flags:FORCE_SLEEP | REGENERATE | POWERFUL
 flags:IM_POIS | NO_STUN | NO_FEAR | NO_SLEEP | NO_CONF
-#ROAM | FEY | SCALE(?)
+#ROAM | SCALE(?)
 innate-freq:4
 spell-freq:4
 spells:TELE_TO | DRAIN_MANA | WOUND | FORGET

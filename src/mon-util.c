@@ -1067,6 +1067,9 @@ static void player_kill_monster(struct monster *mon, const char *note)
 	/* Player level */
 	div = player->lev;
 
+	/* reduced XP for TOWN_OR_DUN monsters killed in the town */
+	if ((rf_has(mon->race->flags, RF_TOWN_OR_DUN)) == (player->depth == 0)) div = div * 2;
+
 	/* Give some experience for the kill */
 	new_exp = ((long)mon->race->mexp * mon->race->level) / div;
 
