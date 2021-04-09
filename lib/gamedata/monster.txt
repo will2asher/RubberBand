@@ -3784,9 +3784,9 @@ spells:WHIP
 spells:WOUND | SCARE | DARKNESS | BA_POIS | HEAL
 #CURSE_PC
 drop-base:shadow book:5:1:1
-#friends:5:1d2:scorn cat
+friends:5:1d2:scorn cat
 friends:22:1d2:Illusionist
-#friends:41:1d1:scorn cat
+friends:41:1d1:scorn cat
 friends:35:1d3:ruffian
 friends:23:1d2:Same
 desc:She is dressed in black and smells of decay.

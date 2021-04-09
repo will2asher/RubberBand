@@ -591,9 +591,9 @@ static const char *lore_describe_speed(byte speed)
 		byte threshold;
 		const char *description;
 	} lore_speed_description[] = {
-		{130,	"incredibly quickly"},
-		{120,	"very quickly"},
-		{115,	"quickly"},
+		{131,	"incredibly quickly"},
+		{121,	"very quickly"},
+		{116,	"quickly"},
 		{111,	"fairly quickly"},
 		{109,	"normal speed"}, /* 110 is normal speed */
 		{105,	"somewhat slowly"},

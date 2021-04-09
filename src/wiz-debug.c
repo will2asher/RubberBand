@@ -115,11 +115,6 @@ static void wiz_proj_demo(void)
 
 
 
-
-
-
-
-
 /**
  * This is a nice utility function; it determines if a (NULL-terminated)
  * string consists of only digits (starting with a non-zero digit).
