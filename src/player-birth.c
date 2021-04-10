@@ -87,8 +87,6 @@ typedef struct birther /*lovely*/ birther; /*sometimes we think she's a dream*/
 /**
  * A structure to hold "rolled" information, and any
  * other useful state for the birth process.
- *
- * XXX Demand Obama's birth certificate
  */
 struct birther
 {
@@ -569,8 +567,7 @@ static void player_outfit(struct player *p)
 	}
 
 	/* Sanity check */
-	if (p->au < 0)
-		p->au = 0;
+	if (p->au < 0) p->au = 0;
 
 	/* Now try wielding everything */
 	wield_all(p);

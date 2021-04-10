@@ -1111,7 +1111,7 @@ void lore_append_exp(textblock *tb, const struct monster_race *race,
 	const char *ordinal, *article;
 	char buf[20] = "";
 	long exp_integer, exp_fraction;
-	s16b level;
+	s16b level, rlvl = 1;
 
 	/* Check legality and that this is a placeable monster */
 	assert(tb && race && lore);
@@ -1125,12 +1125,16 @@ void lore_append_exp(textblock *tb, const struct monster_race *race,
 
 	textblock_append(tb, " this creature");
 
+	/* A few town monsters give XP now, so we need to make the math work */
+	if (race->level < 1) rlvl = 1;
+	else rlvl = race->level;
+
 	/* calculate the integer exp part */
-	exp_integer = (long)race->mexp * race->level / player->lev;
+	exp_integer = (long)race->mexp * rlvl / player->lev;
 
 	/* calculate the fractional exp part scaled by 100, must use long
 	 * arithmetic to avoid overflow */
-	exp_fraction = ((((long)race->mexp * race->level % player->lev) *
+	exp_fraction = ((((long)race->mexp * rlvl % player->lev) *
 					 (long)1000 / player->lev + 5) / 10);
 
 	/* Calculate textual representation */
@@ -1156,8 +1160,12 @@ void lore_append_exp(textblock *tb, const struct monster_race *race,
 	if ((level == 8) || (level == 11) || (level == 18)) article = "an";
 
 	/* Mention the dependance on the player's level */
-	textblock_append(tb, " for %s %u%s level character.  ", article,
+	textblock_append(tb, " for %s %u%s level character", article,
 					 level, ordinal);
+	if (rf_has(race->flags, RF_TOWN_OR_DUN)) {
+		textblock_append(tb, " (which is halved when you're in the town)");
+	}
+	textblock_append(tb, ".  ");
 }
 
 /**

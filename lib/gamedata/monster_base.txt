@@ -260,7 +260,7 @@ desc:Naga
 
 # Nulx are tentacled swamp monsters
 name:nulx
-glyph:n
+glyph:N
 pain:2
 flags:BASH_DOOR | CLEAR_WEB | RUBBER
 flags:IM_ACID | IM_WATER | WATER_HIDE
@@ -502,7 +502,6 @@ flags:COLD_BLOOD | EMPTY_MIND | INVISIBLE | UNAWARE
 flags:NO_FEAR | NO_CONF | NO_SLEEP
 flags:CHAR_CLEAR | ATTR_CLEAR
 desc:Lurker
-#MOVE_SLOW (add this flag for monsters that move slowly but attack at normal speed, maybe a flag for the opposite too)
 
 # Creeping coins are mimics which look like coins until they attack, hit to
 # poison, and drop the approriate type of treasure

@@ -1126,6 +1126,15 @@ static bool place_new_monster_one(struct chunk *c, struct loc grid,
 	/* Enforce sleeping if needed */
 	if (sleep && race->sleep) {
 		int val = race->sleep;
+
+		/* Town monsters have to be more alert when they're in the dungeon */
+		if ((rf_has(race->flags, RF_TOWN_OR_DUN)) && (race->level == 0) && (player->depth > 0)) {
+			val -= player->depth / 5;
+			val = val * 2 / 3;
+			/* Don't reduce it too much */
+			if (val < race->sleep / 4) val = race->sleep / 4;
+		}
+
 		mon->m_timed[MON_TMD_SLEEP] = ((val * 2) + randint1(val * 10));
 	}
 
@@ -1158,8 +1167,7 @@ static bool place_new_monster_one(struct chunk *c, struct loc grid,
 		mflag_on(mon->mflag, MFLAG_NICE);
 
 	/* Affect light? */
-	if (mon->race->light != 0)
-		player->upkeep->update |= PU_UPDATE_VIEW;
+	if (mon->race->light != 0) player->upkeep->update |= PU_UPDATE_VIEW;
 
 	/* Is this obviously a monster? (Mimics etc. aren't) */
 	if (rf_has(race->flags, RF_UNAWARE))

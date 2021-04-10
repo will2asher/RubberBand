@@ -99,11 +99,16 @@ code:NO_MANA
 name:No Magic
 desc:You cannot cast spells.
 
-# Had to change the flag for this because CHARM is also a monster blow effect
+# Had to change this flag name because CHARM is also a monster blow effect
 type:player
 code:DRUCHARM
 name:Charms
 desc:You are extra persuasive to monsters.
+
+type:player
+code:GOBSPEED
+name:+1 Speed
+desc:You have innate +1 speed.
 
 type:player
 code:UNLIGHT

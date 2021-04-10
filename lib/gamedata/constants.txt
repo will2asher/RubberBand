@@ -129,7 +129,7 @@ world:move-energy:100
 #---------------------------------------------------------------------
 
 # Max number of pack slots for carrying inventory
-carry-cap:pack-size:23
+carry-cap:pack-size:24
 
 # Max number of quiver slots for carrying missiles
 carry-cap:quiver-size:11

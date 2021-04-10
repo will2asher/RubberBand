@@ -1014,6 +1014,7 @@ static void player_kill_monster(struct monster *mon, const char *note)
 	struct monster_lore *lore = get_lore(mon->race);
 	char m_name[80];
 	char buf[80];
+	int rlvl;
 
 	/* Assume normal death sound */
 	int soundfx = MSG_KILL;
@@ -1065,17 +1066,20 @@ static void player_kill_monster(struct monster *mon, const char *note)
 			msgt(soundfx, "You have slain %s.", m_name);
 	}
 
-	/* Player level */
+	/* Player level & monster level */
 	div = player->lev;
+	rlvl = mon->race->level;
+	/* Make the math work for the couple town monsters that give XP */
+	if (rlvl < 1) rlvl = 1;
 
 	/* reduced XP for TOWN_OR_DUN monsters killed in the town */
 	if ((rf_has(mon->race->flags, RF_TOWN_OR_DUN)) == (player->depth == 0)) div = div * 2;
 
 	/* Give some experience for the kill */
-	new_exp = ((long)mon->race->mexp * mon->race->level) / div;
+	new_exp = ((long)mon->race->mexp * rlvl) / div;
 
 	/* Handle fractional experience */
-	new_exp_frac = ((((long)mon->race->mexp * mon->race->level) % div)
+	new_exp_frac = ((((long)mon->race->mexp * rlvl) % div)
 					* 0x10000L / div) + player->exp_frac;
 
 	/* Keep track of experience */

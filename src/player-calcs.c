@@ -1949,6 +1949,10 @@ void calc_bonuses(struct player *p, struct player_state *state, bool known_only,
 		state->el_info[ELEM_NETHER].res_level = 1;
 		state->el_info[ELEM_HOLY_ORB].res_level = -1;
 	}
+	/* Goblins have innate speed */
+	if (player_has(p, PF_GOBSPEED)) state->speed += 1;
+	/* Sprites have fast movement */
+	if (player_has(p, PF_SPRITESPEED)) extra_moves += 1;
 
 	/* Combat Regeneration */
 	if (player_has(p, PF_COMBAT_REGEN) && character_dungeon) {
