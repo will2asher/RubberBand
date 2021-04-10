@@ -2107,7 +2107,8 @@ static bool detect_monsters(int y_dist, int x_dist, monster_predicate pred)
 			if (monster_is_invisible(mon)) {
 				struct monster_lore *lore = get_lore(mon->race);
 				rf_on(lore->flags, RF_INVISIBLE);
-				rsf_on(lore->spell_flags, RSF_TINVIS);
+				/* Why is this keeping my detection from working? */
+				/* rsf_on(lore->spell_flags, RSF_TINVIS); */
 			}
 
 			/* Update monster recall window */
