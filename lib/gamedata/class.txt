@@ -19,11 +19,11 @@
 # skill-melee:base:increment
 # skill-shoot:base:increment
 # skill-throw:base:increment
-# skill-dig:base:increment  (Why does this even have a space for digging?)
+# skill-dig:base:increment
 # info:mhp:exp
 # attack:max_attacks:min_weight:att_multiply
 # title:title
-# equip:tval:sval:min:max
+# equip:tval:sval:min:max:eopts
 # player-flags:class flags
 # magic:spell_first:spell_weight:num_books
 # book:tval:quality:name:spells:realm
@@ -57,7 +57,10 @@
 # attack calculations.
 
 # 'equip' is for starting equipment - tval of the item, sval of the item,
-# minimum amount, maximum amount.
+# minimum amount, maximum amount, names of birth options separated by spaces
+# or | (or none for no exclusion rules) which will exclude the item if set
+# (or, if the name of the option is preceded by NOT-, will exclude the item if
+# not set).
 
 # 'flags' is for class flags.
 
@@ -124,13 +127,13 @@ hitdie:9
 max-attacks:6
 min-weight:30
 strength-multiplier:5
-equip:food:Ration of Food:1:3
-equip:light:Wooden Torch:1:3
-equip:potion:Berserk Strength:1:1
-equip:sword:Short Sword:1:1
-equip:soft armour:Soft Leather Armour:1:1
-equip:scroll:Word of Recall:1:1
-player-flags:BRAVERY_30 | NO_MANA | SHIELD_BASH | 2WEAPON
+equip:food:Ration of Food:1:3:none
+equip:light:Wooden Torch:1:3:none
+equip:potion:Berserk Strength:1:1:none
+equip:sword:Dagger:1:1:none
+equip:soft armour:Soft Leather Armour:1:1:none
+equip:scroll:Word of Recall:1:1:birth_no_recall
+player-flags:BRAVERY_30 | NO_MANA | SHIELD_BASH
 title:Rookie
 title:Soldier
 title:Swordsman
@@ -145,25 +148,25 @@ title:Lord
 
 ############### MAGE ###############
 name:Mage
-stats:-3:3:0:1:-2
-skill-disarm-phys:28:11
-skill-disarm-magic:33:14
+stats:-3:3:0:0:-2
+skill-disarm-phys:30:10
+skill-disarm-magic:35:12
 skill-device:36:13
-skill-save:26:11
+skill-save:30:9
 skill-stealth:2:0
-skill-search:11:12
+skill-search:10:12
 skill-melee:35:15
 skill-shoot:20:15
-skill-throw:21:15
+skill-throw:20:15
 skill-dig:0:0
-hitdie:1
+hitdie:0
 max-attacks:4
 min-weight:40
 strength-multiplier:2
-equip:food:Ration of Food:1:3
-equip:light:Wooden Torch:1:3
-equip:sword:Rapier:1:1
-equip:scroll:Word of Recall:1:1
+equip:food:Ration of Food:1:3:none
+equip:light:Wooden Torch:1:3:none
+equip:sword:Rapier:1:1:none
+equip:scroll:Word of Recall:1:1:birth_no_recall
 player-flags:ZERO_FAIL | BEAM | CHOOSE_SPELLS
 title:Novice
 title:Apprentice
@@ -181,7 +184,7 @@ magic:1:300:5
 book:magic book:town:[First Spells]:7:arcane
 book-graphics:?:R
 book-properties:25:40:1 to 100
-equip:magic book:[First Spells]:1:1
+equip:magic book:[First Spells]:1:1:none
 
 spell:Magic Missile:1:1:22:4
 effect:BOLT_OR_BEAM:MISSILE:0:-10
@@ -420,26 +423,26 @@ desc: damage to each monster in its area of effect.
 
 ############### DRUID ###############
 name:Druid
-stats:-2:0:3:-1:-1
+stats:-2:0:3:-2:0
 skill-disarm-phys:30:10
 skill-disarm-magic:30:10
-skill-device:22:12
+skill-device:24:10
 skill-save:30:10
 skill-stealth:3:0
-skill-search:12:13
+skill-search:12:12
 skill-melee:45:20
-skill-shoot:38:30
-skill-throw:41:31
+skill-shoot:40:30
+skill-throw:40:30
 skill-dig:0:0
 hitdie:2
 max-attacks:4
 min-weight:35
 strength-multiplier:3
-equip:food:Ration of Food:1:3
-equip:hafted:Walking Staff:1:1
-equip:light:Wooden Torch:1:3
-equip:scroll:Word of Recall:1:1
-player-flags:ZERO_FAIL | CHOOSE_SPELLS | DRUCHARM
+equip:food:Ration of Food:1:3:none
+equip:hafted:Whip:1:1:none
+equip:light:Wooden Torch:1:3:none
+equip:scroll:Word of Recall:1:1:birth_no_recall
+player-flags:ZERO_FAIL | CHOOSE_SPELLS | CHARM
 title:Wanderer
 title:Tamer
 title:Nurturer
@@ -456,7 +459,7 @@ magic:1:350:5
 book:nature book:town:[Lesser Charms]:6:nature
 book-graphics:?:y
 book-properties:25:40:1 to 100
-equip:nature book:[Lesser Charms]:1:1
+equip:nature book:[Lesser Charms]:1:1:none
 
 spell:Detect Life:1:1:23:2
 effect:DETECT_LIVING_MONSTERS
@@ -468,7 +471,6 @@ effect:SHAPECHANGE:fox
 desc:Changes you into the shape of a quick and stealthy fox.
 desc:  While shapechanged you cannot use items.
 
-#replace this with a 'create food spell' (because removing hunger without eating is unnatural and therefore inappropriate for a druid)
 spell:Remove Hunger:2:2:25:2
 effect:NOURISH:INC_TO
 dice:50
@@ -661,21 +663,21 @@ skill-disarm-phys:25:12
 skill-disarm-magic:25:12
 skill-device:30:10
 skill-save:32:12
-skill-stealth:1:0
-skill-search:9:14
-skill-melee:45:22
-skill-shoot:34:20
-skill-throw:34:20
+skill-stealth:2:0
+skill-search:10:14
+skill-melee:45:20
+skill-shoot:35:20
+skill-throw:35:20
 skill-dig:0:0
-hitdie:3
+hitdie:2
 max-attacks:4
-min-weight:34
+min-weight:35
 strength-multiplier:3
-equip:food:Ration of Food:1:3
-equip:light:Wooden Torch:1:3
-equip:hafted:Mace:1:1
-equip:potion:Cure Serious Wounds:2:2
-equip:scroll:Word of Recall:1:1
+equip:food:Ration of Food:1:3:none
+equip:light:Wooden Torch:1:3:none
+equip:hafted:Mace:1:1:none
+equip:potion:Cure Serious Wounds:2:2:none
+equip:scroll:Word of Recall:1:1:birth_no_recall
 player-flags:BLESS_WEAPON | ZERO_FAIL
 title:Believer
 title:Acolyte
@@ -693,7 +695,7 @@ magic:1:350:5
 book:prayer book:town:[Novice's Handbook]:6:divine
 book-graphics:?:G
 book-properties:25:40:1 to 100
-equip:prayer book:[Novice's Handbook]:1:1
+equip:prayer book:[Novice's Handbook]:1:1:none
 
 spell:Call Light:1:1:10:2
 effect:LIGHT_AREA
@@ -925,24 +927,24 @@ desc: in light doing 100 damage to every light-sensitive creature.
 
 ############### NECROMANCER ###############
 name:Necromancer
-stats:-3:3:-1:1:-2
-skill-disarm-phys:30:9
+stats:-3:3:0:0:-2
+skill-disarm-phys:30:10
 skill-disarm-magic:35:12
 skill-device:36:13
 skill-save:30:9
 skill-stealth:2:0
 skill-search:10:12
-skill-melee:36:25
+skill-melee:35:25
 skill-shoot:20:15
-skill-throw:20:16
+skill-throw:20:15
 skill-dig:0:0
 hitdie:2
 max-attacks:4
 min-weight:35
 strength-multiplier:3
-equip:food:Ration of Food:1:3
-equip:sword:Long Dagger:1:1
-equip:scroll:Word of Recall:1:1
+equip:food:Ration of Food:1:3:none
+equip:sword:Main Gauche:1:1:none
+equip:scroll:Word of Recall:1:1:birth_no_recall
 player-flags:ZERO_FAIL | CHOOSE_SPELLS | UNLIGHT | EVIL
 title:Acolyte
 title:Curser
@@ -960,7 +962,7 @@ magic:1:300:5
 book:shadow book:town:[Into the Shadows]:5:shadow
 book-graphics:?:P
 book-properties:25:40:1 to 100
-equip:shadow book:[Into the Shadows]:1:1
+equip:shadow book:[Into the Shadows]:1:1:none
 
 spell:Nether Bolt:1:1:22:2
 effect:BOLT:NETHER
@@ -1181,26 +1183,26 @@ desc:Allows you to take control of a monster, and move it instead of yourself.
 ############### PALADIN ###############
 name:Paladin
 stats:1:-3:1:-1:2
-skill-disarm-phys:21:14
-skill-disarm-magic:18:14
+skill-disarm-phys:20:15
+skill-disarm-magic:20:10
 skill-device:24:10
-skill-save:25:12
+skill-save:25:11
 skill-stealth:0:0
 skill-search:10:12
-skill-melee:65:41
-skill-shoot:47:31
+skill-melee:65:40
+skill-shoot:50:30
 skill-throw:50:30
 skill-dig:0:0
 hitdie:6
 max-attacks:5
-min-weight:31
+min-weight:30
 strength-multiplier:5
-equip:food:Ration of Food:1:3
-equip:light:Wooden Torch:1:3
-equip:sword:Short Sword:1:1
-equip:scroll:Protection from Evil:1:1
-equip:scroll:Word of Recall:1:1
-equip:prayer book:[Novice's Handbook]:1:1
+equip:food:Ration of Food:1:3:none
+equip:light:Wooden Torch:1:3:none
+equip:sword:Main Gauche:1:1:none
+equip:scroll:Protection from Evil:1:1:none
+equip:scroll:Word of Recall:1:1:birth_no_recall
+equip:prayer book:[Novice's Handbook]:1:1:none
 player-flags:BLESS_WEAPON | SHIELD_BASH
 title:Gallant
 title:Keeper
@@ -1343,26 +1345,26 @@ desc: winner can emerge.
 name:Rogue
 stats:0:1:-3:3:-1
 skill-disarm-phys:45:20
-skill-disarm-magic:41:21
+skill-disarm-magic:45:20
 skill-device:32:10
 skill-save:28:10
 skill-stealth:3:1
 skill-search:20:16
-skill-melee:38:43
-skill-shoot:67:31
+skill-melee:35:45
+skill-shoot:66:30
 skill-throw:72:45
 skill-dig:0:0
 hitdie:4
 max-attacks:5
 min-weight:20
 strength-multiplier:4
-equip:food:Ration of Food:1:3
-equip:light:Wooden Torch:1:3
-equip:sword:Long Dagger:1:1
-equip:soft armour:Soft Leather Armour:1:1
-equip:scroll:Word of Recall:1:1
-equip:magic book:[First Spells]:1:1
-player-flags:CHOOSE_SPELLS | STEAL | 2WEAPON
+equip:food:Ration of Food:1:3:none
+equip:light:Wooden Torch:1:3:none
+equip:sword:Dagger:1:1:none
+equip:soft armour:Soft Leather Armour:1:1:none
+equip:scroll:Word of Recall:1:1:birth_no_recall
+equip:magic book:[First Spells]:1:1:none
+player-flags:CHOOSE_SPELLS | STEAL
 title:Vagabond
 title:Cutpurse
 title:Footpad
@@ -1445,29 +1447,29 @@ desc:  This spell may have no effect when the forced descent option is set.
 
 ############### RANGER ###############
 name:Ranger
-stats:0:0:2:2:-1
-skill-disarm-phys:40:17
-skill-disarm-magic:31:11
+stats:0:0:2:1:-1
+skill-disarm-phys:40:15
+skill-disarm-magic:30:10
 skill-device:28:10
-skill-save:27:11
-skill-stealth:2:1
+skill-save:32:10
+skill-stealth:3:0
 skill-search:15:15
-skill-melee:58:41
+skill-melee:60:40
 skill-shoot:72:45
-skill-throw:65:31
+skill-throw:66:30
 skill-dig:0:0
 hitdie:5
 max-attacks:5
-min-weight:34
+min-weight:35
 strength-multiplier:4
-equip:food:Ration of Food:1:3
-equip:light:Wooden Torch:1:3
-equip:sword:Dagger:1:1
-equip:bow:Short Bow:1:1
-equip:arrow:Arrow:15:20
-equip:scroll:Word of Recall:1:1
-equip:nature book:[Lesser Charms]:1:1
-player-flags:FAST_SHOT | CHOOSE_SPELLS | 2WEAPON
+equip:food:Ration of Food:1:3:none
+equip:light:Wooden Torch:1:3:none
+equip:sword:Main Gauche:1:1:none
+equip:bow:Short Bow:1:1:none
+equip:arrow:Arrow:15:20:none
+equip:scroll:Word of Recall:1:1:birth_no_recall
+equip:nature book:[Lesser Charms]:1:1:none
+player-flags:FAST_SHOT | CHOOSE_SPELLS
 title:Runner
 title:Strider
 title:Scout
@@ -1483,33 +1485,24 @@ magic:3:400:2
 
 book:nature book:town:[Lesser Charms]:6:nature
 
-#replace remove hunger with a lesser create arrows spell (of a similar level as stone to mud)
-#spell:Remove Hunger:3:1:25:2
-#effect:NOURISH:INC_TO
-#dice:50
-#desc:Magically renders you comfortably fed (but not satiated).
-
-#make this the first spell rangers get in place of remove hunger
-spell:Cure Poison:3:1:27:2
-effect:CURE:POISONED
-desc:Neutralizes poison.
+spell:Remove Hunger:3:1:25:2
+effect:NOURISH:INC_TO
+dice:50
+desc:Magically renders you comfortably fed (but not satiated).
 
 spell:Detect Life:5:2:23:2
 effect:DETECT_LIVING_MONSTERS
 effect-yx:22:40
 desc:Detects all living monsters in the immediate area, for one turn only.
 
+spell:Cure Poison:9:4:30:4
+effect:CURE:POISONED
+desc:Neutralizes poison.
+
 spell:Resist Poison:12:10:32:5
 effect:TIMED_INC:OPP_POIS
 dice:20+d20
 desc:Grants you resistance to poison for 20+1d20 turns.
-
-spell:Create Arrows:14:17:32:6
-effect:CREATE_ARROWS
-desc:Allows the player to turn a staff into a stack of (usually ordinary) arrows.
-desc: It has a very small chance to make enchanted arrows depending on the staff
-desc: level and player level. This spell is also less likely to make a large
-desc: stack than the Magic Arrows spell.
 
 spell:Turn Stone to Mud:15:5:25:5
 effect:LINE:KILL_WALL
@@ -1535,9 +1528,9 @@ expr:B:PLAYER_LEVEL:* 2
 desc:Prevents you from leaving scent for monsters to track you by for a
 desc: level-dependent duration.
 
-spell:Magic Arrows:23:21:40:40
-effect:MAGIC_ARROWS
-desc:Allows the player to turn a staff into a stack of arrows, with quality
+spell:Create Arrows:22:20:40:40
+effect:CREATE_ARROWS
+desc:Allows the player to turn a staff into a stack of arrow, with quality
 desc: depending on staff level and player level.
 
 spell:Haste Self:25:12:65:15
@@ -1554,10 +1547,6 @@ spell:Herbal Curing:40:20:90:200
 effect:CURE:CUT
 effect:CURE:POISONED
 effect:CURE:STUN
-effect:CURE:FRENZY
-#effect:CURE:LYCANT
-#effect:CURE:DISEASE
-#effect:CURE:INSANITY
 effect:CURE:BLACKBREATH
 desc:Cures all cuts, poison, stunning and black breath.
 
@@ -1579,15 +1568,15 @@ hitdie:8
 max-attacks:5
 min-weight:100
 strength-multiplier:5
-equip:shadow book:[Into the Shadows]:1:1
-equip:food:Ration of Food:1:3
-equip:light:Wooden Torch:1:3
-equip:sword:Tulwar:1:1
-equip:shield:Leather Shield:1:1
-equip:scroll:Word of Recall:1:1
-equip:potion:Cure Light Wounds:1:1
+equip:shadow book:[Into the Shadows]:1:1:none
+equip:food:Ration of Food:1:3:none
+equip:light:Wooden Torch:1:3:none
+equip:sword:Tulwar:1:1:none
+equip:shield:Leather Shield:1:1:none
+equip:scroll:Word of Recall:1:1:birth_no_recall
+equip:potion:Cure Light Wounds:1:1:none
 obj-flags:IMPAIR_HP
-player-flags:CHOOSE_SPELLS | SHIELD_BASH | COMBAT_REGEN | 2WEAPON | EVIL
+player-flags:CHOOSE_SPELLS | SHIELD_BASH | COMBAT_REGEN
 title:Rat
 title:Bully
 title:Thug
@@ -1619,14 +1608,13 @@ desc:Removes fear and grants you berserk strength (resistance to fear,
 desc: +75 melee skill, -10 to AC, and prevents healing
 desc: over time) for a level-dependent duration.
 
-spell:Leap into Battle:5:4:25:6
-effect:MOVE_ATTACK
-dice:$B
-expr:B:PLAYER_LEVEL:+ 10 / 15
-desc:You may run up to 4 spaces towards targeted enemy, then perform a
-desc: level-dependent number of melee blows. The number of blows starts at 1
-desc: and goes up every 15 levels (2 blows at 20, etc.). If you moved, the
-desc: number of blows is reduced by 25% for each space, then rounded.
+spell:Whirlwind Attack:5:4:25:6
+effect:SWEEP
+dice:$S
+expr:S:PLAYER_LEVEL:+ 10 / 15
+desc:Deals a level-dependent number of melee blows to each adjacent enemy.
+desc:  At level 5 you do one blow and gain an additional blow every 15
+desc: levels (2 at 20, 3 at 35, and 4 at 50).
 
 spell:Shatter Stone:7:3:20:8
 effect:SHORT_BEAM:KILL_WALL:1
@@ -1634,12 +1622,13 @@ dice:20+1d30
 desc:Destroys an adjacent section of wall or rubble, unless it is a permanent
 desc: wall.  Deals 20+1d30 damage to monsters vulnerable to rock remover.
 
-spell:Whirlwind Attack:10:5:30:10
-effect:SWEEP
-dice:$S
-expr:S:PLAYER_LEVEL:+ 5 / 15
-desc:Deals a melee blow to each adjacent enemy. You gain an additional blow
-desc: at levels 25 and 40.
+spell:Leap into Battle:10:5:30:10
+effect:MOVE_ATTACK
+dice:$B
+expr:B:PLAYER_LEVEL:+ 5 / 15
+desc:You run up to 4 spaces towards targeted enemy, then perform a
+desc: melee blow.  You gain an additional blow at levels 25 and 40.  If you
+desc: moved, the number of blows is reduced by 25% for each space, then rounded.
 
 spell:Grim Purpose:13:8:30:12
 effect:TIMED_INC:OPP_CONF
@@ -1652,13 +1641,12 @@ desc: for 12+d12 turns.
 book:shadow book:town:[Fear and Torment]:5:shadow
 
 spell:Maim Foe:15:6:35:14
-effect:MELEE_BLOWS
+effect:MELEE_BLOWS:MON_STUN:6
 dice:$S
 expr:S:PLAYER_LEVEL:/ 15
-effect:SHORT_BEAM:MON_STUN:1
-dice:5+1d5
-desc:Stuns an adjacent enemy for 5+1d5 turns. Attempts a level-dependent number
-desc: of melee blows against that enemy. You get 1 blow for every 15 levels.
+desc:Attempts a level-dependent number of melee blows against the targeted
+desc: enemy.  You get 1 blow for every 15 levels.  If any of these blows
+desc: damage the enemy, it will be stunned for for 6 turns.
 
 spell:Howl of the Damned:18:8:30:16
 effect:PROJECT_LOS:TURN_ALL
@@ -1679,7 +1667,7 @@ effect:TIMED_INC:ATT_POIS:0:5
 dice:18+d18
 desc:Coats all your melee weapons with poison for 18+d18 turns.
 
-spell:Werewolf Form:33:30:43:100
+spell:Werewolf Form:32:30:40:100
 effect:SHAPECHANGE:werewolf
 desc:With a blood-curdling cry you change into a half-man half-wolf!
 desc: In this form you move, attack, and heal faster.
@@ -1703,13 +1691,10 @@ dice:66
 desc:Restores STR, INT, CON, and experience at the cost of 66 HP.
 
 spell:Forceful Blow:38:16:50:150
-effect:MELEE_BLOWS
+effect:MELEE_BLOWS:FORCE:200
 dice:1
-effect:SHORT_BEAM:FORCE:1
-dice:2d$B
-expr:B:PLAYER_LEVEL:* 4
-desc:Attempts 1 melee blow and hits the target with force, knocking it back
-desc: with a chance to stun it.
+desc:Attempts a melee blow that deals additional force damage when it hits,
+desc: knocking the target back with a chance to stun it.
 
 spell:Quake:44:39:55:175
 effect:EARTHQUAKE:NONE:13
