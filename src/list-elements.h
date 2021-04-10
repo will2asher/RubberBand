@@ -1,12 +1,14 @@
 /**
  * \file list-elements.h
  * \brief Elements used in spells and other attacks.
+ * (has to match projection.txt)
  */
 ELEM(ACID)
 ELEM(ELEC)
 ELEM(FIRE)
 ELEM(COLD)
 ELEM(POIS)
+ELEM(SLIME)
 ELEM(LIGHT)
 ELEM(DARK)
 ELEM(SOUND)
@@ -21,6 +23,8 @@ ELEM(GRAVITY)
 ELEM(INERTIA)
 ELEM(FORCE)
 ELEM(TIME)
+ELEM(FEAR)
+ELEM(AMNESIA)
 ELEM(PLASMA)
 ELEM(METEOR)
 ELEM(MISSILE)

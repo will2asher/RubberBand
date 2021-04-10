@@ -298,9 +298,8 @@ history:23
 age:15:10
 height:37:4
 weight:65:5
-values:RES_SOUND[1]
-#Doesn't do anything yet
-player-flags:CANINE_SMELL
+#CANINE_SMELL Doesn't do anything yet 
+player-flags:DRUCHARM | CANINE_SMELL
 
 name:Hobglib
 stats:1:1:-2:-2:2
@@ -322,6 +321,7 @@ age:15:11
 height:68:10
 weight:166:40
 values:RES_POIS[1]
+#Doesn't do anything yet
 player-flags:KNOW_POTIONS
 
 name:Goblin
@@ -343,7 +343,7 @@ history:23
 age:15:10
 height:38:6
 weight:67:7
-#Goblins get +1 innate speed
+#Goblins get +1 innate speed (maybe make it +2 speed and hitdie 8)
 player-flags:GOBSPEED
 #This should work according to the explanation at the top of this file... (but it doesn't)
 #values:SPEED[1]
@@ -369,7 +369,7 @@ player-flags:GOBSPEED
 #weight:47:7
 #values:RES_LIGHT[1]
 #obj-flags:SEE_INVIS
-#gain true sight at some high clvl
+#gain true sight at some high clvl (not coded yet)
 #player-flags:TRUE_SIGHT40
 
 # Format:

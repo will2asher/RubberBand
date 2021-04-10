@@ -293,10 +293,6 @@ static void project_object_handler_FORCE(project_object_handler_context_t *conte
 	project_object_elemental(context, ELEM_FORCE, "shatters", "shatter");
 }
 
-static void project_object_handler_TIME(project_object_handler_context_t *context)
-{
-}
-
 /* Fire + Elec */
 static void project_object_handler_PLASMA(project_object_handler_context_t *context)
 {
@@ -311,10 +307,6 @@ static void project_object_handler_METEOR(project_object_handler_context_t *cont
 	project_object_elemental(context, ELEM_COLD, "shatters", "shatter");
 }
 
-static void project_object_handler_MISSILE(project_object_handler_context_t *context)
-{
-}
-
 /* Mana -- destroys everything */
 static void project_object_handler_MANA(project_object_handler_context_t *context)
 {
@@ -327,6 +319,23 @@ static void project_object_handler_HOLY_ORB(project_object_handler_context_t *co
 {
 }
 
+/* These don't affect objects */
+static void project_object_handler_TIME(project_object_handler_context_t* context)
+{
+}
+/* (maybe slime should affect objects, but if so, I'll do it later */
+static void project_object_handler_SLIME(project_object_handler_context_t* context)
+{
+}
+static void project_object_handler_FEAR(project_object_handler_context_t* context)
+{
+}
+static void project_object_handler_AMNESIA(project_object_handler_context_t* context)
+{
+}
+static void project_object_handler_MISSILE(project_object_handler_context_t* context)
+{
+}
 static void project_object_handler_ARROW(project_object_handler_context_t *context)
 {
 }

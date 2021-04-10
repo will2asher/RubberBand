@@ -142,6 +142,7 @@ static int spell_color(struct player *p, const struct monster_race *race,
 			case ELEM_FORCE:
 			case ELEM_ICE:
 			case ELEM_PLASMA:
+			case ELEM_SLIME:
 			case ELEM_WATER:
 				if (!of_has(p->known_state.flags, OF_PROT_STUN)) {
 					return level->lore_attr;

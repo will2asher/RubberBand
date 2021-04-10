@@ -353,6 +353,13 @@ message:BR_PLASMA:w
 # MSG_BR_FORCE
 message:BR_FORCE:w
 
+# Why can't they all just default to white instead of having to add these?
+# MSG BR_FEARMS
+message:BR_FEARMS:w
+
+# MSG_BR_AMNESIA
+message:BR_AMNESIA:w
+
 # MSG_SUM_MONSTER
 message:SUM_MONSTER:w
 

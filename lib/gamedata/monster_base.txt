@@ -87,8 +87,8 @@ glyph:D
 pain:1
 flags:DRAGON | EVIL | POWERFUL | SMART | SPIRIT
 flags:DROP_4
-flags:MOVE_BODY | CLEAR_WEB
-flags:NO_HOLD | NO_CONF | FORCE_SLEEP
+flags:MOVE_BODY | CLEAR_WEB | FORCE_SLEEP
+flags:NO_HOLD | NO_CONF | IM_SLIME
 desc:Ancient Dragon/Wyrm
 
 # These come in two stages:
@@ -98,7 +98,7 @@ desc:Ancient Dragon/Wyrm
 name:eye
 glyph:e
 pain:1
-flags:CLEAR_WEB
+flags:CLEAR_WEB | IM_SLIME
 desc:Floating Eye
 
 # Creatures (mostly) embodying a single element, mostly with lowish HP
@@ -134,7 +134,7 @@ pain:1
 flags:UNDEAD | EVIL | COLD_BLOOD | SPIRIT
 flags:INVISIBLE
 flags:PASS_WALL
-flags:IM_POIS | NO_CONF | NO_SLEEP
+flags:IM_POIS | NO_CONF | NO_SLEEP | IM_SLIME
 desc:Ghost
 #IM_COLD | NO_HOLD | NO_STUN  not by default
 # (not all ghosts should be invisible, though most will be)
@@ -172,7 +172,7 @@ desc:Dark Fairy
 name:icky thing
 glyph:i
 pain:1
-flags:CLEAR_WEB | VISH
+flags:CLEAR_WEB | VISH | IM_SLIME
 desc:Icky Thing
 
 # Insects are small, a bit fast, weak breeders which bite for various effects
@@ -187,7 +187,7 @@ name:jelly
 glyph:j
 pain:2
 flags:EMPTY_MIND | STUPID | CLEAR_WEB
-flags:NO_FEAR
+flags:NO_FEAR | IM_SLIME
 desc:Jelly
 
 # Snakes
@@ -263,7 +263,7 @@ name:nulx
 glyph:N
 pain:2
 flags:BASH_DOOR | CLEAR_WEB | RUBBER
-flags:IM_ACID | IM_WATER | WATER_HIDE
+flags:IM_ACID | IM_WATER | IM_SLIME | WATER_HIDE
 desc:Nulx (swamp monsters) and other tentacled horrors
 #(WATER_HIDE doesn't do anything yet)
 
@@ -416,6 +416,7 @@ desc:Vortex
 name:worm
 glyph:w
 pain:1
+flags:IM_SLIME
 desc:Worm/Worm Mass
 
 # Undead which range from wights to wraiths to the Ringwraiths.  Experience
@@ -425,7 +426,8 @@ name:wraith
 glyph:W
 pain:1
 flags:UNDEAD | EVIL | COLD_BLOOD | SPIRIT | CLEAR_WEB
-flags:HURT_LIGHT | IM_COLD | IM_POIS | NO_CONF | NO_SLEEP | NO_STUN | NO_HOLD
+flags:HURT_LIGHT | IM_COLD | IM_POIS | IM_SLIME
+flags:NO_CONF | NO_SLEEP | NO_STUN | NO_HOLD
 desc:Wight/Wraith
 
 # xorns are strange part rock beings which can destroy or pass through walls
@@ -489,7 +491,7 @@ desc:Zombie/Mummy
 name:mushroom
 glyph:,
 pain:2
-flags:EMPTY_MIND | STUPID
+flags:EMPTY_MIND | STUPID | IM_SLIME
 flags:NO_FEAR | NO_CONF | NO_SLEEP | NO_STUN | HURT_FIRE
 desc:Mushroom, mold, or other fungi.
 #remove HURT_FIRE from a few types
@@ -499,7 +501,7 @@ name:lurker
 glyph:.
 pain:1
 flags:COLD_BLOOD | EMPTY_MIND | INVISIBLE | UNAWARE
-flags:NO_FEAR | NO_CONF | NO_SLEEP
+flags:NO_FEAR | NO_CONF | NO_SLEEP | IM_SLIME
 flags:CHAR_CLEAR | ATTR_CLEAR
 desc:Lurker
 
@@ -542,7 +544,7 @@ glyph:#
 pain:1
 flags:COLD_BLOOD | EMPTY_MIND
 flags:BASH_DOOR | CLEAR_WEB | NONLIVING
-flags:IM_POIS | NO_CONF | NO_SLEEP | NO_FEAR
+flags:IM_POIS | NO_CONF | NO_SLEEP | NO_FEAR | IM_DISEN
 desc:Wall Monster
 
 

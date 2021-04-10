@@ -163,9 +163,7 @@ static void remove_bad_spells(struct monster *mon, bitflag f[RSF_SIZE])
 	rsf_copy(f2, f);
 
 	/* Don't heal if full */
-	if (mon->hp >= mon->maxhp) {
-		rsf_off(f2, RSF_HEAL);
-	}
+	if (mon->hp >= mon->maxhp) rsf_off(f2, RSF_HEAL);
 
 	/* Don't heal others if no injuries */
 	if (rsf_has(f2, RSF_HEAL_KIN) && !find_any_nearby_injured_kin(cave, mon)) {
@@ -173,9 +171,8 @@ static void remove_bad_spells(struct monster *mon, bitflag f[RSF_SIZE])
 	}
 
 	/* Don't haste if hasted with time remaining */
-	if (mon->m_timed[MON_TMD_FAST] > 10) {
-		rsf_off(f2, RSF_HASTE);
-	}
+	if (mon->m_timed[MON_TMD_FAST] > 10) rsf_off(f2, RSF_HASTE);
+
 	/* Don't turn invisible if already invisible */
 	if (mon->m_timed[MON_TMD_TINVIS] > 5) rsf_off(f2, RSF_TINVIS);
 
@@ -186,19 +183,13 @@ static void remove_bad_spells(struct monster *mon, bitflag f[RSF_SIZE])
 	}
 
 	/* Don't use the lash effect if the player is too far away */
-	if (tdist > 2) {
-		rsf_off(f2, RSF_WHIP);
-	}
-	if (tdist > 3) {
-		rsf_off(f2, RSF_SPIT);
-	}
+	if (tdist > 2) rsf_off(f2, RSF_WHIP);
+	if (tdist > 3) rsf_off(f2, RSF_SPIT);
+
 	/* THROW range depends on spell power */
 	if ((mon->race->spell_power / 8) > 5) throwr = 9;
 	else throwr = (mon->race->spell_power / 8) + 3;
-	if (tdist > throwr) 
-	{	
-		rsf_off(f2, RSF_THROW);
-	}
+	if (tdist > throwr) rsf_off(f2, RSF_THROW);
 
 	/* Update acquired knowledge */
 	if (OPT(player, birth_ai_learn)) {

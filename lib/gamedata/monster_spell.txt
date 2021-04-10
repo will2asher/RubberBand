@@ -335,6 +335,26 @@ lore-color-resist:Yellow
 message-vis:{name} breathes force.
 message-invis:You hear a staccato roar.
 
+name:BR_FEAR
+msgt:BR_FEARMS
+hit:100
+effect:BREATH:FEAR:0:30
+lore:force
+lore-color-base:Orange
+lore-color-resist:Yellow
+message-vis:{name} breathes fear.
+message-invis:You hear a fearsome roar.
+
+name:BR_AMNS
+msgt:BR_AMNESIA
+hit:100
+effect:BREATH:AMNESIA:0:30
+lore:force
+lore-color-base:Orange
+lore-color-resist:Yellow
+message-vis:{name} breathes fear.
+message-invis:You hear a fearsome roar.
+
 name:BR_MANA
 hit:100
 effect:BREATH:MANA:0:30

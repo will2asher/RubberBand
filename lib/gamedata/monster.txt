@@ -8,7 +8,7 @@
 
 # === Understanding monster.txt ===
 
-# name: monster name
+# name: monster name:
 # plural: monster name plural (if non-standard)
 # base: template name
 # glyph: symbol
@@ -877,6 +877,23 @@ flags:EMPTY_MIND | KILL_BODY | TAKE_ITEM
 flags:IM_POIS
 desc:It is a smallish, slimy, icky, hungry creature.
 
+name:multi-hued centipede
+base:centipede
+color:v
+speed:114
+hit-points:13
+hearing:7
+smell:15
+armor-class:16
+sleepiness:35
+depth:2
+rarity:4
+experience:4
+blow:BITE:HURT:1d2
+blow:STING:POISON:1d3
+flags:RAND_25 | ATTR_MULTI | IM_POIS | IM_SLIME
+desc:It is about two feet long and carnivorous, same as a regular centipede...
+
 name:soldier
 base:person
 color:u
@@ -1389,8 +1406,8 @@ blow:HIT:HURT:2d3
 #CLAWB
 flags:DROP_40 | RUBBER
 #ROAM | S_EVIL2
-#spell-freq:12
-#spells:TINVIS
+spell-freq:12
+spells:TINVIS
 friends:20:1d3:feline kobold
 desc:This kobold has catlike features instead of doglike ones.
 
@@ -1976,8 +1993,7 @@ blow:BITE:HURT:1d4
 flags:EVIL | WEIRD_MIND | RAND_50 | STUPID
 #ROAM
 spell-freq:13
-spells:CONF
-# | TINVIS
+spells:CONF | TINVIS
 desc:A slimy two-foot long worm with insectoid wings.
 desc: That's something you don't see every day.
 
@@ -1999,8 +2015,8 @@ blow:HIT:HURT:3d3
 #CLAWB
 flags:DROP_40 | RUBBER
 #ROAM | S_EVIL2
-#spell-freq:9
-#spells:TINVIS
+spell-freq:10
+spells:TINVIS
 desc:This kobold has catlike features instead of doglike ones.
 
 name:black naga
@@ -2259,8 +2275,7 @@ experience:14
 blow:GAZE:PARALYZE:1d2
 flags:ATTR_CLEAR | NEVER_MOVE | NO_FEAR | HURT_LIGHT
 spell-freq:12
-spells:SLOW | BLINK
-#TINVIS
+spells:SLOW | BLINK | TINVIS
 desc:All you can see is the outline of this disembodied eye.
 
 name:vulture harpy
@@ -3234,8 +3249,7 @@ blow:BITE:EAT_LIGHT:2d3
 flags:EVIL | RUBBER | WEIRD_MIND | COLD_BLOOD | RAND_50 
 #ROAM
 spell-freq:8
-spells:CONF | BLINK | DARKNESS
-#TINVIS
+spells:CONF | BLINK | DARKNESS | TINVIS
 desc:A lesser form of the vyrm, an evil magical creature appearing like a worm with
 desc: wings like a wasp's.
 
@@ -4624,11 +4638,10 @@ rarity:4
 experience:53
 blow:TOUCH:HALLU
 flags:RAND_50 | WEIRD_MIND | NONLIVING | RUBBER
-flags:PASS_WALL | NO_HOLD
+flags:PASS_WALL | NO_HOLD | IM_SLIME
 #ROAM
 spell-freq:5
-spells:SCARE | BLIND | BLINK | CONF | DARKNESS
-#TINVIS
+spells:SCARE | BLIND | BLINK | CONF | DARKNESS | TINVIS
 desc:It is real or are you seeing things?
 
 name:giant clear centipede
@@ -4671,7 +4684,7 @@ mimic:gold:mithril
 name:illusionist
 base:person
 color:I
-speed:116
+speed:115
 hit-points:54
 light:2
 hearing:20
@@ -4686,8 +4699,7 @@ flags:DROP_1 | OPEN_DOOR
 #S_EVIL1, ROAM
 spell-freq:3
 spells:BLIND | BLINK | CONF | DARKNESS | HASTE | HOLD
-spells:SLOW | TPORT 
-#TINVIS
+spells:SLOW | TPORT | TINVIS
 drop-base:magic book:8:1:1
 drop-base:magic book:8:1:1
 friends:50:1d2:Brigand
@@ -5467,7 +5479,7 @@ depth:15
 rarity:2
 experience:43
 blow:HIT:HURT:1d7
-flags:COLD_BLOOD | INVISIBLE | NONLIVING
+flags:COLD_BLOOD | INVISIBLE | NONLIVING | IM_SLIME
 flags:RAND_25 | RAND_50 | PASS_DOOR
 flags:IM_ELEC
 desc:A whirlwind of sentient air.
@@ -5596,8 +5608,7 @@ flags:SMART | FORCE_SLEEP | DROP_1 | ONLY_ITEM
 flags:RAND_25 | BASH_DOOR | IM_FIRE
 spell-freq:10
 spells:BLIND | BLINK | CONF | SCARE
-spells:TPORT | TELE_TO
-#TINVIS
+spells:TPORT | TELE_TO | TINVIS
 desc:A demon of small stature with an annoying bite.
 
 name:uruk
@@ -5766,9 +5777,11 @@ blow:CLAW:POISON:2d2
 blow:BITE:LOSE_WIS:3d3
 flags:SPIRIT | RAND_25 | OPEN_DOOR | COLD_BLOOD | IM_POIS | IM_NETHER
 flags:EVIL | RUBBER | WEIRD_MIND | IM_DISEN | PASS_DOOR | BR_STRONG
+innate-freq:13
 spell-freq:6
-spells:SLOW | BLINK | DRAIN_MANA | BLIND | FORGET | DARKNESS
-#S_ILLUSION | BR_AMNS | TINIVS
+spells:BR_AMNS | SLOW
+spells:BLINK | DRAIN_MANA | BLIND | DARKNESS | TINVIS
+#S_ILLUSION
 friends:9:1d2:Same
 desc:A magical being whose purpose is to turn the minds of men to mush.
 desc: The vyrm's magic makes it appear as a colorful pleasant-
@@ -5882,9 +5895,8 @@ flags:DROP_1 | ONLY_ITEM | BASH_DOOR
 flags:RAND_25 | IM_FIRE | IM_POIS
 innate-freq:10
 spell-freq:10
-spells:WHIP | SHOT
+spells:WHIP | SHOT | TINVIS
 spells:BLIND | BLINK | CONF | SCARE | SLOW | TELE_TO | TPORT | BO_POIS
-#TINVIS
 friends:4:1d5:Same
 desc:Small flying devils which are often servants of wizards.
 desc: Its skin is dark red and it has sharp horns and a barbed tail.
@@ -5924,7 +5936,7 @@ blow:HIT:HURT:2d4
 blow:HIT:HURT:2d4
 flags:COLD_BLOOD
 flags:RAND_25 | BASH_DOOR
-flags:IM_ACID | IM_WATER
+flags:IM_ACID | IM_WATER | IM_SLIME
 desc:A whirlpool of sentient liquid.
 
 name:earth spirit
@@ -6013,8 +6025,8 @@ experience:14
 blow:TOUCH:EAT_LIGHT:1d4
 flags:RAND_25 | IM_POIS | SILLY
 flags:WEIRD_MIND | MULTIPLY | NO_FEAR 
-#spell-freq:11
-#spells:TINVIS
+spell-freq:11
+spells:TINVIS
 desc:A rather cute ball of dust that refuses to be swept up.
 desc: It has floppy ears and eats dust carrots.
 
@@ -6387,8 +6399,7 @@ experience:52
 blow:BITE:HURT:1d8
 flags:RAND_25 | BASH_DOOR | GROUP_AI | ATTR_FLICKER
 spell-freq:3
-spells:BLINK | TELE_TO
-#TINVIS
+spells:BLINK | TELE_TO | TINVIS
 friends:100:2d7:Same
 desc:A strange magical member of the canine race, its form seems to shimmer and
 desc: fade in front of your very eyes.
@@ -6623,9 +6634,8 @@ flags:KEEP_DIST
 #ROAM | S_EVIL2 | DISGUISE | SCALE
 spell-freq:6
 innate-freq:7
-spells:BOLT | SHRIEK
+spells:BOLT | SHRIEK | TINVIS
 spells:TRAPS | TPORT | BO_POIS | S_MONSTER
-#TINIVS
 friends:6:1d1:blackguard
 friends:12:1d1:rogue
 friends:22:1d2:sniper
@@ -6691,10 +6701,10 @@ blow:HIT:HURT:1d9
 blow:HIT:HALLU:1d9
 flags:NONLIVING | EMPTY_MIND | FORCE_SLEEP
 flags:RAND_50 | PASS_WALL
-flags:IM_ACID | IM_COLD | IM_ELEC
+flags:IM_ACID | IM_COLD | IM_ELEC | IM_SLIME
 spell-freq:4
-spells:BLINK | WOUND | CONF 
-#ILLUSION_CLONE | TINVIS
+spells:BLINK | WOUND | CONF | TINVIS
+#ILLUSION_CLONE
 desc:A strange ball of glowing light.  It is a lesser version of a will o' wisp.
 
 name:zhelung
@@ -6742,8 +6752,8 @@ flags:TAKE_ITEM | SPIRIT | EVIL | SILLY | NO_FEAR
 #ROAM | SCALE
 #innate-freq:9
 spell-freq:9
-spells:WOUND | HASTE
-#BR_FEAR | HEAL_KIN | CURSE_PC | S_ILLUSION
+spells:BR_FEAR | WOUND | HASTE
+#HEAL_KIN | CURSE_PC | S_ILLUSION
 friends:30:1d3:elite winged monkey
 friends:85:2d5:winged monkey
 desc:Green skinned evil flying monkeys serve as mercenaries to whatever
@@ -6873,8 +6883,8 @@ flags:FORCE_SLEEP | RAND_25 | MALE | MOVE_BODY
 flags:EVIL | UNIQUE | SMART | REGENERATE | POWERFUL 
 flags:NO_STUN | NO_SLEEP | IM_POIS
 #ROAM
-innate-freq:6
-spell-freq:4
+innate-freq:5
+spell-freq:5
 spells:WHIP | SHOT | THROW
 spells:CONF | DARKNESS | TRAPS | SCARE | BO_POIS | WOUND | TINVIS
 # | CURSE_PC | S_ILLUSION
@@ -6990,7 +7000,7 @@ blow:BITE:ACID:1d8
 blow:BITE:ACID:1d8
 blow:CLAW:HURT:3d3
 blow:CLAW:HURT:3d3
-flags:BASH_DOOR | IM_ACID | FORCE_SLEEP
+flags:BASH_DOOR | IM_ACID | IM_SLIME | FORCE_SLEEP
 innate-freq:10
 spells:BR_ACID
 friends:100:2d7:Same
@@ -7079,7 +7089,7 @@ smell:11
 armor-class:19
 sleepiness:8
 depth:20
-rarity:8
+rarity:6
 experience:139
 blow:BUTT:HURT:5d3
 blow:GAZE:HALLU
@@ -7087,12 +7097,11 @@ blow:GAZE:LOSE_INT
 #B:GAZEB:LOSE_INT
 flags:SILLY | FORCE_SLEEP | WEIRD_MIND | PASS_DOOR
 flags:IM_POIS | IM_ACID
-#ROAM | BR_WEAK? | SCALE
+#ROAM | SCALE
 flags-off:BASH_DOOR
 innate-freq:7
 spell-freq:8
-spells:CONF | FORGET | HASTE | BR_CHAO
-#TINVIS
+spells:BR_CHAO | CONF | FORGET | HASTE | TINVIS
 desc:What have you been drinking?  Someone must've spiked that apple juice or drugged
 desc: that last food ration.
 
@@ -7357,9 +7366,9 @@ flags:NO_FEAR | IM_ELEC | IM_NETHER
 #ROAM (I think UNDEAD are automatically immune to nether?)
 innate-freq:6
 spell-freq:5
-spells:BR_DARK | BR_NETH
+spells:BR_DARK | BR_NETH | TINVIS
 spells:DRAIN_MANA | SCARE | BLINK | DARKNESS | S_UNDEAD
-#TINVIS | CURSE_PC
+#CURSE_PC
 desc:A feline undead which appears as a cat shaped shadow.
 
 name:harpy witch
@@ -7535,9 +7544,8 @@ flags:NO_FEAR | NO_STUN | RAND_25
 flags:HURT_LIGHT | STUPID | NONLIVING
 #ROAM
 flags-off:INVISIBLE
-spell-freq:10
-spells:SCARE | DARKNESS | SLOW | S_UNDEAD | HASTE
-#TINVIS
+spell-freq:9
+spells:SCARE | DARKNESS | SLOW | S_UNDEAD | HASTE | TINVIS
 friends:90:1d8:same
 desc:Am image of a skull floating in midair, your weapon seems to go right through it.
 
@@ -7598,7 +7606,8 @@ experience:23
 blow:TOUCH:BLIND:1d1
 flags:SILLY | WEIRD_MIND | RAND_50 | IM_POIS | IM_ELEC
 flags:MULTIPLY | NO_FEAR | HURT_FIRE | HURT_WATER | ATTR_CLEAR | CHAR_CLEAR
-#TINVIS
+spell-freq:11
+spells:TINVIS
 friends:12:1d4:same
 desc:A wisp of dust which will evade the brooms of the most meticulous sweepers by
 desc: being impossible to see.
@@ -8330,7 +8339,7 @@ rarity:2
 experience:65
 blow:STING:PARALYZE:2d6
 blow:STING:PARALYZE:2d6
-flags:RAND_25 | BASH_DOOR | IM_POIS
+flags:RAND_25 | BASH_DOOR | IM_POIS | IM_SLIME
 friends:96:2d4:Same
 desc:A hideous centipede covered in slime and with glowing tentacles around its
 desc: head.
@@ -8543,10 +8552,9 @@ experience:71
 blow:BITE:BLIND:1d6
 flags:RAND_25 | ATTR_FLICKER | POWERFUL
 flags:IM_POIS | IM_NEXUS
-spell-freq:6
+spell-freq:7
 innate-freq:10
-spells:BR_DARK | BR_LIGHT | BR_NEXU | BLINK
-#BR_CONF | TINVIS
+spells:BR_DARK | BR_LIGHT | BR_NEXU | CONF | BLINK | TINVIS
 desc:A giant dragonfly constantly flashing with light and darkness.
 
 name:sourfruit tree
@@ -8901,10 +8909,8 @@ blow:CRUSH:EAT_LIGHT:4d4
 flags:DROP_60 | IM_POIS | MOVE_BODY | SMART
 flags:NO_STUN | EVIL | REGENERATE 
 #ROAM | SCALE? | FEY | DISGUISE
-spell-freq:8
 innate-freq:8
-spells:THROW | BR_DARK | SCARE
-#(BR_FEAR instead of SCARE)
+spells:THROW | BR_DARK | BR_FEAR
 friends:10:1d5:Same
 desc:Fairy ogres are faster and not as stupid as normal ogres.
 desc:  They're just as ugly too, but they can shapechange into a less hideous form.
@@ -8933,7 +8939,7 @@ innate-freq:6
 spell-freq:8
 spells:THROW | BR_FEAR | BR_DARK
 spells:CONF | HOLD | S_UNDEAD
-#summon nightmare
+#S_ILLUSION?, S_nightmare
 desc:It is a spirit of fear out of your darkest dreams. Get out your
 desc: fireplace poker and check the closet and under your bed.
 
@@ -9894,7 +9900,7 @@ flags:RAND_25 | TAKE_ITEM
 innate-freq:8
 spell-freq:4
 spells:BLIND | DRAIN_MANA | HOLD | DARKNESS | BLINK
-#TINVIS | BR_FEAR
+spells:TINVIS | BR_FEAR
 desc:A phantasmal shrieking spirit.  Its wail drives the intense cold of 
 desc: evil deep within your body.
 
@@ -10154,7 +10160,7 @@ flags:IM_POIS | NO_FEAR | NO_SLEEP
 #(or SILLY instead of RUBBER?)
 spell-freq:3
 spells:SCARE | DARKNESS | WOUND | MIND_BLAST | BLINK | HASTE | S_UNDEAD
-#CURSE_PC | BR_FEAR | S_ILLUSION | S_EXTRA
+#CURSE_PC | S_ILLUSION | S_EXTRA(nightmare)
 desc:A mad alchemist with a specialty in bad dreams. He summons nightmares from smoking
 desc: vials of mysterious liquids.
 
@@ -10176,7 +10182,6 @@ flags:SMART | DROP_1 | ONLY_ITEM | FORCE_SLEEP
 flags:RAND_25 | OPEN_DOOR | BASH_DOOR
 spell-freq:8
 spells:WOUND | DARKNESS | SCARE | HOLD
-#BR_FEAR instead of SCARE
 desc:It is a ghostly form with eyes that haunt you.
 
 name:ogre chieftain
@@ -10220,7 +10225,7 @@ experience:131
 blow:CLAW:PARALYZE:2d4
 blow:CLAW:PARALYZE:2d4
 blow:BITE:LOSE_CON:2d4
-#DISEASE and maybe BR_FEAR instead of SCARE
+#DISEASE
 flags:DROP_40 | HURT_LIGHT
 spell-freq:7
 spells:HOLD | SCARE
@@ -10531,8 +10536,8 @@ flags:SPIRIT | IM_FIRE | HURT_WATER | FORCE_SLEEP | REGENERATE
 #RETURNS | TEMPLE
 innate-freq:6
 spell-freq:6
-spells:BR_DARK | BO_FIRE | BO_NETH | S_KIN | S_UNDEAD
-#BR_FEAR | TINVIS
+spells:BR_DARK | BR_FEAR | S_KIN | S_UNDEAD
+spells:BO_FIRE | BO_NETH | TINVIS
 desc:The skeleton of a witch or warlock who was burnt at the stake but refused to die, it
 desc: is one step away from being a lich.
 
@@ -10693,11 +10698,11 @@ flags:UNIQUE | FORCE_SLEEP | IM_COLD | IM_POIS | IM_ACID
 flags:OPEN_DOOR | BASH_DOOR | TAKE_ITEM | HURT_WATER
 flags:MOVE_BODY | RAND_25 | ONLY_ITEM | DROP_3 | DROP_GOOD
 #ROAM | TEMPLE
-innate-freq:6
+innate-freq:5
 spell-freq:6
-spells:BR_TIME | BR_POIS | BR_DARK
+spells:BR_TIME | BR_POIS | BR_DARK | BR_FEAR | BR_AMNS
 spells:BLIND | DRAIN_MANA | MIND_BLAST | 
-#CURSE_PC | BR_FEAR | INSANITY, maybe also BR_AMNS
+#CURSE_PC | INSANITY
 desc:A filthy and selfish demon determined to destroy the mind and will of men.
 
 ### Dungeon level 32 ###
@@ -10829,9 +10834,10 @@ flags:WEIRD_MIND | INVISIBLE | COLD_BLOOD | DROP_60 | RAND_25
 flags:NO_FEAR | NO_CONF | NO_SLEEP | NO_STUN | FORCE_SLEEP
 flags:IM_COLD | IM_POIS | IM_ELEC | HURT_LIGHT | PASS_DOOR
 #ROAM
+innate-freq:6
 spell-freq:6
-spells:BR_DARK | DRAIN_MANA | TPORT
-#BR_FEAR | CURSE_PC
+spells:BR_DARK | BR_FEAR | DRAIN_MANA | TPORT
+#CURSE_PC
 desc:A minor demon from dwarvish superstition.  It symbolizes the darkness to come
 desc: when they expect, know, or wish that something bad will happen in the
 desc: mine.  When written as a symbol, it means "we await what follows with dread".
@@ -10984,8 +10990,7 @@ blow:HIT:LOSE_STR:3d4
 flags:MALE | EVIL | SMART | OPEN_DOOR
 flags:DROP_1 | IM_POIS | NO_CONF | NO_SLEEP
 spell-freq:8
-spells:BO_POIS | BOLT | SLOW
-#TINVIS
+spells:BO_POIS | BOLT | SLOW | TINVIS
 friends:8:1d1:nightmare doctor
 friends:12:1d1:lightning rogue
 friends:40:1d1:green knight
@@ -11246,11 +11251,11 @@ flags:EVIL | FEMALE | SMART | BASH_DOOR | DROP_2
 flags:FORCE_SLEEP | REGENERATE | POWERFUL
 flags:IM_POIS | NO_STUN | NO_FEAR | NO_SLEEP | NO_CONF
 #ROAM | SCALE(?)
-innate-freq:4
+innate-freq:5
 spell-freq:4
 spells:TELE_TO | DRAIN_MANA | WOUND | FORGET
-spells:WHIP | BR_DARK | BO_POIS | BO_ICE | MIND_BLAST
-#BR_FEAR | CURSE_PC | S_NIGHTMARE | S_ILLUSION
+spells:WHIP | BR_DARK | BR_FEAR | BO_POIS | BO_ICE | MIND_BLAST
+#CURSE_PC | S_NIGHTMARE | S_ILLUSION
 desc:The goblin hag is an expert with magic and poisons, and her
 desc: enticing charms make you forget she's hiding a knife behind her back.
 
@@ -11274,8 +11279,7 @@ flags:DROP_3 | ONLY_ITEM | PASS_DOOR
 flags:NO_CONF | NO_SLEEP | IM_NETHER
 innate-freq:10
 spell-freq:12
-spells:BR_NETH | BR_DARK | CONF | SLOW
-#BR_FEAR | TINVIS
+spells:BR_NETH | BR_DARK | BR_FEAR | TINVIS | CONF | SLOW
 desc:It is a dragon-like form wrapped in shadow.  Glowing red eyes shine out in
 desc: the dark, and it is surrounded by an aura of unearthly cold that chills
 desc: the soul rather than the body.
@@ -11301,8 +11305,7 @@ flags:IM_FIRE | IM_DISEN | NO_CONF | NO_SLEEP
 flags:ATTR_MULTI
 innate-freq:10
 spell-freq:15
-spells:BR_CHAO | BR_DISE | CONF | SLOW
-#BR_FEAR
+spells:BR_CHAO | BR_FEAR | BR_DISE | CONF | SLOW
 desc:A dragon twisted by the forces of chaos.  It seems first ugly, then fair,
 desc: as its form shimmers and changes in front of your eyes.
 
@@ -11500,8 +11503,7 @@ flags:IM_COLD | HURT_LIGHT
 flags:RAND_25 | TAKE_ITEM | FORCE_SLEEP
 innate-freq:15
 spell-freq:12
-spells:BR_NETH | BLIND | DRAIN_MANA | HOLD | DARKNESS
-#BR_FEAR
+spells:BR_NETH | BR_FEAR | BLIND | DRAIN_MANA | HOLD | DARKNESS
 desc:It's like a three-dimensional shadow with more shape than other unnatural
 desc: shadows, a horrific apparition of death, more than a shade of its former self.
 
@@ -11526,8 +11528,7 @@ flags:DROP_2 | TAKE_ITEM
 #S_EVIL2 | ROAM | DISGUISE
 innate-freq:10
 spell-freq:5
-spells:SHOT | BLINK | TRAPS
-#TINVIS
+spells:BOLT | BLINK | TRAPS | TINVIS
 friends:3:1d1:nightmare doctor
 friends:6:1d1:brigand
 friends:6:1d1:sniper
@@ -11699,8 +11700,8 @@ blow:KICK:HURT:2d7
 flags:DROP_60 | SMART | FORCE_SLEEP | PASS_DOOR
 flags:NO_HOLD | NO_CONF | NO_STUN | IM_POIS
 spell-freq:4
-spells:BLINK | HEAL | HOLD | BLIND | SCARE | FORGET
-#S_ILLUSION | ILLUSION_CLONE | TINVIS
+spells:BLINK | HEAL | HOLD | BLIND | SCARE | FORGET | TINVIS
+#S_ILLUSION | ILLUSION_CLONE
 desc:A fairy who can control dreams. You're beginning to feel sleepy...
 
 name:invisible stalker
@@ -11942,16 +11943,16 @@ sleepiness:5
 depth:35
 rarity:3
 experience:520
-blow:KICK:HURT:10d2
-blow:KICK:HURT:10d2
+blow:KICK:HURT:5d4
+blow:KICK:HURT:5d4
 blow:KICK:HURT:10d2
 blow:KICK:HURT:10d2
 flags:MALE | FORCE_SLEEP
 flags:DROP_1 | ONLY_ITEM | OPEN_DOOR
 flags:IM_POIS | NO_CONF | NO_SLEEP | NO_HOLD
 spell-freq:5
-spells:HEAL | S_ANIMAL | S_SPIDER
-#TINVIS | HEAL_OTHER
+spells:HEAL | S_ANIMAL | S_SPIDER | TINVIS
+#HEAL_OTHER
 drop-base:nature book:10:1:1
 drop-base:nature book:5:1:1
 friends-base:50:2d4:spider
@@ -12035,7 +12036,7 @@ blow:HIT:CONFUSE:1d4
 blow:HIT:HURT:1d10
 flags:COLD_BLOOD | FORCE_SLEEP
 flags:RAND_50 | PASS_DOOR | KILL_BODY | KILL_ITEM
-flags:IM_ACID | IM_COLD | IM_ELEC
+flags:IM_ACID | IM_COLD | IM_ELEC | IM_SLIME
 spell-freq:8
 spells:BO_ELEC
 desc:It is a towering tornado of winds.
@@ -12083,8 +12084,8 @@ flags:EVIL | NO_FEAR | IM_ELEC | IM_ACID | IM_POIS | HURT_WATER | PASS_DOOR
 #DISGUISE
 innate-freq:10
 spell-freq:8
-spells:SLOW | BLINK | DRAIN_MANA | BLIND
-#S_ILLUSION | BR_AMNS
+spells:BR_AMNS | SLOW | BLINK | DRAIN_MANA | BLIND
+#S_ILLUSION
 friends-base:50:1d2:worm
 friends:16:1d3:vyrm
 friends:70:1d2:same
@@ -12209,7 +12210,7 @@ blow:TOUCH:ACID:1d9
 blow:ENGULF:ACID:2d10
 flags:POWERFUL | FORCE_SLEEP
 flags:BASH_DOOR | KILL_BODY | KILL_ITEM
-flags:IM_ACID | IM_COLD | IM_FIRE
+flags:IM_ACID | IM_COLD | IM_FIRE | IM_SLIME
 #PUDDLE
 spell-freq:5
 spells:BA_ACID | BO_ACID
@@ -12389,8 +12390,7 @@ flags:DROP_1 | ONLY_ITEM | FORCE_SLEEP
 flags:IM_COLD | IM_FIRE | NO_HOLD | NO_STUN
 innate-freq:7
 spell-freq:7
-spells:BR_DARK | DARKNESS | SLOW | FORGET
-#BR_FEAR
+spells:BR_DARK | BR_FEAR | DARKNESS | SLOW | FORGET
 desc:Fear itself has taken a form and saps your soul.
 
 name:Lorgan, Chief of the Easterlings
@@ -12586,9 +12586,9 @@ blow:TOUCH:EXP_40
 blow:TOUCH:EXP_80
 flags:DROP_3 | ONLY_ITEM
 flags:FORCE_SLEEP | OPEN_DOOR | BASH_DOOR
+innate-freq:7
 spell-freq:6
-spells:WOUND | HOLD | SCARE | BO_NETH
-#TINVIS, BR_FEAR instead of SCARE
+spells:BR_FEAR | WOUND | HOLD | BO_NETH | TINVIS
 friends-base:50:1d1:wraith
 friends-base:60:1d2:wraith
 desc:Your life force is torn from your body as this powerful unearthly being
@@ -12711,8 +12711,8 @@ flags:ROAM | PASS_DOOR | KEEP_DIST
 flags-off:NONLIVING | BASH_DOOR
 innate-freq:4
 spell-freq:2
-spells:BR_LIGHT | SHRIEK | HEAL
-#spells:HEAL_OTHER | TINVIS
+spells:BR_LIGHT | SHRIEK | HEAL | TINVIS
+#spells:HEAL_OTHER
 desc:A glowing vortex of positive energy which heals nearby monsters. It shines like a beacon,
 desc: waking monsters from their slumber.
 
@@ -12738,8 +12738,7 @@ flags:MOVE_BODY | TAKE_ITEM | NO_CONF | NO_STUN
 flags:IM_ACID | IM_ELEC | NO_FEAR
 innate-freq:9
 spell-freq:3
-spells:SHRIEK | BR_DARK | SCARE | MIND_BLAST
-#BR_FEAR not SCARE
+spells:SHRIEK | BR_DARK | BR_FEAR | MIND_BLAST
 spells:BLIND | WOUND | DRAIN_MANA | FORGET | HASTE
 spells:BA_COLD | BA_POIS | BO_NETH | S_UNDEAD
 #CURSE_PC
@@ -12769,7 +12768,7 @@ blow:HIT:HURT:1d9
 blow:GAZE:HALLU:1d9
 flags:INVISIBLE | FORCE_SLEEP | NONLIVING
 flags:RAND_50 | PASS_WALL | POWERFUL
-flags:IM_ACID | IM_COLD | IM_ELEC
+flags:IM_ACID | IM_COLD | IM_ELEC | IM_SLIME
 #ROAM
 spell-freq:3
 spells:BLINK | WOUND | CONF | TPORT
@@ -13634,8 +13633,7 @@ flags:DROP_40 | DROP_60
 flags:FORCE_SLEEP | PASS_DOOR
 #innate-freq:10
 spell-freq:7
-spells:SCARE | WOUND | DARKNESS | HOLD | BO_COLD
-#BR_FEAR instead of SCARE | TINVIS
+spells:BR_FEAR | WOUND | DARKNESS | HOLD | BO_COLD | TINVIS
 desc:A tangible but ghostly form, made of grey fog.  The air around it feels
 desc: deathly cold.
 
@@ -13685,8 +13683,7 @@ flags-off:PASS_WALL
 #ROAM
 innate-freq:8
 spell-freq:8
-spells:BR_SOUN | HOLD | DARKNESS | BLIND | MIND_BLAST
-#BR_FEAR
+spells:BR_SOUN | BR_FEAR | HOLD | DARKNESS | BLIND | MIND_BLAST
 desc:This is the spirit of the wendigo, a demon of fear native to cold places.
 desc:  Its howl alone is enough to cause most people to be paralyzed from fear.
 desc:  You have a feeling you're being followed...
@@ -13711,8 +13708,7 @@ blow:SPORE:DRAIN_CHARGES:2d7
 flags:NEVER_MOVE | FORCE_SLEEP
 flags:IM_POIS | IM_ELEC | IM_ACID | IM_DISEN
 spell-freq:6
-spells:TELE_TO | TELE_SELF_TO | BLINK | SHRIEK | DRAIN_MANA | BE_ELEC | BO_MANA
-#TINVIS?
+spells:TELE_TO | TELE_SELF_TO | BLINK | SHRIEK | DRAIN_MANA | BE_ELEC | BO_MANA | TINVIS
 desc:A giant transparent mushroom with sparks flying around it when you get near.
 desc:You'd hate to think what would happen if you eat this. It makes your hair stand on
 desc: end and your magical items feel powerless.
@@ -13762,7 +13758,7 @@ blow:TOUCH:EXP_40:3d11
 blow:ENGULF:EAT_LIGHT:2d19
 flags:DROP_1 | DROP_GOOD | WEIRD_MIND | SMART | NONLIVING | PASS_DOOR
 flags:INVISIBLE | COLD_BLOOD | NO_FEAR | NO_CONF | NO_STUN | PASS_WEB
-flags:IM_POIS | IM_FIRE | IM_ELEC | HURT_LIGHT | RAND_25
+flags:IM_POIS | IM_FIRE | IM_ELEC | HURT_LIGHT | RAND_25 | IM_SLIME
 #ROAM | PUDDLE | TEMPLE
 flags-off:CLEAR_WEB
 innate-freq:8
@@ -13929,8 +13925,8 @@ flags:NO_CONF | NO_STUN | IM_ACID | IM_WATER
 flags-off:NO_SLEEP
 innate-freq:11
 spell-freq:11
-spells:BR_NETH | BLINK | SLOW | FORGET
-#BR_FEAR | CURSE_PC
+spells:BR_NETH | BR_FEAR | BLINK | SLOW | FORGET
+#CURSE_PC
 friends:80:2d3:same
 desc:A corpse from an ancient great battle, now reanimated with
 desc: evil enchantments to demoralize and lure wanderers to a
@@ -14330,10 +14326,10 @@ blow:TOUCH:LOSE_DEX:2d12
 blow:TOUCH:LOSE_DEX:2d12
 flags:DROP_4 | ONLY_ITEM | NO_CONF
 #TEMPLE
+innate-freq:9
 spell-freq:3
-spells:BLIND | BLINK | WOUND | CONF | BRAIN_SMASH
+spells:BR_FEAR | BLIND | BLINK | WOUND | CONF | BRAIN_SMASH
 spells:DRAIN_MANA | HOLD | SCARE | TELE_TO | S_UNDEAD
-#BR_FEAR instead of SCARE
 friends-base:50:1d1:skeleton:servant
 friends-base:80:1d3:zombie:servant
 friends-base:80:1d2:skeleton:servant
@@ -14512,8 +14508,7 @@ blow:CLAW:POISON:8d3
 flags:DROP_60 | OPEN_DOOR | BASH_DOOR | FORCE_SLEEP | NONLIVING
 flags:IM_POIS | IM_COLD | IM_NETHER | HURT_LIGHT | NO_SLEEP | NO_STUN
 innate-freq:5
-spells:BR_NETH | BR_DARK | BR_SOUN
-#BR_FEAR
+spells:BR_NETH | BR_DARK | BR_SOUN | BR_FEAR
 friends:60:3d3:mini reaper
 friends:90:2d4:Same
 desc:Caped flying demons who fill the dungeons with their screaming.
@@ -14616,7 +14611,7 @@ blow:HIT:HURT:6d4
 blow:HIT:HURT:6d4
 flags:UNIQUE | COLD_BLOOD | POWERFUL | FORCE_SLEEP
 flags:RAND_25 | BASH_DOOR | KILL_BODY | KILL_ITEM
-flags:IM_ACID | IM_COLD | IM_FIRE | IM_WATER
+flags:IM_ACID | IM_COLD | IM_FIRE | IM_WATER | IM_SLIME
 spell-freq:4
 spells:BA_COLD | BA_WATE | BO_ICE | BO_WATE
 desc:A towering water elemental, Waldern is master of all things liquid.  Wave
@@ -14662,7 +14657,7 @@ blow:HIT:CONFUSE:4d4
 blow:HIT:CONFUSE:4d4
 flags:UNIQUE | COLD_BLOOD | POWERFUL
 flags:RAND_25 | BASH_DOOR | KILL_BODY | KILL_ITEM
-flags:IM_ACID | IM_COLD | IM_ELEC
+flags:IM_ACID | IM_COLD | IM_ELEC | IM_SLIME
 flags:FORCE_SLEEP
 spell-freq:5
 spells:BA_COLD | BA_ELEC | BO_ELEC
@@ -14694,8 +14689,8 @@ flags:DROP_2 | ONLY_ITEM
 flags:IM_POIS | IM_FIRE | IM_ELEC
 innate-freq:6
 spell-freq:8
-spells:BR_SHAR | BR_DARK | WOUND | BLINK
-#BR_FEAR | INSANITY
+spells:BR_SHAR | BR_DARK | BR_FEAR | WOUND | BLINK
+#INSANITY
 friends:68:1d5:same
 desc:A female demon whose form is darkness dripping blood. Its purpose is torture.
 
@@ -14747,8 +14742,7 @@ flags:NO_SLEEP | NO_FEAR | NO_STUN | IM_ELEC | IM_ACID | IM_POIS
 flags:EVIL | RAND_25 | WEIRD_MIND
 #PUDDLE | TEMPLE
 innate-freq:6
-spells:BR_INER | BR_DARK | MIND_BLAST | DRAIN_MANA
-#BR_AMNS | BR_CONF
+spells:BR_AMNS | BR_INER | BR_DARK | BR_CHAO | MIND_BLAST | DRAIN_MANA
 desc:It looks like a cross between a mumak, a hippo, and a dragon.
 desc:  It is deep gray in color and breathes a deep gray mist which numbs the mind.
 
@@ -14774,9 +14768,8 @@ flags:ONLY_ITEM | DROP_2 | TAKE_ITEM | NO_SLEEP | NO_CONF
 flags:NO_FEAR | NO_STUN | NO_HOLD | BR_STRONG
 innate-freq:10
 spell-freq:5
-spells:BR_LIGHT | BLINK | HEAL | HOLD | HASTE | DRAIN_MANA
-spells:S_ANIMAL | S_KIN | HEAL_KIN | MIND_BLAST
-#TINVIS | BR_AMNS
+spells:BR_LIGHT | BR_AMNS | BLINK | HEAL | HOLD | HASTE | DRAIN_MANA
+spells:S_ANIMAL | S_KIN | HEAL_KIN | MIND_BLAST | TINVIS
 friends:35:1d2:dryad
 friends:35:1d2:dynthe
 friends:35:1d6:power sprite
@@ -15028,10 +15021,9 @@ flags:EVIL | UNDEAD | FORCE_SLEEP | NONLIVING
 flags:ONLY_ITEM | DROP_2
 flags:OPEN_DOOR | BASH_DOOR | IM_ELEC | IM_POIS | IM_COLD
 #ROAM
-innate-freq:6
+innate-freq:9
 spell-freq:7
-spells:WOUND | BO_FIRE | DARKNESS | S_UNDEAD
-#BR_FEAR
+spells:BR_FEAR | WOUND | BO_FIRE | DARKNESS | S_UNDEAD
 friends:10:1d5:same
 desc:The descendant of the dullahan, it was made famous in Sleepy Hollow.
 desc:  It wields a black sword meant for beheading.
@@ -15210,9 +15202,8 @@ blow:BITE:BLIND:5d7
 flags:DROP_4 | NO_CONF | NO_FEAR | MOVE_BODY | RUBBER
 flags:IM_POIS | IM_FIRE | IM_ELEC | IM_WATER
 innate-freq:5
-spells:BR_FIRE | BR_ELEC | BR_LIGHT | BR_SOUN | BR_PLAS
+spells:BR_FIRE | BR_ELEC | BR_LIGHT | BR_SOUN | BR_PLAS | BR_CHAO
 spells:BR_NEXU | BR_SHAR | BR_INER
-#BR_CONF
 desc:A shining red 9-headed reptillian creature similar to the hydra but more closely
 desc: related to the salamander.  Between its nine heads, it breathes a veriety of magics.
 
@@ -15387,8 +15378,7 @@ flags:DROP_2 | ONLY_ITEM
 flags:FORCE_SLEEP | PASS_DOOR
 #innate-freq:6
 spell-freq:8
-spells:BLIND | WOUND | HOLD | SCARE | BO_NETH
-#BR_FEAR instead of SCARE
+spells:BR_FEAR | BLIND | WOUND | HOLD | BO_NETH
 desc:A figure that seems made of void, its strangely human shape is cloaked in
 desc: shadow.  It reaches out at you.
 
@@ -15414,11 +15404,10 @@ blow:HIT:HURT:8d8
 flags:IM_COLD | IM_POIS | IM_NETHER | FORCE_SLEEP
 flags:DROP_2 | OPEN_DOOR | NO_STUN
 #TEMPLE | BR_STRONG?
-innate-freq:6
+innate-freq:8
 spell-freq:8
 spell-power:60
-spells:BR_NETH | WOUND | DARKNESS
-#BR_FEAR | 
+spells:BR_NETH | BR_FEAR | WOUND | DARKNESS
 desc:A demonic subbordinate of death itself wrapped in black robes.
 
 name:cloud giant
@@ -15495,9 +15484,9 @@ flags:PASS_DOOR | HURT_WATER | BR_STRONG
 #TEMPLE
 innate-freq:5
 spell-freq:4
-spells:BR_INER | BR_TIME | DRAIN_MANA | BLIND | MIND_BLAST | BRAIN_SMASH
-spells:SHRIEK | BLINK | S_KIN
-#BR_AMNS | S_ILLUSION | INSANITY | INVIS
+spells:SHRIEK | BR_AMNS | BR_INER | BR_TIME | DRAIN_MANA
+spells:BLIND | MIND_BLAST | BRAIN_SMASH | TINVIS | BLINK | S_KIN
+#S_ILLUSION | INSANITY
 friends:16:1d1:rastlig
 friends-base:40:1d1:worm
 friends-base:50:1d2:worm
@@ -15561,7 +15550,6 @@ flags:IM_ACID | IM_COLD | IM_ELEC | IM_FIRE
 spell-freq:2
 spells:HOLD | BRAIN_SMASH | WOUND | CONF | DRAIN_MANA | FORGET | MIND_BLAST
 spells:BA_COLD | BA_FIRE | BO_ACID | BO_MANA | BO_NETH | S_UNDEAD
-#BR_AMNS instead of FORGET
 desc:A beholder which has cheated death.  Black nether storms rage around the
 desc: bloodshot pupil of its central giant eye, and light seems to bend as it
 desc: sucks its power from the very air around it.  Your soul chills as it
@@ -15900,8 +15888,7 @@ flags:DROP_4 | DROP_GOOD
 flags:MOVE_BODY | IM_FIRE
 innate-freq:6
 spell-freq:9
-spells:WHIP | BR_FIRE | BR_DARK | CONF | S_DEMON | S_UNDEAD
-#BR_FEAR
+spells:WHIP | BR_FIRE | BR_DARK | BR_FEAR | CONF | S_DEMON | S_UNDEAD
 friends:100:4d4:cave orc:servant
 friends:100:2d6:cave troll:servant
 desc:A huge Balrog surrounded by raging pillars of fire, this is indeed a
@@ -16007,8 +15994,8 @@ flags:DROP_4 | DROP_GOOD | ONLY_ITEM | TAKE_ITEM
 flags:IM_POIS | NO_CONF | NO_SLEEP | NO_HOLD
 #ROAM | DISGUISE
 spell-freq:4
-spells:TELE_TO | TELE_SELF_TO | BLINK | TRAPS | DARKNESS | BLIND | HOLD
-#ILLUSION_CLONE | TINVIS
+spells:TELE_TO | TELE_SELF_TO | BLINK | TRAPS | DARKNESS | BLIND | HOLD | TINVIS
+#ILLUSION_CLONE
 desc:He is a master of disguise, an expert of stealth, a genius at traps, and
 desc: moves with blinding speed.  Check your pockets!
 
@@ -16036,8 +16023,8 @@ flags:IM_POIS | IM_ELEC | IM_ACID | IM_DISEN
 innate-freq:7
 spell-freq:6
 spells:SHRIEK | BR_NEXU | BR_CHAO | DRAIN_MANA | BE_ELEC | DARKNESS | MIND_BLAST
-spells:TELE_TO | TELE_SELF_TO | BLINK | 
-#TINVIS | S_ILLUSION | ILLUSION_CLONE
+spells:TELE_TO | TELE_SELF_TO | BLINK | TINVIS
+#S_ILLUSION | ILLUSION_CLONE
 desc:You'd hate to think what would happen if you eat this. The smell of its spores really
 desc: gets on your nerves, and you can be sure it has more ways of annoying you.
 
@@ -16411,12 +16398,10 @@ blow:TOUCH:DRAIN_CHARGES:2d3
 blow:TOUCH:LOSE_DEX:4d12
 blow:TOUCH:LOSE_DEX:4d12
 flags:DROP_3 | ONLY_ITEM
-#innate-freq:11
 spell-freq:3
 spells:SCARE | BLIND | BLINK | WOUND | CONF | BRAIN_SMASH
 spells:DRAIN_MANA | FORGET | HEAL | HOLD | TELE_TO | TPORT
 spells:S_DEMON | S_UNDEAD
-#BR_FEAR instead of SCARE
 desc:A lich who is partially immaterial, on its way to a new, ethereal form.
 
 name:dreadmaster
@@ -16507,10 +16492,9 @@ flags:UNDEAD | COLD_BLOOD | MOVE_BODY
 flags:ONLY_ITEM | BASH_DOOR | TAKE_ITEM | NO_CONF | NO_SLEEP
 flags:IM_COLD | IM_POIS | NO_STUN | IM_NETHER
 #TEMPLE
-innate-freq:10
-spell-freq:12
-spells:BR_COLD | BR_NETH | CONF | SCARE
-#BR_FEAR instead of SCARE
+innate-freq:8
+spell-freq:15
+spells:BR_COLD | BR_NETH | BR_FEAR | CONF
 desc:The skeletal form of a once-great dragon, enchanted by magic most
 desc: perilous.   Its animated form strikes with speed and drains life from its
 desc: prey to satisfy its hunger.
@@ -16535,7 +16519,6 @@ flags:IM_ACID | IM_FIRE | IM_NEXUS
 innate-freq:10
 spell-freq:12
 spells:BR_FIRE | BR_NEXU | HOLD | SCARE
-#BR_FEAR instead of SCARE
 desc:A mixture of dragon and basilisk, the dracolisk stares at you with deep
 desc: piercing eyes, its evil breath burning the ground where it stands.
 
@@ -16640,12 +16623,11 @@ blow:CRUSH:HURT:3d12
 blow:SPORE:POISON:3d12
 #blow:SPORE:CHARM
 flags:NEVER_MOVE | FORCE_SLEEP | WEIRD_MIND
-flags:NO_FEAR | NO_CONF | NO_STUN | IM_POIS | IM_ACID
+flags:NO_FEAR | NO_CONF | NO_STUN | IM_POIS | IM_ACID | IM_SLIME
 #BLOCK_LOS
 innate-freq:10
 spell-freq:13
-spells:BR_INER | HOLD
-#BR_AMNS
+spells:BR_AMNS | BR_INER | HOLD
 desc:This willow tree has gently waving branches and gives out a thick scent
 desc: which makes your eyelids feel heavy.
 
@@ -16691,8 +16673,7 @@ blow:HIT:FIRE:8d6
 flags:ONLY_ITEM | DROP_60 | FORCE_SLEEP | HURT_LIGHT
 flags:NO_FEAR | IM_POIS | IM_FIRE | IM_NETHER
 innate-freq:6
-spells:BR_NETH | BR_DARK | BOLT
-#BR_FEAR
+spells:BR_NETH | BR_DARK | BR_FEAR | BOLT
 desc:Another spike-tailed devil of the nether realms, shadow devils like to emulate
 desc: balrogs, though they are unrelated.
 
@@ -16719,9 +16700,9 @@ flags:IM_COLD | IM_POIS | IM_ELEC | IM_ACID
 #S_EVIL2 | TEMPLE
 innate-freq:10
 spell-freq:3
-spells:WHIP | BA_DARK | BLIND | MIND_BLAST | HOLD | WOUND | DRAIN_MANA
-spells:TELE_TO | BLINK | TPORT | S_MONSTER | S_KIN | 
-#BR_FEAR | BR_AMNS | TINVIS | CURSE_PC | S_ILLUSION
+spells:WHIP | BR_FEAR | BR_AMNS | BA_DARK | BLIND | MIND_BLAST | DRAIN_MANA
+spells:HOLD | WOUND | TELE_TO | BLINK | TPORT | TINVIS | S_MONSTER | S_KIN
+#CURSE_PC | S_ILLUSION
 friends-base:50:1d3:dark fairy:servant
 friends-base:50:1d3:dark fairy:servant
 friends-base:60:1d3:dark fairy:servant
@@ -16849,11 +16830,11 @@ blow:CLAW:LOSE_WIS:4d7
 flags:FEMALE | UNIQUE | FORCE_SLEEP | HURT_LIGHT
 flags:ONLY_ITEM | DROP_3 | DROP_GOOD
 flags:WEIRD_MIND | IM_COLD | NO_HOLD | NO_STUN | NO_FEAR
-#innate-freq:14
+innate-freq:15
 spell-freq:4
-spells:BLIND | HOLD | BO_NETH | BO_ICE | DARKNESS | DRAIN_MANA
-spells:MIND_BLAST | S_UNDEAD | S_KIN
-#BR_AMNS | CURSE_PC
+spells:BR_AMNS | BLIND | HOLD | BO_NETH | BO_ICE | DARKNESS
+spells:MIND_BLAST | DRAIN_MANA | S_UNDEAD | S_KIN
+#CURSE_PC
 desc:An apparition created by Sauron in the form of a woman. This phantom was made
 desc: to appear like Eilenel, the murdered wife of Gorlim the Unhappy, in order to
 desc: trap him into betraying Barahir and the outlaws of Dorthonion.
@@ -16877,18 +16858,19 @@ blow:TOUCH:TERRIFY
 blow:TOUCH:EXP_20:2d13
 blow:ENGULF:BLIND:3d13
 blow:ENGULF:EAT_LIGHT:2d19
-flags:DROP_1 | DROP_20 | MOVE_BODY | IM_NETHER
-flags:WEIRD_MIND | SMART | INVISIBLE | HURT_LIGHT | PASS_DOOR
+flags:DROP_1 | DROP_20 | MOVE_BODY | IM_NETHER | IM_SLIME
+flags:WEIRD_MIND | SMART | INVISIBLE | HURT_LIGHT | PASS_DOOR | BR_STRONG
 flags:RAND_25 | NO_FEAR | NO_CONF | NO_STUN | IM_POIS | IM_COLD | IM_ACID
-#ROAM | BR_STRONG | PUDDLE | RETURNS?
+#ROAM | PUDDLE | RETURNS?
 innate-freq:8
 spell-freq:4
 spells:DRAIN_MANA | SLOW | TPORT | MIND_BLAST | S_MONSTER
-spells:BR_DARK | BA_DARK | BO_NETH | BO_ICE
-#BR_AMNS | CURSE_PC
+spells:BR_DARK | BR_AMNS | BA_DARK | BO_NETH | BO_ICE
+#CURSE_PC
 desc:The enveloping dark is a strange demon out of dwarvish superstition.  It fills
 desc: the dungeon all around you.
 
+#(uncomment when HUNGER is coded)
 #name:greater hungry ghost
 #base:ghost
 #color:Y
@@ -16988,12 +16970,11 @@ blow:BITE:EXP_80:5d6
 blow:BITE:EXP_80:5d6
 flags:INVISIBLE | SMART | PASS_WALL
 flags:NO_CONF | NO_SLEEP | NO_STUN | HURT_FIRE | REGENERATE
-flags:DROP_4
-#innate-freq:8
+flags:DROP_4 | IM_SLIME
+innate-freq:8
 spell-freq:5
-spells:BRAIN_SMASH | WOUND | DARKNESS | DRAIN_MANA
-spells:SCARE | HOLD | BO_NETH | S_UNDEAD
-#BR_FEAR instead of SCARE
+spells:WHIP | BR_FEAR | BRAIN_SMASH | WOUND | DARKNESS
+spells:DRAIN_MANA | HOLD | BO_NETH | S_UNDEAD
 friends-base:16:1d1:skeleton
 friends-base:30:1d3:ghost
 desc:A terrible robed undead figure, this creature has existed in its unlife for
@@ -17023,8 +17004,8 @@ flags:EVIL | FORCE_SLEEP | POWERFUL | PASS_DOOR
 #ROAM | SCALE?
 spell-freq:4
 spells:BLIND | DRAIN_MANA | BLINK | DARKNESS | WOUND
-spells:S_UNDEAD
-#CURSE_PC | TINVIS | S_ILLUSION
+spells:TINVIS | S_UNDEAD
+#CURSE_PC | S_ILLUSION
 desc:One of the nine magical black cats belonging to Queen Beruthiel.
 desc:  It's crossing your path...
 
@@ -17050,9 +17031,9 @@ flags:FORCE_SLEEP | ONLY_ITEM | DROP_GREAT | DROP_1
 #TEMPLE
 innate-freq:5
 spell-freq:4
-spells:WOUND | HOLD | S_UNDEAD
-spells:BR_DARK | BR_NETH | BO_ICE
-#TINVIS | CURSE_PC | BR_FEAR | BR_AMNS
+spells:WOUND | HOLD | TINVIS | S_UNDEAD
+spells:BR_DARK | BR_NETH | BR_FEAR | BR_AMNS | BO_ICE
+#CURSE_PC
 desc:Nearly as powerful as the nazgul, this ancient royal corpse reaches
 desc: toward you with rotting spectral fingers, but the crown on its head
 desc: and the sword in its hand look quite solid.
@@ -17074,7 +17055,7 @@ blow:CLAW:HURT:2d12
 blow:BITE:HURT:2d14
 blow:BITE:HURT:2d14
 flags:FORCE_SLEEP | PASS_WALL | ATTR_CLEAR
-flags:NO_CONF | IM_NEXUS
+flags:NO_CONF | IM_NEXUS | IM_SLIME
 innate-freq:6
 spells:BR_LIGHT | BR_DARK | BR_NEXU
 desc:A translucent hound.  Pulsing pale-colored lines and strange fluorescent light
@@ -17170,10 +17151,10 @@ flags:RAND_25 | ATTR_MULTI
 flags:IM_ACID | IM_COLD | IM_ELEC | IM_FIRE | IM_NEXUS | IM_NETHER
 flags:IM_PLASMA | NO_SLOW | NO_STUN
 innate-freq:4
-spells:BR_ACID | BR_CHAO | BR_COLD | BR_DARK | BR_ELEC
-spells:BR_FIRE | BR_GRAV | BR_INER | BR_LIGHT | BR_NETH | BR_NEXU
+spells:BR_ACID | BR_FIRE | BR_CHAO | BR_COLD | BR_DARK | BR_ELEC
+spells:BR_AMNS | BR_GRAV | BR_INER | BR_LIGHT | BR_NETH | BR_NEXU
 spells:BR_PLAS | BR_POIS | BR_SHAR | BR_SOUN | BR_TIME | BR_WALL
-#BR_AMNS | BR_SLIME?
+#BR_SLIME?
 desc:An awesome vortex of pure magic, power radiates from its frame.
 
 name:Gilim, the Giant of Eruman
@@ -17274,10 +17255,10 @@ blow:HIT:DISENCHANT:6d8
 flags:SMART | ATTR_FLICKER | FORCE_SLEEP | VISH
 flags:DROP_2 | ONLY_ITEM
 flags:OPEN_DOOR | BASH_DOOR
+innate-freq:9
 spell-freq:4
-spells:BLIND | BRAIN_SMASH | WOUND | SCARE
-spells:BA_NETH | BO_MANA | BO_NETH | S_UNDEAD
-#BR_FEAR instead of SCARE
+spells:BR_FEAR | BR_NETH | BLIND | WOUND
+spells:BRAIN_SMASH | BO_MANA | BO_NETH | S_UNDEAD
 desc:Everywhere colours seem paler and the air chillier.  At the centre of the
 desc: cold stands a mighty figure.  Its wings envelop you in the chill of death
 desc: as the nightwing reaches out to draw you into oblivion.  Your muscles sag
@@ -17299,7 +17280,7 @@ blow:HIT:HURT:8d8
 blow:HIT:POISON:8d8
 blow:CRUSH:ACID:9d9
 flags:POWERFUL | DROP_3
-flags:IM_ACID | IM_POIS
+flags:IM_ACID | IM_POIS | IM_SLIME
 innate-freq:6
 spell-freq:11
 spells:BLIND | CONF | S_DEMON
@@ -17332,8 +17313,7 @@ flags:IM_COLD | IM_ELEC | IM_ACID | NO_SLEEP | NO_CONF | NO_FEAR
 #FEY | ROAM | TEMPLE | BR_STRONG
 innate-freq:6
 spell-freq:5
-spells:SHRIEK | WOUND | BO_NETH | BO_ICE | DARKNESS | S_UNDEAD
-#BR_FEAR
+spells:SHRIEK | BR_FEAR | WOUND | BO_NETH | BO_ICE | DARKNESS | S_UNDEAD
 friends:35:1d1:night mare
 friends:80:2d3:headless horseman
 desc:Driving an unstoppable carriage pulled by undead steeds, he carries a human
@@ -17418,8 +17398,7 @@ blow:STING:POISON:6d7
 flags:DROP_3 | NO_FEAR | IM_FIRE | IM_COLD | IM_ACID | IM_ELEC
 innate-freq:9
 spell-freq:9
-spells:ARROW | BO_FIRE | BO_PLAS | BA_FIRE
-#BR_FEAR
+spells:ARROW | BR_FEAR | BO_FIRE | BO_PLAS | BA_FIRE
 friends-base:22:1d1:major demon:servant
 friends:22:1d1:bile devil:servant
 friends:22:1d1:osyluth:servant
@@ -17614,9 +17593,9 @@ blow:STING:LOSE_STR:2d13
 flags:INVISIBLE | POWERFUL
 flags:DROP_3 | MOVE_BODY
 flags:IM_ACID | IM_COLD | IM_ELEC | IM_FIRE | IM_POIS
+innate-freq:10
 spell-freq:7
-spells:SCARE | BA_COLD | BA_ELEC | BO_ICE | BO_NETH | S_DEMON
-#BR_FEAR instead of SCARE
+spells:BR_FEAR | BA_COLD | BA_ELEC | BO_ICE | BO_NETH | S_DEMON
 desc:It is a demon made almost entirely out of bones.  It is humanoid, but with
 desc: a large tail similar to that of a giant scorpion, and emits a foul smell
 desc: of decay and rot.  They are despised even in the hells.
@@ -17692,7 +17671,7 @@ blow:ENGULF:ACID:6d10
 blow:ENGULF:ACID:6d10
 flags:COLD_BLOOD | POWERFUL | BASH_DOOR
 flags:KILL_BODY | KILL_ITEM
-flags:IM_ACID | IM_WATER
+flags:IM_ACID | IM_WATER | IM_SLIME
 innate-freq:5
 spell-freq:5
 spells:BR_COLD | BA_WATE | BO_WATE
@@ -17735,7 +17714,7 @@ blow:HIT:HURT:8d8
 blow:HIT:CONFUSE:5d12
 blow:HIT:ELEC:9d9
 flags:BASH_DOOR | KILL_BODY | KILL_ITEM | POWERFUL
-flags:IM_ELEC | IM_COLD
+flags:IM_ELEC | IM_COLD | IM_SLIME
 innate-freq:5
 spell-freq:5
 spells:BR_ELEC | BR_INER | BA_ELEC
@@ -17866,8 +17845,7 @@ flags:OPEN_DOOR | BASH_DOOR | REGENERATE | FORCE_SLEEP
 flags:IM_COLD | IM_ELEC | NO_CONF | NO_SLEEP | NO_HOLD
 #ROAM
 spell-freq:3
-spells:TELE_TO | S_KIN | HEAL_KIN
-#TINVIS
+spells:TELE_TO | S_KIN | HEAL_KIN | TINVIS
 friends:22:1d3:Sabre-tooth tiger:bodyguard
 friends:22:1d3:Displacer beast:bodyguard
 friends:22:1d3:ice cat:bodyguard
@@ -17984,10 +17962,10 @@ flags:NO_FEAR | NO_SLEEP | NO_STUN | IM_POIS | IM_COLD | IM_ACID | IM_ELEC
 #ROAM | KEEP_DIST?
 innate-freq:7
 spell-freq:3
-spells:BRAIN_SMASH | TELE_TO | BLINK | TPORT | WOUND
-spells:BR_DISE | BR_CHAO | BO_MANA | BA_DARK | DRAIN_MANA
+spells:BRAIN_SMASH | TELE_TO | BLINK | TPORT | WOUND | TINVIS
+spells:BR_DISE | BR_CHAO | BR_AMNS | BO_MANA | BA_DARK | DRAIN_MANA
 spells:S_MONSTERS | S_KIN | S_DEMON | S_ANIMAL
-#INSANITY | S_ILLUSIONS | ILLUSION_CLONE | TINVIS | CURSE_PC | HEAL_OTHER | BR_AMNS
+#INSANITY | S_ILLUSIONS | ILLUSION_CLONE | CURSE_PC | HEAL_OTHER
 desc:Commonly mistaken for a silly fairy that is mischvious in a rather
 desc: harmless way, but really he is anything but harmless.
 desc: Sometimes known as Robin Goodfellow, he is called that for the same
@@ -18094,7 +18072,7 @@ flags:SMART | OPEN_DOOR | FORCE_SLEEP
 flags:DROP_2 | ONLY_ITEM | CLEAR_WEB
 flags:UNDEAD | EVIL | COLD_BLOOD | SPIRIT
 flags:HURT_LIGHT | NO_CONF | NO_SLEEP | NO_STUN | NO_HOLD
-flags:IM_FIRE | IM_COLD | IM_POIS | IM_NETHER
+flags:IM_FIRE | IM_COLD | IM_POIS | IM_NETHER | IM_SLIME
 innate-freq:25
 spell-freq:4
 spells:BLIND | BRAIN_SMASH | SCARE | S_UNDEAD
@@ -18182,12 +18160,11 @@ flags:ROAM | MOVE_BODY | REGENERATE | WEIRD_MIND | IM_DISEN
 flags:NO_SLEEP | NO_FEAR | NO_STUN | IM_POIS | IM_ACID | IM_FIRE | IM_ELEC
 innate-freq:4
 spell-freq:3
-spells:THROW | BOULDER | SHRIEK | HEAL | BLIND | DRAIN_MANA | HOLD | TRAPS
-spells:BR_LIGHT | BR_SOUN | BR_TIME | BR_INER | BR_GRAV | BR_NEXU
+spells:THROW | BOULDER | SHRIEK | HEAL | BLIND | DRAIN_MANA | HOLD | TRAPS | TINVIS
+spells:BR_LIGHT | BR_AMNS | BR_SOUN | BR_TIME | BR_INER | BR_GRAV | BR_NEXU
 spells:BO_ICE | BO_PLAS | BA_MANA | BRAIN_SMASH | TELE_LEVEL | TELE_TO | TELE_AWAY | TPORT
 spells:S_SPIDER | S_KIN | S_MONSTER | S_ANIMAL | S_DRAGON
-#BR_AMNS | 
-#EXPLODE | S_ILLUSION | ILLUSION_CLONE | S_EXTRA | HEAL_OTHER | TINVIS | INSANTIY
+#EXPLODE | S_ILLUSION | ILLUSION_CLONE | S_EXTRA | HEAL_OTHER | INSANTIY
 desc:A rayem is the most powerful type of fairy, distantly related to the gnome. It loves
 desc: randomness and has a wide selection of magical abilities. Not fully on the side of
 desc: chaos, it's more inclined toward random spontaneous whims. It'll kill you if it
@@ -18213,7 +18190,7 @@ blow:CRAWL:ACID:9d3
 blow:CRAWL:PARALYZE:9d3
 blow:STING:POISON:9d4
 flags:STUPID | KILL_WALL | MULTIPLY | WEIRD_MIND | RAND_50
-flags:NO_SLEEP | IM_ACID | IM_POIS
+flags:NO_SLEEP | IM_ACID | IM_POIS | IM_SLIME
 #ROAM
 desc:A giant acidic centapede native to the deepest depths.
 desc:  It gnaws through the walls.
@@ -18340,11 +18317,10 @@ blow:TOUCH:EXP_80:5d6
 flags:UNIQUE | FEMALE | FORCE_SLEEP | PASS_DOOR | MOVE_BODY
 flags:DROP_4 | DROP_GOOD | ONLY_ITEM
 #ROAM
-innate-freq:9
+innate-freq:11
 spell-freq:3
-spells:BLIND | WOUND | FORGET | HOLD
+spells:BR_FEAR | BLIND | WOUND | FORGET | HOLD
 spells:BO_ACID | BA_COLD | BO_FIRE | BO_NETH | S_MONSTER | S_UNDEAD
-#BR_FEAR
 desc:A sorceress in life, Adunaphel quickly fell under Sauron's sway and the
 desc: power of the rings.
 
@@ -18512,9 +18488,8 @@ flags:REGENERATE | DROP_4 | KILL_BODY
 flags:IM_ACID | IM_COLD | IM_ELEC | IM_FIRE | IM_POIS
 innate-freq:7
 spell-freq:5
-spells:HASTE | SLOW | S_HI_DEMON
-#BR_FEAR
-desc:A giant humanoid demon wielding a massive, heavy and sharp scythe.
+spells:BR_FEAR | HASTE | SLOW | S_HI_DEMON
+desc:A giant humanoid demon wielding a massive, sharp scythe.
 desc:  Feared by foes and friends alike when it flies into one of its berserk
 desc: rages, the Horned Reaper will cut down anything in its path between it
 desc: and you - even the minions it has just summoned.
@@ -18539,10 +18514,10 @@ flags:UNIQUE | MALE | FORCE_SLEEP
 flags:DROP_4 | DROP_GOOD | ONLY_ITEM
 flags:OPEN_DOOR | BASH_DOOR | MOVE_BODY
 #ROAM
+innate-freq:10
 spell-freq:3
-spells:BLIND | WOUND | DARKNESS | HOLD
+spells:BR_FEAR |BLIND | WOUND | DARKNESS | HOLD
 spells:BO_COLD | BO_FIRE | BO_NETH | S_MONSTERS | S_UNDEAD
-#BR_FEAR
 desc:A mighty sorcerer King, Akhorahil was blind in life.  With powerful
 desc: enchantments, he created jewelled eyes that enabled him to see better than
 desc: any ordinary man ever could.
@@ -18709,9 +18684,9 @@ flags:IM_ELEC | IM_ACID | IM_POIS
 #BR_STRONG
 innate-freq:8
 spell-freq:4
-spells:BR_TIME | BR_CHAO | BR_NEXU | BRAIN_SMASH
+spells:BR_AMNS | BR_TIME | BR_CHAO | BR_NEXU | BRAIN_SMASH
 spells:S_KIN | BLINK | BLIND
-#BR_AMNS | S_ILLUSION | ILLUSION_CLONE | S_EXTRA | INSANTIY
+#S_ILLUSION | ILLUSION_CLONE | S_EXTRA | INSANTIY
 friends-base:22:1d2:mushroom
 friends:22:1d3:sleepy willow tree
 friends:22:1d1:wem vyrm
@@ -18769,11 +18744,10 @@ flags:UNIQUE | MALE | INVISIBLE | FORCE_SLEEP
 flags:DROP_4 | DROP_GOOD | ONLY_ITEM | IM_FIRE | IM_ACID
 flags:OPEN_DOOR | BASH_DOOR | MOVE_BODY
 #ROAM
-innate-freq:6
+innate-freq:9
 spell-freq:3
-spells:BLIND | WOUND | HOLD
-spells:BA_FIRE | BO_FIRE | BO_NETH | S_MONSTER | S_HI_DEMON
-#BR_FEAR
+spells:BR_FEAR | BLIND | WOUND | HOLD
+spells:BA_FIRE | BO_PLAS | BO_NETH | S_MONSTER | S_HI_DEMON
 desc:Ren was an insane eastern king who believed himself to be the son of a
 desc: volcano god.  At an early age his sanity was destroyed by a plague that
 desc: wiped out his family, and he never recovered.
@@ -18898,8 +18872,7 @@ flags:ONLY_ITEM | BASH_DOOR | ATTR_MULTI
 flags:IM_FIRE | IM_DISEN | MOVE_BODY | DROP_GOOD
 innate-freq:5
 spell-freq:5
-spells:BR_CHAO | BR_DISE | BLIND | CONF | S_DRAGON | S_HI_DRAGON
-#BR_FEAR
+spells:BR_CHAO | BR_DISE | BR_FEAR | BLIND | CONF | S_DRAGON | S_HI_DRAGON
 desc:A massive dragon of changing form.  As you watch, it appears first fair a$
 desc: then foul.  Its body is twisted by chaotic forces as it strives to stay
 desc: real.  Its very existence distorts the universe around it.
@@ -18925,7 +18898,7 @@ flags:ATTR_FLICKER | ONLY_ITEM | BASH_DOOR
 flags:IM_COLD | NO_STUN
 innate-freq:5
 spell-freq:5
-spells:BR_SHAR | BR_SOUN | BR_INER | BLIND | CONF | SCARE | S_DRAGON | S_HI_DRAGON
+spells:BR_SHAR | BR_SOUN | BR_INER | BLIND | CONF | S_DRAGON | S_HI_DRAGON
 color-cycle:fancy:law
 desc:A massive dragon of powerful intellect.  It seeks to dominate the universe
 desc: and despises all other life.  It sees all who do not obey it as mere
@@ -18976,8 +18949,9 @@ flags:UNIQUE | MALE | INVISIBLE | FORCE_SLEEP
 flags:DROP_4 | DROP_GOOD | ONLY_ITEM
 flags:OPEN_DOOR | BASH_DOOR | MOVE_BODY | IM_FIRE
 #ROAM
+innate-freq:10
 spell-freq:3
-spells:BLIND | WOUND | HOLD | SCARE
+spells:BR_FEAR | BLIND | WOUND | HOLD
 spells:BA_ACID | BA_COLD | BA_ELEC | BA_FIRE | BA_NETH | S_HI_UNDEAD
 desc:This Ringwraith was a weak-minded sorcerer-king who fell easily under
 desc: Sauron's power.
@@ -19048,7 +19022,7 @@ blow:CLAW:HURT:2d12
 blow:BITE:HURT:3d12
 blow:BITE:HURT:3d12
 flags:INVISIBLE | PASS_WALL | FORCE_SLEEP
-flags:NO_CONF | NO_SLEEP | NO_HOLD | IM_NETHER
+flags:NO_CONF | NO_SLEEP | NO_HOLD | IM_NETHER | IM_SLIME
 innate-freq:5
 spells:BR_NETH | BR_DISE | BR_TIME
 friends:92:2d6:Same
@@ -19097,11 +19071,10 @@ flags:UNIQUE | FORCE_SLEEP | SMART | PASS_DOOR | MOVE_BODY
 flags:ONLY_ITEM | DROP_3 | DROP_GOOD | DROP_GREAT
 flags:IM_COLD | NO_HOLD | NO_STUN
 flags-off:PASS_WALL
-innate-freq:6
+innate-freq:10
 spell-freq:3
-spells:HOLD | TELE_TO | BLINK | BRAIN_SMASH | WOUND
+spells:BR_FEAR | HOLD | TELE_TO | BLINK | BRAIN_SMASH | WOUND
 spells:BO_NETH | BO_ICE | BA_DARK | S_UNDEAD | S_MONSTERS | S_HI_UNDEAD
-#BR_FEAR
 friends:100:1d2:bone soldier captain
 friends:100:2d5:bone soldier:bodyguard
 desc:This is the king of the oath-breaking Men of the White Mountains, who swore
@@ -19129,10 +19102,9 @@ blow:BITE:POISON:5d10
 blow:BITE:LOSE_CON:5d10
 flags:POWERFUL | REGENERATE | MOVE_BODY
 flags:DROP_4 | IM_FIRE | IM_POIS
-innate-freq:10
+innate-freq:9
 spell-freq:9
-spells:BR_CHAO | BR_FIRE | BR_POIS | WOUND | BA_FIRE | S_HI_DEMON | S_HI_DRAGON
-#BR_FEAR
+spells:BR_CHAO | BR_FIRE | BR_POIS | BR_FEAR | WOUND | BA_FIRE | S_HI_DEMON | S_HI_DRAGON
 desc:Appearing as a giant, clawed and winged humanoid with a scaly red body and
 desc: massive fangs dripping a foul green liquid, the pit fiend is a dreadful
 desc: enemy from the lowest depths of the hells.  They are often the commanders
@@ -19215,8 +19187,9 @@ flags:UNIQUE | MALE | SMART | FORCE_SLEEP
 flags:DROP_4 | DROP_GOOD | ONLY_ITEM
 flags:OPEN_DOOR | BASH_DOOR | MOVE_BODY
 #ROAM
-spell-freq:3
-spells:BLIND | WOUND | HOLD | SCARE | BA_FIRE | BA_NETH
+innate-freq:9
+spell-freq:4
+spells:BR_FEAR | BLIND | WOUND | HOLD | BA_FIRE | BA_NETH
 spells:S_HOUND | S_UNDEAD
 friends:40:2d3:hellhound
 desc:Dwar had a special affinity for dogs in life, and can still command them at
@@ -19250,9 +19223,9 @@ flags:NO_FEAR | NO_SLEEP | IM_POIS | IM_FIRE | IM_ELEC | IM_ACID
 #ROAM | TEMPLE
 innate-freq:9
 spell-freq:3
-spells:WHIP | BR_INER | TRAPS | BRAIN_SMASH | DRAIN_MANA | DARKNESS | BO_PLAS
-spells:BLINK | TPORT | TELE_TO | TELE_LEVEL | S_MONSTER | S_DEMON
-#BR_AMNS | BR_CHAO(?) | CURSE_PC | S_ILLUSION | ILLUSION_CLONE
+spells:WHIP | BR_AMNS | BR_INER | TRAPS | BRAIN_SMASH | DRAIN_MANA | BO_PLAS
+spells:DARKNESS | BLINK | TPORT | TELE_TO | TELE_LEVEL | S_MONSTER | S_DEMON
+#BR_CHAO(?) | CURSE_PC | S_ILLUSION | ILLUSION_CLONE
 friends:6:1d2:same
 desc:Small flying devils which wizards often mistake for lesser imps and
 desc: get killed attempting to control them.
@@ -19329,9 +19302,8 @@ flags:IM_FIRE | IM_POIS | IM_ELEC
 #ROAM
 innate-freq:8
 spell-freq:4
-spells:BR_SHAR | WOUND | BRAIN_SMASH
+spells:BR_FEAR | BR_SHAR | WOUND | BRAIN_SMASH
 spells:BLINK | TELE_SELF_TO | S_DEMON | S_HI_DEMON
-#BR_FEAR
 friends:55:1d1:fury
 friends:100:1d2:fury
 desc:A female embodiment of rage, intent on tearing your mind and body apart.
@@ -19355,8 +19327,9 @@ blow:TOUCH:EXP_80:6d7
 blow:WAIL:TERRIFY:6d7
 flags:UNIQUE | MALE | SMART | FORCE_SLEEP | PASS_DOOR | MOVE_BODY
 flags:DROP_4 | DROP_GOOD | ONLY_ITEM | ROAM
+innate-freq:9
 spell-freq:3
-spells:SCARE | BLIND | WOUND | HOLD | MIND_BLAST
+spells:BR_FEAR | BLIND | WOUND | HOLD | MIND_BLAST
 spells:BA_COLD | BA_NETH | BE_NETH | S_UNDEAD | S_WRAITH
 desc:A Ringwraith powerful in fell sorcery, he yearns for the life he has lost
 desc: for an unlife of everlasting torment.
@@ -19454,7 +19427,7 @@ blow:HIT:ELEC:12d12
 blow:HIT:ELEC:12d12
 flags:UNIQUE | MALE | INVISIBLE
 flags:DROP_4 | DROP_GOOD
-flags:IM_ACID | IM_COLD | IM_ELEC | IM_FIRE | IM_POIS
+flags:IM_ACID | IM_COLD | IM_ELEC | IM_FIRE | IM_POIS | IM_SLIME
 spell-freq:3
 spells:MIND_BLAST | BA_ELEC | BO_ELEC | BO_MANA | S_HI_DEMON
 friends:100:2d3:Giant roc:servant
@@ -19537,10 +19510,9 @@ blow:BITE:POISON:6d6
 flags:UNIQUE | MALE | EVIL | MOVE_BODY | TAKE_ITEM
 flags:DROP_1 | DROP_40 | DROP_GOOD | ONLY_ITEM | FORCE_SLEEP
 flags:RAND_25 | OPEN_DOOR | BASH_DOOR | IM_POIS
-innate-freq:6
-spell-freq:4
-spells:SCARE | S_HOUND | S_MONSTERS
-#BR_FEAR instead of SCARE
+innate-freq:8
+spell-freq:5
+spells:BR_FEAR | S_HOUND | S_MONSTERS
 friends:6:1d1:Werewolf of Sauron:bodyguard
 friends:35:1d1:Werewolf of Sauron:bodyguard
 friends:100:3d5:Werewolf:servant
@@ -19893,11 +19865,10 @@ blow:STING:LOSE_STR:6d11
 flags:UNIQUE | FEMALE | EVIL | SMART | SPIRIT | FORCE_SLEEP
 flags:DROP_4 | DROP_GOOD | ONLY_ITEM | POWERFUL
 flags:HURT_LIGHT | IM_ACID | IM_POIS | NO_CONF | NO_SLEEP | NO_HOLD
-innate-freq:11
-spell-freq:4
-spells:BLIND | CONF | HEAL | SCARE | BA_DARK | S_KIN
-spells:WEAVE | BR_DARK | BR_POIS
-#BR_FEAR instead of SCARE
+innate-freq:10
+spell-freq:5
+spells:BLIND | CONF | HEAL | BA_DARK | S_KIN
+spells:WEAVE | BR_DARK | BR_POIS | BR_FEAR
 desc:This enormous, hideous spirit of void is in the form of a spider of immense
 desc: proportions.  She is surrounded by a cloud of Unlight as she sucks in all
 desc: living light into her bloated body, and breathes out the blackest of
@@ -20079,7 +20050,7 @@ blow:SPIT:LOSE_INT:3d11
 blow:INSULT:LOSE_INT
 #INSANITY
 flags:DROP_40 | RAND_25 | TAKE_ITEM
-flags:IM_FIRE | IM_ACID | NO_FEAR | FORCE_SLEEP
+flags:IM_FIRE | IM_ACID | IM_SLIME | NO_FEAR | FORCE_SLEEP
 flags:WEIRD_MIND | MOVE_BODY | POWERFUL |
 #ROAM
 innate-freq:6
@@ -20111,8 +20082,7 @@ blow:ENGULF:DISENCHANT:5d7
 blow:ENGULF:LOSE_ALL:5d7
 flags:KILL_WALL | IM_DISEN | ATTR_MULTI
 innate-freq:3
-spells:BR_CHAO | BR_DISE | BR_TIME
-#BR_AMNS
+spells:BR_CHAO | BR_DISE | BR_TIME | BR_AMNS
 desc:Howling through the disintegrating dungeon, this whirlpool of Unmagic rips
 desc: the enchantments from everything it touches.
 
@@ -20211,8 +20181,8 @@ innate-freq:3
 spell-freq:3
 spell-power:105
 spells:BLINK | TPORT | TELE_LEVEL | TELE_SELF_TO
-spells:BLIND | CONF | SCARE | WOUND
-spells:BR_FIRE | BR_NETH | BA_DARK
+spells:BLIND | CONF | WOUND
+spells:BR_FIRE | BR_NETH | BR_FEAR | BA_DARK
 spells:S_HOUND | S_DRAGON | S_HI_DEMON | S_HI_UNDEAD
 desc:Sauron's form as the mightiest wolf to walk the world.
 
@@ -20238,11 +20208,9 @@ innate-freq:4
 spell-freq:4
 spell-power:108
 spells:BLINK | TPORT | TELE_LEVEL | TELE_SELF_TO
-spells:BLIND | CONF | SCARE | WOUND
-spells:BRAIN_SMASH | FORGET
-spells:BR_POIS | BR_CHAO | BR_ACID
+spells:BLIND | CONF | SCARE | WOUND | BRAIN_SMASH
+spells:BR_AMNS | BR_POIS | BR_CHAO | BR_ACID
 spells:S_DRAGON | S_HI_DEMON | S_HI_UNDEAD
-#BR_AMNS instead of FORGET
 desc:Sauron's form as a serpent: poisonous, biting, spitting, and threatening
 desc: to crush you in its mighty coils.
 
@@ -20261,14 +20229,13 @@ blow:HIT:DRAIN_CHARGES:8d12
 blow:HIT:DRAIN_CHARGES:8d12
 flags:UNIQUE | MALE | FORCE_DEPTH
 flags:MOVE_BODY | IM_ELEC | NO_FEAR
+innate-freq:16
 spell-freq:2
 spell-power:129
-spells:BLINK | TPORT | TELE_LEVEL | BLIND | CONF
-spells:BRAIN_SMASH | FORGET
+spells:BLINK | TPORT | TELE_LEVEL | BLIND | CONF | BRAIN_SMASH
 spells:BO_ICE | BO_PLAS | BE_NETH
-spells:BA_NETH | STORM | BA_DARK | BA_POIS | BA_ACID
+spells:BR_AMNS | BA_NETH | STORM | BA_DARK | BA_POIS | BA_ACID
 spells:S_DRAGON | S_HI_DEMON | S_HI_UNDEAD
-#BR_AMNS instead of FORGET
 desc:Sauron's form as a vampire, great as a dark cloud across the moon.
 
 ### Dungeon level 100 ###
@@ -20327,7 +20294,7 @@ blow:KICK:HURT:20d3
 blow:BITE:PARALYZE:4d12
 blow:BITE:PARALYZE:4d12
 flags:FORCE_SLEEP | SMART | BASH_DOOR | POWERFUL | IM_NEXUS
-flags:NO_CONF | NO_STUN | IM_FIRE | IM_COLD | IM_ELEC | IM_ACID
+flags:NO_CONF | NO_STUN | IM_FIRE | IM_COLD | IM_ELEC | IM_ACID | IM_SLIME
 innate-freq:5
 spell-freq:9
 spells:BR_GRAV | BR_INER | BR_NEXU | BR_WALL | BR_PLAS | BLINK | TELE_TO
@@ -20351,11 +20318,10 @@ blow:CLAW:DRAIN_CHARGES:6d7
 blow:BITE:DISENCHANT:4d12
 blow:BITE:HALLU:4d12
 flags:FORCE_SLEEP | SMART | BASH_DOOR | POWERFUL | IM_NEXUS
-flags:NO_CONF | NO_STUN | IM_FIRE | IM_POIS | IM_ELEC | IM_ACID
+flags:NO_CONF | NO_STUN | IM_FIRE | IM_POIS | IM_ELEC | IM_ACID | IM_SLIME
 innate-freq:5
 spell-freq:9
-spells:BR_DISE | BR_SOUN | BR_ELEC | BO_MANA | DRAIN_MANA
-#BR_AMNS
+spells:BR_AMNS | BR_DISE | BR_SOUN | BR_ELEC | BO_MANA | DRAIN_MANA
 friends:99:2d5:same
 desc:It sucks the magic power out of everything around.
 
@@ -20377,7 +20343,7 @@ blow:CLAW:EXP_40:3d12
 blow:CLAW:EXP_80:4d12
 blow:BITE:LOSE_ALL:6d13
 flags:FORCE_SLEEP | SMART | BASH_DOOR | POWERFUL | IM_NETHER
-flags:NO_CONF | NO_FEAR | IM_FIRE | IM_POIS | IM_COLD | IM_ACID
+flags:NO_CONF | NO_FEAR | IM_FIRE | IM_POIS | IM_COLD | IM_ACID | IM_SLIME
 innate-freq:4
 spell-freq:10
 spells:BR_NETH | BR_TIME | BR_CHAO | BR_SHAR | BR_POIS | BR_DARK | BO_NETH
@@ -20402,7 +20368,7 @@ blow:HIT:SHATTER:11d11
 flags:WEIRD_MIND | BASH_DOOR | FORCE_SLEEP | POWERFUL
 flags:IM_COLD | IM_FIRE | IM_ACID | NO_STUN | NONLIVING
 flags:KILL_ITEM | KILL_BODY | PASS_WALL | HURT_ROCK
-#BR_STRONG | PUDDLE
+#PUDDLE
 innate-freq:5
 spell-freq:6
 spells:BOULDER | BR_FIRE | BR_SHAR | BR_WALL | BR_PLAS
@@ -20426,8 +20392,8 @@ blow:HIT:COLD:10d11
 blow:HIT:POISON:10d11
 flags:FORCE_SLEEP | POWERFUL | WEIRD_MIND | BASH_DOOR
 flags:IM_COLD | IM_ELEC | IM_ACID | NO_STUN | NONLIVING
-flags:KILL_ITEM | KILL_BODY
-#WATER_HIDE | BR_STRONG | PUDDLE
+flags:KILL_ITEM | KILL_BODY | IM_SLIME
+#WATER_HIDE | PUDDLE
 innate-freq:5
 spell-freq:6
 spells:BR_ELEC | BR_SOUN | BR_NEXU | BR_INER

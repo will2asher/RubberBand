@@ -546,6 +546,65 @@ static int project_player_handler_PLASMA(project_player_handler_context_t *conte
 	return 0;
 }
 
+static int project_player_handler_SLIME(project_player_handler_context_t* context)
+{
+	/* Stun and slime (allows a DEX_based saving throw) */
+	if (!player_of_has(player, OF_PROT_STUN)) {
+		int duration = 2 + randint1(context->dam / 2);
+		if (duration > 32) duration = 32;
+		if (randint0(context->dam) > adj_dex_th[player->state.stat_ind[STAT_DEX]] * 2)
+		{
+			(void)player_inc_timed(player, TMD_STUN, duration, true, true);
+			/* Still need to add the SLIMED player condition, but not sure about using a timed effect */
+			/* (void)player_inc_timed(player, TMD_SLIMED, duration*2, true, true); */
+		}
+		else { 
+			msg("You resist the effects!"); 
+			/* reduced damage */
+			context->dam = context->dam * 4 / 5;
+		}
+	}
+	else {
+		equip_learn_flag(player, OF_PROT_STUN);
+	}
+	return 0;
+}
+
+static int project_player_handler_FEAR(project_player_handler_context_t* context)
+{
+	/* Fear */
+	if (!player_of_has(player, OF_PROT_FEAR)) {
+		int duration = 4 + randint1(context->dam / 2);
+		if (duration > 35) duration = 35;
+		(void)player_inc_timed(player, TMD_AFRAID, duration, true, true);
+	}
+	else {
+		equip_learn_flag(player, OF_PROT_FEAR);
+	}
+	return 0;
+}
+
+static int project_player_handler_AMNESIA(project_player_handler_context_t* context)
+{
+	/* Amnesia (allows a saving throw) */
+	int duration = 5 + randint1(context->dam / 2);
+	int asave = player->state.skills[SKILL_SAVE];
+	if (duration > 60) duration = 60;
+
+	/* pCONF is partial resist */
+	if (player_of_has(player, OF_PROT_CONF)) {
+		asave = asave * 3 / 2;
+		duration /= 2;
+		equip_learn_flag(player, OF_PROT_CONF);
+	}
+	if (randint0(context->dam) < asave) {
+		msg("You resist the effect!");
+	}
+	else (void)player_inc_timed(player, TMD_AMNESIA, duration, true, true);
+
+	return 0;
+}
+
 static int project_player_handler_METEOR(project_player_handler_context_t *context)
 {
 	return 0;

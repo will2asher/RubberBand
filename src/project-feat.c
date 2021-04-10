@@ -494,6 +494,24 @@ static void project_feature_handler_TIME(project_feature_handler_context_t *cont
 	}
 }
 
+static void project_feature_handler_FEAR(project_feature_handler_context_t* context)
+{
+	/* Grid is in line of sight and player is not blind */
+	if (square_isview(cave, context->grid) && !player->timed[TMD_BLIND]) {
+		/* Observe */
+		context->obvious = true;
+	}
+}
+
+static void project_feature_handler_AMNESIA(project_feature_handler_context_t* context)
+{
+	/* Grid is in line of sight and player is not blind */
+	if (square_isview(cave, context->grid) && !player->timed[TMD_BLIND]) {
+		/* Observe */
+		context->obvious = true;
+	}
+}
+
 static void project_feature_handler_PLASMA(project_feature_handler_context_t *context)
 {
 	/* Grid is in line of sight and player is not blind */
@@ -515,6 +533,15 @@ static void project_feature_handler_PLASMA(project_feature_handler_context_t *co
 }
 
 static void project_feature_handler_METEOR(project_feature_handler_context_t *context)
+{
+	/* Grid is in line of sight and player is not blind */
+	if (square_isview(cave, context->grid) && !player->timed[TMD_BLIND]) {
+		/* Observe */
+		context->obvious = true;
+	}
+}
+
+static void project_feature_handler_SLIME(project_feature_handler_context_t* context)
 {
 	/* Grid is in line of sight and player is not blind */
 	if (square_isview(cave, context->grid) && !player->timed[TMD_BLIND]) {
