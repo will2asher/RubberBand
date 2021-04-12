@@ -469,6 +469,13 @@ static int monster_critical(random_value dice, int rlev, int dam)
 	int max = 0;
 	int total = randcalc(dice, rlev, MAXIMISE);
 
+	/* Luck factor (bad luck in this case) */
+	if (player->p_luck < 0) {
+		dam += (0 - player->p_luck) * 2;
+		/* maximum damage has increased */
+		total++;
+	}
+
 	/* Must do at least 95% of perfect */
 	if (dam < total * 19 / 20) return (0);
 
@@ -476,7 +483,7 @@ static int monster_critical(random_value dice, int rlev, int dam)
 	if ((dam < 20) && (randint0(100) >= dam)) return (0);
 
 	/* Perfect damage */
-	if (dam == total) max++;
+	if (dam >= total) max++;
 
 	/* Super-charge */
 	if (dam >= 20)
@@ -574,7 +581,7 @@ bool make_attack_normal(struct monster *mon, struct player *p)
 		bool obvious = false;
 
 		int damage = 0;
-		bool do_cut = false;
+		s16b do_cut = false;
 		bool do_stun = false;
 		int sound_msg = MSG_GENERIC;
 
@@ -683,7 +690,7 @@ bool make_attack_normal(struct monster *mon, struct player *p)
 			/* Hack -- only one of cut or stun */
 			if (do_cut && do_stun) {
 				/* Cancel cut */
-				if (randint0(100) < 50)
+				if ((randint0(100) < 50) && (do_cut < 2))
 					do_cut = false;
 
 				/* Cancel stun */
@@ -695,6 +702,10 @@ bool make_attack_normal(struct monster *mon, struct player *p)
 			if (do_cut) {
 				/* Critical hit (zero if non-critical) */
 				int amt, tmp = monster_critical(dice, rlev, damage);
+
+				/* some attacks can cut even if it's not a critical hit (sharp claws) */
+				/* 1 in 3 chance usually */
+				if ((do_cut > 1) && (tmp == 0) && (randint0(6) < do_cut)) tmp += randint1(do_cut);
 
 				/* Roll for damage */
 				switch (tmp) {

@@ -237,6 +237,11 @@ static int critical_shot(const struct player *p,
 	int power = weight + randint1(500);
 	int new_dam = dam;
 
+	/* Luck makes criticals (slightly) more likely */
+	if (p->p_luck) {
+		chance += p->p_luck; power += p->p_luck;
+	}
+
 	if (randint1(5000) > chance) {
 		*msg_type = MSG_SHOOT_HIT;
 	} else if (power < 500) {
@@ -273,6 +278,8 @@ static int o_critical_shot(const struct player *p,
 	if (!launcher) {
 		power = power * 3 / 2;
 	}
+	/* Luck makes criticals (slightly) more likely */
+	if (p->p_luck) power += p->p_luck;
 
 	/* Test for critical hit - chance power / (power + 360) */
 	if (randint1(power + 360) <= power) {
@@ -310,6 +317,9 @@ static int critical_melee(const struct player *p,
 		+ (p->state.skills[SKILL_TO_HIT_MELEE] - 60);
 	int new_dam = dam;
 
+	/* Luck makes criticals (slightly) more likely (luck should rarely be higher than 2 or 3) */
+	if (p->p_luck) { power += p->p_luck; chance += p->p_luck; }
+
 	if (randint1(5000) > chance) {
 		*msg_type = MSG_HIT;
 	} else if (power < 400) {
@@ -344,6 +354,9 @@ static int o_critical_melee(const struct player *p,
 	int debuff_to_hit = is_debuffed(monster) ? DEBUFF_CRITICAL_HIT : 0;
 	int power = (chance_of_melee_hit(p, obj) + debuff_to_hit) / 3;
 	int add_dice = 0;
+
+	/* Luck makes criticals (slightly) more likely */
+	if (p->p_luck) power += p->p_luck;
 
 	/* Test for critical hit - chance power / (power + 240) */
 	if (randint1(power + 240) <= power) {
@@ -549,6 +562,7 @@ static int o_ranged_damage(struct player *p, const struct monster *mon,
 
 /**
  * Apply the player damage bonuses
+ * Why have this in a separate function?? It just makes the code harder to read.
  */
 static int player_damage_bonus(struct player_state *state)
 {
@@ -629,7 +643,7 @@ bool py_attack_real(struct player *p, struct loc grid, bool *fear)
 	bool do_quake = false;
 	bool success = false;
 
-	/* Default to punching for one damage */
+	/* Default to punching for one damage (STR bonus is added later) */
 	char verb[20];
 	int dmg = 1;
 	u32b msg_type = MSG_HIT;
@@ -653,10 +667,6 @@ bool py_attack_real(struct player *p, struct loc grid, bool *fear)
 		return false;
 	}
 
-	/* Disturb the monster */
-	monster_wake(mon, false, 100);
-	mon_clear_timed(mon, MON_TMD_HOLD, MON_TMD_FLG_NOTIFY);
-
 	/* See if the player hit */
 	success = test_hit(chance, mon->race->ac, monster_is_visible(mon));
 
@@ -671,6 +681,12 @@ bool py_attack_real(struct player *p, struct loc grid, bool *fear)
 		}
 
 		return false;
+	}
+
+	/* Disturb the monster (monster has a small chance to stay asleep if you miss) */
+	if ((success) || (randint1(200) > p->state.skills[SKILL_STEALTH] + p->p_luck)) {
+		monster_wake(mon, false, 100);
+		mon_clear_timed(mon, MON_TMD_HOLD, MON_TMD_FLG_NOTIFY);
 	}
 
 	/* Handle normal weapon */
@@ -705,6 +721,19 @@ bool py_attack_real(struct player *p, struct loc grid, bool *fear)
 		if (player_of_has(p, OF_IMPACT) && dmg > 50) {
 			do_quake = true;
 			equip_learn_flag(p, OF_IMPACT);
+		}
+	}
+	else /* if (!obj) (no weapon) */ {
+		int b = 0, s = 0;
+
+		/* apply temporary brands to bare-handed damage */
+		improve_attack_modifier(NULL, mon, &b, &s, verb, false);
+		/* (copied from melee_damage() ) */
+		if (s) {
+			dmg *= slays[s].multiplier;
+		}
+		else if (b) {
+			dmg *= get_monster_brand_multiplier(mon, &brands[b]);
 		}
 	}
 

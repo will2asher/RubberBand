@@ -755,10 +755,11 @@ int cmd_get_item(struct command *cmd, const char *arg, struct object **obj,
 	if ((cmd_get_arg_item(cmd, arg, obj) == CMD_OK) && (!filter|| filter(*obj)))
 		return CMD_OK;
 
-	/* Shapechanged players can only access the floor */
+	/* Shapechanged players can only access the floor 
+	* (Allow shapechanged players to incribe/uninscribe)
 	if (player_is_shapechanged(player)) {
 		mode &= ~(USE_EQUIP | USE_INVEN | USE_QUIVER);
-	}
+	}*/
 
 	if (get_item(obj, prompt, reject, cmd->code, filter, mode)) {
 		cmd_set_arg_item(cmd, arg, *obj);

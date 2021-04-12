@@ -1570,6 +1570,13 @@ static void calc_light(struct player *p, struct player_state *state,
 		} else if (of_has(obj->flags, OF_LIGHT_3)) {
 			amt = 3;
 		}
+
+		/* Examine actual lights */
+		if (tval_is_light(obj) && !of_has(obj->flags, OF_NO_FUEL) &&
+			obj->timeout == 0)
+			/* Lights without fuel provide no light */
+			amt = 0;
+
 		amt += obj->modifiers[OBJ_MOD_LIGHT];
 
 		/* Adjustment to allow UNLIGHT players to use +1 LIGHT gear */
@@ -1577,14 +1584,19 @@ static void calc_light(struct player *p, struct player_state *state,
 			amt--;
 		}
 
-		/* Examine actual lights */
-		if (tval_is_light(obj) && !of_has(obj->flags, OF_NO_FUEL) &&
-				obj->timeout == 0)
-			/* Lights without fuel provide no light */
-			amt = 0;
-
 		/* Alter p->state.cur_light if reasonable */
 	    state->cur_light += amt;
+
+		/* You can only play as a mimble if sillymon is turned on, otherwise we can skip the rest */
+		if (!OPT(p, birth_sillymon)) return;
+
+		/* Mimble power: Light */
+		if (p->mimpwr1 == 8) state->cur_light += 1;
+		else if ((p->mimpwr2 == 8) && (p->lev >= 10)) state->cur_light += 2;
+		else if ((p->mimpwr3 == 8) && (p->lev >= 20)) state->cur_light += 2;
+		else if ((p->mimpwr4 == 8) && (p->lev >= 30)) state->cur_light += 2;
+		else if ((p->mimpwr5 == 8) && (p->lev >= 40)) state->cur_light += 2;
+
 	}
 }
 
@@ -1799,6 +1811,10 @@ void calc_bonuses(struct player *p, struct player_state *state, bool known_only,
 	state->speed = 110;
 	state->num_blows = 100;
 
+	/* Bounds on luck */
+	if (p->p_luck > 5) p->p_luck = 5;
+	if (p->p_luck < -5) p->p_luck = -5;
+
 	/* Extract race/class info */
 	state->see_infra = p->race->infra;
 	for (i = 0; i < SKILL_MAX; i++) {
@@ -1818,7 +1834,7 @@ void calc_bonuses(struct player *p, struct player_state *state, bool known_only,
 	pf_copy(state->pflags, p->race->pflags);
 	pf_union(state->pflags, p->class->pflags);
 
-	/* Extract the player flags */
+	/* Extract the player (object) flags */
 	player_flags(p, collect_f);
 
 	/* Analyze equipment */
@@ -1950,13 +1966,72 @@ void calc_bonuses(struct player *p, struct player_state *state, bool known_only,
 		state->el_info[ELEM_HOLY_ORB].res_level = -1;
 	}
 	/* Goblins have innate speed */
-	if (player_has(p, PF_GOBSPEED)) state->speed += 1;
+	if (player_has(p, PF_GOBSPEED)) state->speed += 2;
+
+	/* Mimble power: speed */
+	if (p->mimpwr1 == 7) state->speed += 2;
+	else if ((p->mimpwr2 == 7) && (p->lev >= 10)) state->speed += 2;
+	else if ((p->mimpwr3 == 7) && (p->lev >= 20)) state->speed += 3;
+	else if ((p->mimpwr4 == 7) && (p->lev >= 30)) state->speed += 4;
+	else if ((p->mimpwr5 == 7) && (p->lev >= 40)) state->speed += 4;
+	else if ((p->mimpwr6 == 7) && (p->lev >= 50)) state->speed += 5;
+
 	/* Sprites have fast movement */
 	if (player_has(p, PF_SPRITESPEED)) extra_moves += 1;
+
+	/* Mimble power: movement speed */
+	if ((p->mimpwr3 == 19) && (p->lev >= 20)) extra_moves += 1;
+	else if ((p->mimpwr4 == 19) && (p->lev >= 30)) extra_moves += 1;
+	else if ((p->mimpwr5 == 19) && (p->lev >= 40)) extra_moves += 1;
+	else if ((p->mimpwr6 == 19) && (p->lev >= 50)) extra_moves += 1;
+
+	/* Mimble power: natural armor (starting power only) */
+	if (p->mimpwr1 == 1) state->to_a += 15 + p->lev/4;
 
 	/* Combat Regeneration */
 	if (player_has(p, PF_COMBAT_REGEN) && character_dungeon) {
 		of_on(state->flags, OF_IMPAIR_HP);
+	}
+
+	if (pf_has(p->state.pflags, PF_MIMBLE))
+	{
+		/* mimble random starting stat bonus */
+		if (p->mimstat == 1) state->stat_add[STAT_STR] += 3;
+		if (p->mimstat == 2) state->stat_add[STAT_INT] += 3;
+		if (p->mimstat == 3) state->stat_add[STAT_WIS] += 3;
+		if (p->mimstat == 4) state->stat_add[STAT_DEX] += 3;
+		if (p->mimstat == 5) state->stat_add[STAT_CON] += 3;
+
+		/* Mimble power: stat bonus   INT and WIS can be power #2 or #3 */
+		if ((p->mimpwr2 == 10) && (p->lev >= 10)) state->stat_add[STAT_INT] += 3;
+		if ((p->mimpwr3 == 10) && (p->lev >= 20)) state->stat_add[STAT_INT] += 3;
+		if ((p->mimpwr2 == 11) && (p->lev >= 10)) state->stat_add[STAT_WIS] += 3;
+		if ((p->mimpwr3 == 11) && (p->lev >= 20)) state->stat_add[STAT_WIS] += 3;
+		/* DEX, CON and STR can be power #2, #3, or #4 */
+		if ((p->mimpwr2 == 12) && (p->lev >= 10)) state->stat_add[STAT_DEX] += 3;
+		if ((p->mimpwr3 == 12) && (p->lev >= 20)) state->stat_add[STAT_DEX] += 3;
+		if ((p->mimpwr4 == 12) && (p->lev >= 30)) state->stat_add[STAT_DEX] += 3;
+		if ((p->mimpwr2 == 13) && (p->lev >= 10)) state->stat_add[STAT_CON] += 3;
+		if ((p->mimpwr3 == 13) && (p->lev >= 20)) state->stat_add[STAT_CON] += 3;
+		if ((p->mimpwr4 == 13) && (p->lev >= 30)) state->stat_add[STAT_CON] += 3;
+		if ((p->mimpwr2 == 14) && (p->lev >= 10)) state->stat_add[STAT_STR] += 3;
+		if ((p->mimpwr3 == 14) && (p->lev >= 20)) state->stat_add[STAT_STR] += 3;
+		if ((p->mimpwr4 == 14) && (p->lev >= 30)) state->stat_add[STAT_STR] += 3;
+		/* Mimble power: Augmentation */
+		if (((p->mimpwr2 == 15) && (p->lev >= 10)) || ((p->mimpwr3 == 15) && (p->lev >= 20)) ||
+			((p->mimpwr4 == 15) && (p->lev >= 30))) {
+			state->stat_add[STAT_INT] += 1;
+			state->stat_add[STAT_WIS] += 1;
+			state->stat_add[STAT_DEX] += 1;
+			state->stat_add[STAT_CON] += 1;
+			state->stat_add[STAT_STR] += 1;
+		}
+		/* Mimble power: extra blows, power #5 or #6 only */
+		if (((p->mimpwr5 == 24) && (p->lev >= 40)) || ((p->mimpwr6 == 24) && (p->lev >= 50))) 
+			extra_blows += 1;
+		/* Mimble power: extra shooting might, power #5 or #6 only */
+		if (((p->mimpwr5 == 25) && (p->lev >= 40)) || ((p->mimpwr6 == 25) && (p->lev >= 50)))
+			extra_might += 1;
 	}
 
 	/* Calculate the various stat values */
@@ -2036,6 +2111,58 @@ void calc_bonuses(struct player *p, struct player_state *state, bool known_only,
 				state->skills[SKILL_SEARCH] *=9;
 				state->skills[SKILL_SEARCH] /= 10;
 			}
+		}
+	}
+	
+	/* Mimble random skill boosts */
+	if (pf_has(p->state.pflags, PF_MIMBLE))
+	{
+		if ((p->mimsk1 == 1) || (p->mimsk2 == 1) || (p->mimsk3 == 1)) {
+			state->skills[SKILL_DISARM_PHYS] += 11; /* trap disarming: physical */
+			state->skills[SKILL_DISARM_MAGIC] += 3;
+		}
+		else if (p->mimskp == 1) state->skills[SKILL_DISARM_PHYS] -= 8;
+		if ((p->mimsk1 == 2) || (p->mimsk2 == 2) || (p->mimsk3 == 2)) {
+			state->skills[SKILL_DISARM_MAGIC] += 11; /* trap disarming: magic */
+			state->skills[SKILL_DISARM_PHYS] += 3;
+		}
+		else if (p->mimskp == 2) state->skills[SKILL_DISARM_MAGIC] -= 8;
+		if ((p->mimsk1 == 3) || (p->mimsk2 == 3) || (p->mimsk3 == 3)) {
+			state->skills[SKILL_DEVICE] += 13; /* device skill */
+		}
+		else if (p->mimskp == 3) state->skills[SKILL_DEVICE] -= 6;
+		if ((p->mimsk1 == 4) || (p->mimsk2 == 4) || (p->mimsk3 == 4)) {
+			state->skills[SKILL_SAVE] += 12; /* saving throw */
+		}
+		else if (p->mimskp == 4) state->skills[SKILL_SAVE] -= 5;
+		if ((p->mimsk1 == 5) || (p->mimsk2 == 5) || (p->mimsk3 == 5)) {
+			state->skills[SKILL_STEALTH] += 4; /* stealth */
+		}
+		else if (p->mimskp == 5) state->skills[SKILL_STEALTH] -= 1;
+		if ((p->mimsk1 == 6) || (p->mimsk2 == 6) || (p->mimsk3 == 6)) {
+			state->skills[SKILL_SEARCH] += 8; /* searching */
+		}
+		else if (p->mimskp == 6) state->skills[SKILL_SEARCH] -= 5;
+		if ((p->mimsk1 == 7) || (p->mimsk2 == 7) || (p->mimsk3 == 7)) {
+			state->skills[SKILL_TO_HIT_MELEE] += 13; /* melee */
+		}
+		else if (p->mimskp == 7) state->skills[SKILL_TO_HIT_MELEE] -= 5;
+		if ((p->mimsk1 == 8) || (p->mimsk2 == 8) || (p->mimsk3 == 8)) {
+			state->skills[SKILL_TO_HIT_BOW] += 11; /* ranged */
+			state->skills[SKILL_TO_HIT_THROW] += 12;
+		}
+		else if (p->mimskp == 8) { 
+			state->skills[SKILL_TO_HIT_BOW] -= 4; /* (ranged penalty) */
+			state->skills[SKILL_TO_HIT_THROW] -= 4;
+		}
+		if ((p->mimsk1 == 9) || (p->mimsk2 == 9) || (p->mimsk3 == 9)) {
+			state->see_infra += 3; /* infravision */
+		}
+		/* Mimbles get 1 INFRA normally, so this puts it to zero */
+		else if (p->mimskp == 9) state->see_infra -= 1; 
+		/* digging */
+		if ((p->mimsk1 == 10) || (p->mimsk2 == 10) || (p->mimsk3 == 10)) {
+			state->skills[SKILL_DIGGING] += 30; 
 		}
 	}
 

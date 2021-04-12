@@ -549,6 +549,22 @@ struct player {
 
 	s16b food;					/* Current nutrition */
 
+	s16b p_luck;				/* Luck */
+	s16b slimed;				/* slime level */
+
+	/* These are only used for the random stuff of MIMBLE races */
+	s16b mimsk1;				/* random starting skill boost #1 (1-10) */
+	s16b mimsk2;				/* random starting skill boost #2 (1-10) */
+	s16b mimsk3;  				/* random starting skill boost #3 (1-10) */
+	s16b mimskp;				/* random starting skill penalty (1-10) */
+	s16b mimstat;				/* random starting stat boost (1-5) */
+	s16b mimpwr1;				/* random starting power */
+	s16b mimpwr2;				/* random power for L10 */
+	s16b mimpwr3;				/* random power for L20 */
+	s16b mimpwr4;				/* random power for L30 */
+	s16b mimpwr5;				/* random power for L40 */
+	s16b mimpwr6;				/* random power for L50 */
+
 	byte unignoring;			/* Unignoring */
 
 	byte *spell_flags;			/* Spell flags */

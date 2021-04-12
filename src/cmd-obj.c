@@ -148,6 +148,8 @@ void do_cmd_uninscribe(struct command *cmd)
 {
 	struct object *obj;
 
+	/* Inscriptions are a UI thing. They should be allowed while shapechanged.
+	* 
 	if (player_is_shapechanged(player)) {
 		msg("You cannot do this while in %s form.",	player->shape->name);
 		if (get_check("Do you want to change back? " )) {
@@ -155,7 +157,7 @@ void do_cmd_uninscribe(struct command *cmd)
 		} else {
 			return;
 		}
-	}
+	}*/
 
 	/* Get arguments */
 	if (cmd_get_item(cmd, "item", &obj,
@@ -183,6 +185,8 @@ void do_cmd_inscribe(struct command *cmd)
 	char prompt[1024];
 	char o_name[80];
 
+	/* Inscriptions are a UI thing. They should be allowed while shapechanged.
+	*
 	if (player_is_shapechanged(player)) {
 		msg("You cannot do this while in %s form.",	player->shape->name);
 		if (get_check("Do you want to change back? " )) {
@@ -190,7 +194,7 @@ void do_cmd_inscribe(struct command *cmd)
 		} else {
 			return;
 		}
-	}
+	}*/
 
 	/* Get arguments */
 	if (cmd_get_item(cmd, "item", &obj,
@@ -222,7 +226,7 @@ void do_cmd_inscribe(struct command *cmd)
  */
 void do_cmd_autoinscribe(struct command *cmd)
 {
-	if (player_is_shapechanged(player)) return;
+	/* if (player_is_shapechanged(player)) return; */
 
 	autoinscribe_ground();
 	autoinscribe_pack();

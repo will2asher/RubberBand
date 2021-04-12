@@ -93,6 +93,8 @@ enum birth_rollers
 static void point_based_start(void);
 static bool quickstart_allowed = false;
 bool arg_force_name;
+/* I can't think of another way to do this... */
+bool secret_silly = false;
 
 /**
  * ------------------------------------------------------------------------
@@ -443,15 +445,22 @@ static void setup_menus(void)
 
 	/* Count the races */
 	n = 0;
-	for (r = races; r; r = r->next) n++;
+	for (r = races; r; r = r->next) {
+		/* SILLY_ONLY races better be at the end of p_race.txt ... */
+		if ((!secret_silly) && pf_has(r->pflags, PF_SILLY_ONLY)) /*skip*/;
+		else n++;
+	}
 
 	/* Race menu. */
 	init_birth_menu(&race_menu, n, player->race ? player->race->ridx : 0,
 	                &race_region, true, race_help);
 	mdata = race_menu.menu_data;
 
-	for (i = 0, r = races; r; r = r->next, i++)
+	for (i = 0, r = races; r; r = r->next, i++) {
+		/* Silly races only show if that option is turned on */
+		if ((!secret_silly) && pf_has(r->pflags, PF_SILLY_ONLY)) i++;
 		mdata->items[r->ridx] = r->name;
+	}
 	mdata->hint = "Race affects stats and skills, and may confer resistances and abilities.";
 
 	/* Count the classes */
@@ -1148,6 +1157,8 @@ int textui_do_birth(void)
 			case BIRTH_RESET:
 			{
 				cmdq_push(CMD_BIRTH_RESET);
+				/* reset menus */
+				setup_menus();
 
 				roller = BIRTH_RESET;
 				
@@ -1261,6 +1272,12 @@ int textui_do_birth(void)
 				next = get_confirm_command();
 				if (next == BIRTH_BACK)
 					next = BIRTH_HISTORY_CHOICE;
+
+				/* There are a couple races only available if sillymon is turned on. */
+				if ((next == BIRTH_RESET) && (OPT(player, birth_sillymon)))
+					secret_silly = true;
+				else if ((next == BIRTH_RESET) && (!OPT(player, birth_sillymon)))
+					secret_silly = false;
 
 				if (next == BIRTH_COMPLETE)
 					done = true;

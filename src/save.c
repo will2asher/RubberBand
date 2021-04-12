@@ -482,10 +482,21 @@ void wr_player(void)
 	wr_s16b(player->max_depth);
 	wr_s16b(player->recall_depth);
 
-	/* More info */
-	wr_s16b(0);	/* oops */
-	wr_s16b(0);	/* oops */
-	wr_s16b(0);	/* oops */
+	/* Random MIMBLE stuff */
+	wr_s16b(player->mimsk1);
+	wr_s16b(player->mimsk2);
+	wr_s16b(player->mimsk3);
+	wr_s16b(player->mimskp);
+	wr_s16b(player->mimstat);
+	wr_s16b(player->mimpwr1);
+	wr_s16b(player->mimpwr2);
+	wr_s16b(player->mimpwr3);
+	wr_s16b(player->mimpwr4);
+	wr_s16b(player->mimpwr5);
+	wr_s16b(player->mimpwr6);
+
+	wr_s16b(player->p_luck);	/* luck */
+	wr_s16b(player->slimed);	/* slime */
 	wr_byte(0);
 	wr_byte(player->unignoring);
 	wr_s16b(player->deep_descent);

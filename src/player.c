@@ -237,9 +237,9 @@ static void adjust_level(struct player *p, bool verbose)
 		p->lev++;
 
 		/* Save the highest level */
-		if (p->lev > p->max_lev)
-			p->max_lev = p->lev;
+		if (p->lev > p->max_lev) p->max_lev = p->lev;
 
+		/* (verbose is currently always TRUE) */
 		if (verbose) {
 			/* Log level updates */
 			strnfmt(buf, sizeof(buf), "Reached level %d", p->lev);
@@ -247,6 +247,27 @@ static void adjust_level(struct player *p, bool verbose)
 
 			/* Message */
 			msgt(MSG_LEVEL, "Welcome to level %d.",	p->lev);
+
+			/* Mimbles gain a power every ten levels */
+			if (p->lev == p->max_lev) {
+				if ((pf_has(p->state.pflags, PF_MIMBLE)) && ((p->lev == 10) || (p->lev == 20) ||
+					(p->lev == 30) || (p->lev == 40) | (p->lev == 50))) {
+					bool newluck = false;
+
+					/* Mimble power: Luck is a one-time effect */
+					if ((p->mimpwr2 == 9) && (p->lev == 10)) { p->p_luck += 2; newluck = true; }
+					if ((p->mimpwr3 == 9) && (p->lev == 20)) { p->p_luck += 2; newluck = true; }
+					if ((p->mimpwr4 == 9) && (p->lev == 30)) { p->p_luck += 2; newluck = true; }
+					if ((p->mimpwr5 == 9) && (p->lev == 40)) { p->p_luck += 2; newluck = true; }
+					if ((p->mimpwr6 == 9) && (p->lev == 50)) { p->p_luck += 2; newluck = true; }
+
+					if (newluck) msg("You've gained a new mimble power. You feel especially lucky.");
+					else msg("You've gained a new mimble power. Use the S command to see what you got.");
+				}
+			}
+
+			/* slime fades over time (but not fast) */
+			if (p->slimed > 0) p->slimed--;
 		}
 
 		effect_simple(EF_RESTORE_STAT, source_none(), "0", STAT_STR, 0, 0, 0, 0, NULL);
@@ -295,6 +316,59 @@ void player_flags(struct player *p, bitflag f[OF_SIZE])
 	/* Some classes become immune to fear at a certain plevel */
 	if (player_has(p, PF_BRAVERY_30) && p->lev >= 30) {
 		of_on(f, OF_PROT_FEAR);
+	}
+
+	/* You can only play as a MIMBLE if sillymon is turned on, otherwise we can skip the rest */
+	if (!OPT(p, birth_sillymon)) return;
+
+	s16b mp1 = p->mimpwr1, mp2 = p->mimpwr2, mp3 = p->mimpwr3;
+	s16b mp4 = p->mimpwr4, mp5 = p->mimpwr5, mp6 = p->mimpwr6;
+
+	/* cancel mimble powers we don't have yet */
+	if (p->lev < 10) mp2 = 0;
+	if (p->lev < 20) mp3 = 0;
+	if (p->lev < 30) mp4 = 0;
+	if (p->lev < 40) mp5 = 0;
+	if (p->lev < 50) mp6 = 0;
+	/* Mimble powers: PROT_FEAR */
+	if ((mp1 == 2) || (mp2 == 2) || (mp3 == 2) || (mp4 == 2)) {
+		of_on(f, OF_PROT_FEAR);
+	}
+	/* Mimble powers: PROT_BLIND */
+	if ((mp1 == 3) || (mp2 == 3) || (mp3 == 3) || (mp4 == 3) || (mp5 == 3)) {
+		of_on(f, OF_PROT_BLIND);
+	}
+	/* Mimble powers: PROT_CONF */
+	if ((mp1 == 4) || (mp2 == 4) || (mp3 == 4) || (mp4 == 4) || (mp5 == 4) || (mp6 == 4)) {
+		of_on(f, OF_PROT_CONF);
+	}
+	/* Mimble powers: PROT_STUN */
+	if ((mp1 == 5) || (mp2 == 5) || (mp3 == 5) || (mp4 == 5) || (mp5 == 5) || (mp6 == 5)) {
+		of_on(f, OF_PROT_STUN);
+	}
+	/* Mimble powers: REGEN */
+	if ((mp1 == 6) || (mp2 == 6) || (mp3 == 6) || (mp4 == 6) || (mp5 == 6) || (mp6 == 6)) {
+		of_on(f, OF_REGEN);
+	}
+	/* Mimble powers: FREE_ACT */
+	if ((mp3 == 16) || (mp4 == 16)) {
+		of_on(f, OF_FREE_ACT);
+	}
+	/* Mimble powers: HOLD_LIFE */
+	if ((mp3 == 17) || (mp4 == 17) || (mp5 == 17) || (mp6 == 17)) {
+		of_on(f, OF_HOLD_LIFE);
+	}
+	/* Mimble powers: TRAP_IMMUNE */
+	if ((mp3 == 18) || (mp4 == 18) || (mp5 == 18)) {
+		of_on(f, OF_TRAP_IMMUNE);
+	}
+	/* Mimble powers: SEE_INVIS */
+	if ((mp4 == 20) || (mp5 == 20) || (mp6 == 20)) {
+		of_on(f, OF_SEE_INVIS);
+	}
+	/* Mimble powers: TELEPATHY */
+	if ((mp5 == 26) || (mp6 == 26)) {
+		of_on(f, OF_TELEPATHY);
 	}
 }
 
