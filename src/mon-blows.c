@@ -584,6 +584,26 @@ static void melee_effect_handler_POISON(melee_effect_handler_context_t *context)
 }
 
 /**
+ * Melee effect handler: Hunger
+ */
+static void melee_effect_handler_HUNGER(melee_effect_handler_context_t* context)
+{
+	int amount = context->rlev * 12 + randint1(context->rlev * 10);
+
+	/* Obvious */
+	context->obvious = true;
+
+	/* Take damage */
+	(void)monster_damage_target(context, true);
+
+	/* Don't starve the player all at once. */
+	if ((amount >= player->timed[TMD_FOOD]) && (player->timed[TMD_FOOD] >= PY_FOOD_WEAK)) {
+		player_set_timed(context->p, TMD_FOOD, PY_FOOD_WEAK, true);
+	}
+	else player_dec_timed(context->p, TMD_FOOD, amount, true);
+}
+
+/**
  * Melee effect handler: Disenchant the player.
  */
 static void melee_effect_handler_DISENCHANT(melee_effect_handler_context_t *context)
@@ -1087,6 +1107,7 @@ melee_effect_handler_f melee_handler_for_blow_effect(const char *name)
 		{ "NONE", melee_effect_handler_NONE },
 		{ "HURT", melee_effect_handler_HURT },
 		{ "POISON", melee_effect_handler_POISON },
+		{ "HUNGER", melee_effect_handler_HUNGER },
 		{ "DISENCHANT", melee_effect_handler_DISENCHANT },
 		{ "DRAIN_CHARGES", melee_effect_handler_DRAIN_CHARGES },
 		{ "EAT_GOLD", melee_effect_handler_EAT_GOLD },
