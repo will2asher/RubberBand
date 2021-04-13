@@ -1968,25 +1968,8 @@ void calc_bonuses(struct player *p, struct player_state *state, bool known_only,
 	/* Goblins have innate speed */
 	if (player_has(p, PF_GOBSPEED)) state->speed += 2;
 
-	/* Mimble power: speed */
-	if (p->mimpwr1 == 7) state->speed += 2;
-	else if ((p->mimpwr2 == 7) && (p->lev >= 10)) state->speed += 2;
-	else if ((p->mimpwr3 == 7) && (p->lev >= 20)) state->speed += 3;
-	else if ((p->mimpwr4 == 7) && (p->lev >= 30)) state->speed += 4;
-	else if ((p->mimpwr5 == 7) && (p->lev >= 40)) state->speed += 4;
-	else if ((p->mimpwr6 == 7) && (p->lev >= 50)) state->speed += 5;
-
 	/* Sprites have fast movement */
 	if (player_has(p, PF_SPRITESPEED)) extra_moves += 1;
-
-	/* Mimble power: movement speed */
-	if ((p->mimpwr3 == 19) && (p->lev >= 20)) extra_moves += 1;
-	else if ((p->mimpwr4 == 19) && (p->lev >= 30)) extra_moves += 1;
-	else if ((p->mimpwr5 == 19) && (p->lev >= 40)) extra_moves += 1;
-	else if ((p->mimpwr6 == 19) && (p->lev >= 50)) extra_moves += 1;
-
-	/* Mimble power: natural armor (starting power only) */
-	if (p->mimpwr1 == 1) state->to_a += 15 + p->lev/4;
 
 	/* Combat Regeneration */
 	if (player_has(p, PF_COMBAT_REGEN) && character_dungeon) {
@@ -1995,6 +1978,23 @@ void calc_bonuses(struct player *p, struct player_state *state, bool known_only,
 
 	if (pf_has(p->state.pflags, PF_MIMBLE))
 	{
+		/* Mimble power: speed */
+		if (p->mimpwr1 == 7) state->speed += 2;
+		else if ((p->mimpwr2 == 7) && (p->lev >= 10)) state->speed += 2;
+		else if ((p->mimpwr3 == 7) && (p->lev >= 20)) state->speed += 3;
+		else if ((p->mimpwr4 == 7) && (p->lev >= 30)) state->speed += 4;
+		else if ((p->mimpwr5 == 7) && (p->lev >= 40)) state->speed += 4;
+		else if ((p->mimpwr6 == 7) && (p->lev >= 50)) state->speed += 5;
+
+		/* Mimble power: movement speed */
+		if ((p->mimpwr3 == 19) && (p->lev >= 20)) extra_moves += 1;
+		else if ((p->mimpwr4 == 19) && (p->lev >= 30)) extra_moves += 1;
+		else if ((p->mimpwr5 == 19) && (p->lev >= 40)) extra_moves += 1;
+		else if ((p->mimpwr6 == 19) && (p->lev >= 50)) extra_moves += 1;
+
+		/* Mimble power: natural armor (starting power only) */
+		if (p->mimpwr1 == 1) state->to_a += 15 + p->lev / 4;
+
 		/* mimble random starting stat bonus */
 		if (p->mimstat == 1) state->stat_add[STAT_STR] += 3;
 		if (p->mimstat == 2) state->stat_add[STAT_INT] += 3;
@@ -2164,7 +2164,7 @@ void calc_bonuses(struct player *p, struct player_state *state, bool known_only,
 		else if (p->mimskp == 9) state->see_infra -= 1; 
 		/* digging */
 		if ((p->mimsk1 == 10) || (p->mimsk2 == 10) || (p->mimsk3 == 10)) {
-			state->skills[SKILL_DIGGING] += 30; 
+			state->skills[SKILL_DIGGING] += 35; 
 		}
 	}
 
