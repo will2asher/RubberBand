@@ -1323,7 +1323,7 @@ void do_cmd_accept_character(struct command *cmd)
 		}
 	}
 	else { /* non-mimbles */
-		player->mimsk1 =  0;
+		player->mimsk1 = 0;
 		player->mimsk2 = 0;
 		player->mimsk3 = 0;
 		player->mimskp = 0;

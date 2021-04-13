@@ -797,21 +797,21 @@ int rd_player(void)
 				  sizeof(player->died_from));
 
 	/* Random MIMBLE stuff */
-	rd_s16b(player->mimsk1);
-	rd_s16b(player->mimsk2);
-	rd_s16b(player->mimsk3);
-	rd_s16b(player->mimskp);
-	rd_s16b(player->mimstat);
-	rd_s16b(player->mimpwr1);
-	rd_s16b(player->mimpwr2);
-	rd_s16b(player->mimpwr3);
-	rd_s16b(player->mimpwr4);
-	rd_s16b(player->mimpwr5);
-	rd_s16b(player->mimpwr6);
+	rd_s16b(&player->mimsk1);
+	rd_s16b(&player->mimsk2);
+	rd_s16b(&player->mimsk3);
+	rd_s16b(&player->mimskp);
+	rd_s16b(&player->mimstat);
+	rd_s16b(&player->mimpwr1);
+	rd_s16b(&player->mimpwr2);
+	rd_s16b(&player->mimpwr3);
+	rd_s16b(&player->mimpwr4);
+	rd_s16b(&player->mimpwr5);
+	rd_s16b(&player->mimpwr6);
 
 	/* More info */
-	rd_s16b(player->p_luck);
-	rd_s16b(player->slimed);
+	rd_s16b(&player->p_luck);
+	rd_s16b(&player->slimed);
 	strip_bytes(1);
 	rd_byte(&player->unignoring);
 	rd_s16b(&player->deep_descent);
