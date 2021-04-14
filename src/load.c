@@ -812,7 +812,7 @@ int rd_player(void)
 	/* More info */
 	rd_s16b(&player->p_luck);
 	rd_s16b(&player->slimed);
-	strip_bytes(1);
+	strip_bytes(7);
 	rd_byte(&player->unignoring);
 	rd_s16b(&player->deep_descent);
 
