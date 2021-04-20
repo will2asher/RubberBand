@@ -5,6 +5,7 @@
  * Fields:
  * name: name as appears in edit files
  * rows: Maximum number of rows (for vaults)
+ * (Is there a reason the max rows for room templates was so low (11)?)
  * cols: Maximum number of columns (for vaults)
  * builder: name of room building function (with build_ prepended)
  */
@@ -17,7 +18,7 @@ ROOM("large room",			0,		0,		large)
 ROOM("crossed room",		0,		0,		crossed)
 ROOM("circular room",		0,		0,		circular)
 ROOM("overlap room",		0,		0,		overlap)
-ROOM("room template",		11,		33,		template)
+ROOM("room template",		16,		33,		template)
 ROOM("Interesting room",	40,		50,		interesting)
 ROOM("monster pit",			0,		0,		pit)
 ROOM("monster nest",		0,		0,		nest)
