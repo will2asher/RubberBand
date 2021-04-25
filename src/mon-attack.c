@@ -581,7 +581,7 @@ bool make_attack_normal(struct monster *mon, struct player *p)
 		bool obvious = false;
 
 		int damage = 0;
-		s16b do_cut = false;
+		int do_cut = false;
 		bool do_stun = false;
 		int sound_msg = MSG_GENERIC;
 

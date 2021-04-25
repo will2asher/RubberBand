@@ -113,7 +113,7 @@ static enum parser_error parse_meth_name(struct parser *p) {
 
 static enum parser_error parse_meth_cut(struct parser *p) {
 	struct blow_method *meth = parser_priv(p);
-	s16b val;
+	int val;
 	assert(meth);
 
 	val = parser_getuint(p, "cut");

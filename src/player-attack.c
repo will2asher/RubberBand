@@ -239,7 +239,8 @@ static int critical_shot(const struct player *p,
 
 	/* Luck makes criticals (slightly) more likely */
 	if (p->p_luck) {
-		chance += p->p_luck; power += p->p_luck;
+		chance += p->p_luck; 
+		power += p->p_luck * 2;
 	}
 
 	if (randint1(5000) > chance) {

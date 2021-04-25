@@ -58,13 +58,15 @@ desc:claw
 
 #Cut 2 means it cuts more often.
 name:CLAWB
-cut:2
+#cut:1
+cut:2 (undoing the change to see if it's what causing the problem)
 stun:0
 miss:1
 phys:1
 msg:MON_CLAW
 act:claws {target}
-desc:claw (with sharp claws)
+desc:claw 
+#(with sharp claws)
 
 name:TAIL
 cut:1
