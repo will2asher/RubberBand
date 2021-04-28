@@ -723,6 +723,19 @@ bool py_attack_real(struct player *p, struct loc grid, bool *fear)
 			equip_learn_flag(p, OF_IMPACT);
 		}
 	}
+	else /* if (!obj) (no weapon) */ {
+		int b = 0, s = 0;
+
+		/* apply temporary brands to bare-handed damage */
+		improve_attack_modifier(NULL, mon, &b, &s, verb, false);
+		/* (copied from melee_damage() ) */
+		if (s) {
+			dmg *= slays[s].multiplier;
+		}
+		else if (b) {
+			dmg *= get_monster_brand_multiplier(mon, &brands[b]);
+		}
+	}
 
 	/* Learn by use */
 	equip_learn_on_melee_attack(p);
