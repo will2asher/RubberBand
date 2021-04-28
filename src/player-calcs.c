@@ -2028,6 +2028,8 @@ void calc_bonuses(struct player *p, struct player_state *state, bool known_only,
 				state->skills[SKILL_DISARM_PHYS] /= 10;
 				state->skills[SKILL_DISARM_MAGIC] *= 9;
 				state->skills[SKILL_DISARM_MAGIC] /= 10;
+				state->skills[SKILL_SEARCH] *= 9;
+				state->skills[SKILL_SEARCH] /= 10;
 			} else if (lack > 18) {
 				state->skills[SKILL_DEVICE] *= 7;
 				state->skills[SKILL_DEVICE] /= 10;

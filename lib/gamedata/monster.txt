@@ -12892,7 +12892,7 @@ experience:610
 blow:DROOL:LOSE_WIS:2d6
 blow:DROOL:EXP_20:2d6
 blow:BITE:EAT_FOOD:3d6
-#blow:BITE:HUNGER:4d6
+blow:BITE:HUNGER:4d6
 flags:RAND_25 | DEMON | FORCE_SLEEP
 flags:NO_FEAR | IM_COLD | IM_ELEC | IM_ACID | IM_FIRE
 #TEMPLE | ROAM
@@ -15472,7 +15472,7 @@ depth:49
 rarity:5
 experience:196
 blow:TOUCH:LOSE_INT
-#blow:TOUCH:HUNGER:2d8
+blow:TOUCH:HUNGER:2d8
 blow:ENGULF:ACID:2d8
 #blow:ENGULF:SLIME:3d6
 flags:DROP_40 | TAKE_ITEM | ATTR_FLICKER
@@ -16835,32 +16835,31 @@ spells:BR_DARK | BR_AMNS | BA_DARK | BO_NETH | BO_ICE
 desc:The enveloping dark is a strange demon out of dwarvish superstition.  It fills
 desc: the dungeon all around you.
 
-#(uncomment when HUNGER is coded)
-#name:greater hungry ghost
-#base:ghost
-#color:Y
-#speed:126
-#hit-points:963
-#hearing:23
-#smell:18
-#armor-class:133
-#sleepiness:9
-#depth:58
-#rarity:6
-#experience:8463
-#blow:DROOL:LOSE_WIS:2d8
-#blow:BITE:EAT_FOOD:2d8
-#blow:BITE:HUNGER:6d6
-#blow:BITE:HUNGER:6d6
-#flags:DEMON | SMART | DROP_1 | DROP_20 | RAND_25 | FORCE_SLEEP
-#flags:NO_FEAR | NO_HOLD | IM_COLD | IM_FIRE | IM_ACID | IM_ELEC
+name:greater hungry ghost
+base:ghost
+color:Y
+speed:126
+hit-points:963
+hearing:23
+smell:18
+armor-class:133
+sleepiness:9
+depth:58
+rarity:6
+experience:8463
+blow:DROOL:LOSE_WIS:2d8
+blow:BITE:EAT_FOOD:2d8
+blow:BITE:HUNGER:6d6
+blow:BITE:HUNGER:6d6
+flags:DEMON | SMART | DROP_1 | DROP_20 | RAND_25 | FORCE_SLEEP
+flags:NO_FEAR | NO_HOLD | IM_COLD | IM_FIRE | IM_ACID | IM_ELEC
 #TEMPLE
-#spell-freq:3
-#spells:TELE_TO | HOLD | BLINK | DRAIN_MANA | FORGET | BO_NETH
+spell-freq:3
+spells:TELE_TO | HOLD | BLINK | DRAIN_MANA | FORGET | BO_NETH
 #CURSE_PC
-#desc:An intensity selfish demon that thinks only of feeding itself.  It could eat
-#desc: a heroes' feast for as many meals a day as a hobbit eats and still be
-#desc: famished.
+desc:An intensity selfish demon that thinks only of feeding itself.  It could eat
+desc: a heroes' feast for as many meals a day as a hobbit eats and still be
+desc: famished.
 
 name:11-headed hydra
 base:hydra
@@ -19821,15 +19820,14 @@ rarity:1
 experience:36000
 blow:CLAW:POISON:8d9
 blow:CLAW:POISON:8d9
-blow:BITE:PARALYZE:8d10
-#HUNGER
+blow:BITE:HUNGER:8d10
 blow:STING:LOSE_STR:6d11
 flags:UNIQUE | FEMALE | EVIL | SMART | SPIRIT | FORCE_SLEEP
 flags:DROP_4 | DROP_GOOD | ONLY_ITEM | POWERFUL
 flags:HURT_LIGHT | IM_ACID | IM_POIS | NO_CONF | NO_SLEEP | NO_HOLD
 innate-freq:10
 spell-freq:5
-spells:BLIND | CONF | HEAL | BA_DARK | S_KIN
+spells:BLIND | CONF | HEAL | HOLD | BA_DARK | S_KIN
 spells:WEAVE | BR_DARK | BR_POIS | BR_FEAR
 desc:This enormous, hideous spirit of void is in the form of a spider of immense
 desc: proportions.  She is surrounded by a cloud of Unlight as she sucks in all

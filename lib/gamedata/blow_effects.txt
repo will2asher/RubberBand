@@ -5,6 +5,7 @@
 # name - blow effect name as in monster.txt
 # power - used for attack quality in check_hit()
 # eval - used for power evaluation in eval_blow_effect()
+# (eval is unused. there is no eval_blow_effect(). )
 # desc - description for monster recall
 # lore-color-base - base color for lore
 # lore-color-resist - color for lore when the effects are resisted
@@ -34,7 +35,7 @@ lash-type:MISSILE
 #lash-type:SHARDS
 
 name:POISON
-power:20
+power:21
 eval:10
 desc:poison
 lore-color-base:Orange
@@ -45,7 +46,7 @@ lash-type:POIS
 
 #temporarily reduces CON and STR, rPOIS is partial resist
 #name:DISEASE
-#power:20
+#power:18
 #eval:10
 #desc:give you a disease
 #lore-color-base:Orange
@@ -53,14 +54,12 @@ lash-type:POIS
 #resist:POIS
 #lash-type:POIS
 
-#name:HUNGER
-#power:20
-#eval:10
-#desc:make you hungry
-#lore-color-base:Orange
-#lore-color-resist:Light Green
-#resist:POIS
-#lash-type:POIS
+name:HUNGER
+power:20
+eval:10
+desc:make you hungry
+lore-color-base:Orange
+lash-type:POIS
 
 name:DISENCHANT
 power:10
@@ -109,7 +108,7 @@ effect-type:eat-food
 lash-type:MISSILE
 
 name:EAT_LIGHT
-power:0
+power:9
 eval:5
 desc:absorb light
 lore-color-base:Yellow
@@ -176,7 +175,7 @@ lash-type:DARK
 #PROT_BLIND is only partial resistance, but it generally has shorter duration than normal BLIND
 #Also cured by most healing potions
 #name:SBLIND
-#power:30
+#power:23
 #eval:20
 #desc:poke your eyes
 #lore-color-base:Yellow
@@ -229,7 +228,7 @@ lash-type:CHAOS
 
 #
 #name:UNLUCKY
-#power:10
+#power:13
 #eval:20
 #desc:make you unlucky
 #lore-color-base:Orange
@@ -249,7 +248,7 @@ lash-type:CHAOS
 
 #similar effect as fear, different cause/resist/cures
 #name:CHARM
-#power:0
+#power:4
 #eval:10
 #desc:charm you
 #lore-color-base:Yellow
@@ -271,7 +270,7 @@ lash-type:INERTIA
 #Being grabbed makes you unable to move, but you can still attack and cast, etc
 #(free action only gives partial resistance)
 #name:BHOLD
-#power:30
+#power:20
 #eval:40
 #desc:grab
 #lore-color-base:Light Red

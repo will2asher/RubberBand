@@ -515,6 +515,7 @@ static void player_outfit(struct player *p)
 	int i;
 	const struct start_item *si;
 	struct object *obj, *known_obj;
+	int minau = 0;
 
 	/* Currently carrying nothing */
 	p->upkeep->total_weight = 0;
@@ -566,8 +567,9 @@ static void player_outfit(struct player *p)
 		kind->everseen = true;
 	}
 
-	/* Sanity check */
-	if (p->au < 0) p->au = 0;
+	/* Sanity check (minimum is zero in V) */
+	minau = 21 + randint1(32);
+	if (p->au < minau) p->au = minau;
 
 	/* Now try wielding everything */
 	wield_all(p);
