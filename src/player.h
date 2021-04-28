@@ -553,7 +553,6 @@ struct player {
 	s16b slimed;				/* slime level */
 
 	/* These are only used for the random stuff of MIMBLE races */
-	/* They are set at birth and don't change after that. */
 	s16b mimsk1;				/* random starting skill boost #1 (1-10) */
 	s16b mimsk2;				/* random starting skill boost #2 (1-10) */
 	s16b mimsk3;  				/* random starting skill boost #3 (1-10) */
