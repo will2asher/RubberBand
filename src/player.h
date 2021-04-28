@@ -549,6 +549,9 @@ struct player {
 
 	s16b food;					/* Current nutrition */
 
+	s16b p_luck;				/* Luck */
+	s16b slimed;				/* slime level */
+
 	byte unignoring;			/* Unignoring */
 
 	byte *spell_flags;			/* Spell flags */

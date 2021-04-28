@@ -797,6 +797,8 @@ int rd_player(void)
 				  sizeof(player->died_from));
 
 	/* More info */
+	rd_s16b(&player->p_luck);
+	rd_s16b(&player->slimed);	
 	strip_bytes(7);
 	rd_byte(&player->unignoring);
 	rd_s16b(&player->deep_descent);

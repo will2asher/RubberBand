@@ -483,6 +483,8 @@ void wr_player(void)
 	wr_s16b(player->recall_depth);
 
 	/* More info */
+	wr_s16b(player->p_luck);	/* luck */
+	wr_s16b(player->slimed);	/* slime */
 	wr_s16b(0);	/* oops */
 	wr_s16b(0);	/* oops */
 	wr_s16b(0);	/* oops */

@@ -910,6 +910,9 @@ void player_generate(struct player *p, const struct player_race *r,
 	/* Always start with a well fed player */
 	p->timed[TMD_FOOD] = PY_FOOD_FULL - 1;
 
+	/* start with 1 point of luck (because I'm nice) */
+	p->p_luck = 1;
+
 	if (!old_history) {
 		if (p->history) {
 			string_free(p->history);
