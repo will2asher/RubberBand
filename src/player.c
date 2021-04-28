@@ -314,11 +314,12 @@ void player_flags(struct player *p, bitflag f[OF_SIZE])
 	of_union(f, p->class->flags);
 
 	/* Some classes become immune to fear at a certain plevel */
-	if (player_has(p, PF_BRAVERY_30) && p->lev >= 30)
+	if (player_has(p, PF_BRAVERY_30) && p->lev >= 30) {
 		of_on(f, OF_PROT_FEAR);
+	}
 
-	/* Skip the rest if not a mimble */
-	if (!player_has(p, PF_MIMBLE)) return;
+	/* You can only play as a MIMBLE if sillymon is turned on, otherwise we can skip the rest */
+	if (!OPT(p, birth_sillymon)) return;
 
 	s16b mp1 = p->mimpwr1, mp2 = p->mimpwr2, mp3 = p->mimpwr3;
 	s16b mp4 = p->mimpwr4, mp5 = p->mimpwr5, mp6 = p->mimpwr6;
