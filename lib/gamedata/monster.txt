@@ -1402,7 +1402,7 @@ depth:3
 rarity:3
 experience:14
 blow:HIT:HURT:1d3
-blow:HIT:CLAWB:2d3
+blow:CLAWB:HURT:2d3
 flags:DROP_40 | RUBBER
 #ROAM | S_EVIL2
 spell-freq:12
@@ -2009,7 +2009,7 @@ sleepiness:42
 depth:5
 rarity:4
 experience:21
-blow:HIT:CLAWB:3d3
+blow:CLAWB:HURT:3d3
 blow:HIT:EAT_GOLD:1d3
 flags:DROP_40 | RUBBER
 #ROAM | S_EVIL2
@@ -2290,7 +2290,7 @@ rarity:2
 experience:19
 blow:INSULT
 blow:CLAW:HURT:1d2
-blow:CLAW:CLAWB:1d2
+blow:CLAWB:HURT:1d2
 blow:BITE:HURT:1d3
 flags:EVIL | FEMALE | TAKE_ITEM | DROP_60
 flags:OPEN_DOOR | NO_SLEEP 
