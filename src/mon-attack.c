@@ -687,10 +687,10 @@ bool make_attack_normal(struct monster *mon, struct player *p)
 				do_stun = false;
 			}
 
-			/* Hack -- only one of cut or stun */
-			if (do_cut && do_stun) {
+			/* Hack -- only one of cut or stun (unless you're really unlucky) */
+			if (do_cut && do_stun && (player->p_luck > -2)) {
 				/* Cancel cut */
-				if ((randint0(100) < 50) && (do_cut < 2))
+				if (randint1(100) > (do_cut + 1) * 25) /* do_cut is usually 1, so usually 50% here */
 					do_cut = 0;
 
 				/* Cancel stun */

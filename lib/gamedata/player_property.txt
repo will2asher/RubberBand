@@ -148,7 +148,7 @@ desc:You can bash monsters with a shield in melee.
 type:player
 code:EVIL
 name:Evil
-desc:You are evil. (You are hurt by holy attacks and some monsters who are normally non-agressive may not be)
+desc:You are evil. (You are hurt by holy attacks among other things).
 
 type:player
 code:COMBAT_REGEN
