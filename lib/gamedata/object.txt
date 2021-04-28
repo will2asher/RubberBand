@@ -4409,6 +4409,20 @@ power:9
 effect:PROJECT_LOS:DISP_EVIL:0:1
 dice:60
 
+name:Chaos
+type:staff
+graphics:_:d
+level:49
+weight:50
+cost:900
+alloc:15:43 to 100
+attack:1d6:0:0
+armor:0:0
+charges:4+d3
+power:9
+effect:PROJECT_LOS:CHAOS:0:1
+dice:60
+
 name:Banishment
 type:staff
 graphics:_:d
