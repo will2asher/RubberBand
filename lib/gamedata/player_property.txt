@@ -65,8 +65,7 @@ desc:You easily recognize potions.
 type:player
 code:CANINE_SMELL
 name:Canine Smell
-desc:You can sometimes smell monsters
-#before you see them (not implemented yet).
+desc:You can sometimes smell monsters before you see them (not implemented yet).
 #desc:You can sometimes smell monsters before you see them (Is that a good thing?).
 
 type:player
@@ -149,7 +148,7 @@ desc:You can bash monsters with a shield in melee.
 type:player
 code:EVIL
 name:Evil
-desc:You are evil (You are hurt by holy attacks among other things).
+desc:You are evil. (You are hurt by holy attacks and some monsters who are normally non-agressive may not be)
 
 type:player
 code:COMBAT_REGEN

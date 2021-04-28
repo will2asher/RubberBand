@@ -3874,7 +3874,6 @@ blow:HIT:HURT:1d7
 blow:HIT:HURT:4d2
 flags:NO_FEAR | RUBBER
 desc:A large red-furred ape which has a powerful punch and hates being called a monkey.
-desc: "Oook!"
 
 name:dust vortex
 plural:dust vortices
