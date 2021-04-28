@@ -497,9 +497,6 @@ void wr_player(void)
 
 	wr_s16b(player->p_luck);	/* luck */
 	wr_s16b(player->slimed);	/* slime */
-	wr_s16b(0);					/* oops (?)*/
-	wr_s16b(0);
-	wr_s16b(0);
 	wr_byte(0);
 	wr_byte(player->unignoring);
 	wr_s16b(player->deep_descent);
