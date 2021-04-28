@@ -629,7 +629,7 @@ bool py_attack_real(struct player *p, struct loc grid, bool *fear)
 	bool do_quake = false;
 	bool success = false;
 
-	/* Default to punching for one damage */
+	/* Default to punching for one damage (STR bonus is added later) */
 	char verb[20];
 	int dmg = 1;
 	u32b msg_type = MSG_HIT;

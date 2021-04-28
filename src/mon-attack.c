@@ -574,7 +574,7 @@ bool make_attack_normal(struct monster *mon, struct player *p)
 		bool obvious = false;
 
 		int damage = 0;
-		bool do_cut = false;
+		int do_cut = 0;
 		bool do_stun = false;
 		int sound_msg = MSG_GENERIC;
 
@@ -676,15 +676,15 @@ bool make_attack_normal(struct monster *mon, struct player *p)
 
 			/* Don't cut or stun if player is dead */
 			if (p->is_dead) {
-				do_cut = false;
+				do_cut = 0;
 				do_stun = false;
 			}
 
 			/* Hack -- only one of cut or stun */
 			if (do_cut && do_stun) {
 				/* Cancel cut */
-				if (randint0(100) < 50)
-					do_cut = false;
+				if ((randint0(100) < 50) && (do_cut < 2))
+					do_cut = 0;
 
 				/* Cancel stun */
 				else
@@ -695,6 +695,10 @@ bool make_attack_normal(struct monster *mon, struct player *p)
 			if (do_cut) {
 				/* Critical hit (zero if non-critical) */
 				int amt, tmp = monster_critical(dice, rlev, damage);
+
+				/* some attacks can cut even if it's not a critical hit (sharp claws) */
+				/* 1 in 3 chance usually */
+				if ((do_cut > 1) && (tmp < 4) && (randint0(6) < do_cut)) tmp += randint1(do_cut);
 
 				/* Roll for damage */
 				switch (tmp) {

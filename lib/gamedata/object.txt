@@ -3567,6 +3567,7 @@ dice:15+1d25
 effect:NOURISH:INC_BY
 dice:1
 
+# This should be hard-coded like wonder so luck can have an effect
 name:Surprise
 type:potion
 graphics:!:d

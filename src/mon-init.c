@@ -117,7 +117,8 @@ static enum parser_error parse_meth_cut(struct parser *p) {
 	assert(meth);
 
 	val = parser_getuint(p, "cut");
-	meth->cut = val ? true : false;
+	/* meth->cut = val ? true : false; */
+	meth->cut = val;
 	return PARSE_ERROR_NONE;
 }
 
