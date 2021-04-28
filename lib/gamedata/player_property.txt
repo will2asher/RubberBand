@@ -57,31 +57,8 @@ code:SEE_ORE
 name:Miner
 desc:You can sense ore in the walls.
 
-type:player
-code:KNOW_POTIONS
-name:Potion Lore
-desc:You easily recognize potions.
-
-type:player
-code:CANINE_SMELL
-name:Canine Smell
-desc:You can sometimes smell monsters before you see them (not implemented yet).
-#desc:You can sometimes smell monsters before you see them (Is that a good thing?).
-
-type:player
-code:GOBSPEED
-name:+2 Speed
-desc:You have innate +2 speed.
-
-type:player
-code:SPRITESPEED
-name:Fast movement speed.
-desc:You move very quickly.
-
-type:player
-code:MIMBLE
-name:Random powers, and a few random skill points at the start.
-desc:You start with a random power and get a new one every 10 levels.
+#RB: to add: 
+# POTION_LORE (alchemists and hobglibs)
 
 ## Class player flags
 
@@ -122,11 +99,16 @@ code:NO_MANA
 name:No Magic
 desc:You cannot cast spells.
 
-# Had to change this flag name because CHARM will also be a monster blow effect
+# Had to change this flag name because CHARM is also a monster blow effect
 type:player
 code:DRUCHARM
 name:Charms
 desc:You are extra persuasive to monsters.
+
+type:player
+code:GOBSPEED
+name:+1 Speed
+desc:You have innate +1 speed.
 
 type:player
 code:UNLIGHT

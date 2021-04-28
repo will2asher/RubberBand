@@ -515,7 +515,6 @@ static void player_outfit(struct player *p)
 	int i;
 	const struct start_item *si;
 	struct object *obj, *known_obj;
-	int minau = 0;
 
 	/* Currently carrying nothing */
 	p->upkeep->total_weight = 0;
@@ -567,9 +566,8 @@ static void player_outfit(struct player *p)
 		kind->everseen = true;
 	}
 
-	/* Sanity check (minimum is zero in V) */
-	minau = 21 + randint1(32);
-	if (p->au < minau) p->au = minau;
+	/* Sanity check */
+	if (p->au < 0) p->au = 0;
 
 	/* Now try wielding everything */
 	wield_all(p);
@@ -874,8 +872,10 @@ void player_generate(struct player *p, const struct player_race *r,
 {
 	int i;
 
-	if (!c) c = p->class;
-	if (!r) r = p->race;
+	if (!c)
+		c = p->class;
+	if (!r)
+		r = p->race;
 
 	p->class = c;
 	p->race = r;
@@ -909,9 +909,6 @@ void player_generate(struct player *p, const struct player_race *r,
 
 	/* Always start with a well fed player */
 	p->timed[TMD_FOOD] = PY_FOOD_FULL - 1;
-
-	/* start with 1 point of luck (because I'm nice) */
-	p->p_luck = 1;
 
 	if (!old_history) {
 		if (p->history) {
@@ -1106,7 +1103,8 @@ void do_cmd_choose_history(struct command *cmd)
 	const char *str;
 
 	/* Forget the old history */
-	if (player->history) string_free(player->history);
+	if (player->history)
+		string_free(player->history);
 
 	/* Get the new history */
 	cmd_get_arg_string(cmd, "history", &str);
@@ -1134,208 +1132,6 @@ void do_cmd_accept_character(struct command *cmd)
 	message_add("  ", MSG_GENERIC);
 	message_add(" ", MSG_GENERIC);
 
-	/* Beginning random stuff for MIMBLE flag races (silly_mon only ) */
-	/* (sorry this is ugly, but this is how I know how to do things...) */
-	if (pf_has(player->state.pflags, PF_MIMBLE))
-	{
-		int mimblerand = randint1(10);
-
-		/* MIMBLE Random skill boosts */
-		player->mimsk1 = mimblerand; /* #1 */
-
-		/* make sure mimblerand changes */
-		while (player->mimsk1 == mimblerand) { mimblerand = randint1(10); }
-		player->mimsk2 = mimblerand; /* #2 */
-
-		/* make sure mimblerand changes again */
-		while (true) { 
-			mimblerand = randint1(10); 
-			/* sometimes reroll the disarming skills */
-			if (((mimblerand == 1) && (player->mimsk1 == 2)) && (randint0(10) < 5)) mimblerand = randint1(10);
-			else if (((mimblerand == 2) && (player->mimsk1 == 1)) && (randint0(10) < 5)) mimblerand = randint1(10);
-			if (!((player->mimsk1 == mimblerand) || (player->mimsk2 == mimblerand))) break;
-		}
-		player->mimsk3 = mimblerand; /* #3 */
-
-		/* make sure mimblerand changes one more time */
-		while (true) {
-			mimblerand = randint1(9);
-			if (!((player->mimsk1 == mimblerand) || (player->mimsk2 == mimblerand) ||
-				(player->mimsk3 == mimblerand))) break;
-		}
-		player->mimskp = mimblerand; /* random skill penalty */
-
-		/* random stat boost */
-		player->mimstat = randint1(5);
-
-		/* starting power */
-		mimblerand = randint0(18);
-		if (mimblerand < 2) player->mimpwr1 = 1; /* ac boost */
-		else if (mimblerand < 4) player->mimpwr1 = 2; /* PROT_FEAR */
-		else if (mimblerand < 6) player->mimpwr1 = 3; /* PROT_BLIND */
-		else if (mimblerand < 8) player->mimpwr1 = 4; /* PROT_CONF */
-		else if (mimblerand < 11) player->mimpwr1 = 5; /* PROT_STUN */
-		else if (mimblerand < 13) player->mimpwr1 = 6; /* REGEN */
-		else if (mimblerand < 15) player->mimpwr1 = 7; /* speed */
-		else if (mimblerand < 17) player->mimpwr1 = 8; /* LIGHT[2] */
-		else if (mimblerand < 18) player->mimpwr1 = 9; /* LUCKY */
-
-		/* level 10 power */
-		while (true) {
-			mimblerand = randint0(29);
-			if (mimblerand < 2) player->mimpwr2 = 10; /* INT boost */
-			else if (mimblerand < 4) player->mimpwr2 = 11; /* WIS boost */
-			else if (mimblerand < 6) player->mimpwr2 = 12; /* DEX boost */
-			else if (mimblerand < 8) player->mimpwr2 = 13; /* CON boost */
-			else if (mimblerand < 10) player->mimpwr2 = 14; /* STR boost */
-			else if (mimblerand < 11) player->mimpwr2 = 15; /* +1 all stats */
-			else if (mimblerand < 13) player->mimpwr2 = 2; /* PROT_FEAR */
-			else if (mimblerand < 15) player->mimpwr2 = 3; /* PROT_BLIND */
-			else if (mimblerand < 17) player->mimpwr2 = 4; /* PROT_CONF */
-			else if (mimblerand < 20) player->mimpwr2 = 5; /* PROT_STUN */
-			else if (mimblerand < 22) player->mimpwr2 = 6; /* REGEN */
-			else if (mimblerand < 24) player->mimpwr2 = 7; /* speed */
-			else if (mimblerand < 26) player->mimpwr2 = 8; /* LIGHT[2] */
-			else if (mimblerand < 27) player->mimpwr2 = 9; /* LUCKY */
-			if (player->mimpwr1 != player->mimpwr2) break;
-		}
-
-		/* level 20 mimble power */
-		while (true) {
-			mimblerand = randint0(33);
-			if (mimblerand < 2) player->mimpwr3 = 10; /* INT boost */
-			else if (mimblerand < 4) player->mimpwr3 = 11; /* WIS boost */
-			else if (mimblerand < 6) player->mimpwr3 = 12; /* DEX boost */
-			else if (mimblerand < 8) player->mimpwr3 = 13; /* CON boost */
-			else if (mimblerand < 10) player->mimpwr3 = 14; /* STR boost */
-			else if (mimblerand < 11) player->mimpwr3 = 15; /* +1 all stats */
-			else if (mimblerand < 13) player->mimpwr3 = 2; /* PROT_FEAR */
-			else if (mimblerand < 15) player->mimpwr3 = 3; /* PROT_BLIND */
-			else if (mimblerand < 17) player->mimpwr3 = 4; /* PROT_CONF */
-			else if (mimblerand < 20) player->mimpwr3 = 5; /* PROT_STUN */
-			else if (mimblerand < 22) player->mimpwr3 = 6; /* REGEN */
-			else if (mimblerand < 24) player->mimpwr3 = 7; /* speed */
-			else if (mimblerand < 26) player->mimpwr3 = 8; /* LIGHT[2] */
-			else if (mimblerand < 27) player->mimpwr3 = 9; /* LUCKY */
-			else if (mimblerand < 29) player->mimpwr3 = 16; /* FREE_ACT */
-			else if (mimblerand < 31) player->mimpwr3 = 17; /* HOLD_LIFE */
-			else if (mimblerand < 32) player->mimpwr3 = 18; /* trap immunity */
-			else player->mimpwr3 = 19; /* movement speed */
-			if ((player->mimpwr3 != player->mimpwr2) && (player->mimpwr3 != player->mimpwr1)) {
-				/* avoid stacking movement speed + regular speed */
-				if ((player->mimpwr3 == 19) && ((player->mimpwr1 == 7) || (player->mimpwr2 == 7))) {
-				 /* skip */;
-				}
-				else break;
-			}
-		}
-
-		/* level 30 mimble power */
-		while (true) {
-			mimblerand = randint0(36) + 4; /* 4 - 39 */
-			if (mimblerand < 6) player->mimpwr4 = 10; /* DEX boost */
-			else if (mimblerand < 8) player->mimpwr4 = 12; /* CON boost */
-			else if (mimblerand < 10) player->mimpwr4 = 14; /* STR boost */
-			else if (mimblerand < 11) player->mimpwr4 = 15; /* +1 all stats */
-			else if (mimblerand < 13) player->mimpwr4 = 2; /* PROT_FEAR */
-			else if (mimblerand < 15) player->mimpwr4 = 3; /* PROT_BLIND */
-			else if (mimblerand < 17) player->mimpwr4 = 4; /* PROT_CONF */
-			else if (mimblerand < 20) player->mimpwr4 = 5; /* PROT_STUN */
-			else if (mimblerand < 22) player->mimpwr4 = 6; /* REGEN */
-			else if (mimblerand < 24) player->mimpwr4 = 7; /* speed */
-			else if (mimblerand < 26) player->mimpwr4 = 8; /* LIGHT[2] */
-			else if (mimblerand < 27) player->mimpwr4 = 9; /* LUCKY */
-			else if (mimblerand < 29) player->mimpwr4 = 16; /* FREE_ACT */
-			else if (mimblerand < 31) player->mimpwr4 = 17; /* HOLD_LIFE */
-			else if (mimblerand < 32) player->mimpwr4 = 18; /* trap immunity */
-			else if (mimblerand < 33) player->mimpwr4 = 19; /* movement speed */
-			else if (mimblerand < 35) player->mimpwr4 = 20; /* SEE_INVIS */
-			else if (mimblerand < 38) player->mimpwr4 = 21; /* phasing */
-			else player->mimpwr4 = 22; /* teleport control */
-			if ((player->mimpwr4 != player->mimpwr2) && (player->mimpwr4 != player->mimpwr1) &&
-				(player->mimpwr4 != player->mimpwr3)) {
-				/* avoid stacking movement speed + regular speed */
-				if ((player->mimpwr4 == 19) && ((player->mimpwr1 == 7) || (player->mimpwr2 == 7))) {
-					/* can still happen if mimpwr3 == 7, so it's possible but not likely */;
-				}
-				else break;
-			}
-		}
-
-		/* level 40 mimble power */
-		while (true) {
-			mimblerand = randint0(33) + 13; /* 13-45 */
-			if (mimblerand < 15) player->mimpwr5 = 3; /* PROT_BLIND */
-			else if (mimblerand < 17) player->mimpwr5 = 4; /* PROT_CONF */
-			else if (mimblerand < 20) player->mimpwr5 = 5; /* PROT_STUN */
-			else if (mimblerand < 22) player->mimpwr5 = 6; /* REGEN */
-			else if (mimblerand < 24) player->mimpwr5 = 7; /* speed */
-			else if (mimblerand < 26) player->mimpwr5 = 8; /* LIGHT[2] */
-			else if (mimblerand < 27) player->mimpwr5 = 9; /* LUCKY */
-			else if (mimblerand < 29) player->mimpwr5 = 26; /* TELEPATHY */
-			else if (mimblerand < 31) player->mimpwr5 = 17; /* HOLD_LIFE */
-			else if (mimblerand < 32) player->mimpwr5 = 18; /* trap immunity */
-			else if (mimblerand < 33) player->mimpwr5 = 19; /* movement speed */
-			else if (mimblerand < 35) player->mimpwr5 = 20; /* SEE_INVIS */
-			else if (mimblerand < 38) player->mimpwr5 = 21; /* phasing */
-			else if (mimblerand < 40) player->mimpwr5 = 22; /* teleport control */
-			else if (mimblerand < 42) player->mimpwr5 = 23; /* TELE_LEVEL ability */
-			else if (mimblerand < 44) player->mimpwr5 = 24; /* extra blow */
-			else player->mimpwr5 = 25; /* extra shooting might */
-			if ((player->mimpwr5 != player->mimpwr2) && (player->mimpwr5 != player->mimpwr1) &&
-				(player->mimpwr5 != player->mimpwr3) && (player->mimpwr5 != player->mimpwr4)) {
-				/* avoid stacking movement speed + regular speed */
-				if ((player->mimpwr5 == 19) && ((player->mimpwr3 == 7) ||
-					(player->mimpwr1 == 7) || (player->mimpwr2 == 7))) {
-					/* skip */;
-				}
-				else break;
-			}
-		}
-
-		/* level 50 mimble power */
-		while (true) {
-			mimblerand = randint0(28) + 15; /* 15-42 */
-			if (mimblerand < 15) player->mimpwr6 = 4; /* PROT_CONF */
-			else if (mimblerand < 20) player->mimpwr6 = 5; /* PROT_STUN */
-			else if (mimblerand < 22) player->mimpwr6 = 6; /* REGEN */
-			else if (mimblerand < 24) player->mimpwr6 = 7; /* speed */
-			else if (mimblerand < 26) player->mimpwr6 = 24; /* 24 extra blow */
-			else if (mimblerand < 27) player->mimpwr6 = 9; /* LUCKY */
-			else if (mimblerand < 29) player->mimpwr6 = 26; /* TELEPATHY */
-			else if (mimblerand < 31) player->mimpwr6 = 17; /* HOLD_LIFE */
-			else if (mimblerand < 32) player->mimpwr6 = 19; /* movement speed */
-			else if (mimblerand < 34) player->mimpwr6 = 20; /* SEE_INVIS */
-			else if (mimblerand < 37) player->mimpwr6 = 21; /* phasing */
-			else if (mimblerand < 39) player->mimpwr6 = 22; /* teleport control */
-			else if (mimblerand < 41) player->mimpwr6 = 23; /* TELE_LEVEL ability */
-			else player->mimpwr6 = 25; /* extra shooting might */
-			if ((player->mimpwr6 != player->mimpwr2) && (player->mimpwr6 != player->mimpwr5) &&
-				(player->mimpwr6 != player->mimpwr3) && (player->mimpwr6 != player->mimpwr4) && 
-				(player->mimpwr6 != player->mimpwr1)) {
-				/* avoid stacking movement speed + regular speed */
-				if ((player->mimpwr6 == 19) && ((player->mimpwr3 == 7) || (player->mimpwr5 == 7) ||
-					(player->mimpwr1 == 7) || (player->mimpwr2 == 7))) {
-					/* skip */;
-				}
-				else break;
-			}
-		}
-	}
-	else { /* non-mimbles */
-		player->mimsk1 =  0;
-		player->mimsk2 = 0;
-		player->mimsk3 = 0;
-		player->mimskp = 0;
-		player->mimstat = 0;
-		player->mimpwr1 = 0;
-		player->mimpwr2 = 0;
-		player->mimpwr3 = 0;
-		player->mimpwr4 = 0;
-		player->mimpwr5 = 0;
-		player->mimpwr6 = 0;
-	}
-
 	/* Embody */
 	player_embody(player);
 
@@ -1346,7 +1142,8 @@ void do_cmd_accept_character(struct command *cmd)
 	player_spells_init(player);
 
 	/* Know all runes for ID on walkover */
-	if (OPT(player, birth_know_runes)) player_learn_all_runes(player);
+	if (OPT(player, birth_know_runes))
+		player_learn_all_runes(player);
 
 	/* Hack - player knows all combat runes.  Maybe make them not runes? NRM */
 	player->obj_k->to_a = 1;
@@ -1377,7 +1174,8 @@ void do_cmd_accept_character(struct command *cmd)
 	flavor_init();
 
 	/* Know all flavors for auto-ID of consumables */
-	if (OPT(player, birth_know_flavors)) flavor_set_all_aware();
+	if (OPT(player, birth_know_flavors))
+		flavor_set_all_aware();
 
 	/* Outfit the player, if they can sell the stuff */
 	player_outfit(player);

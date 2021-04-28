@@ -3,7 +3,7 @@
 # Methods for monster blows
 
 # name: blow method code
-# cut: 1 if the method can cut, 0 if not  (can now be more than 1)
+# cut: 1 if the method can cut, 0 if not
 # stun: 1 if the method can stun, 0 if not
 # miss: 1 if the player is told when the blow misses, 0 if not
 # phys: 1 if the method does physical damage, 0 if not
@@ -55,25 +55,6 @@ phys:1
 msg:MON_CLAW
 act:claws {target}
 desc:claw
-
-#Cut 2 means it cuts more often.
-name:CLAWB
-cut:2
-stun:0
-miss:1
-phys:1
-msg:MON_CLAW
-act:claws {target}
-desc:claw (with sharp claws)
-
-name:TAIL
-cut:1
-stun:1
-miss:1
-phys:1
-msg:MON_HIT
-act:swings its tail at {target}
-desc:swing its tail
 
 name:BITE
 cut:1

@@ -30,7 +30,7 @@ struct blow_message {
 
 struct blow_method {
 	char *name;
-	s16b cut;
+	bool cut;
 	bool stun;
 	bool miss;
 	bool phys;

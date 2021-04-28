@@ -5255,19 +5255,13 @@ bool effect_handler_SWEEP(effect_handler_context_t *context)
 
 /**
  * One Ring activation
- * (The effects are now in order by how good they are so luck works)
  */
 bool effect_handler_BIZARRE(effect_handler_context_t *context)
 {
 	context->ident = true;
-	int die = randint1(10);
-
-	if (player->p_luck > 0) die += randint0(player->p_luck);
-	/* using the one ring may lower your luck (even if it has a good effect) */
-	if ((randint0(10) < 4) && (player->p_luck > -1)) player->p_luck--;
 
 	/* Pick a random effect */
-	switch (die)
+	switch (randint1(10))
 	{
 		case 1:
 		case 2:
@@ -5289,25 +5283,19 @@ bool effect_handler_BIZARRE(effect_handler_context_t *context)
 		}
 
 		case 3:
+		{
+			/* Message */
+			msg("You are surrounded by a powerful aura.");
+
+			/* Dispel monsters */
+			effect_simple(EF_PROJECT_LOS, context->origin, "1000", PROJ_DISP_ALL, 0, 0, 0, 0, NULL);
+
+			return true;
+		}
+
 		case 4:
 		case 5:
 		case 6:
-		{
-			/* Mana Bolt */
-			int flg = PROJECT_STOP | PROJECT_KILL | PROJECT_THRU;
-			struct loc target = loc_sum(player->grid, ddgrid[context->dir]);
-
-			/* Use an actual target */
-			if ((context->dir == DIR_TARGET) && target_okay())
-				target_get(&target);
-
-			/* Aim at the target, do NOT explode */
-			return project(source_player(), 0, target, 250, PROJ_MANA, flg, 0,
-				0, context->obj);
-		}
-		case 7:
-		case 8:
-		case 9:
 		{
 			/* Mana Ball */
 			int flg = PROJECT_THRU | PROJECT_STOP | PROJECT_GRID | PROJECT_ITEM | PROJECT_KILL;
@@ -5322,19 +5310,26 @@ bool effect_handler_BIZARRE(effect_handler_context_t *context)
 
 			/* Aim at the target, explode */
 			return (project(source_player(), 3, target, 300, PROJ_MANA, flg, 0,
-				0, context->obj));
+							0, context->obj));
 		}
+
+		case 7:
+		case 8:
+		case 9:
 		case 10:
 		{
-			/* Message */
-			msg("You are surrounded by a powerful aura.");
+			/* Mana Bolt */
+			int flg = PROJECT_STOP | PROJECT_KILL | PROJECT_THRU;
+			struct loc target = loc_sum(player->grid, ddgrid[context->dir]);
 
-			/* Dispel monsters */
-			effect_simple(EF_PROJECT_LOS, context->origin, "1000", PROJ_DISP_ALL, 0, 0, 0, 0, NULL);
+			/* Use an actual target */
+			if ((context->dir == DIR_TARGET) && target_okay())
+				target_get(&target);
 
-			return true;
+			/* Aim at the target, do NOT explode */
+			return project(source_player(), 0, target, 250, PROJ_MANA, flg, 0,
+						   0, context->obj);
 		}
-
 	}
 
 	return false;
@@ -5360,10 +5355,6 @@ bool effect_handler_WONDER(effect_handler_context_t *context)
 	random_value value = { 0, 0, 0, 0 };
 
 	context->ident = true;
-
-	/* Luck may have an effect (bad or good) */
-	if (player->p_luck > 0) die += randint0(player->p_luck * 2);
-	if (player->p_luck < 0) die -= randint0((0 - player->p_luck) * 2);
 
 	if (die > 100)
 		msg("You feel a surge of power!");

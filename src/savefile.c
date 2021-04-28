@@ -562,7 +562,7 @@ static bool try_load(ang_file *f, const struct blockinfo *local_loaders)
 		loader_t loader = find_loader(&b, local_loaders);
 		if (!loader) {
 			note("Savefile block can't be read.");
-			note("Maybe try and load the savefile in an earlier version.");
+			note("Maybe try and load the savefile in an earlier version of Angband.");
 			return false;
 		}
 

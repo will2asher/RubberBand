@@ -978,7 +978,6 @@ void lore_append_movement(textblock *tb, const struct monster_race *race,
 	/* Describe location */
 	if (race->level == 0) {
 		textblock_append(tb, " lives in the town");
-		if (rf_has(race->flags, RF_TOWN_OR_DUN)) textblock_append(tb, ", but may also appear in the dungeon,");
 	} else {
 		byte colour = (race->level > player->max_depth) ? COLOUR_RED :
 			COLOUR_L_BLUE;

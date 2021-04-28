@@ -77,7 +77,7 @@ j  Jelly or Slime             J  Snake
 k  Kobold                     K  Knight or other higher-level humanoid
 l  Tree/Ent                   L  Lich
 m  Ainu/maia                  M  Multi-Headed Hydra
-n  Naga                       N  Nulx (or other tentacled horror)
+n  Naga                       N  Nulx
 o  Orc                        O  Ogre
 p  Human "person"             P  Giant "person"
 q  Quadruped                  Q  Quylthulg (Pulsing Flesh Mound)
@@ -89,6 +89,6 @@ v  Vortex                     V  Vampire or Ghoul
 w  Worm or Worm Mass          W  Wight/Wraith
 x  -                          X  Xorn or other elemental monster
 y  Light Fairy or Yeek (depending on VISH option)
-Y  Yeti or Ape
+Y  Yeti
 z  Zombie/Mummy               Z  Zephyr Hound
 

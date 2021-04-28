@@ -689,10 +689,7 @@ void inven_carry(struct player *p, struct object *obj, bool absorb,
 			if (player_has(player, PF_KNOW_MUSHROOM) && tval_is_mushroom(obj)) {
 				object_flavor_aware(obj);
 				msg("Mushrooms for breakfast!");
-			}
-			else if (player_has(player, PF_KNOW_ZAPPER) && tval_is_zapper(obj))
-				object_flavor_aware(obj);
-			else if (player_has(player, PF_KNOW_POTIONS) && tval_is_potion(obj))
+			} else if (player_has(player, PF_KNOW_ZAPPER) && tval_is_zapper(obj))
 				object_flavor_aware(obj);
 		}
 	}
