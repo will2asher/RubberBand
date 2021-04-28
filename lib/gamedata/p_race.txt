@@ -81,7 +81,7 @@ hitdie:10
 exp:100
 infravision:0
 history:1
-age:14:7
+age:14:9
 height:69:10
 weight:165:35
 
@@ -122,7 +122,7 @@ hitdie:9
 exp:120
 infravision:3
 history:5
-age:75:75
+age:74:78
 height:73:7
 weight:90:10
 obj-flags:SUST_DEX
@@ -188,7 +188,7 @@ hitdie:11
 exp:120
 infravision:5
 history:16
-age:35:15
+age:35:18
 height:47:4
 weight:135:20
 obj-flags:PROT_BLIND
@@ -210,7 +210,7 @@ hitdie:10
 exp:120
 infravision:3
 history:19
-age:11:4
+age:11:7
 height:64:2
 weight:135:15
 values:RES_DARK[1]
@@ -231,7 +231,7 @@ hitdie:12
 exp:120
 infravision:3
 history:21
-age:20:10
+age:17:14
 height:90:16
 weight:240:60
 obj-flags:SUST_STR | REGEN
@@ -252,9 +252,9 @@ hitdie:10
 exp:120
 infravision:0
 history:1
-age:50:20
+age:41:31
 height:80:6
-weight:190:20
+weight:188:21
 obj-flags:SUST_CON
 
 name:High-Elf
@@ -273,9 +273,9 @@ hitdie:10
 exp:145
 infravision:4
 history:7
-age:100:30
+age:99:48
 height:77:6
-weight:190:20
+weight:184:20
 obj-flags:SUST_DEX
 values:RES_LIGHT[1]
 
@@ -295,7 +295,7 @@ hitdie:8
 exp:114
 infravision:5
 history:23
-age:15:10
+age:13:13
 height:37:4
 weight:65:5
 #CANINE_SMELL Doesn't do anything yet 
@@ -317,9 +317,9 @@ hitdie:11
 exp:115
 infravision:3
 history:23
-age:15:11
+age:15:14
 height:68:10
-weight:166:40
+weight:168:39
 values:RES_POIS[1]
 #Doesn't do anything yet
 player-flags:KNOW_POTIONS
@@ -341,8 +341,8 @@ exp:130
 infravision:4
 history:23
 age:15:10
-height:38:6
-weight:67:7
+height:38:7
+weight:67:5
 #Goblins get +1 innate speed (maybe make it +2 speed and hitdie 8)
 player-flags:GOBSPEED
 #This should work according to the explanation at the top of this file... (but it doesn't)

@@ -19,15 +19,8 @@
 #ifndef BUILDID
 #define BUILDID
 
-#define VERSION_NAME	"Angband"
-
-#ifdef BUILD_ID
-# define STR(x) #x
-# define XSTR(x) STR(x)
-# define VERSION_STRING XSTR(BUILD_ID)
-#else
-# define VERSION_STRING "4.2.2"
-#endif
+#define VERSION_NAME	"RubberBand "
+# define VERSION_STRING "0.1.0 Alpha"
 
 extern const char *buildid;
 extern const char *buildver;

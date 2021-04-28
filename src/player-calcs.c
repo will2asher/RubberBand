@@ -1818,7 +1818,7 @@ void calc_bonuses(struct player *p, struct player_state *state, bool known_only,
 	pf_copy(state->pflags, p->race->pflags);
 	pf_union(state->pflags, p->class->pflags);
 
-	/* Extract the player flags */
+	/* Extract the player (object) flags */
 	player_flags(p, collect_f);
 
 	/* Analyze equipment */
@@ -1950,7 +1950,7 @@ void calc_bonuses(struct player *p, struct player_state *state, bool known_only,
 		state->el_info[ELEM_HOLY_ORB].res_level = -1;
 	}
 	/* Goblins have innate speed */
-	if (player_has(p, PF_GOBSPEED)) state->speed += 1;
+	if (player_has(p, PF_GOBSPEED)) state->speed += 2;
 	/* Sprites have fast movement */
 	if (player_has(p, PF_SPRITESPEED)) extra_moves += 1;
 
