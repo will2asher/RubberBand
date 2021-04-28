@@ -191,17 +191,41 @@ void take_hit(struct player *p, int dam, const char *kb_str)
 	/* Dead player */
 	if (p->chp < 0) {
 		/* From hell's heart I stab at thee */
-		if (p->timed[TMD_BLOODLUST]
-			&& (p->chp + p->timed[TMD_BLOODLUST] + p->lev >= 0)) {
+		if (p->timed[TMD_BLOODLUST] && (p->chp + p->timed[TMD_BLOODLUST] + p->lev >= 0)) {
 			if (randint0(10)) {
 				msg("Your lust for blood keeps you alive!");
-			} else {
+			}
+		}
+		/* Luck may save your life if the damage isn't too much (4/5 chance if luck==1) */
+		else if (((randint0(5) < p->p_luck * 4)) &&
+			(dam - old_chp < p->p_luck * 5 + p->lev / 5 + 1)) {
+			/* Leave the player with 2 hit points */
+			p->chp = 2;
+
+			/* Luck gets used up this way */
+			p->p_luck--;
+
+			/* cryptic message */
+			msg("That was a close call. You feel lucky to be alive.");
+
+			/* Cure conditions likely to cause immenent death */
+			player_clear_timed(p, TMD_PARALYZED, false);
+			player_clear_timed(p, TMD_CONFUSED, false);
+			player_clear_timed(p, TMD_POISONED, false);
+			player_clear_timed(p, TMD_STUN, false);
+			player_clear_timed(p, TMD_CUT, false);
+
+			/* Protect player for the rest of the current monster's attacks with 1-turn of Invulnerability */
+			(void)player_inc_timed(player, TMD_INVULN, 1, false, false);
+		}
+		else if ((p->wizard || OPT(p, cheat_live)) && !get_check("Die? ")) {
+			event_signal(EVENT_CHEAT_DEATH);
+		} else {
+			if (p->timed[TMD_BLOODLUST] && (p->chp + p->timed[TMD_BLOODLUST] + p->lev >= 0)) {
 				msg("So great was his prowess and skill in warfare, the Elves said: ");
 				msg("'The Mormegil cannot be slain, save by mischance.'");
 			}
-		} else if ((p->wizard || OPT(p, cheat_live)) && !get_check("Die? ")) {
-			event_signal(EVENT_CHEAT_DEATH);
-		} else {
+
 			/* Hack -- Note death */
 			msgt(MSG_DEATH, "You die.");
 			event_signal(EVENT_MESSAGE_FLUSH);

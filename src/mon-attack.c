@@ -469,6 +469,13 @@ static int monster_critical(random_value dice, int rlev, int dam)
 	int max = 0;
 	int total = randcalc(dice, rlev, MAXIMISE);
 
+	/* Luck factor (bad luck in this case) */
+	if (player->p_luck < 0) {
+		dam += ABS(player->p_luck) * 2;
+		/* maximum damage has increased */
+		total += 2;
+	}
+
 	/* Must do at least 95% of perfect */
 	if (dam < total * 19 / 20) return (0);
 
@@ -476,7 +483,7 @@ static int monster_critical(random_value dice, int rlev, int dam)
 	if ((dam < 20) && (randint0(100) >= dam)) return (0);
 
 	/* Perfect damage */
-	if (dam == total) max++;
+	if (dam >= total) max++;
 
 	/* Super-charge */
 	if (dam >= 20)

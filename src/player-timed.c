@@ -501,7 +501,7 @@ bool player_set_timed(struct player *p, int idx, int v, bool notify)
 
 	/* Sort out the sprint effect */
 	if (idx == TMD_SPRINT && v == 0) {
-		player_inc_timed(p, TMD_SLOW, 100, true, false);
+		player_inc_timed(p, TMD_SLOW, 100 - p->p_luck * 2, true, false);
 	}
 
 	if (notify) {

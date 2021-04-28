@@ -5255,20 +5255,27 @@ bool effect_handler_SWEEP(effect_handler_context_t *context)
 
 /**
  * One Ring activation
+ *  (The effects are now in order by how good they are so luck works)
  */
 bool effect_handler_BIZARRE(effect_handler_context_t *context)
 {
 	context->ident = true;
+	int die = randint1(10);
+
+	if (player->p_luck > 0) die += randint0(player->p_luck);
+	/* using the one ring may lower your luck (even if it has a good effect) */
+	if ((randint0(10) < 4) && (player->p_luck > -1)) player->p_luck--;
 
 	/* Pick a random effect */
-	switch (randint1(10))
+
+	switch (die)
 	{
 		case 1:
 		case 2:
 		{
 			/* Message */
 			msg("You are surrounded by a malignant aura.");
-
+	
 			/* Decrease all stats (permanently) */
 			player_stat_dec(player, STAT_STR, true);
 			player_stat_dec(player, STAT_INT, true);
@@ -5283,19 +5290,25 @@ bool effect_handler_BIZARRE(effect_handler_context_t *context)
 		}
 
 		case 3:
-		{
-			/* Message */
-			msg("You are surrounded by a powerful aura.");
-
-			/* Dispel monsters */
-			effect_simple(EF_PROJECT_LOS, context->origin, "1000", PROJ_DISP_ALL, 0, 0, 0, 0, NULL);
-
-			return true;
-		}
-
 		case 4:
 		case 5:
 		case 6:
+		{
+			/* Mana Bolt */
+			int flg = PROJECT_STOP | PROJECT_KILL | PROJECT_THRU;
+			struct loc target = loc_sum(player->grid, ddgrid[context->dir]);
+
+			/* Use an actual target */
+			if ((context->dir == DIR_TARGET) && target_okay())
+				target_get(&target);
+
+			/* Aim at the target, do NOT explode */
+			return project(source_player(), 0, target, 250, PROJ_MANA, flg, 0,
+				0, context->obj);
+		}
+		case 7:
+		case 8:
+		case 9:
 		{
 			/* Mana Ball */
 			int flg = PROJECT_THRU | PROJECT_STOP | PROJECT_GRID | PROJECT_ITEM | PROJECT_KILL;
@@ -5310,26 +5323,19 @@ bool effect_handler_BIZARRE(effect_handler_context_t *context)
 
 			/* Aim at the target, explode */
 			return (project(source_player(), 3, target, 300, PROJ_MANA, flg, 0,
-							0, context->obj));
+				0, context->obj));
 		}
-
-		case 7:
-		case 8:
-		case 9:
 		case 10:
 		{
-			/* Mana Bolt */
-			int flg = PROJECT_STOP | PROJECT_KILL | PROJECT_THRU;
-			struct loc target = loc_sum(player->grid, ddgrid[context->dir]);
+			/* Message */
+			msg("You are surrounded by a powerful aura.");
 
-			/* Use an actual target */
-			if ((context->dir == DIR_TARGET) && target_okay())
-				target_get(&target);
+			/* Dispel monsters */
+			effect_simple(EF_PROJECT_LOS, context->origin, "1000", PROJ_DISP_ALL, 0, 0, 0, 0, NULL);
 
-			/* Aim at the target, do NOT explode */
-			return project(source_player(), 0, target, 250, PROJ_MANA, flg, 0,
-						   0, context->obj);
+			return true;
 		}
+
 	}
 
 	return false;
@@ -5346,6 +5352,7 @@ bool effect_handler_BIZARRE(effect_handler_context_t *context)
  * some potent effects only at high level
  */
 bool effect_handler_WONDER(effect_handler_context_t *context)
+
 {
 	int plev = player->lev;
 	int die = effect_calculate_value(context, false);
@@ -5356,51 +5363,62 @@ bool effect_handler_WONDER(effect_handler_context_t *context)
 
 	context->ident = true;
 
-	if (die > 100)
-		msg("You feel a surge of power!");
+	/* Luck may have an effect (bad or good) */
+	if (player->p_luck > 0) die += randint0(player->p_luck * 2);
+	if ((player->p_luck < 0) && (die > 10)) die -= randint0(ABS(player->p_luck) * 2);
+
+	if (die > 100) msg("You feel a surge of power!");
 
 	if (die < 8) {
 		subtype = PROJ_MON_CLONE;
 		handler = effect_handler_BOLT;
-	} else if (die < 14) {
+	}
+	else if (die < 14) {
 		subtype = PROJ_MON_SPEED;
 		value.base = 100;
 		handler = effect_handler_BOLT;
-	} else if (die < 26) {
+	}
+	else if (die < 26) {
 		subtype = PROJ_MON_HEAL;
 		value.dice = 4;
 		value.sides = 6;
 		handler = effect_handler_BOLT;
-	} else if (die < 31) {
+	}
+	else if (die < 31) {
 		subtype = PROJ_MON_POLY;
 		value.base = plev;
 		handler = effect_handler_BOLT;
-	} else if (die < 36) {
+	}
+	else if (die < 36) {
 		beam -= 10;
 		subtype = PROJ_MISSILE;
 		value.dice = 3 + ((plev - 1) / 5);
 		value.sides = 4;
 		handler = effect_handler_BOLT_OR_BEAM;
-	} else if (die < 41) {
+	}
+	else if (die < 41) {
 		subtype = PROJ_MON_CONF;
 		value.base = plev;
 		handler = effect_handler_BOLT;
-	} else if (die < 46) {
+	}
+	else if (die < 46) {
 		subtype = PROJ_POIS;
 		value.base = 20 + plev / 2;
 		radius = 3;
 		handler = effect_handler_BALL;
-	} else if (die < 51) {
+	}
+	else if (die < 51) {
 		subtype = PROJ_LIGHT_WEAK;
 		value.dice = 6;
 		value.sides = 8;
 		handler = effect_handler_LINE;
-	} else if (die < 56) {
+	}
+	else if (die < 56) {
 		subtype = PROJ_ELEC;
 		value.dice = 3 + ((plev - 5) / 6);
 		value.sides = 6;
 		handler = effect_handler_BEAM;
-	} 
+	}
 	else if (die < 58) {
 		subtype = PROJ_DARK;
 		value.dice = 2 + ((plev - 5) / 6);
@@ -5413,53 +5431,65 @@ bool effect_handler_WONDER(effect_handler_context_t *context)
 		value.dice = 5 + ((plev - 5) / 4);
 		value.sides = 8;
 		handler = effect_handler_BOLT_OR_BEAM;
-	} else if (die < 68) {
+	}
+	else if (die < 68) {
 		subtype = PROJ_ACID;
 		value.dice = 6 + ((plev - 5) / 4);
 		value.sides = 8;
 		handler = effect_handler_BOLT_OR_BEAM;
-	} else if (die < 73) {
+	}
+	else if (die < 73) {
 		subtype = PROJ_FIRE;
 		value.dice = 8 + ((plev - 5) / 4);
 		value.sides = 8;
 		handler = effect_handler_BOLT_OR_BEAM;
-	} else if (die < 78) {
+	}
+	else if (die < 78) {
 		subtype = PROJ_MON_DRAIN;
 		value.base = 75;
 		handler = effect_handler_BOLT;
-	} else if (die < 83) {
+	}
+	else if (die < 83) {
 		subtype = PROJ_ELEC;
 		value.base = 30 + plev / 2;
 		radius = 2;
 		handler = effect_handler_BALL;
-	} else if (die < 88) {
+	}
+	else if (die < 88) {
 		subtype = PROJ_ACID;
 		value.base = 40 + plev;
 		radius = 2;
 		handler = effect_handler_BALL;
-	} else if (die < 93) {
+	}
+	else if (die < 93) {
 		subtype = PROJ_ICE;
 		value.base = 70 + plev;
 		radius = 3;
 		handler = effect_handler_BALL;
-	} else if (die < 98) {
+	}
+	else if (die < 98) {
 		subtype = PROJ_FIRE;
 		value.base = 80 + plev;
 		radius = 3;
 		handler = effect_handler_BALL;
-	} else if (die < 102) {
+	}
+	else if (die < 102) {
 		subtype = PROJ_MON_DRAIN;
 		value.base = 100 + plev;
 		handler = effect_handler_BOLT;
-	} else if (die < 104) {
+	}
+	else if (die < 104) {
 		radius = 11;
 		handler = effect_handler_EARTHQUAKE;
-	} else if (die < 106) {
+	}
+	else if (die < 106) {
 		radius = 15;
 		handler = effect_handler_DESTRUCTION;
-	} else if (die < 108) {
+	}
+	else if (die < 108) {
 		handler = effect_handler_BANISH;
-	} else if (die < 110) {
+	}
+	else if (die < 110) {
 		subtype = PROJ_DISP_ALL;
 		value.base = 120;
 		handler = effect_handler_PROJECT_LOS;
@@ -5482,7 +5512,8 @@ bool effect_handler_WONDER(effect_handler_context_t *context)
 		};
 
 		return handler(&new_context);
-	} else {
+	}
+	else {
 		/* RARE */
 		effect_simple(EF_PROJECT_LOS, context->origin, "150", PROJ_DISP_ALL, 0, 0, 0, 0, NULL);
 		effect_simple(EF_PROJECT_LOS, context->origin, "20", PROJ_MON_SLOW, 0, 0, 0, 0, NULL);

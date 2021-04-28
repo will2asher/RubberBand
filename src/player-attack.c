@@ -232,12 +232,17 @@ static int critical_shot(const struct player *p,
 		int weight, int plus,
 		int dam, u32b *msg_type)
 {
-	int debuff_to_hit = is_debuffed(monster) ? DEBUFF_CRITICAL_HIT : 0;
-	int chance = weight + (p->state.to_h + plus + debuff_to_hit) * 4 + p->lev * 2;
-	int power = weight + randint1(500);
-	int new_dam = dam;
+		int debuff_to_hit = is_debuffed(monster) ? DEBUFF_CRITICAL_HIT : 0;
+		int chance = weight + (p->state.to_h + plus + debuff_to_hit) * 4 + p->lev * 2;
+		int power = weight + randint1(500);
+		int new_dam = dam;
 
-	if (randint1(5000) > chance) {
+		/* Luck makes criticals (slightly) more likely */
+		if (p->p_luck) {
+			chance += p->p_luck; power += p->p_luck;
+		}
+
+		if (randint1(5000) > chance) {
 		*msg_type = MSG_SHOOT_HIT;
 	} else if (power < 500) {
 		*msg_type = MSG_HIT_GOOD;
@@ -273,6 +278,9 @@ static int o_critical_shot(const struct player *p,
 	if (!launcher) {
 		power = power * 3 / 2;
 	}
+
+	/* Luck makes criticals (slightly) more likely */
+	if (p->p_luck) power += p->p_luck;
 
 	/* Test for critical hit - chance power / (power + 360) */
 	if (randint1(power + 360) <= power) {
@@ -310,6 +318,9 @@ static int critical_melee(const struct player *p,
 		+ (p->state.skills[SKILL_TO_HIT_MELEE] - 60);
 	int new_dam = dam;
 
+	/* Luck makes criticals (slightly) more likely (luck should rarely be higher than 2 or 3) */
+	if (p->p_luck) { power += p->p_luck; chance += p->p_luck; }
+
 	if (randint1(5000) > chance) {
 		*msg_type = MSG_HIT;
 	} else if (power < 400) {
@@ -344,6 +355,9 @@ static int o_critical_melee(const struct player *p,
 	int debuff_to_hit = is_debuffed(monster) ? DEBUFF_CRITICAL_HIT : 0;
 	int power = (chance_of_melee_hit(p, obj) + debuff_to_hit) / 3;
 	int add_dice = 0;
+
+	/* Luck makes criticals (slightly) more likely */
+	if (p->p_luck) power += p->p_luck;
 
 	/* Test for critical hit - chance power / (power + 240) */
 	if (randint1(power + 240) <= power) {
@@ -653,12 +667,14 @@ bool py_attack_real(struct player *p, struct loc grid, bool *fear)
 		return false;
 	}
 
-	/* Disturb the monster */
-	monster_wake(mon, false, 100);
-	mon_clear_timed(mon, MON_TMD_HOLD, MON_TMD_FLG_NOTIFY);
-
 	/* See if the player hit */
 	success = test_hit(chance, mon->race->ac, monster_is_visible(mon));
+
+	/* Disturb the monster (monster has a small chance to stay asleep if you miss) */
+	if ((success) || (randint1(200) > p->state.skills[SKILL_STEALTH] + p->p_luck)) {
+		monster_wake(mon, false, 100);
+		mon_clear_timed(mon, MON_TMD_HOLD, MON_TMD_FLG_NOTIFY);
+	}
 
 	/* If a miss, skip this hit */
 	if (!success) {

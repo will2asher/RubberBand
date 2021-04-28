@@ -1818,6 +1818,10 @@ void calc_bonuses(struct player *p, struct player_state *state, bool known_only,
 	pf_copy(state->pflags, p->race->pflags);
 	pf_union(state->pflags, p->class->pflags);
 
+	/* Bounds on luck */
+	if (p->p_luck > 5) p->p_luck = 5;
+	if (p->p_luck < -5) p->p_luck = -5;
+
 	/* Extract the player (object) flags */
 	player_flags(p, collect_f);
 
