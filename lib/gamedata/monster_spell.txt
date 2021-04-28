@@ -352,8 +352,8 @@ effect:BREATH:AMNESIA:0:30
 lore:force
 lore-color-base:Orange
 lore-color-resist:Yellow
-message-vis:{name} breathes fear.
-message-invis:You hear a fearsome roar.
+message-vis:{name} breathes amnesia.
+message-invis:You think you hear a roar.
 
 name:BR_MANA
 hit:100

@@ -5363,10 +5363,9 @@ bool effect_handler_WONDER(effect_handler_context_t *context)
 
 	/* Luck may have an effect (bad or good) */
 	if (player->p_luck > 0) die += randint0(player->p_luck * 2);
-	if (player->p_luck < 0) die -= randint0((0 - player->p_luck) * 2);
+	if (player->p_luck < 0) die -= randint0(ABS(player->p_luck) * 2);
 
-	if (die > 100)
-		msg("You feel a surge of power!");
+	if (die > 100) msg("You feel a surge of power!");
 
 	if (die < 8) {
 		subtype = PROJ_MON_CLONE;

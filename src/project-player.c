@@ -548,13 +548,21 @@ static int project_player_handler_PLASMA(project_player_handler_context_t *conte
 
 static int project_player_handler_SLIME(project_player_handler_context_t* context)
 {
-	/* Stun and slime (allows a DEX_based saving throw) */
-	if (!player_of_has(player, OF_PROT_STUN)) {
-		int duration = 2 + randint1(context->dam / 2);
+		int duration = 2;
+		if (context->dam >= 4) duration += randint1(context->dam / 2);
+
 		if (duration > 32) duration = 32;
-		if (randint0(context->dam) > adj_dex_th[player->state.stat_ind[STAT_DEX]] * 2)
+
+		/* Stun and slime (allows a DEX_based saving throw) */
+		if (randint0(adj_dex_th[player->state.stat_ind[STAT_DEX]] * 2) > context->dam)
 		{
-			(void)player_inc_timed(player, TMD_STUN, duration, true, true);
+			/* Stun */
+			if (!player_of_has(player, OF_PROT_STUN)) {
+				(void)player_inc_timed(player, TMD_STUN, duration, true, true);
+			}
+			else {
+				equip_learn_flag(player, OF_PROT_STUN);
+			}
 			/* Still need to add the SLIMED player condition, but not sure about using a timed effect */
 			/* (void)player_inc_timed(player, TMD_SLIMED, duration*2, true, true); */
 		}
@@ -563,10 +571,6 @@ static int project_player_handler_SLIME(project_player_handler_context_t* contex
 			/* reduced damage */
 			context->dam = context->dam * 4 / 5;
 		}
-	}
-	else {
-		equip_learn_flag(player, OF_PROT_STUN);
-	}
 	return 0;
 }
 
@@ -587,7 +591,9 @@ static int project_player_handler_FEAR(project_player_handler_context_t* context
 static int project_player_handler_AMNESIA(project_player_handler_context_t* context)
 {
 	/* Amnesia (allows a saving throw) */
-	int duration = 5 + randint1(context->dam / 2);
+	int dmg = context->dam;
+	if (dmg < 2) dmg = 2;
+	int duration = 5 + randint1(dmg / 2);
 	int asave = player->state.skills[SKILL_SAVE];
 	if (duration > 60) duration = 60;
 
@@ -597,7 +603,7 @@ static int project_player_handler_AMNESIA(project_player_handler_context_t* cont
 		duration /= 2;
 		equip_learn_flag(player, OF_PROT_CONF);
 	}
-	if (randint0(context->dam) < asave) {
+	if (randint0(dmg) < asave) {
 		msg("You resist the effect!");
 	}
 	else (void)player_inc_timed(player, TMD_AMNESIA, duration, true, true);

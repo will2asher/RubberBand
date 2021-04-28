@@ -471,7 +471,7 @@ static int monster_critical(random_value dice, int rlev, int dam)
 
 	/* Luck factor (bad luck in this case) */
 	if (player->p_luck < 0) {
-		dam += (0 - player->p_luck) * 2;
+		dam += ABS(player->p_luck) * 2;
 		/* maximum damage has increased */
 		total++;
 	}
@@ -581,7 +581,7 @@ bool make_attack_normal(struct monster *mon, struct player *p)
 		bool obvious = false;
 
 		int damage = 0;
-		int do_cut = false;
+		int do_cut = 0;
 		bool do_stun = false;
 		int sound_msg = MSG_GENERIC;
 
@@ -683,15 +683,15 @@ bool make_attack_normal(struct monster *mon, struct player *p)
 
 			/* Don't cut or stun if player is dead */
 			if (p->is_dead) {
-				do_cut = false;
+				do_cut = 0;
 				do_stun = false;
 			}
 
-			/* Hack -- only one of cut or stun */
-			if (do_cut && do_stun) {
+			/* Hack -- only one of cut or stun (unless you're really unlucky) */
+			if (do_cut && do_stun && (player->p_luck > -2)) {
 				/* Cancel cut */
-				if ((randint0(100) < 50) && (do_cut < 2))
-					do_cut = false;
+				if (randint1(100) > (do_cut+1)*25) /* do_cut is usually 1, so usually 50% here */
+					do_cut = 0;
 
 				/* Cancel stun */
 				else
@@ -705,7 +705,7 @@ bool make_attack_normal(struct monster *mon, struct player *p)
 
 				/* some attacks can cut even if it's not a critical hit (sharp claws) */
 				/* 1 in 3 chance usually */
-				if ((do_cut > 1) && (tmp == 0) && (randint0(6) < do_cut)) tmp += randint1(do_cut);
+				if ((do_cut > 1) && (tmp < 4) && (randint0(6) < do_cut)) tmp += randint1(do_cut);
 
 				/* Roll for damage */
 				switch (tmp) {

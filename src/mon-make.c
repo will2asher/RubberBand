@@ -1139,8 +1139,9 @@ static bool place_new_monster_one(struct chunk *c, struct loc grid,
 			if (randint0(player->lev + 1) < 6) val += 4 + randint1(8);
 			if (player->lev == 1) val += 2 + randint1(8);
 		}
-		/* Put monster to sleep */
-		mon->m_timed[MON_TMD_SLEEP] = ((val * 2) + randint1(val * 10));
+		/* Put monster to sleep (higher minimum in town) */
+		if (player->depth == 0) mon->m_timed[MON_TMD_SLEEP] = ((val * 3) + randint1(val * 9));
+		else mon->m_timed[MON_TMD_SLEEP] = ((val * 2) + randint1(val * 10));
 	}
 
 	/* Uniques get a fixed amount of HP */
