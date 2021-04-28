@@ -319,7 +319,7 @@ slay:DEMON_3
 
 name:of Slay Orc
 info:2500:10
-alloc:150:1 to 20
+alloc:150:1 to 21
 type:sword
 type:polearm
 type:hafted
@@ -348,6 +348,14 @@ type:sword
 type:polearm
 type:hafted
 slay:DRAGON_3
+
+#name:of Slay Fairy
+#info:2500:14
+#alloc:100:1 to 30
+#type:sword
+#type:polearm
+#type:hafted
+#slay:FAIRY_3
 
 # The *Slay* weapons (8)
 

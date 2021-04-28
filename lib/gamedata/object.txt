@@ -134,8 +134,6 @@
 
 
 
-
-
 ##### Non-kind (things treated like objects) #####
 
 name:<pile>
@@ -204,10 +202,12 @@ graphics:,:U
 level:0
 weight:2
 cost:1
+attack:1d2:0:0
 power:0
 effect:NOURISH:INC_BY
 dice:10
 effect:CRUNCH
+flags:THROWING
 desc:A filling if tooth-breaking biscuit made mostly of rye.
 
 name:& Apple~
@@ -284,7 +284,7 @@ dice:5
 effect:NOURISH:INC_BY
 dice:20
 effect:NOURISH:INC_BY
-dice:20
+dice:18
 effect:NOURISH:INC_BY
 dice:10
 effect:NOURISH:SET_TO
@@ -305,7 +305,7 @@ pile:50:1d3
 power:0
 msg:That tastes good.
 effect:NOURISH:INC_BY
-dice:40
+dice:38
 desc:A thick slice of pork, salted to keep it from spoiling.  It is very
 desc: filling.
 
@@ -357,12 +357,14 @@ effect:TIMED_INC:CONFUSED
 dice:-1+1d5
 desc:It raises your spirits.
 
+# allocate to dL101 to celebrate your win :)
 name:& Pint~ of Fine Wine
 type:food
 graphics:,:r
 level:0
 weight:10
-cost:2
+cost:4
+alloc:10:101 to 102
 power:0
 msg:That tastes great!  A fine vintage.
 effect:NOURISH:INC_BY
@@ -602,6 +604,7 @@ dice:5
 effect:RESTORE_STAT:STR
 effect:RESTORE_STAT:CON
 effect:CURE:POISONED
+#effect:CURE:DISEASE
 desc:It makes you very hungry but otherwise healthy.
 
 name:Shadows
@@ -629,22 +632,46 @@ type:sword
 graphics:|:W
 level:0
 weight:12
-cost:30
+cost:25
 alloc:20:0 to 100
+pile:11:1d4
 attack:1d4:0:0
 armor:0:0
 flags:THROWING
 desc:A short two-edged blade perfect for thrusting or throwing.
 
+name:& Long Dagger~
+type:sword
+graphics:|:W
+level:7
+weight:32
+cost:45
+alloc:17:7 to 100
+attack:1d5:0:0
+armor:0:0
+flags:THROWING
+desc:A dagger long enough to be used as a sword by the smaller races.
+
+name:& Stiletto~
+type:sword
+graphics:|:W
+level:3
+weight:18
+cost:55
+alloc:9:6 to 100
+attack:2d2:2:0
+desc:A small, thin stabbing blade which can pierce armor especially well. It is
+desc: commonly used by assassins and others of dishonorable professions.
+
 name:& Main Gauche~
 type:sword
 graphics:|:W
 level:3
-weight:30
-cost:45
-alloc:20:3 to 100
-attack:1d5:0:0
-armor:0:0
+weight:26
+cost:41
+alloc:15:3 to 100
+attack:1d3:0:0
+armor:2:0
 desc:A short thrusting blade with a large guard, primarily used in duels.
 
 name:& Rapier~
@@ -696,8 +723,8 @@ name:& Scimitar~
 type:sword
 graphics:|:W
 level:10
-weight:150
-cost:300
+weight:140
+cost:305
 alloc:20:10 to 100
 attack:4d2:0:0
 armor:0:0
@@ -720,8 +747,8 @@ type:sword
 graphics:|:W
 level:10
 weight:150
-cost:300
-alloc:20:10 to 100
+cost:285
+alloc:20:9 to 100
 attack:2d5:0:0
 armor:0:0
 desc:A heavy, single-edged sword with a strong grip.
@@ -743,7 +770,7 @@ type:sword
 graphics:|:W
 level:20
 weight:120
-cost:600
+cost:580
 alloc:20:20 to 100
 attack:3d5:0:0
 armor:0:0
@@ -786,17 +813,16 @@ desc:This inconstant weapon revels in disorder, hacking and slashing your foes
 desc: with bloodthirsty glee.
 
 
-
 ### Whips ###
 
 name:& Whip~
 type:hafted
 graphics:\:D
 level:3
-weight:30
-cost:30
+weight:32
+cost:33
 alloc:20:3 to 100
-attack:1d3:0:0
+attack:1d4:0:0
 armor:0:0
 desc:A heavy whip, this thick coil is thrown from the shoulder and can
 desc: knock down a large man.
@@ -807,7 +833,7 @@ graphics:\:D
 level:20
 weight:150
 cost:200
-alloc:20:20 to 100
+alloc:18:20 to 100
 attack:2d4:0:0
 armor:0:0
 desc:A weighty iron ball, suspended by a chain from a sturdy oaken handle.
@@ -874,15 +900,27 @@ armor:0:0
 desc:A heavy war club topped with a mass of lead-filled steel, capable of
 desc: landing crushing blows.
 
+name:& Walking Staff~
+type:hafted
+graphics:\:U
+level:1
+weight:45
+cost:10
+alloc:17:1 to 50
+attack:1d4:0:0
+armor:1:0
+desc:Not as long, sturdy, or straight as a quarterstaff, but it'll
+desc: work as a weapon in a pinch.
+
 name:& Quarterstaff~
 type:hafted
 graphics:\:U
 level:10
-weight:150
-cost:200
-alloc:20:10 to 100
+weight:110
+cost:180
+alloc:21:10 to 100
 attack:1d9:0:0
-armor:0:0
+armor:1:0
 desc:Six feet of oak which can be wielded in both hands to give a drubbing or
 desc: block one.
 
@@ -892,7 +930,7 @@ graphics:\:D
 level:30
 weight:55
 cost:250
-alloc:10:30 to 100
+alloc:10:25 to 100
 attack:2d4:0:0
 armor:0:0
 flags:THROWING
@@ -945,7 +983,6 @@ desc:A giant's weapon, enchanted with shattering power that breaks bones,
 desc: bodies, and spirit.
 
 
-
 ### Spears ###
 
 name:& Spear~
@@ -953,7 +990,7 @@ type:polearm
 graphics:/:s
 level:5
 weight:50
-cost:36
+cost:45
 alloc:20:5 to 100
 attack:1d6:0:0
 armor:0:0
@@ -964,10 +1001,11 @@ desc:  This weapon can be thrown effectively.
 name:& Javelin~
 type:polearm
 graphics:/:s
-level:20
+level:15
 weight:30
 cost:95
-alloc:7:15 to 100
+alloc:7:14 to 100
+pile:12:1d4
 attack:1d5:0:0
 armor:0:0
 flags:THROWING
@@ -981,7 +1019,7 @@ weight:160
 cost:340
 alloc:20:10 to 100
 attack:1d8:0:0
-armor:0:0
+armor:1:0
 desc:A more robust version of the basic polearm, with a double-edged knife
 desc: mounted on a sturdy shaft.  It cannot be thrown effectively, but offers
 desc: some protection to the wielder.
@@ -1028,10 +1066,10 @@ desc: infantry formations.
 name:& Throwing Axe~
 type:polearm
 graphics:/:s
-level:25
+level:22
 weight:40
 cost:150
-alloc:10:25 to 100
+alloc:10:20 to 100
 attack:2d3:0:0
 armor:0:0
 flags:THROWING
@@ -1043,8 +1081,8 @@ type:polearm
 graphics:/:s
 level:15
 weight:180
-cost:408
-alloc:20:15 to 100
+cost:375
+alloc:18:15 to 100
 attack:2d6:0:0
 armor:0:0
 desc:A narrow axe head opposed by a crow's beak for penetrating armour.
@@ -1054,8 +1092,8 @@ type:polearm
 graphics:/:s
 level:15
 weight:160
-cost:304
-alloc:20:15 to 100
+cost:314
+alloc:18:14 to 100
 attack:2d6:0:0
 armor:0:0
 desc:A simple, single-bladed war axe capable of chopping though limbs or armour.
@@ -1127,7 +1165,7 @@ graphics:/:s
 level:10
 weight:300
 cost:230
-alloc:20:10 to 100
+alloc:18:10 to 100
 attack:2d8:0:0
 armor:0:0
 desc:A massive, tapered spear used primarily from horseback.
@@ -1197,9 +1235,9 @@ name:& Light Crossbow~
 type:bow
 graphics:}:s
 level:15
-weight:110
+weight:100
 cost:140
-alloc:20:15 to 100
+alloc:20:14 to 100
 flags:SHOOTS_BOLTS
 pval:3
 desc:A mechanical bow made of wood, it is cocked to augment the strength
@@ -1309,7 +1347,6 @@ armor:0:0
 flags:THROWING
 desc:It can be shot with a sling or thrown.
 
-
 name:& Iron Shot~
 type:shot
 graphics:{:s
@@ -1357,8 +1394,8 @@ graphics:\:g
 level:30
 weight:180
 cost:300
-alloc:20:30 to 100
-attack:1d3:0:0
+alloc:20:28 to 100
+attack:1d4:0:0
 armor:0:0
 flags:DIG_2
 desc:A heavy mining tool with a long, slightly curved head that tapers
@@ -1367,10 +1404,10 @@ desc: to chisel points on both ends.
 name:& Mattock~
 type:digger
 graphics:\:D
-level:50
+level:45
 weight:250
 cost:700
-alloc:20:50 to 100
+alloc:20:45 to 100
 attack:1d9:0:0
 armor:0:0
 flags:DIG_3
@@ -1447,12 +1484,12 @@ desc: for endless miles without wearying.
 name:& Pair~ of Ethereal Slippers
 type:boots
 graphics:]:U
-level:0
+level:30
 weight:0
-cost:4
+cost:73
 alloc:10:30 to 100
 attack:0d0:0:0
-armor:0:0
+armor:1:0
 flags:IGNORE_ACID | IGNORE_ELEC | IGNORE_FIRE | IGNORE_COLD 
 desc:Fine quality elvish slippers, hard-wearing but apparently weightless.
 
@@ -1504,13 +1541,25 @@ armor:9:0
 desc:This great helm covers the head and shoulders with plates of steel and a
 desc: curtain of mail.
 
+# a place for crown egos to be found earlier
+name:& Pointy Wizard Hat~
+type:crown
+graphics:]:s
+level:30
+weight:20
+cost:92
+alloc:4:24 to 100
+attack:0d0:0:0
+armor:0:0
+desc:A pointy purple hat. Mages love this sort of thing, but no one else does.
+
 name:& Iron Crown~
 type:crown
 graphics:]:s
 level:45
-weight:20
+weight:24
 cost:500
-alloc:20:45 to 100
+alloc:20:45 to 102
 attack:1d1:0:0
 armor:0:0
 desc:A plain band of iron, crowned with iron spikes.  It is a tyrant's
@@ -1522,7 +1571,7 @@ graphics:]:y
 level:45
 weight:30
 cost:1000
-alloc:10:45 to 100
+alloc:10:45 to 102
 attack:1d1:0:0
 armor:0:0
 flags:IGNORE_ACID
@@ -1535,7 +1584,7 @@ graphics:]:v
 level:50
 weight:40
 cost:2000
-alloc:10:50 to 100
+alloc:10:50 to 102
 attack:1d1:0:0
 armor:0:0
 flags:IGNORE_ACID
@@ -1657,7 +1706,7 @@ graphics:[:s
 level:35
 weight:290
 cost:1100
-alloc:20:45 to 100
+alloc:18:45 to 100
 attack:1d4:-3:0
 armor:48:0
 desc:A stiff suit of armour composed of small metal plates sewn to an
@@ -1681,7 +1730,7 @@ graphics:[:W
 level:45
 weight:340
 cost:1250
-alloc:20:50 to 100
+alloc:18:50 to 100
 attack:1d6:-3:0
 armor:58:0
 desc:This unusual armour is a surprisingly light suit of laced and
@@ -1766,7 +1815,7 @@ type:cloak
 graphics:(:o
 level:1
 weight:25
-cost:600
+cost:380
 alloc:20:20 to 100
 attack:0d0:0:0
 armor:3:0
@@ -1839,7 +1888,7 @@ name:& Set~ of Caestus
 type:gloves
 graphics:]:U
 level:0
-weight:40
+weight:50
 cost:100
 alloc:10:20 to 100
 attack:1d1:0:3
@@ -1927,10 +1976,10 @@ desc: iron shield boss offers excellent hand protection.
 name:& Knight's Shield~
 type:shield
 graphics:):W
-level:50
+level:48
 weight:160
-cost:750
-alloc:10:50 to 100
+cost:720
+alloc:10:48 to 100
 attack:1d6:0:0
 armor:15:0
 desc:A kite-shaped shield with rounded corners that covers the wearer from
@@ -2063,8 +2112,8 @@ type:ring
 graphics:=:d
 level:0
 weight:2
-cost:400
-alloc:20:25 to 100
+cost:390
+alloc:20:24 to 100
 values:SEARCH[1+M5] | LIGHT[1] | RES_LIGHT[1]
 
 name:Flames
@@ -2206,7 +2255,7 @@ level:0
 weight:2
 cost:200
 alloc:30:10 to 50
-attack:0d0:2+d3:2+d3
+attack:0d0:2+d3:2+d4
 armor:0:-8+4d3
 
 name:Open Wounds
@@ -2214,7 +2263,7 @@ type:ring
 graphics:=:d
 level:10
 weight:2
-cost:700
+cost:600
 alloc:20:10 to 50
 flags:IMPAIR_HP | EASY_KNOW
 power:25
@@ -2230,7 +2279,7 @@ type:ring
 graphics:=:d
 level:30
 weight:2
-cost:4000
+cost:3000
 alloc:50:15 to 80
 flags:AFRAID | EASY_KNOW
 values:SPEED[2]
@@ -2290,7 +2339,7 @@ type:ring
 graphics:=:d
 level:30
 weight:2
-cost:340
+cost:900
 alloc:50:30 to 100
 flags:SEE_INVIS | EASY_KNOW
 
@@ -2348,10 +2397,10 @@ values:RES_ACID[1]
 name:Resistance
 type:amulet
 graphics:":d
-level:60
+level:55
 weight:3
-cost:20000
-alloc:10:60 to 100
+cost:18000
+alloc:10:55 to 100
 flags:EASY_KNOW
 flags:IGNORE_ACID | IGNORE_ELEC | IGNORE_FIRE | IGNORE_COLD
 values:RES_FIRE[1] | RES_ACID[1] | RES_ELEC[1] | RES_COLD[1]
@@ -2363,7 +2412,7 @@ type:amulet
 graphics:":d
 level:60
 weight:3
-cost:20000
+cost:19000
 alloc:10:60 to 100
 flags:SUST_STR | SUST_INT | SUST_WIS | SUST_DEX | SUST_CON |
 flags:HOLD_LIFE | SLOW_DIGEST | EASY_KNOW | 
@@ -2450,7 +2499,7 @@ type:amulet
 graphics:":d
 level:15
 weight:3
-cost:600
+cost:500
 alloc:20:10 to 40
 values:SEARCH[d5M5]
 
@@ -2475,13 +2524,14 @@ cost:200
 alloc:20:15 to 40
 flags:SLOW_DIGEST | EASY_KNOW
 
+#Cost was zero? must be cheap plastic jewelry
 name:Adornment
 type:amulet
 graphics:":d
 level:10
 weight:3
-cost:0
-alloc:20:10 to 40
+cost:310
+alloc:20:9 to 40
 flags:EASY_KNOW
 
 
@@ -2640,7 +2690,6 @@ power:22
 effect:ENCHANT:TOBOTH
 dice:1d3
 
-
 name:*Enchant Armour*
 type:scroll
 graphics:?:w
@@ -2653,7 +2702,6 @@ power:15
 effect:ENCHANT:TOAC
 dice:2+1d3
 
-
 name:Remove Curse
 type:scroll
 graphics:?:w
@@ -2665,7 +2713,6 @@ pile:25:2
 power:8
 effect:REMOVE_CURSE
 dice:20+d20
-
 
 name:*Remove Curse*
 type:scroll
@@ -2771,7 +2818,7 @@ graphics:?:w
 level:5
 weight:5
 cost:10
-alloc:60:5 to 100
+alloc:50:4 to 100
 pile:100:2d3
 power:7
 effect:NOURISH:INC_TO
@@ -2783,7 +2830,7 @@ graphics:?:w
 level:0
 weight:5
 cost:15
-alloc:50:0 to 60
+alloc:52:0 to 60
 pile:35:2d3
 power:4
 effect:LIGHT_AREA
@@ -2813,16 +2860,17 @@ power:11
 effect:RECHARGE
 dice:6
 
-name:Door Destruction
+name:Trap & Door Destruction
 type:scroll
 graphics:?:w
 level:10
 weight:5
-cost:50
-alloc:40:10 to 60
+cost:60
+alloc:35:10 to 60
 pile:25:2d3
 power:6
 effect:TOUCH:KILL_DOOR
+effect:TOUCH:KILL_TRAP
 
 name:Deep Descent
 type:scroll
@@ -2996,7 +3044,7 @@ type:potion
 graphics:!:d
 level:30
 weight:4
-cost:8000
+cost:8100
 alloc:30:30 to 100
 pile:10:2
 power:20000
@@ -3044,7 +3092,7 @@ type:potion
 graphics:!:d
 level:30
 weight:4
-cost:8000
+cost:8050
 alloc:30:30 to 100
 pile:10:2
 power:20000
@@ -3098,7 +3146,9 @@ effect:HEAL_HP
 dice:15+1d8
 effect:CURE:BLIND
 effect:TIMED_DEC:CUT
-dice:20
+dice:15
+effect:TIMED_DEC:STUN
+dice:6
 effect:TIMED_DEC:CONFUSED
 dice:20
 effect:NOURISH:INC_BY
@@ -3117,7 +3167,9 @@ effect:HEAL_HP
 dice:32+2d8
 effect:CURE:BLIND
 effect:TIMED_DEC:CUT
-dice:40
+dice:35
+effect:TIMED_DEC:STUN
+dice:10
 effect:CURE:CONFUSED
 effect:NOURISH:INC_BY
 dice:1
@@ -3363,7 +3415,7 @@ graphics:!:d
 level:1
 weight:4
 cost:75
-alloc:40:1 to 100
+alloc:40:1 to 103
 pile:25:2
 power:10
 effect:TIMED_INC:FAST:0:5
@@ -3375,7 +3427,7 @@ graphics:!:d
 level:1
 weight:4
 cost:25
-alloc:40:1 to 100
+alloc:40:1 to 101
 pile:25:2
 power:7
 effect:HEAL_HP
@@ -3390,7 +3442,7 @@ graphics:!:d
 level:3
 weight:4
 cost:80
-alloc:40:3 to 100
+alloc:40:3 to 101
 pile:25:2
 power:8
 effect:HEAL_HP
@@ -3404,11 +3456,13 @@ type:potion
 graphics:!:d
 level:1
 weight:4
-cost:8
+cost:10
 alloc:40:1 to 90
 pile:25:2
 power:2
 effect:CURE:AFRAID
+effect:TIMED_INC:BOLD
+dice:3+1d5
 
 name:Resist Heat
 type:potion
@@ -3517,7 +3571,7 @@ attack:3d4:0:0
 armor:0:0
 power:0
 effect:TIMED_INC:BLIND
-dice:65+4d25
+dice:65+4d24
 effect:NOURISH:INC_BY
 dice:1
 
@@ -3542,7 +3596,7 @@ type:potion
 graphics:!:d
 level:3
 weight:4
-cost:0
+cost:3
 alloc:10:0 to 10
 pile:70:2d3
 attack:3d4:0:0
@@ -4125,7 +4179,7 @@ level:10
 weight:50
 cost:0
 alloc:10:10 to 100
-attack:1d2:0:0
+attack:1d4:0:0
 armor:0:0
 charges:2d3
 power:0
@@ -4139,7 +4193,7 @@ level:10
 weight:50
 cost:0
 alloc:10:10 to 40
-attack:1d2:0:0
+attack:1d4:0:0
 armor:0:0
 charges:8+d8
 power:0
@@ -4153,7 +4207,7 @@ level:5
 weight:50
 cost:0
 alloc:10:5 to 40
-attack:1d2:0:0
+attack:1d4:0:0
 armor:0:0
 charges:8+d8
 power:0
@@ -4170,7 +4224,7 @@ level:40
 weight:50
 cost:350
 alloc:20:40 to 100
-attack:1d2:0:0
+attack:1d4:0:0
 armor:0:0
 charges:3+d5
 power:5
@@ -4183,7 +4237,7 @@ level:50
 weight:50
 cost:6000
 alloc:20:50 to 100
-attack:1d2:0:0
+attack:1d4:0:0
 armor:0:0
 charges:1+d3
 power:12
@@ -4198,7 +4252,7 @@ level:10
 weight:50
 cost:800
 alloc:20:10 to 100
-attack:1d2:0:0
+attack:1d4:0:0
 armor:0:0
 charges:3+d3
 power:10
@@ -4212,7 +4266,7 @@ level:10
 weight:50
 cost:800
 alloc:20:10 to 100
-attack:1d2:0:0
+attack:1d4:0:0
 armor:0:0
 charges:4+d4
 power:7
@@ -4226,7 +4280,7 @@ level:10
 weight:50
 cost:700
 alloc:20:10 to 100
-attack:1d2:0:0
+attack:1d4:0:0
 armor:0:0
 charges:6+d5
 power:8
@@ -4244,7 +4298,7 @@ level:5
 weight:50
 cost:200
 alloc:30:5 to 100 
-attack:1d2:0:0
+attack:1d4:0:0
 armor:0:0
 charges:8+d15
 power:6
@@ -4258,7 +4312,7 @@ level:20
 weight:50
 cost:350
 alloc:30:20 to 100
-attack:1d2:0:0
+attack:1d4:0:0
 armor:0:0
 charges:8+d15
 power:6
@@ -4272,7 +4326,7 @@ level:20
 weight:50
 cost:600
 alloc:40:10 to 100
-attack:1d2:0:0
+attack:1d4:0:0
 armor:0:0
 charges:5+d5
 power:10
@@ -4289,7 +4343,7 @@ level:25
 weight:50
 cost:500
 alloc:30:10 to 100
-attack:1d2:0:0
+attack:1d4:0:0
 armor:0:0
 charges:4+d3
 power:9
@@ -4306,7 +4360,7 @@ level:5
 weight:50
 cost:350
 alloc:30:5 to 100
-attack:1d2:0:0
+attack:1d4:0:0
 armor:0:0
 charges:6+d5
 power:3
@@ -4325,7 +4379,7 @@ level:70
 weight:50
 cost:5000
 alloc:10:70 to 100
-attack:1d2:0:0
+attack:1d4:0:0
 armor:0:0
 charges:1+d2
 power:12
@@ -4348,7 +4402,7 @@ level:50
 weight:50
 cost:1200
 alloc:50:50 to 100
-attack:1d2:0:0
+attack:1d5:0:0
 armor:0:0
 charges:4+d3
 power:9
@@ -4362,7 +4416,7 @@ level:70
 weight:50
 cost:5000
 alloc:10:70 to 100
-attack:1d2:0:0
+attack:1d4:0:0
 armor:0:0
 charges:1+d2
 power:20
@@ -4375,7 +4429,7 @@ level:70
 weight:50
 cost:4000
 alloc:20:70 to 100
-attack:1d2:0:0
+attack:2d4:0:0
 armor:0:0
 charges:1+d3
 power:11
@@ -4389,7 +4443,7 @@ level:70
 weight:50
 cost:3500
 alloc:20:70 to 100
-attack:1d2:0:0
+attack:1d5:0:0
 armor:0:0
 charges:2d2
 power:12
@@ -4421,7 +4475,7 @@ level:5
 weight:50
 cost:250
 alloc:30:5 to 80
-attack:1d2:0:0
+attack:1d4:0:0
 armor:0:0
 charges:8+d20
 power:4
@@ -4436,7 +4490,7 @@ level:20
 weight:50
 cost:800
 alloc:20:20 to 80
-attack:1d2:0:0
+attack:1d4:0:0
 armor:0:0
 charges:6+d5
 power:5
@@ -4450,7 +4504,7 @@ level:20
 weight:50
 cost:2000
 alloc:50:20 to 100
-attack:1d2:0:0
+attack:1d4:0:0
 armor:0:0
 charges:5+d4
 power:6
@@ -4464,7 +4518,7 @@ level:40
 weight:50
 cost:2000
 alloc:20:40 to 100
-attack:1d2:0:0
+attack:1d4:0:0
 armor:0:0
 charges:4+d3
 power:10
@@ -4478,7 +4532,7 @@ level:40
 weight:50
 cost:500
 alloc:20:40 to 100
-attack:1d2:0:0
+attack:1d4:0:0
 armor:0:0
 charges:4+d3
 power:8
@@ -4492,7 +4546,7 @@ level:70
 weight:50
 cost:4500
 alloc:10:70 to 100
-attack:1d2:0:0
+attack:1d4:0:0
 armor:0:0
 charges:2+1d2
 power:20
@@ -4735,6 +4789,7 @@ effect:CURE:CUT
 effect:CURE:POISONED
 effect:CURE:STUN
 effect:CURE:CONFUSED
+effect:CURE:AMNESIA
 time:100
 
 name:Healing
@@ -5017,7 +5072,7 @@ name:Red Dragon Scale Mail~
 type:dragon armor
 graphics:[:r
 level:50
-weight:160
+weight:130
 cost:40000
 alloc:8:40 to 100
 attack:2d4:-2:0
@@ -5035,7 +5090,7 @@ name:Green Dragon Scale Mail~
 type:dragon armor
 graphics:[:g
 level:60
-weight:140
+weight:120
 cost:60000
 alloc:8:60 to 100
 attack:2d4:-2:0
@@ -5053,7 +5108,7 @@ name:Multi-Hued Dragon Scale Mail~
 type:dragon armor
 graphics:[:v
 level:90
-weight:260
+weight:240
 cost:150000
 alloc:5:75 to 100
 attack:2d4:-2:0
@@ -5081,7 +5136,7 @@ name:Shining Dragon Scale Mail~
 type:dragon armor
 graphics:[:o
 level:65
-weight:200
+weight:190
 cost:60000
 alloc:6:75 to 100
 attack:2d4:-2:0
@@ -5125,7 +5180,7 @@ name:Gold Dragon Scale Mail~
 type:dragon armor
 graphics:[:y
 level:50
-weight:180
+weight:160
 cost:40000
 alloc:8:70 to 100
 attack:2d4:-2:0
@@ -5212,7 +5267,6 @@ desc: untrammelled yet inextricably intermingled and utterly mastered powers
 desc: elemental and ethereal.
 
 
-
 ##### Gold/gems #####
 
 name:copper
@@ -5236,6 +5290,10 @@ type:gold
 graphics:$:W
 
 name:sapphires
+type:gold
+graphics:$:b
+
+name:jade
 type:gold
 graphics:$:b
 
