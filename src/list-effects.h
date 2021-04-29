@@ -31,6 +31,8 @@ EFFECT(LOSE_RANDOM_STAT,			false,	NULL,		1,		EFINFO_STAT,	"reduces a stat other 
 EFFECT(GAIN_STAT,					false,	NULL,		1,		EFINFO_STAT,	"increases your %s")
 EFFECT(RESTORE_EXP,					false,	NULL,		0,		EFINFO_NONE,	"restores your experience")
 EFFECT(GAIN_EXP,					false,	NULL,		1,		EFINFO_CONST,	"grants %d experience points")
+EFFECT(GAIN_LUCK,					false,	NULL,		1,		EFINFO_CONST,	"grants %d luck")
+EFFECT(MEDIOC,						false,	NULL,		0,		EFINFO_CONST,	"raises low stats and damages high stats, among other things")
 EFFECT(DRAIN_LIGHT,					false,	NULL,		0,		EFINFO_NONE,	"drains your light source")
 EFFECT(DRAIN_MANA,					false,	NULL,		0,		EFINFO_NONE,	"drains some mana")
 EFFECT(RESTORE_MANA,				false,	NULL,		0,		EFINFO_NONE,	"restores some mana")

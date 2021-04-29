@@ -99,7 +99,6 @@ static const char *desc_stat(int stat, bool positive)
 	return prop->neg_adj;
 }
 
-
 int effect_calculate_value(effect_handler_context_t *context, bool use_boost)
 {
 	int final = 0;
@@ -1196,11 +1195,62 @@ bool effect_handler_DRAIN_STAT(effect_handler_context_t *context)
 
 		/* Message */
 		msgt(MSG_DRAIN_STAT, "You feel very %s.", desc_stat(stat, false));
-		if (dam)
-			take_hit(player, dam, "stat drain");
+		if (dam) take_hit(player, dam, "stat drain");
 	}
 
 	return (true);
+}
+
+/* 
+ * Potion of Mediocrity
+ */
+bool effect_handler_MEDIOC(effect_handler_context_t* context)
+{
+	msg("You feel drab.");
+
+	/* Luck */
+	if ((player->p_luck > 0) && (randint0(6) - 3 < player->p_luck)) player->p_luck -= 1;
+	else if (player->p_luck < -1) player->p_luck += 1;
+
+	/* Stats: STR (damage if over 16, raise if lower than 12) */
+	/* (check base stats without equipment bonuses) */
+	if (player->state.stat_use[STAT_STR] - player->state.stat_add[STAT_STR] > 16) {
+		effect_simple(EF_DRAIN_STAT, context->origin, "0", STAT_STR, 0, 0, 0, 0, NULL);
+	}
+	else if (player->state.stat_use[STAT_STR] - player->state.stat_add[STAT_STR] < 12) {
+		effect_simple(EF_GAIN_STAT, context->origin, "0", STAT_STR, 0, 0, 0, 0, NULL);
+	}
+	/* INT */
+	if (player->state.stat_use[STAT_INT] - player->state.stat_add[STAT_INT] > 16) {
+		effect_simple(EF_DRAIN_STAT, context->origin, "0", STAT_INT, 0, 0, 0, 0, NULL);
+	}
+	else if (player->state.stat_use[STAT_INT] - player->state.stat_add[STAT_INT] < 12) {
+		effect_simple(EF_GAIN_STAT, context->origin, "0", STAT_INT, 0, 0, 0, 0, NULL);
+	}
+	/* WIS */
+	if (player->state.stat_use[STAT_WIS] - player->state.stat_add[STAT_WIS] > 16) {
+		effect_simple(EF_DRAIN_STAT, context->origin, "0", STAT_WIS, 0, 0, 0, 0, NULL);
+	}
+	else if (player->state.stat_use[STAT_WIS] - player->state.stat_add[STAT_WIS] < 12) {
+		effect_simple(EF_GAIN_STAT, context->origin, "0", STAT_WIS, 0, 0, 0, 0, NULL);
+	}
+	/* DEX */
+	if (player->state.stat_use[STAT_DEX] - player->state.stat_add[STAT_DEX] > 16) {
+		effect_simple(EF_DRAIN_STAT, context->origin, "0", STAT_DEX, 0, 0, 0, 0, NULL);
+	}
+	else if (player->state.stat_use[STAT_DEX] - player->state.stat_add[STAT_DEX] < 12) {
+		effect_simple(EF_GAIN_STAT, context->origin, "0", STAT_DEX, 0, 0, 0, 0, NULL);
+	}
+	/* CON */
+	if (player->state.stat_use[STAT_CON] - player->state.stat_add[STAT_CON] > 16) {
+		effect_simple(EF_DRAIN_STAT, context->origin, "0", STAT_CON, 0, 0, 0, 0, NULL);
+	}
+	else if (player->state.stat_use[STAT_CON] - player->state.stat_add[STAT_CON] < 12) {
+		effect_simple(EF_GAIN_STAT, context->origin, "0", STAT_CON, 0, 0, 0, 0, NULL);
+	}
+
+	context->ident = true;
+	return true;
 }
 
 /**
@@ -1275,6 +1325,24 @@ bool effect_handler_GAIN_EXP(effect_handler_context_t *context)
 		msg("You feel more experienced.");
 		player_exp_gain(player, amount / 2);
 	}
+	context->ident = true;
+
+	return true;
+}
+
+/* Luck (simple) */
+bool effect_handler_GAIN_LUCK(effect_handler_context_t* context)
+{
+	int amount = effect_calculate_value(context, false);
+
+	if (player->p_luck < 5) {
+		msg("You feel lucky.");
+		player->p_luck += amount;
+
+		/* Max luck is 5 */
+		if (player->p_luck > 5) player->p_luck = 5;
+	}
+	else msg("You're already as lucky as you can be.");
 	context->ident = true;
 
 	return true;

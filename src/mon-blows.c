@@ -913,6 +913,33 @@ static void melee_effect_handler_CONFUSE(melee_effect_handler_context_t *context
 }
 
 /**
+ * Melee effect handler: Cause bad luck
+ */
+static void melee_effect_handler_UNLUCKY(melee_effect_handler_context_t* context)
+{
+	/* Take damage */
+	if (monster_damage_target(context, true)) return;
+
+	/* already as unlucky as you can be */
+	if (player->p_luck <= -5) {
+		context->obvious = false;
+		return;
+	}
+	/* Attempt a saving throw */
+	if (randint0(99 + context->rlev) < player->state.skills[SKILL_SAVE]) {
+		msg("You resist the effects.");
+	}
+	else {
+		/* reduce luck */
+		player->p_luck -= 1;
+		msg("You feel unlucky.");
+	}
+
+	/* Obvious */
+	context->obvious = true;
+}
+
+/**
  * Melee effect handler: Terrify the player.
  */
 static void melee_effect_handler_TERRIFY(melee_effect_handler_context_t *context)
@@ -1119,6 +1146,7 @@ melee_effect_handler_f melee_handler_for_blow_effect(const char *name)
 		{ "COLD", melee_effect_handler_COLD },
 		{ "BLIND", melee_effect_handler_BLIND },
 		{ "CONFUSE", melee_effect_handler_CONFUSE },
+		{ "UNLUCKY", melee_effect_handler_UNLUCKY },
 		{ "TERRIFY", melee_effect_handler_TERRIFY },
 		{ "PARALYZE", melee_effect_handler_PARALYZE },
 		{ "LOSE_STR", melee_effect_handler_LOSE_STR },

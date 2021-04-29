@@ -116,6 +116,7 @@
 # 'dice' provides a random value to be used by an effect (for damage,
 # healing, etc).  As well as the normal random value fields described above,
 # it can contain expressions like $B, which refer forward to an 'expr' line.
+# (dice can't be negative)
 
 # 'expr' provides an expression for use in effect dice.  It consists of a
 # code letter (eg B) for the expression, a base function to use (for example
@@ -3105,7 +3106,7 @@ graphics:!:d
 level:40
 weight:4
 cost:50000
-alloc:20:40 to 100
+alloc:20:40 to 102
 attack:1d1:0:0
 armor:0:0
 power:20000
@@ -3130,6 +3131,27 @@ alloc:50:65 to 100
 power:20000
 effect:GAIN_EXP
 dice:200000
+
+name:Luck
+type:potion
+graphics:!:d
+level:21
+weight:4
+cost:347
+alloc:7:19 to 101
+power:14
+effect:GAIN_LUCK
+dice:1d2
+
+name:Mediocrity
+type:potion
+graphics:!:d
+level:22
+weight:4
+cost:231
+alloc:8:22 to 101
+power:4
+effect:MEDIOC
 
 ### Healings ###
 
