@@ -130,8 +130,7 @@ equip:potion:Berserk Strength:1:1
 equip:sword:Dagger:1:1
 equip:soft armour:Soft Leather Armour:1:1
 equip:scroll:Word of Recall:1:1
-player-flags:BRAVERY_30 | NO_MANA | SHIELD_BASH
-#2WEAPON
+player-flags:BRAVERY_30 | NO_MANA | SHIELD_BASH | 2WEAPON
 title:Rookie
 title:Soldier
 title:Swordsman
@@ -1362,8 +1361,8 @@ equip:sword:Dagger:1:1
 equip:soft armour:Soft Leather Armour:1:1
 equip:scroll:Word of Recall:1:1
 equip:magic book:[First Spells]:1:1
-player-flags:CHOOSE_SPELLS | STEAL
-#2WEAPON?
+player-flags:CHOOSE_SPELLS | STEAL | 2WEAPON
+#(Not sure if Rogue should get 2WEAPON)
 title:Vagabond
 title:Cutpurse
 title:Footpad
@@ -1468,8 +1467,7 @@ equip:bow:Short Bow:1:1
 equip:arrow:Arrow:15:20
 equip:scroll:Word of Recall:1:1
 equip:nature book:[Lesser Charms]:1:1
-player-flags:FAST_SHOT | CHOOSE_SPELLS
-#2WEAPON
+player-flags:FAST_SHOT | CHOOSE_SPELLS | 2WEAPON
 title:Runner
 title:Strider
 title:Scout
@@ -1576,8 +1574,7 @@ equip:shield:Leather Shield:1:1
 equip:scroll:Word of Recall:1:1
 equip:potion:Cure Light Wounds:1:1
 obj-flags:IMPAIR_HP
-player-flags:CHOOSE_SPELLS | SHIELD_BASH | COMBAT_REGEN
-#2WEAPON
+player-flags:CHOOSE_SPELLS | SHIELD_BASH | COMBAT_REGEN | 2WEAPON
 title:Rat
 title:Bully
 title:Thug

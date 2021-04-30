@@ -144,6 +144,12 @@ code:SHIELD_BASH
 name:Shield Bash
 desc:You can bash monsters with a shield in melee.
 
+type:player
+code:2WEAPON
+name:Duel-Wielding
+desc:You can wield light weapons in the shield slot, occationally getting an extra attack with it.
+desc: (But won't exceed max blows.)
+
 #Why would an evil character resist nether?
 type:player
 code:EVIL
