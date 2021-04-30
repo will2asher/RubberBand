@@ -59,6 +59,6 @@ int chance_of_melee_hit(const struct player *p, const struct object *weapon);
 extern bool test_hit(int chance, int ac, int vis);
 void apply_deadliness(int *die_average, int deadliness);
 extern void py_attack(struct player *p, struct loc grid);
-extern bool py_attack_real(struct player *p, struct loc grid, bool *fear);
+extern bool py_attack_real(struct player *p, struct loc grid, bool *fear, bool offhand);
 
 #endif /* !PLAYER_ATTACK_H */

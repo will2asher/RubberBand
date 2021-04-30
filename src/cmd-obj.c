@@ -287,6 +287,7 @@ void do_cmd_wield(struct command *cmd)
 
 	int slot;
 	struct object *obj;
+	bool do_two = false; /* For duel-wielding */
 
 	if (player_is_shapechanged(player)) {
 		msg("You cannot do this while in %s form.",	player->shape->name);
@@ -305,8 +306,36 @@ void do_cmd_wield(struct command *cmd)
 			/* Choice */ USE_INVEN | USE_FLOOR) != CMD_OK)
 		return;
 
-	/* Get the slot the object wants to go in, and the item currently there */
-	slot = wield_slot(obj);
+	/* Some classes can wield two weapons at once */
+	if ((tval_is_melee_weapon(obj)) && (player_has(player, PF_2WEAPON))) {
+		/* Get weapon */
+		struct object* weapon = equipped_item_by_slot_name(player, "weapon");
+
+		/* Check if target weapon is light enough to wield in shield slot */
+		if ((obj->weight <= 110) || (obj->weight / 10 <= player->state.stat_ind[STAT_STR] / 3)) {
+			/* ask */
+			if (get_check("Wield in off-hand (shield slot)? ")) do_two = true;
+		}
+
+		/* Wielded weapon too heavy to hold a second weapon (Yet we allow shields, but whatever) */
+		/* (I used the bastard sword as a reference: It weighs 14lbs,
+		/*  so you need at least 17 STR to wield a bastard sword with one hand.) */
+		if ((do_two) && ((weapon->weight >= 170) || (weapon->weight / 10 + 3 > player->state.stat_ind[STAT_STR]))) 
+		{
+			object_desc(o_name, sizeof(o_name), weapon, ODESC_BASE);
+			msg("Your %s is too heavy for you to wield a second weapon at the same time.", o_name);
+			return;
+		}
+	}
+	/* Put weapon in shield slot */
+	if (do_two) {
+		slot = slot_by_type(player, EQUIP_SHIELD, false);
+	}
+	else {
+		/* Get the slot the object wants to go in */
+		slot = wield_slot(obj);
+	}
+	/* Get the item currently in the slot */
 	equip_obj = slot_object(player, slot);
 
 	/* If the slot is open, wield and be done */

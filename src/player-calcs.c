@@ -1908,6 +1908,8 @@ void calc_bonuses(struct player *p, struct player_state *state, bool known_only,
 					state->to_d += obj->to_d;
 				}
 			}
+			/* Any weapon in shield slot can be used for blocking a little bit at least */
+			if (slot_type_is(i, EQUIP_SHIELD) && (tval_is_melee_weapon(obj))) state->ac++;
 
 			/* Move to any unprocessed curse object */
 			if (curse) {
@@ -1948,9 +1950,9 @@ void calc_bonuses(struct player *p, struct player_state *state, bool known_only,
 		state->el_info[ELEM_DARK].res_level = 1;
 	}
 
-	/* Evil */
+	/* Evil (shouldn't resist nether IMO) */
 	if (player_has(p, PF_EVIL) && character_dungeon) {
-		state->el_info[ELEM_NETHER].res_level = 1;
+		/* state->el_info[ELEM_NETHER].res_level = 1; */
 		state->el_info[ELEM_HOLY_ORB].res_level = -1;
 	}
 	/* Goblins have innate speed */
@@ -2367,7 +2369,6 @@ static void update_bonuses(struct player *p)
 	memcpy(&p->state, &state, sizeof(state));
 	memcpy(&p->known_state, &known_state, sizeof(known_state));
 }
-
 
 
 

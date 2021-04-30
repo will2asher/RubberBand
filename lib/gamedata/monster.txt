@@ -1401,11 +1401,11 @@ sleepiness:44
 depth:3
 rarity:3
 experience:14
-blow:HIT:HURT:1d3
+blow:HIT:HURT:1d2
 blow:CLAWB:HURT:2d3
 flags:DROP_40 | RUBBER
 #ROAM | S_EVIL2
-spell-freq:12
+spell-freq:14
 spells:TINVIS
 friends:20:1d3:feline kobold
 desc:This kobold has catlike features instead of doglike ones.
@@ -2006,7 +2006,7 @@ hearing:30
 smell:20
 armor-class:24
 sleepiness:42
-depth:5
+depth:6
 rarity:4
 experience:21
 blow:CLAWB:HURT:3d3

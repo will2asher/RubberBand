@@ -494,9 +494,6 @@ static const char *comment_great[] =
 
 
 
-
-
-
 /**
  * Let a shop-keeper React to a purchase
  *

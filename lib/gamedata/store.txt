@@ -36,11 +36,13 @@ normal:food:Flask of Whisky
 normal:food:Hard Biscuit
 normal:mushroom:Stoneskin
 normal:mushroom:Purging
+normal:hafted:Walking Staff
 buy:light
 buy:food
 buy:mushroom
 buy:flask
 buy:digger
+buy:hafted
 buy:cloak
 buy:shot
 buy:bolt
@@ -88,12 +90,13 @@ owner:5000:Ithyl-Mak the Beastly (Half-Troll)
 owner:10000:Arndal Beast-Slayer (Half-Elf)
 owner:25000:Tarl Beast-Master (Hobbit)
 owner:30000:Oglign Dragon-Slayer (Dwarf)
-slots:3:14
+slots:4:15
 turnover:9
 normal:shot:Iron Shot
 normal:arrow:Arrow
 normal:bolt:Bolt
 normal:sword:Dagger
+normal:sword:Long Dagger
 normal:sword:Main Gauche
 normal:sword:Rapier
 normal:sword:Short Sword
@@ -109,11 +112,11 @@ normal:polearm:Awl-Pike
 normal:polearm:Trident
 normal:polearm:Pike
 normal:polearm:Beaked Axe
-normal:polearm:Broad Axe
 normal:polearm:Battle Axe
 normal:polearm:Lance
 normal:polearm:Lucerne Hammer
 normal:hafted:Whip
+normal:hafted:Mace
 normal:bow:Sling
 normal:bow:Short Bow
 normal:bow:Long Bow
@@ -144,6 +147,7 @@ buy:magic book
 buy:prayer book
 buy:nature book
 buy:shadow book
+buy:scroll
 
 # Alchemist
 store:5:Alchemy Shop
@@ -198,6 +202,7 @@ normal:wand:Stone to Mud
 normal:staff:Teleportation
 normal:staff:Light
 normal:staff:Mapping
+#normal:staff:Striking
 normal:staff:Detect Invisible
 normal:staff:Detect Evil
 buy:magic book

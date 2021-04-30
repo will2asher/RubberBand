@@ -164,7 +164,7 @@ base-object:sword:Dagger
 level:20
 weight:12
 cost:100000
-alloc:2:60 to 100
+alloc:2:60 to 110
 attack:2d7:18:16
 armor:0:5
 flags:FREE_ACT | SUST_DEX
@@ -303,7 +303,7 @@ base-object:sword:Rapier
 level:15
 weight:40
 cost:25000
-alloc:10:15 to 80
+alloc:10:15 to 85
 attack:2d6:16:12
 armor:0:0
 values:BLOWS[1] | STR[2] | DEX[2] | CON[2]
@@ -369,7 +369,7 @@ base-object:sword:Scimitar
 level:20
 weight:130
 cost:30000
-alloc:7:20 to 80
+alloc:7:20 to 85
 attack:4d2:9:11
 armor:0:0
 flags:SEE_INVIS
@@ -569,7 +569,7 @@ base-object:sword:Katana
 level:30
 weight:50
 cost:40000
-alloc:4:30 to 100
+alloc:4:30 to 110
 attack:6d6:10:10
 armor:0:0
 flags:SUST_DEX

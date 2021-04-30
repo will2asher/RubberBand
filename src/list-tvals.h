@@ -1,6 +1,7 @@
 /**
  * \file list-tvals.h
  * \brief List of object base types
+ * RB: I will need to re-add the skeleton tval at some point.
  */
 /* string		name 			min randarts */
 TV(NULL,		"none",			0)

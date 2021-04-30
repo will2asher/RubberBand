@@ -1398,6 +1398,14 @@ static bool describe_combat(textblock *tb, const struct object *obj)
 		textblock_append(tb, " chance of breaking upon contact.\n");
 	}
 
+	/* Some classes can wield weapons in the off-hand */
+	if ((tval_is_melee_weapon(obj)) && (player_has(player, PF_2WEAPON))) {
+		/* Check weapon weight */
+		if ((obj->weight <= 110) || (obj->weight / 10 <= player->state.stat_ind[STAT_STR] / 3)) {
+			textblock_append_c(tb, COLOUR_L_WHITE, "You may wield this weapon in the off-hand (shield slot).\n");
+		}
+	}
+
 	/* Something has been said */
 	return true;
 }

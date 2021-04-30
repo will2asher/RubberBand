@@ -624,8 +624,9 @@ static const struct hit_types melee_hit_types[] = {
 
 /**
  * Attack the monster at the given location with a single blow.
+ * (returns true if the monster dies or we cause an earthquake)
  */
-bool py_attack_real(struct player *p, struct loc grid, bool *fear)
+bool py_attack_real(struct player *p, struct loc grid, bool *fear, bool offhand)
 {
 	size_t i;
 
@@ -634,8 +635,13 @@ bool py_attack_real(struct player *p, struct loc grid, bool *fear)
 	char m_name[80];
 	bool stop = false;
 
-	/* The weapon used */
-	struct object *obj = equipped_item_by_slot_name(p, "weapon");
+	/* The weapon used (may now be an off-hand weapon in shield slot) */
+	struct object* obj;
+
+	/* off-weapon attack */
+	if (offhand) obj = equipped_item_by_slot_name(p, "shield");
+	/* main weapon */
+	else obj = equipped_item_by_slot_name(p, "weapon");
 
 	/* Information about the attack */
 	int chance = chance_of_melee_hit(p, obj);
@@ -643,6 +649,9 @@ bool py_attack_real(struct player *p, struct loc grid, bool *fear)
 	int splash = 0;
 	bool do_quake = false;
 	bool success = false;
+
+	/* To-hit is reduced for off-hand attacks */
+	if (offhand) chance -= 5;
 
 	/* Default to punching for one damage (STR bonus is added later) */
 	char verb[20];
@@ -742,7 +751,14 @@ bool py_attack_real(struct player *p, struct loc grid, bool *fear)
 	equip_learn_on_melee_attack(p);
 
 	/* Apply the player damage bonuses */
-	if (!OPT(p, birth_percent_damage)) {
+	if ((offhand) && (!OPT(p, birth_percent_damage))) {
+		/* Off-hand attacks get these bonuses halved. */
+		dmg += player_damage_bonus(&p->state) / 2;
+		/* player_damage_bonus() includes to_d from shield slot, so don't double it */
+		dmg -= obj->to_d / 2;
+	}
+	else if (!OPT(p, birth_percent_damage)) {
+		/* (to-dam bonuses from strength and equipment other than the weapon) */
 		dmg += player_damage_bonus(&p->state);
 	}
 
@@ -799,12 +815,10 @@ bool py_attack_real(struct player *p, struct loc grid, bool *fear)
 		}
 	}
 
-	if (stop)
-		(*fear) = false;
+	if (stop) (*fear) = false;
 
 	/* Post-damage effects */
-	if (blow_after_effects(grid, dmg, splash, fear, do_quake))
-		stop = true;
+	if (blow_after_effects(grid, dmg, splash, fear, do_quake)) stop = true;
 
 	return stop;
 }
@@ -813,8 +827,9 @@ bool py_attack_real(struct player *p, struct loc grid, bool *fear)
 /**
  * Attempt a shield bash; return true if the monster dies
  */
-bool attempt_shield_bash(struct player *p, struct monster *mon, bool *fear)
+bool attempt_shield_bash(struct player *p, struct loc grid, bool *fear, bool offhandhit)
 {
+	struct monster* mon = square_monster(cave, grid);
 	struct object *weapon = slot_object(p, slot_by_name(p, "weapon"));
 	struct object *shield = slot_object(p, slot_by_name(p, "arm"));
 	int nblows = p->state.num_blows / 100;
@@ -824,8 +839,17 @@ bool attempt_shield_bash(struct player *p, struct monster *mon, bool *fear)
 	int bash_chance = p->state.skills[SKILL_TO_HIT_MELEE] / 8 +
 		adj_dex_th[p->state.stat_ind[STAT_DEX]] / 2;
 
-	/* No shield, no bash */
+	/* No shield or off-hand weapon */
 	if (!shield) return false;
+
+	/* If we're holding a shield, but can't bash, then we're done here. */
+	if (!tval_is_melee_weapon(shield) && !player_has(p, PF_SHIELD_BASH)) return false;
+
+		/* Check if we need to shield bash or attack with an off-hand weapon */
+	/* There's a weapon in the shield slot, but we aren't attacking with it */
+	else if (tval_is_melee_weapon(shield) && !offhandhit) return false;
+	/* we're holding a shield, so it's not an off-hand weapon attack */
+	else if (!tval_is_melee_weapon(shield)) offhandhit = false;
 
 	/* Monster is too pathetic, don't bother */
 	if (mon->race->level < p->lev / 2) return false;
@@ -834,60 +858,73 @@ bool attempt_shield_bash(struct player *p, struct monster *mon, bool *fear)
 	if (!equipped_item_by_slot_name(p, "weapon")) {
 		/* Unarmed... */
 		bash_chance *= 4;
-	} else if (weapon->dd * weapon->ds * nblows < shield->dd * shield->ds * 3) {
+	}
+	else if (weapon->dd * weapon->ds * nblows < shield->dd * shield->ds * 3) {
 		/* ... or armed with a puny weapon */
 		bash_chance *= 2;
 	}
+	/* Attack with off-hand weapon slightly more often than shield bash anyway */
+	else if (offhandhit) bash_chance += p->lev / 8 + 1;
 
 	/* Try to get in a shield bash. */
 	if (bash_chance <= randint0(200 + mon->race->level)) {
 		return false;
 	}
 
-	/* Calculate attack quality, a mix of momentum and accuracy. */
-	bash_quality = p->state.skills[SKILL_TO_HIT_MELEE] / 4 + p->wt / 8 +
-		p->upkeep->total_weight / 80 + shield->weight / 2;
-
-	/* Calculate damage.  Big shields are deadly. */
-	bash_dam = damroll(shield->dd, shield->ds);
-
-	/* Multiply by quality and experience factors */
-	bash_dam *= bash_quality / 40 + p->lev / 14;
-
-	/* Strength bonus. */
-	bash_dam += adj_str_td[p->state.stat_ind[STAT_STR]];
-
-	/* Paranoia. */
-	bash_dam = MIN(bash_dam, 125);
-
-	if (OPT(p, show_damage)) {
-		msgt(MSG_HIT, "You get in a shield bash! (%d)", bash_dam);
-	} else {
-		msgt(MSG_HIT, "You get in a shield bash!");
+	/* We have another function for attacking with normal weapons */
+	if (offhandhit) {
+		if (py_attack_real(p, grid, &fear, true)) return true;
 	}
+	else {
+		/* Calculate attack quality, a mix of momentum and accuracy. */
+		bash_quality = p->state.skills[SKILL_TO_HIT_MELEE] / 4 + p->wt / 8 +
+			p->upkeep->total_weight / 80 + shield->weight / 2;
 
-	/* Encourage the player to keep wearing that heavy shield. */
-	if (randint1(bash_dam) > 30 + randint1(bash_dam / 2)) {
-		msgt(MSG_HIT_HI_SUPERB, "WHAMM!");
-	}
+		/* Calculate damage.  Big shields are deadly. */
+		bash_dam = damroll(shield->dd, shield->ds);
 
-	/* Damage, check for fear and death. */
-	if (mon_take_hit(mon, bash_dam, fear, NULL)) return true;
+		/* Multiply by quality and experience factors */
+		bash_dam *= bash_quality / 40 + p->lev / 14;
 
-	/* Stunning. */
-	if (bash_quality + p->lev > randint1(200 + mon->race->level * 8)) {
-		mon_inc_timed(mon, MON_TMD_STUN, randint0(p->lev / 5) + 4, 0);
-	}
+		/* Strength bonus. */
+		bash_dam += adj_str_td[p->state.stat_ind[STAT_STR]];
 
-	/* Confusion. */
-	if (bash_quality + p->lev > randint1(300 + mon->race->level * 12)) {
-		mon_inc_timed(mon, MON_TMD_CONF, randint0(p->lev / 5) + 4, 0);
+		/* Paranoia. */
+		bash_dam = MIN(bash_dam, 125);
+
+		if (OPT(p, show_damage)) {
+			msgt(MSG_HIT, "You get in a shield bash! (%d)", bash_dam);
+		}
+		else {
+			msgt(MSG_HIT, "You get in a shield bash!");
+		}
+
+		/* Encourage the player to keep wearing that heavy shield. */
+		if (randint1(bash_dam) > 30 + randint1(bash_dam / 2)) {
+			msgt(MSG_HIT_HI_SUPERB, "WHAMM!");
+		}
+
+		/* Damage, check for fear and death. */
+		if (mon_take_hit(mon, bash_dam, fear, NULL)) return true;
+
+		/* Stunning. */
+		if (bash_quality + p->lev > randint1(200 + mon->race->level * 8)) {
+			mon_inc_timed(mon, MON_TMD_STUN, randint0(p->lev / 5) + 4, 0);
+		}
+
+		/* Confusion. */
+		if (bash_quality + p->lev > randint1(300 + mon->race->level * 12)) {
+			mon_inc_timed(mon, MON_TMD_CONF, randint0(p->lev / 5) + 4, 0);
+		}
 	}
 
 	/* The player will sometimes stumble. */
 	if (35 + adj_dex_th[p->state.stat_ind[STAT_DEX]] < randint1(60)) {
-		energy_lost = randint1(50) + 25;
 		/* Lose 26-75% of a turn due to stumbling after shield bash. */
+		energy_lost = randint1(50) + 25;
+		/* Don't lose as much time for an off-hand weapon attack. */
+		if (offhandhit) energy_lost = randint1(40) + 10;
+
 		msgt(MSG_GENERIC, "You stumble!");
 		p->upkeep->energy_use += energy_lost * z_info->move_energy / 100;
 	}
@@ -909,6 +946,8 @@ void py_attack(struct player *p, struct loc grid)
 	int blow_energy = 100 * z_info->move_energy / p->state.num_blows;
 	bool slain = false, fear = false;
 	struct monster *mon = square_monster(cave, grid);
+	int joef = 450;
+	bool offhandhit = false;
 
 	/* Disturb the player */
 	disturb(p);
@@ -922,18 +961,24 @@ void py_attack(struct player *p, struct loc grid)
 		player_adjust_mana_precise(p, sp_gain);
 	}
 
-	/* Player attempts a shield bash if they can, and if monster is visible
+	/* Don't do off-hand attack if we're at max blows */
+	/* (6 for fighter, 5 otherwise. No primary casters will have the 2WEAPON flag, so max blows shouldn't be less than 5.) */
+	if (player_has(p, PF_BRAVERY_30)) joef = 550; /* else 450 */
+	if ((p->state.num_blows < joef) && player_has(p, PF_2WEAPON)) offhandhit = true;
+
+	/* Player attempts a shield bash or off-hand attack if they can, and if monster is visible
 	 * and not too pathetic */
-	if (player_has(p, PF_SHIELD_BASH) && monster_is_visible(mon)) {
+	if ((player_has(p, PF_SHIELD_BASH) || offhandhit) && monster_is_visible(mon) && 
+		(!player_is_shapechanged(p))) {
 		/* Monster may die */
-		if (attempt_shield_bash(p, mon, &fear)) return;
+		if (attempt_shield_bash(p, grid, &fear, offhandhit)) return;
 	}
 
 	/* Attack until the next attack would exceed energy available or
 	 * a full turn or until the enemy dies. We limit energy use
 	 * to avoid giving monsters a possible double move. */
 	while (avail_energy - p->upkeep->energy_use >= blow_energy && !slain) {
-		slain = py_attack_real(p, grid, &fear);
+		slain = py_attack_real(p, grid, &fear, false);
 		p->upkeep->energy_use += blow_energy;
 	}
 
