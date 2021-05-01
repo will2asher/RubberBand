@@ -637,7 +637,7 @@ type:sword
 graphics:|:W
 level:0
 weight:12
-cost:25
+cost:40
 alloc:20:0 to 100
 pile:11:1d4
 attack:1d4:0:0
@@ -650,7 +650,7 @@ type:sword
 graphics:|:W
 level:7
 weight:32
-cost:45
+cost:54
 alloc:17:7 to 100
 attack:1d5:0:0
 armor:0:0
@@ -1391,7 +1391,7 @@ type:digger
 graphics:\:s
 level:1
 weight:60
-cost:10
+cost:50
 alloc:20:5 to 100
 attack:1d2:0:0
 armor:0:0

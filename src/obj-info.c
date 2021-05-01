@@ -831,13 +831,16 @@ static bool obj_known_damage(const struct object *obj, int *normal_damage,
 	if (ammo && bow->known)
 		copy_slays(&total_slays, bow->known->slays);
 
-	/* Melee weapons may get slays and brands from other items */
+	/* Melee weapons may get slays and brands from other items (but not an off-hand weapon) */
 	*nonweap_slay = false;
 	if (weapon)	{
 		for (i = 2; i < player->body.count; i++) {
 			struct object *slot_obj = slot_object(player, i);
 			if (!slot_obj)
 				continue;
+
+			/* Don't apply off-hand weapon brands to main weapon */
+			if (slot_type_is(i, EQUIP_SHIELD) && (tval_is_melee_weapon(slot_obj))) continue;
 
 			if (slot_obj->known->brands || slot_obj->known->slays)
 				*nonweap_slay = true;
@@ -1023,6 +1026,9 @@ static bool o_obj_known_damage(const struct object *obj, int *normal_damage,
 			struct object *slot_obj = slot_object(player, i);
 			if (!slot_obj)
 				continue;
+
+			/* Don't apply off-hand weapon brands to main weapon */
+			if (slot_type_is(i, EQUIP_SHIELD) && (tval_is_melee_weapon(slot_obj))) continue;
 
 			if (slot_obj->known->brands || slot_obj->known->slays)
 				*nonweap_slay = true;

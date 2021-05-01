@@ -635,28 +635,30 @@ bool py_attack_real(struct player *p, struct loc grid, bool *fear, bool offhand)
 	char m_name[80];
 	bool stop = false;
 
-	/* The weapon used (may now be an off-hand weapon in shield slot) */
-	struct object* obj;
-
-	/* off-weapon attack */
-	if (offhand) obj = equipped_item_by_slot_name(p, "shield");
-	/* main weapon */
-	else obj = equipped_item_by_slot_name(p, "weapon");
+	/* The weapon used */
+	struct object *obj;
 
 	/* Information about the attack */
-	int chance = chance_of_melee_hit(p, obj);
+	int chance;
 	int drain = 0;
 	int splash = 0;
 	bool do_quake = false;
 	bool success = false;
 
-	/* To-hit is reduced for off-hand attacks */
-	if (offhand) chance -= 5;
-
 	/* Default to punching for one damage (STR bonus is added later) */
 	char verb[20];
 	int dmg = 1;
 	u32b msg_type = MSG_HIT;
+
+	/* off-hand weapon attack */
+	if (offhand) obj = equipped_item_by_slot_name(p, "arm");
+	/* main weapon */
+	else obj = equipped_item_by_slot_name(p, "weapon");
+
+	chance = chance_of_melee_hit(p, obj);
+
+	/* To-hit is reduced for off-hand attacks */
+	if (offhand) chance -= 5;
 
 	/* Default to punching for one damage */
 	my_strcpy(verb, "punch", sizeof(verb));
@@ -710,8 +712,13 @@ bool py_attack_real(struct player *p, struct loc grid, bool *fear, bool offhand)
 		/* Best attack from all slays or brands on all non-launcher equipment */
 		for (j = 2; j < p->body.count; j++) {
 			struct object *obj_local = slot_object(p, j);
-			if (obj_local)
-				improve_attack_modifier(obj_local, mon, &b, &s, verb, false);
+			if (obj_local) {
+				/* Don't apply off-hand weapon brands to main weapon */
+				/* (and if we're using an off-hand weapon, we don't need to read it twice) */
+				if (slot_type_is(j, EQUIP_SHIELD) && (tval_is_melee_weapon(obj_local))) 
+					/*skip*/;
+				else improve_attack_modifier(obj_local, mon, &b, &s, verb, false);
+			}
 		}
 
 		/* Get the best attack from all slays or brands - weapon or temporary */
@@ -829,7 +836,7 @@ bool py_attack_real(struct player *p, struct loc grid, bool *fear, bool offhand)
  */
 bool attempt_shield_bash(struct player *p, struct loc grid, bool *fear, bool offhandhit)
 {
-	struct monster* mon = square_monster(cave, grid);
+	struct monster *mon = square_monster(cave, grid);
 	struct object *weapon = slot_object(p, slot_by_name(p, "weapon"));
 	struct object *shield = slot_object(p, slot_by_name(p, "arm"));
 	int nblows = p->state.num_blows / 100;
@@ -873,7 +880,7 @@ bool attempt_shield_bash(struct player *p, struct loc grid, bool *fear, bool off
 
 	/* We have another function for attacking with normal weapons */
 	if (offhandhit) {
-		if (py_attack_real(p, grid, &fear, true)) return true;
+		if (py_attack_real(p, grid, fear, true)) return true;
 	}
 	else {
 		/* Calculate attack quality, a mix of momentum and accuracy. */
@@ -922,10 +929,10 @@ bool attempt_shield_bash(struct player *p, struct loc grid, bool *fear, bool off
 	if (35 + adj_dex_th[p->state.stat_ind[STAT_DEX]] < randint1(60)) {
 		/* Lose 26-75% of a turn due to stumbling after shield bash. */
 		energy_lost = randint1(50) + 25;
-		/* Don't lose as much time for an off-hand weapon attack. */
+		/* Don't lose as much energy for an off-hand weapon attack. */
 		if (offhandhit) energy_lost = randint1(40) + 10;
 
-		msgt(MSG_GENERIC, "You stumble!");
+		if (energy_lost >= 20) msgt(MSG_GENERIC, "You stumble!");
 		p->upkeep->energy_use += energy_lost * z_info->move_energy / 100;
 	}
 
