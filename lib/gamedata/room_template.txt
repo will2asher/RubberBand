@@ -9796,7 +9796,7 @@ D:%%%%%%%%%%%%%%%%%%%
 name:zig
 type:1
 rating:1
-rows:19
+rows:9
 columns:12
 doors:2
 tval:chest
