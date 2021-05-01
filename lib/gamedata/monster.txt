@@ -1432,7 +1432,7 @@ desc: Less intelligent and less magical than pixies, they are also less friendly
 name:garden gnome
 base:light fairy
 color:M
-speed:107
+speed:112
 hit-points:12
 hearing:17
 armor-class:17
@@ -1442,9 +1442,10 @@ rarity:5
 experience:9
 blow:HIT:HURT:1d2
 blow:KICK:HURT:2d2
-flags:MALE | TOWN_OR_DUN | DROP_40 | TAKE_ITEM 
+flags:MALE | TOWN_OR_DUN | RAND_25
+flags:DROP_40 | TAKE_ITEM 
 #ROAM
-#innate-freq:11
+innate-freq:14
 spell-freq:8
 spells:THROW | HASTE | BLINK | TINVIS
 desc:A little bearded man running around burrowing holes too small for humans.  They are
@@ -1511,7 +1512,7 @@ blow:HIT:HURT:1d5
 flags:MALE | FORCE_SLEEP
 flags:DROP_60 | OPEN_DOOR
 innate-freq:3
-spell-freq:10
+spell-freq:11
 spells:ARROW | HASTE
 drop-base:nature book:3:1:1
 friends-base:20:1d3:person
@@ -1751,7 +1752,7 @@ desc:"Croak"
 name:straw golem
 base:golem
 color:U
-speed:107
+speed:108
 hit-points:34
 hearing:10
 armor-class:27
@@ -1773,7 +1774,7 @@ hearing:3
 armor-class:21
 sleepiness:92
 depth:4
-rarity:3
+rarity:4
 experience:14
 blow:SPORE:HALLU:1d5
 flags:NEVER_MOVE 
@@ -1815,10 +1816,12 @@ experience:16
 blow:TOUCH:EAT_FOOD:1d1
 blow:HIT:HURT:1d1
 #SLIME
-flags:DROP_40 | DROP_60
+flags:DROP_20 | DROP_60
 flags:RAND_25 | RAND_50
 #ROAM | S_EVIL2
-flags-off:EVIL | NO_CONF | NO_SLEEP
+flags-off:EVIL | NO_CONF | INVISIBLE
+spell-freq:8
+spells:TINVIS
 desc:It is a very ugly green ghost with a voracious appetite.
 
 name:large kobold
@@ -2262,7 +2265,7 @@ desc:It is an ugly dog-headed humanoid in command of a company of others like hi
 name:clear eye
 base:eye
 color:w
-speed:105
+speed:111
 hit-points:19
 hearing:2
 armor-class:9
@@ -2271,7 +2274,7 @@ depth:6
 rarity:4
 experience:14
 blow:GAZE:PARALYZE:1d2
-flags:ATTR_CLEAR | NEVER_MOVE | NO_FEAR | HURT_LIGHT
+flags:ATTR_CLEAR | MOVE_SLOW | NO_FEAR | HURT_LIGHT
 spell-freq:12
 spells:SLOW | BLINK | TINVIS
 desc:All you can see is the outline of this disembodied eye.
