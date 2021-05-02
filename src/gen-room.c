@@ -49,7 +49,8 @@
  * ------------------------------------------------------------------------ */
 /**
  * Chooses a room template of a particular kind at random.
- * \param typ template room type - currently unused
+ * \param typ template room type to select
+ * \param rating template room rating to select
  * \return a pointer to the room template
  */
 struct room_template *random_room_template(int typ, int rating)
@@ -1049,7 +1050,7 @@ static bool find_space(struct loc *centre, int height, int width)
 /**
  * Build a room template from its string representation.
  * \param c the chunk the room is being built in
- *\ param centre the room centre; out of chunk centre invokes find_space()
+ * \param centre the room centre; out of chunk centre invokes find_space()
  * \param ymax the room dimensions
  * \param xmax the room dimensions
  * \param doors the door position
@@ -1063,7 +1064,8 @@ static bool build_room_template(struct chunk *c, struct loc centre, int ymax,
 	int dx, dy, rnddoors, doorpos;
 	const char *t;
 	bool rndwalls, light;
-	
+	int rotate, txmax, tymax;
+	bool reflect;
 
 	assert(c);
 
@@ -1079,16 +1081,30 @@ static bool build_room_template(struct chunk *c, struct loc centre, int ymax,
 
 	/* Find and reserve some space in the dungeon.  Get center of room. */
 	if ((centre.y >= c->height) || (centre.x >= c->width)) {
-		if (!find_space(&centre, ymax + 2, xmax + 2))
+		get_random_symmetry_transform(ymax, xmax, SYMTR_FLAG_NONE,
+			calc_default_transpose_weight(ymax, xmax),
+			&rotate, &reflect, &tymax, &txmax);
+		if (!find_space(&centre, tymax + 2, txmax + 2))
 			return (false);
+	} else {
+		/* Given the preset centre, don't allow transposition. */
+		get_random_symmetry_transform(ymax, xmax, SYMTR_FLAG_NONE, 0,
+			&rotate, &reflect, &tymax, &txmax);
+		assert(tymax == ymax && txmax == xmax);
 	}
 
-	/* Place dungeon features and objects */
+	/* Convert centre to translation for the symmetry transformation. */
+	centre.x -= txmax / 2;
+	centre.y -= tymax / 2;
+
+	/* Place dungeon features, objects, and monsters for specific grids. */
 	for (t = data, dy = 0; dy < ymax && *t; dy++) {
 		for (dx = 0; dx < xmax && *t; dx++, t++) {
 			/* Extract the location */
-			struct loc grid = loc(centre.x - (xmax / 2) + dx,
-								  centre.y - (ymax / 2) + dy);
+			struct loc grid = loc(dx, dy);
+
+			symmetry_transform(&grid, centre.y, centre.x,
+				ymax, xmax, rotate, reflect);
 
 			/* Skip non-grids */
 			if (*t == ' ') continue;
@@ -1128,42 +1144,20 @@ static bool build_room_template(struct chunk *c, struct loc centre, int ymax,
 				break;
 			}
 			case '8': {
-
 				/* Put something nice in this square
 				 * Object (80%) or Stairs (20%) */
-				if ((randint0(100) < 80) || OPT(player, birth_levels_persist))
+				if ((randint0(100) < 80) || OPT(player, birth_levels_persist)) {
 					place_object(c, grid, c->depth, false, false,
 								 ORIGIN_SPECIAL, 0);
-				else
+				} else {
 					place_random_stairs(c, grid);
-
-				/* Some monsters to guard it */
-				vault_monsters(c, grid, c->depth + 2, randint0(2) + 3);
-
+				}
+				/* Place nearby guards in second pass. */
 				break;
 			}
 			case '9': {
-				/* Create some interesting stuff nearby */
-				struct loc off2 = loc(2, -2);
-				struct loc off3 = loc(3, 3);
-
-				/* A few monsters */
-				vault_monsters(c, loc_diff(grid, off3), c->depth + randint0(2),
-							   randint1(2));
-				vault_monsters(c, loc_sum(grid, off3), c->depth + randint0(2),
-							   randint1(2));
-
-				/* And maybe a bit of treasure */
-				if (one_in_(2))
-					vault_objects(c, loc_sum(grid, off2), c->depth,
-								  1 + randint0(2));
-
-				if (one_in_(2))
-					vault_objects(c, loc_diff(grid, off2), c->depth,
-								  1 + randint0(2));
-
+				/* Everything is handled in the second pass. */
 				break;
-
 			}
 			case '[': {
 				
@@ -1197,14 +1191,74 @@ static bool build_room_template(struct chunk *c, struct loc centre, int ymax,
 		}
 	}
 
+	/*
+	 * Perform second pass for placement of monsters and objects at
+	 * unspecified locations after all the features are in place.
+	 */
+	for (t = data, dy = 0; dy < ymax && *t; dy++) {
+		for (dx = 0; dx < xmax && *t; dx++, t++) {
+			/* Extract the location */
+			struct loc grid = loc(dx, dy);
+
+			symmetry_transform(&grid, centre.y, centre.x,
+				ymax, xmax, rotate, reflect);
+
+			/* Analyze the grid. */
+			switch (*t) {
+			case '8':
+				/* Check consistency with first pass. */
+				assert(square_isroom(c, grid) &&
+					(square_isfloor(c, grid) ||
+					square_isstairs(c, grid)));
+
+				/* Add some monsters to guard it. */
+				vault_monsters(c, grid, c->depth + 2,
+					randint0(2) + 3);
+				break;
+
+			case '9': {
+				/* Create some interesting stuff nearby. */
+				struct loc off2 = loc(2, -2);
+				struct loc off3 = loc(3, 3);
+
+				/* Check consistency with first pass. */
+				assert(square_isroom(c, grid) &&
+					square_isfloor(c, grid));
+
+				/* Add a few monsters. */
+				vault_monsters(c, loc_diff(grid, off3),
+					c->depth + randint0(2), randint1(2));
+				vault_monsters(c, loc_sum(grid, off3),
+					c->depth + randint0(2), randint1(2));
+
+				/* And maybe a bit of treasure. */
+				if (one_in_(2)) {
+					vault_objects(c, loc_sum(grid, off2),
+						c->depth, 1 + randint0(2));
+				}
+				if (one_in_(2)) {
+					vault_objects(c, loc_diff(grid, off2),
+						c->depth, 1 + randint0(2));
+				}
+				break;
+			}
+
+			default:
+				/* Everything was handled in the first pass. */
+				break;
+			}
+		}
+	}
+
 	return true;
 }
 
 /**
  * Helper function for building room templates.
  * \param c the chunk the room is being built in
- *\ param centre the room centre; out of chunk centre invokes find_space()
- * \param typ the room template type (currently unused)
+ * \param centre the room centre; out of chunk centre invokes find_space()
+ * \param typ template room type to select
+ * \param rating template room rating to select
  * \return success
  */
 static bool build_room_template_type(struct chunk *c, struct loc centre,
@@ -1228,7 +1282,7 @@ static bool build_room_template_type(struct chunk *c, struct loc centre,
 /**
  * Build a vault from its string representation.
  * \param c the chunk the room is being built in
- *\ param centre the room centre; out of chunk centre invokes find_space()
+ * \param centre the room centre; out of chunk centre invokes find_space()
  * \param v pointer to the vault template
  * \return success
  */
@@ -1240,28 +1294,48 @@ bool build_vault(struct chunk *c, struct loc centre, struct vault *v)
 	const char *t;
 	char racial_symbol[30] = "";
 	bool icky;
+	int rotate, thgt, twid;
+	bool reflect;
 
 	assert(c);
 
 	/* Find and reserve some space in the dungeon.  Get center of room. */
 	if ((centre.y >= c->height) || (centre.x >= c->width)) {
-		if (!find_space(&centre, v->hgt + 2, v->wid + 2))
+		get_random_symmetry_transform(v->hgt, v->wid, SYMTR_FLAG_NONE,
+			calc_default_transpose_weight(v->hgt, v->wid),
+			&rotate, &reflect, &thgt, &twid);
+		if (!find_space(&centre, thgt + 2, twid + 2))
 			return (false);
+	} else {
+		/* Given the preset centre, don't allow transposition. */
+		get_random_symmetry_transform(v->hgt, v->wid, SYMTR_FLAG_NONE,
+			0, &rotate, &reflect, &thgt, &twid);
+		assert(v->hgt == thgt && v->wid == twid);
 	}
 
+	/* Convert centre to translation for the symmetry transformation. */
+	centre.x -= twid / 2;
+	centre.y -= thgt / 2;
+
 	/* Get the room corners */
-	y1 = centre.y - (v->hgt / 2);
-	x1 = centre.x - (v->wid / 2);
-	y2 = y1 + v->hgt - 1;
-	x2 = x1 + v->wid - 1;
+	y1 = centre.y;
+	x1 = centre.x;
+	y2 = y1 + thgt - 1;
+	x2 = x1 + twid - 1;
 
 	/* No random monsters in vaults. */
 	generate_mark(c, y1, x1, y2, x2, SQUARE_MON_RESTRICT);
 
 	/* Place dungeon features and objects */
-	for (t = data, y = y1; y <= y2 && *t; y++) {
-		for (x = x1; x <= x2 && *t; x++, t++) {
+	for (t = data, y = 0; y < v->hgt && *t; y++) {
+		for (x = 0; x < v->wid && *t; x++, t++) {
 			struct loc grid = loc(x, y);
+
+			symmetry_transform(&grid, centre.y, centre.x, v->hgt,
+				v->wid, rotate, reflect);
+			assert(grid.x >= x1 && grid.x <= x2 &&
+				grid.y >= y1 && grid.y <= y2);
+
 			/* Skip non-grids */
 			if (*t == ' ') continue;
 
@@ -1344,9 +1418,15 @@ bool build_vault(struct chunk *c, struct loc centre, struct vault *v)
 
 
 	/* Place regular dungeon monsters and objects */
-	for (t = data, y = y1; y <= y2 && *t; y++) {
-		for (x = x1; x <= x2 && *t; x++, t++) {
+	for (t = data, y = 0; y < v->hgt && *t; y++) {
+		for (x = 0; x < v->wid && *t; x++, t++) {
 			struct loc grid = loc(x, y);
+
+			symmetry_transform(&grid, centre.y, centre.x, v->hgt,
+				v->wid, rotate, reflect);
+			assert(grid.x >= x1 && grid.x <= x2 &&
+				grid.y >= y1 && grid.y <= y2);
+
 			/* Hack -- skip "non-grids" */
 			if (*t == ' ') continue;
 
@@ -1496,7 +1576,7 @@ bool build_vault(struct chunk *c, struct loc centre, struct vault *v)
 /**
  * Helper function for building vaults.
  * \param c the chunk the room is being built in
- *\ param centre the room centre; out of chunk centre invokes find_space()
+ * \param centre the room centre; out of chunk centre invokes find_space()
  * \param typ the vault type
  * \param label name of the vault type (eg "Greater vault")
  * \return success
@@ -1704,7 +1784,7 @@ bool build_staircase(struct chunk *c, struct loc centre, int rating)
 /**
  * Build a circular room (interior radius 4-7).
  * \param c the chunk the room is being built in
- *\ param centre the room centre; out of chunk centre invokes find_space()
+ * \param centre the room centre; out of chunk centre invokes find_space()
  * \return success
  */
 bool build_circular(struct chunk *c, struct loc centre, int rating)
@@ -1755,7 +1835,7 @@ bool build_circular(struct chunk *c, struct loc centre, int rating)
 /**
  * Builds a normal rectangular room.
  * \param c the chunk the room is being built in
- *\ param centre the room centre; out of chunk centre invokes find_space()
+ * \param centre the room centre; out of chunk centre invokes find_space()
  * \return success
  */
 bool build_simple(struct chunk *c, struct loc centre, int rating)
@@ -1838,7 +1918,7 @@ bool build_simple(struct chunk *c, struct loc centre, int rating)
 /**
  * Builds an overlapping rectangular room.
  * \param c the chunk the room is being built in
- *\ param centre the room centre; out of chunk centre invokes find_space()
+ * \param centre the room centre; out of chunk centre invokes find_space()
  * \return success
  */
 bool build_overlap(struct chunk *c, struct loc centre, int rating)
@@ -1913,7 +1993,7 @@ bool build_overlap(struct chunk *c, struct loc centre, int rating)
 /**
  * Builds a cross-shaped room.
  * \param c the chunk the room is being built in
- *\ param centre the room centre; out of chunk centre invokes find_space()
+ * \param centre the room centre; out of chunk centre invokes find_space()
  * \return success
  *
  * Room "a" runs north/south, and Room "b" runs east/east 
@@ -2076,7 +2156,7 @@ bool build_crossed(struct chunk *c, struct loc centre, int rating)
 /**
  * Build a large room with an inner room.
  * \param c the chunk the room is being built in
- *\ param centre the room centre; out of chunk centre invokes find_space()
+ * \param centre the room centre; out of chunk centre invokes find_space()
  * \return success
  *
  * Possible sub-types:
@@ -2304,7 +2384,7 @@ bool build_large(struct chunk *c, struct loc centre, int rating)
 /**
  * Build a monster nest
  * \param c the chunk the room is being built in
- *\ param centre the room centre; out of chunk centre invokes find_space()
+ * \param centre the room centre; out of chunk centre invokes find_space()
  * \return success
  *
  * A monster nest consists of a rectangular moat around a room containing
@@ -2424,7 +2504,8 @@ bool build_nest(struct chunk *c, struct loc centre, int rating)
 /**
  * Build a monster pit
  * \param c the chunk the room is being built in
- *\ param centre the room centre; out of chunk centre invokes find_space()
+ * \param centre the room centre; out of chunk centre invokes find_space()
+ * \param rating is not used for this room type
  * \return success
  *
  * Monster pits are laid-out similarly to monster nests.
@@ -2648,7 +2729,8 @@ bool build_pit(struct chunk *c, struct loc centre, int rating)
 /**
  * Build a template room
  * \param c the chunk the room is being built in
- *\ param centre the room centre; out of chunk centre invokes find_space()
+ * \param centre the room centre; out of chunk centre invokes find_space()
+ * \param rating template room rating to select
  * \return success
 */
 bool build_template(struct chunk *c, struct loc centre, int rating)
@@ -2663,7 +2745,8 @@ bool build_template(struct chunk *c, struct loc centre, int rating)
 /**
  * Build an interesting room.
  * \param c the chunk the room is being built in
- *\ param centre the room centre; out of chunk centre invokes find_space()
+ * \param centre the room centre; out of chunk centre invokes find_space()
+ * \param rating is not used for this room type
  * \return success
  */
 bool build_interesting(struct chunk *c, struct loc centre, int rating)
@@ -2675,7 +2758,8 @@ bool build_interesting(struct chunk *c, struct loc centre, int rating)
 /**
  * Build a lesser vault.
  * \param c the chunk the room is being built in
- *\ param centre the room centre; out of chunk centre invokes find_space()
+ * \param centre the room centre; out of chunk centre invokes find_space()
+ * \param rating is not used for this room type
  * \return success
  */
 bool build_lesser_vault(struct chunk *c, struct loc centre, int rating)
@@ -2689,7 +2773,8 @@ bool build_lesser_vault(struct chunk *c, struct loc centre, int rating)
 /**
  * Build a medium vault.
  * \param c the chunk the room is being built in
- *\ param centre the room centre; out of chunk centre invokes find_space()
+ * \param centre the room centre; out of chunk centre invokes find_space()
+ * \param rating is not used for this room type
  * \return success
  */
 bool build_medium_vault(struct chunk *c, struct loc centre, int rating)
@@ -2703,7 +2788,8 @@ bool build_medium_vault(struct chunk *c, struct loc centre, int rating)
 /**
  * Build a greater vaults.
  * \param c the chunk the room is being built in
- *\ param centre the room centre; out of chunk centre invokes find_space()
+ * \param centre the room centre; out of chunk centre invokes find_space()
+ * \param rating is not used for this room type
  * \return success
  *
  * Classic profile:
@@ -2758,7 +2844,8 @@ bool build_greater_vault(struct chunk *c, struct loc centre, int rating)
 /**
  * Moria room (from Oangband).  Uses the "starburst room" code.
  * \param c the chunk the room is being built in
- *\ param centre the room centre; out of chunk centre invokes find_space()
+ * \param centre the room centre; out of chunk centre invokes find_space()
+ * \param rating is not used for this room type
  * \return success
  */
 bool build_moria(struct chunk *c, struct loc centre, int rating)
@@ -2826,7 +2913,8 @@ bool build_moria(struct chunk *c, struct loc centre, int rating)
 /**
  * Rooms of chambers
  * \param c the chunk the room is being built in
- *\ param centre the room centre; out of chunk centre invokes find_space()
+ * \param centre the room centre; out of chunk centre invokes find_space()
+ * \param rating is not used for this room type
  * \return success
  *
  * Build a room, varying in size between 22x22 and 44x66, consisting of
@@ -3134,7 +3222,8 @@ bool build_room_of_chambers(struct chunk *c, struct loc centre, int rating)
  * even divided with irregularly-shaped fields of rubble. No special
  * monsters.  Appears deeper than level 40.
  * \param c the chunk the room is being built in
- *\ param centre the room centre; out of chunk centre invokes find_space()
+ * \param centre the room centre; out of chunk centre invokes find_space()
+ * \param rating is not used for this room type
  * \return success
  *
  * These are the largest, most difficult to position, and thus highest-
