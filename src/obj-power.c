@@ -873,9 +873,9 @@ int object_value_real(const struct object *obj, int qty)
 #endif /* PRICE_DEBUG */
 		value = SGN(power) * ((a * power * power) + (b * power));
 
-		/* obj->kind->cost should still have some effect */
+		/* obj->kind->cost should still have some effect (for non-egos at least) */
 		/* (Golden Crowns should be worth something for their gold, even if they're not useful) */
-		value = (obj->kind->cost + value * 2) / 3;
+		if (!obj->ego) value = (obj->kind->cost + value * 2) / 3;
 
 		/* Rescale for expendables */
 		if ((tval_is_light(obj) && of_has(obj->flags, OF_BURNS_OUT)
