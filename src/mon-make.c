@@ -273,8 +273,8 @@ struct monster_race *get_mon_num(int level)
 
 		/* Option to use vanilla-ish monsters or not */
 		/* most VISH monsters are only much rarer if VISH is turned off, but not 'y' or 'i' monsters */
-		if (rf_has(race->flags, RF_VISH) && (!OPT(player, birth_vish)) && 
-			(race->d_char == 'y' || race->d_char == 'i'))
+		/* Since multiple monster bases with the same glyph doesn't work, I'll probably cut out the option. */
+		if (rf_has(race->flags, RF_VISH) && (!OPT(player, birth_vish)) && (race->d_char == 'y' || race->d_char == 'i'))
 			continue;
 		/* No RUBBER monsters if VISH is turned on */
 		if (rf_has(race->flags, RF_RUBBER) && (OPT(player, birth_vish)))

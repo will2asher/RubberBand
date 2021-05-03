@@ -75,10 +75,15 @@ static bool mon_select(struct monster_race *race)
 			return (false);
     }
 
-	/* No invisible undead until deep. */
+	/* No invisible undead until deep. (usually) */
 	if ((player->depth < 40) && (rf_has(race->flags, RF_UNDEAD))
-		&& (rf_has(race->flags, RF_INVISIBLE)))
-		return (false);
+		&& (rf_has(race->flags, RF_INVISIBLE))) {
+		int erlev = race->level;
+		if (rf_has(race->flags, RF_PASS_WALL)) erlev += 2;
+		/* Sometimes allow in-depth invisible undead. */
+		if (erlev > player->depth + randint0(4)) return (false);
+		if (randint1(erlev * 5) > player->depth) return (false);
+	}
 
     /* Usually decline unique monsters. */
     if (rf_has(race->flags, RF_UNIQUE)) {

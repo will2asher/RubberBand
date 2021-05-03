@@ -169,11 +169,16 @@ flags:OPEN_DOOR | CLEAR_WEB
 desc:Dark Fairy
 
 # (or icky things if VISH option is turned on)
-name:icky thing
-glyph:i
-pain:1
-flags:CLEAR_WEB | VISH | IM_SLIME
-desc:Icky Thing
+# ...Having two monster base types use the same glyph doesn't seem to work with
+# the get_vault_monster code.  hmmm... What if I use an ascii character that looks almost like an i but isn't?
+# (Let's the do almost-an-'i' for the dark fairies.)
+# But then I'll want to do something to make it easier to get monster recall, but I'll have to hardcode that part.
+# ...well, that didn't work. I guess I'll just cut out 
+#name:icky thing
+#glyph:i
+#pain:1
+#flags:CLEAR_WEB | VISH | IM_SLIME
+#desc:Icky Thing
 
 # Insects are small, a bit fast, weak breeders which bite for various effects
 name:insect
@@ -215,7 +220,8 @@ desc:Kobold
 name:tree
 glyph:l
 pain:9
-flags:SPIRIT | CLEAR_WEB | COLD_BLOOD | NO_HOLD
+flags:SPIRIT | CLEAR_WEB | COLD_BLOOD
+#| NO_HOLD
 flags:HURT_FIRE | IM_WATER
 desc:Tree/Ent
 
@@ -356,7 +362,7 @@ flags:PASS_WEB
 desc:Spider/Scorpion/Tick
 
 # Weak, except the odd one to surprise the unwary newcomer.  Always native to
-# level 0, never give experience
+# level 0, (almost) never give experience
 name:townsfolk
 glyph:t
 pain:4
@@ -443,6 +449,7 @@ desc:Xorn or other elemental monster
 #glyph:x is the only unused letter glyph (will probably be gargoyles later)
 
 # Light Fairies
+# changed glyph to something that's almost a 'y' but isn't
 name:light fairy
 glyph:y
 pain:1
@@ -451,11 +458,11 @@ flags:OPEN_DOOR | CLEAR_WEB
 desc:Light Fairy
 
 # (or yeeks if VISH is turned on)
-name:yeek
-glyph:y
-pain:1
-flags:SPIRIT | VISH | OPEN_DOOR | CLEAR_WEB
-desc:Yeek
+#name:yeek
+#glyph:y
+#pain:1
+#flags:SPIRIT | VISH | OPEN_DOOR | CLEAR_WEB
+#desc:Yeek
 
 # Yetis are a couple of niche monsters, big furry bear-like creatures
 name:yeti

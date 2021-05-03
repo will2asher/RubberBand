@@ -1029,6 +1029,13 @@ void lore_append_movement(textblock *tb, const struct monster_race *race,
 						   "does not deign to chase intruders");
 	}
 
+	/* The speed description also describes "attack speed" */
+	else if (rf_has(known_flags, RF_MOVE_SLOW)) {
+		textblock_append(tb, ", but ");
+		textblock_append_c(tb, COLOUR_L_GREEN,
+			"moves slower than it attacks/casts");
+	}
+
 	/* End this sentence */
 	textblock_append(tb, ".  ");
 }

@@ -658,37 +658,6 @@ blow:STING:HURT:1d2
 flags:RAND_25
 desc:It is about two feet long and carnivorous.
 
-name:white icky thing
-base:icky thing
-color:w
-speed:110
-hit-points:6
-hearing:12
-armor-class:8
-sleepiness:10
-depth:1
-rarity:1
-experience:1
-blow:TOUCH:HURT:1d2
-flags:EMPTY_MIND | RAND_25
-desc:It is a smallish, slimy, icky creature.
-
-name:clear icky thing
-base:icky thing
-color:w
-speed:110
-hit-points:6
-hearing:12
-armor-class:7
-sleepiness:10
-depth:1
-rarity:1
-experience:2
-blow:TOUCH:HURT:1d2
-flags:INVISIBLE | EMPTY_MIND | RAND_25
-flags:ATTR_CLEAR
-desc:It is a smallish, slimy, icky, blobby creature.
-
 name:giant white mouse
 plural:giant white mice
 base:rodent
@@ -859,23 +828,6 @@ flags:FORCE_SLEEP
 innate-freq:4
 spells:SHRIEK
 desc:Yum!  It looks quite tasty.  It doesn't sound so nice, though...
-
-name:blubbering icky thing
-base:icky thing
-color:W
-speed:110
-hit-points:18
-hearing:14
-armor-class:4
-sleepiness:10
-depth:2
-rarity:1
-experience:8
-blow:CRAWL:POISON:1d4
-blow:CRAWL:EAT_FOOD
-flags:EMPTY_MIND | KILL_BODY | TAKE_ITEM
-flags:IM_POIS
-desc:It is a smallish, slimy, icky, hungry creature.
 
 name:multi-hued centipede
 base:centipede
@@ -1078,22 +1030,6 @@ flags:TAKE_ITEM | BASH_DOOR | MALE | RUBBER | TOWN_OR_DUN
 flags:RAND_25 | DROP_40 | ONLY_ITEM
 desc:A quiet and easily-angered drunkard who often wonders into the dungeon to see if the kobolds
 desc: have better booze.
-
-name:blue yeek
-base:yeek
-color:b
-speed:110
-hit-points:7
-hearing:18
-smell:20
-armor-class:16
-sleepiness:10
-depth:2
-rarity:1
-experience:4
-blow:HIT:HURT:1d5
-flags:DROP_60
-desc:A small humanoid thing.
 
 name:Grip, Farmer Maggot's Dog
 base:canine
@@ -1859,21 +1795,6 @@ flags:EMPTY_MIND
 flags:OPEN_DOOR | BASH_DOOR
 desc:It is a small animated kobold skeleton.
 
-name:grey icky thing
-base:icky thing
-color:s
-speed:110
-hit-points:19
-hearing:14
-armor-class:14
-sleepiness:15
-depth:5
-rarity:1
-experience:10
-blow:TOUCH:HURT:1d5
-flags:EMPTY_MIND
-desc:It is a smallish, slimy, icky, nasty creature.
-
 name:arrow launcher
 base:trap monster
 color:s
@@ -2488,23 +2409,6 @@ friends:12:1d3:Same
 desc:A crook-beaked bird with bedraggled black feathers. It mocks you, and you
 desc: realise that its scorn can kill.
 
-name:green icky thing
-base:icky thing
-color:g
-speed:110
-hit-points:23
-hearing:14
-armor-class:14
-sleepiness:20
-depth:7
-rarity:2
-experience:18
-blow:TOUCH:ACID:1d6
-#blow:TOUCH:SLIME:1d4
-flags:EMPTY_MIND
-flags:IM_ACID
-desc:It is a smallish, slimy, icky, acidic creature.
-
 name:red jelly
 plural:red jellies
 base:jelly
@@ -2771,24 +2675,6 @@ flags:DROP_60 | TAKE_ITEM
 flags:RAND_25 | HURT_COLD
 desc:A large red snake with a woman's torso.
 
-name:terrified yeek
-base:yeek
-color:o
-speed:110
-hit-points:18
-hearing:18
-smell:20
-armor-class:21
-sleepiness:9
-depth:8
-rarity:1
-experience:11
-flags:DROP_40 | FRIGHTENED | NEVER_BLOW
-#ROAM
-innate-freq:9
-spells:SHRIEK
-desc:It is a strange small humanoid in a constant state of extreme terror.
-
 name:orc skeleton
 base:skeleton
 color:r
@@ -3053,24 +2939,6 @@ blow:BITE:HURT:1d6
 flags:IM_COLD
 #ROAM
 desc:A large white figure covered in shaggy fur.
-
-name:bloodshot icky thing
-base:icky thing
-color:r
-speed:110
-hit-points:32
-hearing:14
-armor-class:21
-sleepiness:20
-depth:9
-rarity:3
-experience:24
-blow:TOUCH:HURT:1d4
-blow:CRAWL:ACID:2d4
-flags:EMPTY_MIND
-spell-freq:11
-spells:DRAIN_MANA
-desc:It is a strange, slimy, icky creature.
 
 name:orc shaman
 base:orc
@@ -3678,33 +3546,31 @@ spells:WOUND | BA_POIS
 desc:A large hare with glowing red eyes. Technically, it's not a rabbit,
 desc: but 'werehare' doesn't sound right.
 
-name:Orfax, Son of Boldor
-base:yeek
+name:Smlorfax, Son of Moldor
+base:humanoid
 color:B
-speed:119
+speed:118
 hit-points:120
 hearing:18
 smell:20
 armor-class:24
 sleepiness:10
 depth:10
-rarity:3
+rarity:5
 experience:80
 blow:HIT:HURT:1d9
 blow:HIT:HURT:1d8
 blow:INSULT
-blow:INSULT
 flags:UNIQUE | MALE | EVIL | SMART
 flags:DROP_1 | DROP_GOOD | ONLY_ITEM
-flags:FORCE_SLEEP
+flags:FORCE_SLEEP | SILLY
 spell-freq:4
 spells:BLINK | CONF | HEAL | SLOW | TELE_TO
 spells:S_MONSTER
-friends:50:2d3:terrified yeek:servant
-friends:100:2d5:Blue yeek:servant
-friends:50:1d3:Master yeek:servant
-desc:He's just like his daddy!  He knows some spells, but fortunately he is a
-desc: yeek.
+friends:50:1d2:s-naga
+friends-base:50:1d1:humanoid
+friends-base:100:1d2:humanoid
+desc:(No relation to anyone named Boldor.)
 
 name:Grishnákh, the Hill Orc
 base:orc
@@ -4204,27 +4070,6 @@ flags:HURT_LIGHT | HURT_COLD | IM_POIS | NO_CONF | NO_SLEEP
 spell-freq:11
 spells:DRAIN_MANA
 desc:Yum!  It looks quite tasty.  It is a pulsing mound of glowing flesh.
-
-name:master yeek
-base:yeek
-color:U
-speed:110
-hit-points:60
-hearing:18
-smell:20
-armor-class:28
-sleepiness:10
-depth:12
-rarity:2
-experience:28
-blow:HIT:HURT:1d8
-flags:EVIL | DROP_40 | FORCE_SLEEP
-spell-freq:4
-spells:BLIND | BLINK | SLOW | TPORT
-spells:BA_POIS | S_MONSTER
-drop-base:magic book:5:1:1
-drop-base:magic book:5:1:1
-desc:A small humanoid that radiates some power.
 
 name:skeleton human
 base:skeleton
@@ -4776,33 +4621,6 @@ desc:Imagine the torso of the cruelest barbarian on the body of a
 desc: vulture. Many think there's no such thing as male harpy.
 desc: Many who meet them don't survive the encounter. 
 
-name:Boldor, King of the Yeeks
-base:yeek
-color:P
-speed:120
-hit-points:180
-hearing:18
-smell:20
-armor-class:28
-sleepiness:10
-depth:13
-rarity:3
-experience:200
-blow:HIT:HURT:1d9
-blow:HIT:HURT:1d9
-blow:HIT:HURT:1d8
-flags:UNIQUE | MALE | EVIL | SMART
-flags:DROP_60 | DROP_1 | DROP_GOOD | ONLY_ITEM
-flags:FORCE_SLEEP
-spell-freq:3
-spells:BLIND | BLINK | HEAL | SLOW | TPORT
-spells:S_KIN | S_MONSTER
-friends:50:2d6:terrified yeek:servant
-friends:100:2d6:Blue yeek:servant
-friends:100:2d4:Master yeek:servant
-friends:90:1d1:Orfax, Son of Boldor
-desc:A great yeek, powerful in magic and sorcery, but a yeek all the same.
-
 name:Radbug of Cirith Ungol
 base:orc
 color:o
@@ -4846,27 +4664,6 @@ blow:BITE:POISON:2d5
 flags:ANIMAL | WEIRD_MIND | IM_POIS 
 desc:Normal ticks are small enough you rarely notice them, now that you see a giant one,
 desc: you realize just how ugly these six-legged bloodsuckers are.
-
-name:blue icky thing
-base:icky thing
-color:b
-speed:101
-hit-points:35
-hearing:15
-armor-class:30
-sleepiness:10
-depth:14
-rarity:4
-experience:20
-blow:CRAWL:POISON:1d4
-blow:CRAWL:EAT_FOOD
-blow:HIT:HURT:1d5
-flags:EVIL | MULTIPLY | WEIRD_MIND | FORCE_SLEEP
-flags:OPEN_DOOR | BASH_DOOR | IM_POIS
-spell-freq:8
-spells:BLIND | CONF | SCARE
-desc:It is a strange, slimy, icky creature, with rudimentary intelligence, but
-desc: evil cunning.  It hungers for food, and you look tasty.
 
 name:flesh golem
 base:golem
@@ -7448,15 +7245,15 @@ desc:He is an orc of power and great cunning, leader of the garrison at Cirith
 desc: Ungol. His band battled Gorbag's band over a mithril coat.
 
 name:Sshpplluiluilt, the multi-hued Icky King
-base:icky thing
-color:v
-speed:117
-hit-points:319
+base:jelly
+color:P
+speed:116
+hit-points:316
 hearing:15
 armor-class:39
 sleepiness:15
-depth:21
-rarity:6
+depth:19
+rarity:9
 experience:339
 blow:CRAWL:EAT_FOOD:1d5
 #blow:TOUCH:SLIME:2d8
@@ -7468,13 +7265,13 @@ flags:NO_FEAR | NO_STUN | IM_ACID | IM_POIS
 #SCALE
 #innate-freq:10
 #spells:BR_SLIME
-friends-base:22:1d2:mushroom
-friends-base:22:1d2:jelly
-friends-base:40:1d2:dark fairy
-friends-base:40:1d2:jelly
-friends-base:40:1d3:dark fairy
+friends-base:22:1d1:jelly
+friends-base:35:1d2:mushroom
+friends-base:35:1d2:jelly
+friends-base:80:1d2:jelly
 desc:He's acidic. He's hungry.  He's slimy, smallish, and icky.
-desc: He's the king of the icky things.
+desc: He's the king of the icky things. Too bad he's the only
+desc: "icky thing" in this game...
 
 ### Dungeon level 22 ###
 
