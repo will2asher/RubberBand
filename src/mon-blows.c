@@ -956,7 +956,7 @@ static void melee_effect_handler_CHARM(melee_effect_handler_context_t* context)
 
 	/* partial resists */
 	if (player->timed[TMD_CLEAR_MIND]) savet = savet * 3 / 2;
-	else if ((player->timed[TMD_SHERO]) || (p->timed[TMD_BLOODLUST])) savet = savet * 6 / 5;
+	else if ((player->timed[TMD_SHERO]) || (player->timed[TMD_BLOODLUST])) savet = savet * 6 / 5;
 	else if (player_of_has(player, OF_PROT_FEAR)) savet = savet * 11 / 10;
 	/* Amnesia makes you more vulnerable to charm */
 	if (player->timed[TMD_AMNESIA]) savet = savet * 4 / 5;
