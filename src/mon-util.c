@@ -308,6 +308,9 @@ void update_mon(struct monster *mon, struct chunk *c, bool full)
 	/* ESP permitted */
 	bool telepathy_ok = player_of_has(player, OF_TELEPATHY);
 
+	/* First sight and second thoughts supresses telepathy */
+	if (player->timed[TMD_2NDTHOT]) telepathy_ok = false;
+
 	assert(mon != NULL);
 
 	/* Return if this is not the current level */

@@ -1716,6 +1716,12 @@ bool effect_handler_READ_MINDS(effect_handler_context_t *context)
 	int dist_x = context->x ? context->x : context->value.sides;
 	bool found = false;
 
+	/* downside of first sight and second thoughts */
+	if (player->timed[TMD_2NDTHOT]) {
+		msg("Your first sight blocks the effect!");
+		return false;
+	}
+
 	/* Scan monsters */
 	for (i = 1; i < cave_monster_max(cave); i++) {
 		struct monster *mon = cave_monster(cave, i);
@@ -1942,6 +1948,12 @@ bool effect_handler_DETECT_GOLD(effect_handler_context_t *context)
 
 	bool gold_buried = false;
 
+	/* downside of first sight and second thoughts */
+	if (player->timed[TMD_2NDTHOT]) {
+		msg("Your first sight blocks the effect!");
+		return false;
+	}
+
 	/* Pick an area to detect */
 	y1 = player->grid.y - context->y;
 	y2 = player->grid.y + context->y;
@@ -2083,6 +2095,12 @@ bool effect_handler_DETECT_OBJECTS(effect_handler_context_t *context)
 
 	bool objects = false;
 
+	/* downside of first sight and second thoughts */
+	if (player->timed[TMD_2NDTHOT]) {
+		msg("Your first sight blocks the effect!");
+		return false;
+	}
+
 	/* Pick an area to detect */
 	y1 = player->grid.y - context->y;
 	y2 = player->grid.y + context->y;
@@ -2201,7 +2219,19 @@ static bool detect_monsters(int y_dist, int x_dist, monster_predicate pred)
  */
 bool effect_handler_DETECT_LIVING_MONSTERS(effect_handler_context_t *context)
 {
-	bool monsters = detect_monsters(context->y, context->x, monster_is_living);
+	bool monsters;
+	/* downside of first sight and second thoughts (more likely to work than other monster detection spells) */
+	if ((randint1(10) > 6 + player->p_luck * 2) && (player->timed[TMD_2NDTHOT])) {
+		msg("Your first sight blocks the effect!");
+		return false;
+	}
+	if (player->timed[TMD_2NDTHOT]) {
+		msg("(Your first sight limits the effect to visible monsters.)");
+		monsters = detect_monsters(context->y, context->x, monster_is_living_and_visible);
+	}
+	else {
+		monsters = detect_monsters(context->y, context->x, monster_is_living);
+	}
 
 	if (monsters)
 		msg("You sense life!");
@@ -2223,8 +2253,19 @@ bool effect_handler_DETECT_LIVING_MONSTERS(effect_handler_context_t *context)
  */
 bool effect_handler_DETECT_VISIBLE_MONSTERS(effect_handler_context_t *context)
 {
-	bool monsters = detect_monsters(context->y, context->x,
-									monster_is_not_invisible);
+	bool monsters;
+	/* downside of first sight and second thoughts */
+	if ((randint1(10) > 4 + player->p_luck * 2) && (player->timed[TMD_2NDTHOT])) {
+		msg("Your first sight blocks the effect!");
+		return false;
+	}
+	if (player->timed[TMD_2NDTHOT]) {
+		msg("(Your first sight limits the effect to living monsters.)");
+		monsters = detect_monsters(context->y, context->x, monster_is_living_and_visible);
+	}
+	else {
+		monsters = detect_monsters(context->y, context->x, monster_is_not_invisible);
+	}
 
 	if (monsters)
 		msg("You sense the presence of monsters!");
@@ -2243,6 +2284,11 @@ bool effect_handler_DETECT_VISIBLE_MONSTERS(effect_handler_context_t *context)
  */
 bool effect_handler_DETECT_INVISIBLE_MONSTERS(effect_handler_context_t *context)
 {
+	/* downside of first sight and second thoughts */
+	if (player->timed[TMD_2NDTHOT]) {
+		msg("Your first sight blocks the effect!");
+		return false;
+	}
 	bool monsters = detect_monsters(context->y, context->x,
 									monster_is_invisible);
 
@@ -2262,7 +2308,20 @@ bool effect_handler_DETECT_INVISIBLE_MONSTERS(effect_handler_context_t *context)
  */
 bool effect_handler_DETECT_FEARFUL_MONSTERS(effect_handler_context_t *context)
 {
-	bool monsters = detect_monsters(context->y, context->x, monster_is_fearful);
+	bool monsters;
+	/* downside of first sight and second thoughts */
+	if ((randint1(10) > 4 + player->p_luck*2) && (player->timed[TMD_2NDTHOT])) {
+		msg("Your first sight blocks the effect!");
+		return false;
+	}
+	if (player->timed[TMD_2NDTHOT]) {
+		/* Most monsters susceptible to fear are living monsters, so don't mention the limitation */
+		/* msg("(Your first sight limits the effect to living monsters.)"); */
+		monsters = detect_monsters(context->y, context->x, monster_is_living_and_fearful);
+	}
+	else {
+		monsters = detect_monsters(context->y, context->x, monster_is_fearful);
+	}
 
 	if (monsters)
 		msg("These monsters could provide good sport.");
@@ -2280,6 +2339,11 @@ bool effect_handler_DETECT_FEARFUL_MONSTERS(effect_handler_context_t *context)
  */
 bool effect_handler_DETECT_EVIL(effect_handler_context_t *context)
 {
+	/* downside of first sight and second thoughts */
+	if (player->timed[TMD_2NDTHOT]) {
+		msg("Your first sight blocks the effect!");
+		return false;
+	}
 	bool monsters = detect_monsters(context->y, context->x, monster_is_evil);
 
 	if (monsters)
@@ -2298,6 +2362,11 @@ bool effect_handler_DETECT_EVIL(effect_handler_context_t *context)
  */
 bool effect_handler_DETECT_SOUL(effect_handler_context_t *context)
 {
+	/* downside of first sight and second thoughts */
+	if (player->timed[TMD_2NDTHOT]) {
+		msg("Your first sight blocks the effect!");
+		return false;
+	}
 	bool monsters = detect_monsters(context->y, context->x, monster_has_spirit);
 
 	if (monsters)

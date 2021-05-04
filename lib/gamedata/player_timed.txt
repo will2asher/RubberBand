@@ -18,7 +18,7 @@
 # on-end - the message on ending the effect
 # on-increase - the message on the effect increasing
 # on-decrease - the message on the effect decreasing
-# msgt - the message type for this effect
+# msgt - the message type for this effect (Why do some of them have this, but not all?)
 # fail - determines what makes the effect fail.
 #        param one:
 #          1 - object flag
@@ -56,9 +56,9 @@ on-end:You can move again.
 msgt:PARALYZED
 fail:1:FREE_ACT
 
-name:BHOLD
+name:BHELD
 desc:grabbed
-grade:o:10000:Grabbed:You are being held by a monster.
+grade:o:3000:Grabbed:You are being held by a monster.
 on-end:You are no longer being held.
 msgt:GENERIC
 #should be "The X releases its hold on you."
@@ -92,8 +92,8 @@ name:CHARMED
 desc:charm
 grade:o:10000:Charmed:You are charmed.
 on-end:You recognise your enemies once again.
-on-increase:You are more chamed.
-msgt:GENERIC
+on-increase:You are more charmed.
+msgt:AFRAID
 
 name:INSANE
 desc:insanity
@@ -107,6 +107,13 @@ desc:disease
 grade:o:10000:DISEASE:You have contracted a disease.
 on-end:You get over the disease.
 on-increase:You feel even sicker.
+msgt:GENERIC
+
+name:PCCURSED
+desc:curse
+grade:o:30000:PCCURSED:You are under a curse!
+on-end:The curse on you expires.
+on-increase:The curse on you is extended.
 msgt:GENERIC
 
 name:IMAGE
@@ -282,7 +289,7 @@ msgt:GENERIC
 
 name:STONESKIN
 desc:stone skin
-grade:G:10000:Stone:Your skin turns to stone.
+grade:Z:10000:Stone:Your skin turns to stone.
 on-end:A fleshy shade returns to your skin.
 msgt:GENERIC
 
@@ -369,6 +376,7 @@ desc:temporary hitpoint siphoning
 grade:p:10000:AttVamp:Your can drain life from your victims!
 on-end:Your life-draining power passes.
 
+#Why isn't this called regeneration?
 name:HEAL
 desc:turn-by-turn healing through increased metabolism
 grade:G:10000:Heal:Your metabolism speeds up!
@@ -424,3 +432,78 @@ desc:free action
 grade:G:10000:FrAct:Your limbs fill with energy!
 on-end:Your limbs return to normal.
 on-increase:Your limbs feel more energetic!
+
+name:PHAZED
+desc:phased
+grade:y:5000:PHAZED:You feel very unstable.
+on-end:A feeling of stability returns.
+on-increase:You feel more unstable.
+msgt:GENERIC
+
+name:SDRUNK
+desc:clumsy
+grade:o:10000:SDRUNK:You feel very clumsy.
+on-end:You feel less clumsy now.
+on-increase:You feel even more clumsy.
+msgt:GENERIC
+
+name:XBLOW
+desc:extra blow
+grade:G:10000:XBLOW:Your arms feel quicker.
+on-end:Your arms feel less quick.
+msgt:GENERIC
+
+name:SPELLCRFT
+desc:exhanced spellcraft
+grade:P:20000:SPELLCRFT:Your magic feels empowered.
+on-end:You magical power returns to normal.
+msgt:GENERIC
+
+name:ZAPPING
+desc:zapping
+grade:B:10000:ZAPPING:You are surrounded by bug-repelling static.
+on-end:The static around you dissapates.
+msgt:GENERIC
+
+name:ATT_COLDIRON
+desc:cold iron
+grade:b:10000:ATT_COLDIRON:A coating of cold iron surrounds your {kind}.
+on-end:The cold iron disappears from your {kind}.
+msgt:GENERIC
+
+name:ATT_SILVER
+desc:silver
+grade:W:10000:ATT_SILVER:A coating of silver surrounds your {kind}.
+on-end:The silver disappears from your {kind}.
+msgt:GENERIC
+
+name:LYCANT
+desc:lycanthropy
+grade:y:10000:LYCANT:You have a strange desire to howl at the moon.
+on-end:You no longer long for the full moon.
+msgt:GENERIC
+
+name:2NDTHOT
+desc:first sight and second thoughts
+grade:W:10000:2NDTHOT:Your mind feels more attentive, but resistant to telepathy.
+on-end:Your attentiveness returns to normal.
+msgt:GENERIC
+
+name:TREASMAP
+desc:treasure map
+grade:W:10000:TrMap:You catch the scent of treasure
+msgt:GENERIC
+
+#todo: attacking a non-evil animal or CLIGHT monster should end this effect.
+name:ACHARM
+desc:animal charming
+grade:G:10000:ACharm:You feel espeically friendly towards animals.
+on-end:You no longer charm animals.
+msgt:GENERIC
+
+#red to hint to the player that this is more serious than stoneskin
+name:PETRIFIED
+desc:petrified
+grade:r:10000:Petrifd:You begin turning to stone (deeper than the skin...)
+on-end:A fleshy shade returns to your skin.
+msgt:GENERIC

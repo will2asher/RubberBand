@@ -304,13 +304,14 @@ void player_flags(struct player *p, bitflag f[OF_SIZE])
  */
 void player_flags_timed(struct player *p, bitflag f[OF_SIZE])
 {
-	if (p->timed[TMD_BOLD] || p->timed[TMD_HERO] || p->timed[TMD_SHERO]) {
+	if (p->timed[TMD_BOLD] || p->timed[TMD_HERO] || p->timed[TMD_SHERO] || p->timed[TMD_FRENZY]) {
 		of_on(f, OF_PROT_FEAR);
 	}
-	if (p->timed[TMD_TELEPATHY]) {
+	/* 1st sight and 2nd thoughts supresses ESP */
+	if (p->timed[TMD_TELEPATHY] && !p->timed[TMD_2NDTHOT]) {
 		of_on(f, OF_TELEPATHY);
 	}
-	if (p->timed[TMD_SINVIS]) {
+	if (p->timed[TMD_SINVIS] || p->timed[TMD_TSIGHT]) {
 		of_on(f, OF_SEE_INVIS);
 	}
 	if (p->timed[TMD_FREE_ACT]) {

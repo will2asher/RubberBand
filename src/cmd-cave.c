@@ -1154,6 +1154,18 @@ static bool do_cmd_walk_test(struct loc grid)
 			/* Nope */
 			return (false);
 		}
+		/* Handle player being charmed */
+		else if (player->timed[TMD_CHARMED]) {
+			/* Extract monster name (or "it") */
+			char m_name[80];
+			monster_desc(m_name, sizeof(m_name), mon, MDESC_DEFAULT);
+
+			/* Message */
+			msgt(MSG_AFRAID, "You kind of like %s, so you decide not to attack", m_name);
+
+			/* Nope */
+			return (false);
+		}
 
 		return (true);
 	}

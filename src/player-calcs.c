@@ -1777,7 +1777,7 @@ static void calc_shapechange(struct player_state *state,
 void calc_bonuses(struct player *p, struct player_state *state, bool known_only,
 				  bool update)
 {
-	int i, j, hold;
+	int i, j, hold, gluck = 0, bluck = 0;
 	int extra_blows = 0;
 	int extra_shots = 0;
 	int extra_might = 0;
@@ -1819,8 +1819,14 @@ void calc_bonuses(struct player *p, struct player_state *state, bool known_only,
 	pf_union(state->pflags, p->class->pflags);
 
 	/* Bounds on luck */
-	if (p->p_luck > 5) p->p_luck = 5;
-	if (p->p_luck < -5) p->p_luck = -5;
+	if (p->p_luck > 0) { 
+		if (p->p_luck > 5) p->p_luck = 5;
+		gluck = p->p_luck;
+	}
+	else if (p->p_luck < 0) {
+		if (p->p_luck < -5) p->p_luck = -5;
+		bluck = ABS(p->p_luck);
+	}
 
 	/* Extract the player (object) flags */
 	player_flags(p, collect_f);
@@ -1908,7 +1914,7 @@ void calc_bonuses(struct player *p, struct player_state *state, bool known_only,
 					state->to_d += obj->to_d;
 				}
 			}
-			/* Any weapon in shield slot can be used for blocking a little bit at least */
+			/* Any weapon in shield slot can be used for blocking at least a little bit */
 			if (slot_type_is(i, EQUIP_SHIELD) && (tval_is_melee_weapon(obj))) state->ac++;
 
 			/* Move to any unprocessed curse object */
@@ -1986,6 +1992,16 @@ void calc_bonuses(struct player *p, struct player_state *state, bool known_only,
 			ind = (37);
 		}
 
+		/* Two timed effects that actually lower stats */
+		if ((p->timed[TMD_DISEASE]) && ((i == STAT_STR) || (i == STAT_CON))) {
+			ind -= 3;
+			if (ind < 0) ind = 0;
+		}
+		if ((p->timed[TMD_INSANE]) && ((i == STAT_INT) || (i == STAT_WIS))) {
+			ind -= 3;
+			if (ind < 0) ind = 0;
+		}
+
 		assert((0 <= ind) && (ind < STAT_RANGE));
 
 		/* Hack for hypothetical blows - NRM */
@@ -2050,9 +2066,28 @@ void calc_bonuses(struct player *p, struct player_state *state, bool known_only,
 	/* Other timed effects */
 	player_flags_timed(p, state->flags);
 
+	/* similar effect to FRENZY but no upside and tends to have longer duration */
+	/* Comes first in timed effects because it gives bad luck which affects some other effects */
+	if (p->timed[TMD_PCCURSED]) {
+		state->to_a -= 6;
+		state->to_h -= 3;
+		if ((bluck) || (gluck == 3)) bluck += 1;
+		else if (gluck < 3) bluck += 2;
+		state->skills[SKILL_DEVICE] = state->skills[SKILL_DEVICE] * 9 / 10;
+		state->skills[SKILL_SEARCH] = state->skills[SKILL_SEARCH] * 9 / 10;
+		state->skills[SKILL_SAVE] = state->skills[SKILL_SAVE] * 85 / 100;
+	}
+	/* Primary effect is raising the chances of a vault on next level, but has minor side effects */
+	if (p->timed[TMD_TREASMAP]) {
+		if (!gluck) gluck += 2;
+		else gluck += 1;
+		state->skills[SKILL_SAVE] = state->skills[SKILL_SAVE] * (103 + gluck * 2) / 100;
+	}
+
 	if (player_timed_grade_eq(p, TMD_STUN, "Heavy Stun")) {
 		state->to_h -= 20;
 		state->to_d -= 20;
+		if (bluck) state->to_a -= bluck + 1;
 		state->skills[SKILL_DEVICE] = state->skills[SKILL_DEVICE] * 8 / 10;
 		if (update) {
 			p->timed[TMD_FASTCAST] = 0;
@@ -2060,6 +2095,7 @@ void calc_bonuses(struct player *p, struct player_state *state, bool known_only,
 	} else if (player_timed_grade_eq(p, TMD_STUN, "Stun")) {
 		state->to_h -= 5;
 		state->to_d -= 5;
+		if (bluck) state->to_a -= (bluck + 1) / 2;
 		state->skills[SKILL_DEVICE] = state->skills[SKILL_DEVICE] * 9 / 10;
 		if (update) {
 			p->timed[TMD_FASTCAST] = 0;
@@ -2069,25 +2105,101 @@ void calc_bonuses(struct player *p, struct player_state *state, bool known_only,
 		state->to_a += 100;
 	}
 	if (p->timed[TMD_BLESSED]) {
-		state->to_a += 5;
+		state->to_a += 5 + gluck / 2;
 		state->to_h += 10;
 		state->skills[SKILL_DEVICE] = state->skills[SKILL_DEVICE] * 105 / 100;
 	}
 	if (p->timed[TMD_SHIELD]) {
 		state->to_a += 50;
 	}
+	if (p->timed[TMD_PETRIFIED]) {
+		state->to_a += 32;
+		state->speed -= 6;
+		state->skills[SKILL_DEVICE] = state->skills[SKILL_DEVICE] * 95 / 100;
+		/* DEX-based skills */
+		state->to_h -= 2;
+		state->skills[SKILL_STEALTH] -= 1;
+		state->skills[SKILL_DISARM_PHYS] = state->skills[SKILL_DISARM_PHYS] * 95 / 100;
+	}
 	if (p->timed[TMD_STONESKIN]) {
-		state->to_a += 40;
-		state->speed -= 5;
+		/* Negative effects don't stack with PETRIFIED */
+		if (!p->timed[TMD_PETRIFIED]) {
+			state->to_a += 40;
+			/* reduced the speed penalty because stoneskin is supposed to be worthwhile sometimes */
+			state->speed -= 4;
+			/* ...then again, it should also hurt DEX-based skills */
+			if (!gluck) {
+				state->to_h -= 2;
+				state->skills[SKILL_STEALTH] -= 1;
+			}
+			state->skills[SKILL_DISARM_PHYS] = state->skills[SKILL_DISARM_PHYS] * 95 / 100;
+		}
+		/* at least you (usually) get the better of the two ac bonuses */
+		else if (!bluck) state->to_a += 8;
 	}
 	if (p->timed[TMD_HERO]) {
-		state->to_h += 12;
+		state->to_h += 12 + gluck / 2;
 		state->skills[SKILL_DEVICE] = state->skills[SKILL_DEVICE] * 105 / 100;
 	}
 	if (p->timed[TMD_SHERO]) {
+		/* What's the difference between raising melee skill and state->to_h ? */
 		state->skills[SKILL_TO_HIT_MELEE] += 75;
-		state->to_a -= 10;
-		state->skills[SKILL_DEVICE] = state->skills[SKILL_DEVICE] * 9 / 10;
+		state->to_a -= (10 + bluck);
+		state->skills[SKILL_DEVICE] = state->skills[SKILL_DEVICE] * 92 / 100;
+	}
+	/* bad version of berserk strength (SHERO) */
+	if (p->timed[TMD_FRENZY]) {
+		state->speed += 1;
+		state->to_a -= (11 + bluck);
+		state->to_h -= 5;
+		state->to_d += 3 + (gluck+1)/2;
+		state->skills[SKILL_DEVICE] = state->skills[SKILL_DEVICE] * (85 + gluck * 2) / 100;
+		state->skills[SKILL_SEARCH] = state->skills[SKILL_SEARCH] * 75 / 100;
+		state->skills[SKILL_SAVE] = state->skills[SKILL_SAVE] * (85 - bluck * 2) / 100;
+	}
+	/* Mushroom of the singing drunk, also a generally similar effect but hurts stealth and disarming */
+	if (p->timed[TMD_SDRUNK]) {
+		state->to_a -= (4 + bluck);
+		state->to_h -= 5;
+		state->skills[SKILL_STEALTH] -= 3;
+		state->skills[SKILL_DEVICE] = state->skills[SKILL_DEVICE] * (90 - bluck*2) / 100;
+		state->skills[SKILL_SAVE] = state->skills[SKILL_SAVE] * 9 / 10;
+		state->skills[SKILL_DISARM_PHYS] = state->skills[SKILL_DISARM_PHYS] * 8 / 10;
+		state->skills[SKILL_DISARM_MAGIC] = state->skills[SKILL_DISARM_MAGIC] * 9 / 10;
+	}
+	/* held by a monster (stops you from moving, but not from casting or attacking) */
+	if (p->timed[TMD_BHELD]) {
+		state->to_a -= (6 + bluck);
+		state->to_h -= 4;
+		state->skills[SKILL_STEALTH] -= 2;
+		state->skills[SKILL_DEVICE] = state->skills[SKILL_DEVICE] * 94 / 100;
+		state->skills[SKILL_DISARM_PHYS] = state->skills[SKILL_DISARM_PHYS] * 75 / 100;
+		state->skills[SKILL_DISARM_MAGIC] = state->skills[SKILL_DISARM_MAGIC] * 75 / 100;
+	}
+	/* Primary effect is involuntary blinking, but has minor side effects */
+	if (p->timed[TMD_PHAZED]) {
+		state->to_a += 3 + gluck/2;
+		state->to_h -= (2 + bluck/2);
+		state->skills[SKILL_DISARM_PHYS] = state->skills[SKILL_DISARM_PHYS] * 9 / 10;
+		state->skills[SKILL_DISARM_MAGIC] = state->skills[SKILL_DISARM_MAGIC] * 9 / 10;
+	}
+	/* Primary effect is on spellcasting, but has minor side effects */
+	if (p->timed[TMD_SPELLCRFT]) {
+		state->to_h -= (1 + bluck);
+		state->to_d -= 1;
+		state->skills[SKILL_DEVICE] = state->skills[SKILL_DEVICE] * 11 / 10;
+		state->skills[SKILL_DISARM_MAGIC] = state->skills[SKILL_DISARM_MAGIC] * 11 / 10;
+	}
+	/* first sight and second thoughts, kind of opposite the previous few effects + infravision
+	 * (but it supresses telepathy and some detection magic) */
+	if (p->timed[TMD_2NDTHOT]) {
+		state->to_h += 2;
+		state->to_a += 1;
+		state->see_infra += 3;
+		state->skills[SKILL_SAVE] = state->skills[SKILL_SAVE] * 12 / 10;
+		state->skills[SKILL_SEARCH] = state->skills[SKILL_SEARCH] * 11 / 10;
+		state->skills[SKILL_DISARM_PHYS] = state->skills[SKILL_DISARM_PHYS] * 105 / 100;
+		state->skills[SKILL_DISARM_MAGIC] = state->skills[SKILL_DISARM_MAGIC] * 11 / 10;
 	}
 	if (p->timed[TMD_FAST] || p->timed[TMD_SPRINT]) {
 		state->speed += 10;
@@ -2117,30 +2229,49 @@ void calc_bonuses(struct player *p, struct player_state *state, bool known_only,
 			state->el_info[ELEM_POIS].res_level++;
 	}
 	if (p->timed[TMD_CONFUSED]) {
-		state->skills[SKILL_DEVICE] = state->skills[SKILL_DEVICE] * 75 / 100;
+		state->skills[SKILL_DEVICE] = state->skills[SKILL_DEVICE] * (75 + gluck * 2) / 100;
+		state->skills[SKILL_SEARCH] = state->skills[SKILL_SEARCH] * 9 / 10;
 	}
 	if (p->timed[TMD_AMNESIA]) {
-		state->skills[SKILL_DEVICE] = state->skills[SKILL_DEVICE] * 8 / 10;
+		state->skills[SKILL_DEVICE] = state->skills[SKILL_DEVICE] * (80 + gluck * 2) / 100;
+		state->skills[SKILL_SEARCH] = state->skills[SKILL_SEARCH] * 9 / 10;
 	}
+	/* Why would poison affect device skill?
 	if (p->timed[TMD_POISONED]) {
 		state->skills[SKILL_DEVICE] = state->skills[SKILL_DEVICE] * 95 / 100;
-	}
+	} */
 	if (p->timed[TMD_IMAGE]) {
-		state->skills[SKILL_DEVICE] = state->skills[SKILL_DEVICE] * 8 / 10;
+		state->skills[SKILL_DEVICE] = state->skills[SKILL_DEVICE] * (85 + gluck * 2) / 100;
 	}
 	if (p->timed[TMD_BLOODLUST]) {
 		state->to_d += p->timed[TMD_BLOODLUST] / 2;
 		extra_blows += p->timed[TMD_BLOODLUST] / 20;
+		/* (insignificant difference unless you have bad luck) */
+		state->skills[SKILL_SAVE] = state->skills[SKILL_SAVE] * (98 - bluck * 3) / 100;
+	}
+	else if (p->timed[TMD_XBLOW]) {
+		extra_blows += 1;
 	}
 	if (p->timed[TMD_STEALTH]) {
 		state->skills[SKILL_STEALTH] += 10;
 	}
 
+	/* Charmed: similar effects as fear but kind of the opposite state of mind: thinking the monster is your friend */
+	if (p->timed[TMD_CHARMED]) {
+		state->to_h -= 18; /* CHARMED should probably keep you from firing projectiles as well as attacking in melee */
+		state->to_a -= (1 + bluck);
+		state->skills[SKILL_STEALTH] -= 1;
+		state->skills[SKILL_SAVE] = state->skills[SKILL_SAVE] * 9 / 10;
+		state->skills[SKILL_DEVICE] = state->skills[SKILL_DEVICE] * 96 / 100;
+	}
 	/* Analyze flags - check for fear */
 	if (of_has(state->flags, OF_AFRAID)) {
-		state->to_h -= 20;
-		state->to_a += 8;
-		state->skills[SKILL_DEVICE] = state->skills[SKILL_DEVICE] * 95 / 100;
+		state->to_a += 7 + gluck*2 - bluck*2;
+		/* negative effects do not stack with CHARMED */
+		if (!p->timed[TMD_CHARMED]) {
+			state->to_h -= (20 - gluck * 2);
+			state->skills[SKILL_DEVICE] = state->skills[SKILL_DEVICE] * 96 / 100;
+		}
 	}
 
 	/* Analyze weight */
@@ -2228,9 +2359,16 @@ void calc_bonuses(struct player *p, struct player_state *state, bool known_only,
 
 		/* Divine weapon bonus for blessed weapons */
 		if (player_has(p, PF_BLESS_WEAPON) && of_has(state->flags, OF_BLESSED)){
-			state->to_h += 2;
+			state->to_h += 3;
 			state->to_d += 2;
 			state->bless_wield = true;
+		}
+		/* Class wants hafted or blessed weapons, but is using a different weapon */
+		/* (the class's divine protection (saving throw) is lessened -only for priests) */
+		else if (player_has(p, PF_BLESS_WEAPON) && player_has(p, PF_ZERO_FAIL)) {
+			state->to_h -= 2;
+			state->skills[SKILL_SAVE] = state->skills[SKILL_SAVE] * 94 / 100;
+			state->bless_wield = false;
 		}
 	} else {
 		/* Unarmed */

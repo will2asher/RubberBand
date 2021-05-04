@@ -754,6 +754,8 @@ bool labyrinth_check(int depth)
 {
 	/* There's a base 2 in 100 to accept the labyrinth */
 	int chance = 2;
+	/* RB: let's reduce that chance just a little */
+	if (randint0(100) < 34) chance = 1;
 
 	/* If we're too shallow then don't do it */
 	if (depth < 13) return false;

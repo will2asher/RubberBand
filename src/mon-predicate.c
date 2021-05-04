@@ -91,6 +91,17 @@ bool monster_is_not_invisible(const struct monster *mon)
 }
 
 /**
+ * Living and visible monsters
+ */
+bool monster_is_living_and_visible(const struct monster *mon)
+{
+	if (monster_is_invisible(mon)) return false;
+	if (!monster_is_living(mon)) return false;
+	/* else */
+	return true;
+}
+
+/**
  * Monster is unique
  */
 bool monster_is_unique(const struct monster *mon)
@@ -166,6 +177,14 @@ bool monster_is_evil(const struct monster *mon)
 bool monster_is_fearful(const struct monster *mon)
 {
 	return rf_has(mon->race->flags, RF_NO_FEAR) ? false : true;
+}
+
+bool monster_is_living_and_fearful(const struct monster* mon)
+{
+	if (rf_has(mon->race->flags, RF_NO_FEAR)) return false;
+	if (!monster_is_living(mon)) return false;
+	/* else */
+	return true;
 }
 
 /**

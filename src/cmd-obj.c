@@ -312,7 +312,7 @@ void do_cmd_wield(struct command *cmd)
 		struct object* weapon = equipped_item_by_slot_name(player, "weapon");
 
 		/* Check if target weapon is light enough to wield in shield slot */
-		if ((obj->weight <= 110) && (obj->weight / 10 <= player->state.stat_ind[STAT_STR] / 3)) {
+		if ((obj->weight <= 110) && (obj->weight / 10 <= player->state.stat_use[STAT_STR] / 3)) {
 			/* ask */
 			if (get_check("Wield in off-hand (shield slot)? ")) do_two = true;
 		}

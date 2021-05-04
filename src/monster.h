@@ -383,6 +383,11 @@ struct monster {
 
 	byte cdis;							/* Current dis from player */
 
+	/* new for Rubberband: (todo: no effect yet, still need to add to savefiles) */
+	byte isevil;						/* individual monster is evil */
+	byte nonagr;						/* monster is non-agressive */
+	byte acharmed;						/* for Charm monsters effect */
+
 	bitflag mflag[MFLAG_SIZE];			/* Temporary monster flags */
 
 	struct object *mimicked_obj;		/* Object this monster is mimicking */

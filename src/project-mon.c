@@ -30,6 +30,7 @@
 #include "mon-timed.h"
 #include "mon-util.h"
 #include "player-calcs.h"
+#include "player-timed.h"
 #include "project.h"
 #include "source.h"
 
@@ -1306,7 +1307,7 @@ static void project_m_apply_side_effects(project_monster_handler_context_t *cont
  * to plasma.
  *
  * We assume "Nether" is an evil, necromantic force, so it doesn't hurt undead,
- * and hurts evil less.  If can breath nether, then it resists it as well.
+ * and hurts evil slightly less.  If can breath nether, then it resists it as well.
  * This should actually be coded into monster records rather than aasumed - NRM
  *
  * Damage reductions use the following formulas:
@@ -1350,6 +1351,9 @@ void project_m(struct source origin, int r, struct loc grid, int dam, int typ,
 	/* Is the source an extra charming player? */
 	bool charm = (origin.what == SRC_PLAYER) ?
 		player_has(player, PF_DRUCHARM) : false;
+
+	/* charm animals timed effect */
+	if ((origin.what == SRC_PLAYER) && (player->timed[TMD_ACHARM])) charm = true;
 
 	int m_idx = square(cave, grid)->mon;
 

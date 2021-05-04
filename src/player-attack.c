@@ -672,11 +672,16 @@ bool py_attack_real(struct player *p, struct loc grid, bool *fear, bool offhand)
 		health_track(p->upkeep, mon);
 	}
 
-	/* Handle player fear (only for invisible monsters) */
+	/* Handle player fear and charm (only for invisible monsters) */
 	if (player_of_has(p, OF_AFRAID)) {
 		equip_learn_flag(p, OF_AFRAID);
 		msgt(MSG_AFRAID, "You are too afraid to attack %s!", m_name);
 		return false;
+	}
+	else if (player->timed[TMD_CHARMED]) {
+		msgt(MSG_AFRAID, "You accidently attack %s.", m_name);
+		/* attack still happens against invisible monsters, only with reduced to-hit */
+		chance = chance * 2 / 3;
 	}
 
 	/* See if the player hit */

@@ -20,6 +20,7 @@
 #include "alloc.h"
 #include "cave.h"
 #include "effects.h"
+#include "game-world.h"
 #include "init.h"
 #include "obj-chest.h"
 #include "obj-curse.h"
@@ -31,6 +32,7 @@
 #include "obj-slays.h"
 #include "obj-tval.h"
 #include "obj-util.h"
+#include "player-timed.h"
 
 /**
  * Stores cumulative probability distribution for objects at each level.  The
@@ -1173,6 +1175,11 @@ struct object *make_object(struct chunk *c, int lev, bool good, bool great,
 	int base, tries = 3;
 	struct object_kind *kind = NULL;
 	struct object *new_obj;
+
+	/* Treasure maps make objects more likely to be "good". (The one_in_number may need tweaking)
+	 * (only while we're generating a level -not for monster drops) */
+	if ((player->timed[TMD_TREASMAP]) && (!character_dungeon) && (one_in_(10)))
+		good = true;
 
 	/* Try to make a special artifact */
 	if (one_in_(good ? 10 : 1000)) {

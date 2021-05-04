@@ -71,6 +71,7 @@
 #include "mon-spell.h"
 #include "mon-util.h"
 #include "player-util.h"
+#include "player-timed.h"
 #include "store.h"
 #include "trap.h"
 #include "z-queue.h"
@@ -495,8 +496,13 @@ struct chunk *classic_gen(struct player *p, int min_height, int min_width) {
 		/* We generate a rarity number to figure out how exotic to make the
 		 * room. This number has a depth/DUN_UNUSUAL chance of being > 0,
 		 * a depth^2/DUN_UNUSUAL^2 chance of being > 1, up to MAX_RARITY. */
+		/* (DUN_UNUSUAL is usually 200) */
 		i = 0;
 		rarity = 0;
+		/* Treasure map effect makes special rooms more common */
+		if ((player->timed[TMD_TREASMAP]) && (dun_unusual > 180)) {
+			dun_unusual -= 30;
+		}
 		while (i == rarity && i < dun->profile->max_rarity) {
 			if (randint0(dun_unusual) < 50 + c->depth / 2) rarity++;
 			i++;

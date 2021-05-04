@@ -1625,6 +1625,20 @@ static void monster_turn(struct chunk *c, struct monster *mon)
 			if (rf_has(mon->race->flags, RF_NEVER_BLOW))
 				continue;
 
+			/* Player charms animals 
+			 * (todo: this should really be a one-time effect on each individual animal) */
+			if ((player->timed[TMD_ACHARM]) && (rf_has(mon->race->flags, RF_ANIMAL))) {
+				int nicechance = 30 + player->p_luck;
+				/* evil animals aren't as nice. Creatures of light are nicer than most. */
+				if (rf_has(mon->race->flags, RF_EVIL)) nicechance = nicechance / 2;
+				else if (rf_has(mon->race->flags, RF_CLIGHT)) nicechance += 10;
+				/* Monster decides not to attack because it likes you */
+				if (randint0(100) < nicechance) {
+					msg("%s rubs against your leg affectionately.", m_name);
+					continue;
+				}
+			}
+
 			/* Otherwise, attack the player */
 			make_attack_normal(mon, player);
 
