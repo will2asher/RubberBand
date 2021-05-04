@@ -922,12 +922,15 @@ bool player_can_cast(struct player *p, bool show_msg)
 		return false;
 	}
 
+#if 0
+	/* Confusion now raises spell fail rate (by a lot), but casting is still possible */
 	if (p->timed[TMD_CONFUSED]) {
 		if (show_msg) {
 			msg("You are too confused!");
 		}
 		return false;
 	}
+#endif
 
 	return true;
 }
@@ -1001,6 +1004,8 @@ bool player_can_read(struct player *p, bool show_msg)
 		return false;
 	}
 
+#if 0
+	/* Confusion and Amnesia now make a (high) fail rate for reading, but it's still possible */
 	if (p->timed[TMD_CONFUSED]) {
 		if (show_msg)
 			msg("You are too confused to read!");
@@ -1014,6 +1019,7 @@ bool player_can_read(struct player *p, bool show_msg)
 
 		return false;
 	}
+#endif
 
 	return true;
 }

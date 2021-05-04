@@ -410,11 +410,33 @@ s16b spell_chance(int spell_index)
 	/* Fear makes spells harder (before minfail) */
 	/* Note that spells that remove fear have a much lower fail rate than
 	 * surrounding spells, to make sure this doesn't cause mega fail */
-	if (player_of_has(player, OF_AFRAID)) chance += 20;
+	if (player_of_has(player, OF_AFRAID)) chance += 18;
+	/* Being charmed makes spells slightly harder (doesn't stack with fear) */
+	else if (player->timed[TMD_CHARMED]) chance += 6;
+
+	/* Turning to stone makes spells slightly harder */
+	if (player->timed[TMD_PETRIFIED]) chance += 6;
+
+	/* Blessing and clear mind make spells slightly easier */
+	if (player->timed[TMD_BLESSED]) chance -= 3;
+	if (player->timed[TMD_CLEAR_MIND]) chance -= 3;
+
+	/* Luck affects spell fail rate (by a maximum of 12% either way) */
+	if (player->p_luck > 0) chance -= (player->p_luck + 1) * 2;
+	if ((player->timed[TMD_PCCURSED]) || (player->p_luck < 0)) {
+		int bluck;
+		if ((player->p_luck < 0) && (player->timed[TMD_PCCURSED])) bluck = ABS(player->p_luck) + 1;
+		else if (player->p_luck < 0) bluck = ABS(player->p_luck);
+		else bluck = 2;
+		chance += bluck * 2;
+	}
 
 	/* Minimal and maximal failure rate */
 	if (chance < minfail) chance = minfail;
 	if (chance > 50) chance = 50;
+
+	/* enhanced spellcraft makes spells easier (may even bypass minfail) */
+	if (player->timed[TMD_SPELLCRFT]) chance -= 20;
 
 	/* Stunning makes spells harder (after minfail) */
 	if (player->timed[TMD_STUN] > 50) {
@@ -423,13 +445,22 @@ s16b spell_chance(int spell_index)
 		chance += 15;
 	}
 
-	/* Amnesia makes spells very difficult */
-	if (player->timed[TMD_AMNESIA]) {
+	/* FRENZY makes spells harder */
+	if (player->timed[TMD_FRENZY]) chance += 18;
+
+	/* being held by a monster makes spells harder */
+	if (player->timed[TMD_BHELD]) chance += 18;
+
+	/* Confusion and Amnesia make spells very difficult (but still possible at least) */
+	if ((player->timed[TMD_AMNESIA]) && (player->timed[TMD_CONFUSED])) {
+		chance = 60 + chance;
+	}
+	else if ((player->timed[TMD_AMNESIA]) || (player->timed[TMD_CONFUSED])) {
 		chance = 50 + chance / 2;
 	}
 
-	/* Always a 5 percent chance of working */
-	if (chance > 95) {
+	/* Always a 5 percent chance of working (unless you're confused) */
+	if ((chance > 95) && (!player->timed[TMD_CONFUSED])) {
 		chance = 95;
 	}
 

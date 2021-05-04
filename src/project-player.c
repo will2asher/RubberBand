@@ -597,16 +597,21 @@ static int project_player_handler_AMNESIA(project_player_handler_context_t* cont
 	int asave = player->state.skills[SKILL_SAVE];
 	if (duration > 60) duration = 60;
 
-	/* pCONF is partial resist */
-	if (player_of_has(player, OF_PROT_CONF)) {
+	/* CLEAR_MIND and pCONF are partial resists */
+	/* Todo: partial resists for inc_timed monster spells */
+	if (player->timed[TMD_CLEAR_MIND]) {
 		asave = asave * 3 / 2;
 		duration /= 2;
+	}
+	else if (player_of_has(player, OF_PROT_CONF)) {
+		asave = asave * 6 / 5;
+		duration = duration * 2 / 3;
 		equip_learn_flag(player, OF_PROT_CONF);
 	}
-	if (randint0(dmg) < asave) {
+	if (randint0(dmg + 1) < asave) {
 		msg("You resist the effect!");
 	}
-	else (void)player_inc_timed(player, TMD_AMNESIA, duration, true, true);
+	else (void)player_inc_timed(player, TMD_AMNESIA, duration, true, false);
 
 	return 0;
 }

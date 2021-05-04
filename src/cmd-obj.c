@@ -470,6 +470,26 @@ static void use_aux(struct command *cmd, struct object *obj, enum use use,
 
 	was_aware = object_flavor_is_aware(obj);
 
+	/* Reading while confused or with Amnesia is now possible, but difficult */
+	if ((tval_is_scroll(obj)) && (player->timed[TMD_CONFUSED] || player->timed[TMD_AMNESIA] || 
+		player->timed[TMD_IMAGE])) {
+		int readfail = 0;
+		if ((player->timed[TMD_CONFUSED]) && (player->timed[TMD_AMNESIA])) readfail = 90;
+		else if ((player->timed[TMD_CONFUSED]) || (player->timed[TMD_AMNESIA])) readfail = 76;
+		/* hallucenation is not quite as bad for reading */
+		if ((readfail) && (player->timed[TMD_IMAGE])) readfail += 5;
+		else if (player->timed[TMD_IMAGE]) readfail = 16; /* about one in 6 */
+
+		/* Todo: Reduce this fail rate once you've done alternate effects */
+		if (randint0(100) < readfail) {
+			msg("You stumble over the words and nothing happens.");
+
+			/* Waste (most of) the turn (but not the scroll) */
+			player->upkeep->energy_use = z_info->move_energy * 3 / 4;
+			return;
+		}
+	}
+
 	/* Determine whether we know an item needs to be be aimed */
 	if (tval_is_wand(obj) || tval_is_rod(obj) || was_aware ||
 		(obj->effect && (obj->known->effect == obj->effect)) ||
@@ -485,7 +505,7 @@ static void use_aux(struct command *cmd, struct object *obj, enum use use,
 			return;
 		}
 
-		/* Confusion wrecks aim */
+		/* Confusion wrecks aim (75%) */
 		player_confuse_dir(player, &dir, false);
 	}
 
@@ -699,6 +719,13 @@ void do_cmd_read_scroll(struct command *cmd)
 	/* Check player can use scroll */
 	if (!player_can_read(player, true))
 		return;
+
+	/* Confusion and Amnesia no longer completely block reading */
+	/* TODO: Alternate effects caused by reading while confused */
+	if ((player->timed[TMD_CONFUSED]) || (player->timed[TMD_AMNESIA])) {
+		msg("You will have a high chance of failing or getting an alternate effect if you read while confused or with amnesia.");
+		if (!get_check("Do you want to attempt it anyway? ")) return;
+	}
 
 	/* Get the scroll */
 	if (cmd_get_item(cmd, "item", &obj,
@@ -1044,12 +1071,23 @@ void do_cmd_cast(struct command *cmd)
 		if (get_check("Change back to your original form? " )) {
 			player_resume_normal_shape(player);
 		}
+		/* Why does this return even if player changes back to their normal form? (maybe change this) */
 		return;
 	}
 
 	/* Check the player can cast spells at all */
 	if (!player_can_cast(player, true))
 		return;
+
+	/* Warn player of probable failure if confused or with amnesia */
+	if (player->timed[TMD_CONFUSED] || player->timed[TMD_AMNESIA]) {
+		msg("Casting while confused or with amnesia is extremely difficult. ");
+
+		/* I'm not sure exactly what this does, but from below, it looks like it should be here... */
+		event_signal(EVENT_INPUT_FLUSH);
+
+		if (!get_check("Attempt it anyway? ")) return;
+	}
 
 	/* Get arguments */
 	if (cmd_get_spell(cmd, "spell", &spell_index,

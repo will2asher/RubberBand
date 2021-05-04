@@ -274,6 +274,12 @@ grade:v:10000:RConf:You feel resistant to confusion!
 on-end:You are no longer resistant to confusion.
 on-increase:You feel more resistant to confusion!
 
+name:CLEAR_MIND
+desc:clear mind
+grade:G:10000:ClrMind:Your mind feels especially sharp and clear.
+on-end:Your mind's clarity returns to normal.
+msgt:GENERIC
+
 name:AMNESIA
 desc:amnesia
 grade:o:10000:Amnesiac:You feel your memories fade.

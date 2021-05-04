@@ -2073,6 +2073,7 @@ void calc_bonuses(struct player *p, struct player_state *state, bool known_only,
 		state->to_h -= 3;
 		if ((bluck) || (gluck == 3)) bluck += 1;
 		else if (gluck < 3) bluck += 2;
+		/* (Also hurts spell fail rate) */
 		state->skills[SKILL_DEVICE] = state->skills[SKILL_DEVICE] * 9 / 10;
 		state->skills[SKILL_SEARCH] = state->skills[SKILL_SEARCH] * 9 / 10;
 		state->skills[SKILL_SAVE] = state->skills[SKILL_SAVE] * 85 / 100;
@@ -2147,7 +2148,7 @@ void calc_bonuses(struct player *p, struct player_state *state, bool known_only,
 		state->to_a -= (10 + bluck);
 		state->skills[SKILL_DEVICE] = state->skills[SKILL_DEVICE] * 92 / 100;
 	}
-	/* bad version of berserk strength (SHERO) */
+	/* bad version of berserk strength (SHERO), also hurts spell fail rate */
 	if (p->timed[TMD_FRENZY]) {
 		state->speed += 1;
 		state->to_a -= (11 + bluck);
@@ -2175,6 +2176,7 @@ void calc_bonuses(struct player *p, struct player_state *state, bool known_only,
 		state->skills[SKILL_DEVICE] = state->skills[SKILL_DEVICE] * 94 / 100;
 		state->skills[SKILL_DISARM_PHYS] = state->skills[SKILL_DISARM_PHYS] * 75 / 100;
 		state->skills[SKILL_DISARM_MAGIC] = state->skills[SKILL_DISARM_MAGIC] * 75 / 100;
+		/* (Also hurts spell fail rate) */
 	}
 	/* Primary effect is involuntary blinking, but has minor side effects */
 	if (p->timed[TMD_PHAZED]) {
@@ -2182,6 +2184,15 @@ void calc_bonuses(struct player *p, struct player_state *state, bool known_only,
 		state->to_h -= (2 + bluck/2);
 		state->skills[SKILL_DISARM_PHYS] = state->skills[SKILL_DISARM_PHYS] * 9 / 10;
 		state->skills[SKILL_DISARM_MAGIC] = state->skills[SKILL_DISARM_MAGIC] * 9 / 10;
+	}
+	/* Clear mind is more than just pCONF now */
+	if (p->timed[TMD_CLEAR_MIND]) {
+		state->to_h += 1;
+		state->skills[SKILL_DEVICE] = state->skills[SKILL_DEVICE] * 105 / 100;
+		state->skills[SKILL_SAVE] = state->skills[SKILL_SAVE] * 105 / 100;
+		state->skills[SKILL_SEARCH] = state->skills[SKILL_SEARCH] * 105 / 100;
+		state->skills[SKILL_DISARM_PHYS] = state->skills[SKILL_DISARM_PHYS] * 105 / 100;
+		state->skills[SKILL_DISARM_MAGIC] = state->skills[SKILL_DISARM_MAGIC] * 105 / 100;
 	}
 	/* Primary effect is on spellcasting, but has minor side effects */
 	if (p->timed[TMD_SPELLCRFT]) {
@@ -2228,13 +2239,12 @@ void calc_bonuses(struct player *p, struct player_state *state, bool known_only,
 	if (p->timed[TMD_OPP_POIS] && (state->el_info[ELEM_POIS].res_level < 2)) {
 			state->el_info[ELEM_POIS].res_level++;
 	}
+	/* Confusion, Amnesia, and hallucenation also hurt disarming and disable searching (elsewhere) */
 	if (p->timed[TMD_CONFUSED]) {
 		state->skills[SKILL_DEVICE] = state->skills[SKILL_DEVICE] * (75 + gluck * 2) / 100;
-		state->skills[SKILL_SEARCH] = state->skills[SKILL_SEARCH] * 9 / 10;
 	}
 	if (p->timed[TMD_AMNESIA]) {
 		state->skills[SKILL_DEVICE] = state->skills[SKILL_DEVICE] * (80 + gluck * 2) / 100;
-		state->skills[SKILL_SEARCH] = state->skills[SKILL_SEARCH] * 9 / 10;
 	}
 	/* Why would poison affect device skill?
 	if (p->timed[TMD_POISONED]) {

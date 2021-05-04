@@ -913,6 +913,70 @@ static void melee_effect_handler_CONFUSE(melee_effect_handler_context_t *context
 }
 
 /**
+ * Melee effect handler: FRENZY.
+ */
+static void melee_effect_handler_FRENZY(melee_effect_handler_context_t* context)
+{
+	int mindur = 3;
+	int savet = player->state.skills[SKILL_SAVE];
+	if ((context->rlev / 8 > 3) && (context->rlev / 8 < 9)) mindur = context->rlev / 8;
+	else if (context->rlev / 8 > 3) mindur = 9;
+
+	/* Take damage */
+	if (monster_damage_target(context, true)) return;
+
+	/* partial resist */
+	if (player->timed[TMD_CLEAR_MIND]) savet = savet * 3 / 2;
+	else if (player_of_has(player, OF_PROT_CONF)) savet = savet * 11 / 10;
+
+	/* Attempt a saving throw */
+	if (randint0(100 + context->rlev) < savet) {
+		msg("You resist the effects.");
+	}
+	/* Increase FRENZY */
+	else {
+		if (player_inc_timed(context->p, TMD_FRENZY, mindur + randint1(context->rlev),
+			true, false))
+			context->obvious = true;
+	}
+
+	/* Learn about the player (?) */
+	/*update_smart_learn(context->mon, context->p, of_flag, 0, -1);*/
+}
+
+/**
+ * Melee effect handler: CHARM.
+ */
+static void melee_effect_handler_CHARM(melee_effect_handler_context_t* context)
+{
+	int savet = player->state.skills[SKILL_SAVE];
+
+	/* Take damage */
+	if (monster_damage_target(context, true)) return;
+
+	/* partial resists */
+	if (player->timed[TMD_CLEAR_MIND]) savet = savet * 3 / 2;
+	else if ((player->timed[TMD_SHERO]) || (p->timed[TMD_BLOODLUST])) savet = savet * 6 / 5;
+	else if (player_of_has(player, OF_PROT_FEAR)) savet = savet * 11 / 10;
+	/* Amnesia makes you more vulnerable to charm */
+	if (player->timed[TMD_AMNESIA]) savet = savet * 4 / 5;
+
+	/* Attempt a saving throw */
+	if (randint0(100 + context->rlev) < savet) {
+		msg("You resist the effects.");
+	}
+	/* Increase CHARMED */
+	else {
+		if (player_inc_timed(context->p, TMD_CHARMED, 3 + randint1(context->rlev),
+			true, false))
+			context->obvious = true;
+	}
+
+	/* Learn about the player (?) */
+	/*update_smart_learn(context->mon, context->p, of_flag, 0, -1);*/
+}
+
+/**
  * Melee effect handler: Cause bad luck
  */
 static void melee_effect_handler_UNLUCKY(melee_effect_handler_context_t* context)
@@ -1146,6 +1210,7 @@ melee_effect_handler_f melee_handler_for_blow_effect(const char *name)
 		{ "COLD", melee_effect_handler_COLD },
 		{ "BLIND", melee_effect_handler_BLIND },
 		{ "CONFUSE", melee_effect_handler_CONFUSE },
+		{ "FRENZY", melee_effect_handler_FRENZY },
 		{ "UNLUCKY", melee_effect_handler_UNLUCKY },
 		{ "TERRIFY", melee_effect_handler_TERRIFY },
 		{ "PARALYZE", melee_effect_handler_PARALYZE },

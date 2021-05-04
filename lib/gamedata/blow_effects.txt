@@ -216,15 +216,15 @@ lash-type:CHAOS
 #resist:PROT_CONF
 #lash-type:CHAOS
 
-#Put you in a reckless frenzy (+movement speed, penalty to to-hit, ac, and spellcasting fail rate)
-#name:FRENZY
-#power:20
-#eval:20
-#desc:put you in a frenzy
-#lore-color-base:Orange
-#lore-color-resist:Light Green
-#effect-type:flag
-#lash-type:CHAOS
+#Put you in a reckless frenzy (+speed, penalty to to-hit, ac, and spellcasting fail rate)
+name:FRENZY
+power:20
+eval:20
+desc:put you in a frenzy
+lore-color-base:Orange
+lore-color-resist:Light Green
+effect-type:flag
+lash-type:CHAOS
 
 name:UNLUCKY
 power:13
@@ -243,17 +243,18 @@ lore-color-base:Yellow
 lore-color-resist:Light Green
 effect-type:flag
 resist:PROT_FEAR
-lash-type:CHAOS
+lash-type:FEAR
 
 #similar effect as fear, different cause/resist/cures
-#name:CHARM
-#power:4
-#eval:10
-#desc:charm you
-#lore-color-base:Yellow
-#lore-color-resist:Light Green
-#effect-type:flag
-#lash-type:CHAOS
+name:CHARM
+power:4
+eval:10
+desc:charm you
+lore-color-base:Yellow
+lore-color-resist:Light Green
+effect-type:flag
+lash-type:INERTIA
+#lash-type:FEAR?
 
 name:PARALYZE
 power:0
