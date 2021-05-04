@@ -50,7 +50,7 @@ static struct target target;
 static struct target old_target;
 
 /**
- * Monster health description
+ * Monster health (and status) description
  */
 void look_mon_desc(char *buf, size_t max, int m_idx)
 {
@@ -84,6 +84,7 @@ void look_mon_desc(char *buf, size_t max, int m_idx)
 
 	/* Effect status */
 	if (mon->m_timed[MON_TMD_SLEEP]) my_strcat(buf, ", asleep", max);
+	if (mon->nonagr) my_strcat(buf, ", non-agressive", max);
 	if (mon->m_timed[MON_TMD_HOLD]) my_strcat(buf, ", held", max);
 	if (mon->m_timed[MON_TMD_DISEN]) my_strcat(buf, ", disenchanted", max);
 	if (mon->m_timed[MON_TMD_CONF]) my_strcat(buf, ", confused", max);
@@ -91,6 +92,12 @@ void look_mon_desc(char *buf, size_t max, int m_idx)
 	if (mon->m_timed[MON_TMD_STUN]) my_strcat(buf, ", stunned", max);
 	if (mon->m_timed[MON_TMD_SLOW]) my_strcat(buf, ", slowed", max);
 	if (mon->m_timed[MON_TMD_FAST]) my_strcat(buf, ", hasted", max);
+	/* If the individual is evil, but the race isn't always evil, tell the player about the individual */
+	if ((mon->pcmet) && (mon->isevil) && (!rf_has(mon->race->flags, RF_EVIL))) 
+		my_strcat(buf, " (evil)", max);
+	/* Same if the individual is not evil, if the race is sometimes evil */
+	else if ((mon->pcmet) && (rf_has(mon->race->flags, RF_S_EVIL1) || rf_has(mon->race->flags, RF_S_EVIL2)))
+		my_strcat(buf, " (not evil)", max);
 }
 
 

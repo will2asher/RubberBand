@@ -2192,8 +2192,13 @@ static bool detect_monsters(int y_dist, int x_dist, monster_predicate pred)
 			/* Note invisible monsters */
 			if (monster_is_invisible(mon)) {
 				struct monster_lore *lore = get_lore(mon->race);
-				rf_on(lore->flags, RF_INVISIBLE);
-				rsf_on(lore->spell_flags, RSF_TINVIS);
+				if (rf_has(mon->race->flags, RF_INVISIBLE)) rf_on(lore->flags, RF_INVISIBLE);
+				else rsf_on(lore->spell_flags, RSF_TINVIS);
+			}
+			/* Note evil monsters */
+			if (pred == monster_is_evil) {
+				/* This means that the player has learned whether the individual monster is evil or not */
+				mon->pcmet = 1;
 			}
 
 			/* Update monster recall window */
@@ -2206,6 +2211,19 @@ static bool detect_monsters(int y_dist, int x_dist, monster_predicate pred)
 
 			/* Detect */
 			monsters = true;
+		}
+		/* If we can see the monster but didn't detect it with the spell, we might learn something about it */
+		/* (is_obvious means visible and not camouflaged) */
+		else if ((monster_is_in_view(mon)) && (monster_is_obvious(mon))) {
+			
+			/* learn whether this individual is evil or not */
+			if (pred == monster_is_evil) mon->pcmet = 1;
+
+			/* learn whether this monster is immune to fear */
+			if ((pred == monster_is_fearful) || (pred == monster_is_living_and_fearful)) {
+				struct monster_lore* lore = get_lore(mon->race);
+				if (rf_has(mon->race->flags, RF_NO_FEAR)) rf_on(lore->flags, RF_NO_FEAR);
+			}
 		}
 	}
 
@@ -2966,6 +2984,9 @@ bool effect_handler_PROBE(effect_handler_context_t *context)
 
 			/* Describe the monster */
 			msg("%s has %d hit point%s.", m_name, mon->hp, (mon->hp == 1) ? "" : "s");
+
+			/* Learn whether the individual is evil or not */
+			mon->pcmet = 1;
 
 			/* Learn all of the non-spell, non-treasure flags */
 			lore_do_probe(mon);

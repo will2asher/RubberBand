@@ -1071,6 +1071,7 @@ static bool place_new_monster_one(struct chunk *c, struct loc grid,
 	int i;
 	struct monster *mon;
 	struct monster monster_body;
+	int racesleep;
 
 	assert(square_in_bounds(c, grid));
 	assert(race && race->name);
@@ -1123,9 +1124,17 @@ static bool place_new_monster_one(struct chunk *c, struct loc grid,
 	/* Save the race */
 	mon->race = race;
 
+	/* normal sleepiness maxes out at 255 */
+	if (race->sleep == 256) {
+		racesleep = 255;
+		/* monster is non-agressive */
+		mon->nonagr = 1;
+	}
+	else racesleep = race->sleep;
+
 	/* Enforce sleeping if needed */
-	if (sleep && race->sleep) {
-		int val = race->sleep;
+	if (sleep && racesleep) {
+		int val = racesleep;
 
 		/* TOWN_OR_DUN town monsters have to be more alert when they're in the dungeon */
 		if ((race->level == 0) && (player->depth > 0)) {
@@ -1173,6 +1182,23 @@ static bool place_new_monster_one(struct chunk *c, struct loc grid,
 	/* Force monster to wait for player */
 	if (rf_has(race->flags, RF_FORCE_SLEEP))
 		mflag_on(mon->mflag, MFLAG_NICE);
+
+	/* Mark the monster as evil or not */
+	/* Some monster races are always evil */
+	if (rf_has(race->flags, RF_EVIL)) mon->isevil = 1;
+	/* Some monster races are sometimes evil and sometimes not */
+	else if ((rf_has(race->flags, RF_S_EVIL1)) || (rf_has(race->flags, RF_S_EVIL2))) {
+		int evilc = 34;
+		if (rf_has(race->flags, RF_S_EVIL2)) evilc = 67;
+		if (randint0(100) < evilc) mon->isevil = 1;
+		else mon->isevil = 0;
+	}
+	/* otherwise not evil */
+	else mon->isevil = 0;
+
+	/* The player has not met this monster yet and it has not been charmed */
+	mon->pcmet = 0;
+	mon->acharmed = 0;
 
 	/* Affect light? */
 	if (mon->race->light != 0) player->upkeep->update |= PU_UPDATE_VIEW;

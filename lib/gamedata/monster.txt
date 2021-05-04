@@ -399,9 +399,8 @@ depth:0
 rarity:2
 experience:0
 blow:HIT:HURT:1d7
-flags:MALE
+flags:MALE | S_EVIL2
 flags:RAND_25 | OPEN_DOOR | TAKE_ITEM | DROP_40 | ONLY_GOLD
-#S_EVIL2
 desc:He likes to wear bright clothes, laugh at the poor people and kick the street urchins.
 
 name:squint-eyed rogue
@@ -418,9 +417,9 @@ experience:4
 blow:HIT:HURT:1d5
 blow:TOUCH:EAT_ITEM
 blow:INSULT
-flags:MALE | EVIL | TOWN_OR_DUN
+flags:MALE | S_EVIL2 | TOWN_OR_DUN
 flags:OPEN_DOOR | BASH_DOOR | TAKE_ITEM
-#ROAM | S_EVIL2
+#ROAM | 
 desc:A hardy, street-wise crook that knows an easy catch when it sees one.
 
 name:singing, happy drunk
@@ -477,10 +476,10 @@ depth:0
 rarity:1
 experience:0
 blow:HIT:HURT:1d10
-flags:MALE | EVIL
+flags:MALE | S_EVIL2
 flags:DROP_40
 flags:RAND_50 | OPEN_DOOR | BASH_DOOR | TAKE_ITEM
-#ROAM | S_EVIL2
+#ROAM | 
 desc:No job is too low for him.
 
 name:village witch
@@ -536,7 +535,7 @@ hit-points:38
 light:2
 hearing:10
 armor-class:35
-sleepiness:255
+sleepiness:256
 depth:0
 rarity:1
 experience:0
@@ -705,8 +704,8 @@ depth:1
 rarity:1
 experience:4
 blow:HIT:HURT:1d5
-flags:DROP_60
-#ROAM | S_EVIL2
+flags:DROP_60 | S_EVIL2
+#ROAM
 desc:It is a squat and ugly humanoid figure with a canine face.
 
 name:disgusting worm
@@ -805,8 +804,8 @@ depth:2
 rarity:1
 experience:5
 blow:HIT:HURT:1d7
-flags:DROP_60
-#ROAM | S_EVIL2
+flags:DROP_60 | S_EVIL2
+#ROAM
 friends-base:15:1d2:kobold
 desc:It is a small, dog-headed humanoid.
 
@@ -860,9 +859,8 @@ rarity:1
 experience:6
 blow:HIT:HURT:1d7
 blow:HIT:HURT:1d7
-flags:MALE | OPEN_DOOR
+flags:MALE | S_EVIL1 | OPEN_DOOR
 flags:DROP_60
-#S_EVIL1
 friends-base:20:1d3:person
 friends-base:40:1d3:person
 friends-base:80:1d3:person
@@ -882,9 +880,8 @@ rarity:1
 experience:6
 blow:HIT:HURT:1d6
 blow:TOUCH:EAT_GOLD
-flags:MALE | EVIL
+flags:MALE | S_EVIL2
 flags:DROP_40
-#S_EVIL2
 flags:OPEN_DOOR | TAKE_ITEM
 drop:scroll:Phase Door:35:1:2
 friends-base:20:1d3:person
@@ -930,9 +927,8 @@ depth:2
 rarity:1
 experience:6
 blow:HIT:HURT:1d4
-flags:MALE | FORCE_SLEEP
+flags:MALE | S_EVIL1 | FORCE_SLEEP
 flags:DROP_40 | OPEN_DOOR
-#S_EVIL1
 spell-freq:12
 spells:BLIND | BLINK | CONF | MISSILE
 drop-base:magic book:5:1:1
@@ -1242,9 +1238,9 @@ rarity:1
 experience:4
 blow:HIT:HURT:1d4
 blow:TOUCH:EAT_GOLD
-flags:MALE | TOWN_OR_DUN
+flags:MALE | S_EVIL1 | TOWN_OR_DUN
 flags:DROP_60 | TAKE_ITEM
-#S_EVIL1 | ROAM
+#ROAM
 desc:A short little guy, in bedraggled clothes.  He appears to be looking for a
 desc: good tavern.
 
@@ -1315,8 +1311,8 @@ depth:3
 rarity:1
 experience:15
 blow:HIT:HURT:1d7
-flags:DROP_40
-#ROAM | S_EVIL2
+flags:DROP_40 | S_EVIL2
+#ROAM
 spell-freq:5
 spells:WOUND | CONF | HEAL | MISSILE
 drop-base:magic book:5:1:1
@@ -1339,8 +1335,8 @@ rarity:3
 experience:14
 blow:HIT:HURT:1d2
 blow:CLAWB:HURT:2d3
-flags:DROP_40 | RUBBER
-#ROAM | S_EVIL2
+flags:DROP_40 | RUBBER | S_EVIL2
+#ROAM
 spell-freq:14
 spells:TINVIS
 friends:20:1d3:feline kobold
@@ -1590,12 +1586,12 @@ depth:4
 rarity:1
 experience:20
 blow:HIT:HURT:1d9
-flags:DROP_40
+flags:DROP_40 | S_EVIL2
 innate-freq:2
 spells:ARROW
 friends-base:30:1d2:kobold
 friends-base:65:1d2:kobold
-#ROAM | S_EVIL2
+#ROAM
 desc:It is an ugly dog-headed humanoid wielding a bow.
 
 name:giant centipede
@@ -1752,9 +1748,9 @@ experience:16
 blow:TOUCH:EAT_FOOD:1d1
 blow:HIT:HURT:1d1
 #SLIME
-flags:DROP_20 | DROP_60
+flags:DROP_20 | DROP_60 | S_EVIL2
 flags:RAND_25 | RAND_50
-#ROAM | S_EVIL2
+#ROAM
 flags-off:EVIL | NO_CONF | INVISIBLE
 spell-freq:8
 spells:TINVIS
@@ -1773,8 +1769,8 @@ depth:5
 rarity:1
 experience:25
 blow:HIT:HURT:1d10
-flags:DROP_60
-#ROAM, S_EVIL2
+flags:DROP_60 | S_EVIL2
+#ROAM
 friends-base:50:1d2:kobold
 friends-base:30:1d2:kobold
 desc:It is a man-sized figure with the all too recognizable face of a kobold.
@@ -1935,8 +1931,8 @@ rarity:4
 experience:21
 blow:CLAWB:HURT:3d3
 blow:HIT:EAT_GOLD:1d3
-flags:DROP_40 | RUBBER
-#ROAM | S_EVIL2
+flags:DROP_40 | RUBBER | S_EVIL2
+#ROAM
 spell-freq:10
 spells:TINVIS
 desc:This kobold has catlike features instead of doglike ones.
@@ -1970,8 +1966,9 @@ rarity:5
 experience:40
 blow:HIT:HURT:1d5
 blow:CRUSH:HURT:6d2
-flags:WEIRD_MIND | NEVER_MOVE | NO_FEAR | TOWN_OR_DUN | CLIGHT
-#BLOCK_LOS | S_EVIL1
+flags:WEIRD_MIND | S_EVIL1 | NEVER_MOVE | NO_FEAR
+flags:TOWN_OR_DUN | CLIGHT
+#BLOCK_LOS
 innate-freq:11
 spells:THROW
 desc:An mean apple tree that has gotten bored of dropping fruit on people's heads,
@@ -2174,13 +2171,13 @@ rarity:3
 experience:24
 blow:HIT:HURT:1d9
 blow:HIT:HURT:1d9
-flags:DROP_60
+flags:DROP_60 | S_EVIL2
 innate-freq:7
 spells:ARROW
 friends-base:50:1d3:kobold
 friends-base:50:1d3:kobold
 friends-base:80:3d3:kobold
-#ROAM | S_EVIL2
+#ROAM
 desc:It is an ugly dog-headed humanoid in command of a company of others like him.
 
 name:clear eye
@@ -2308,8 +2305,8 @@ rarity:2
 experience:21
 blow:HIT:POISON:1d3
 blow:KICK:HURT:1d3
-flags:RAND_50 | NO_SLEEP | BASH_DOOR
-#ROAM | S_EVIL1
+flags:RAND_50 | S_EVIL1 | NO_SLEEP | BASH_DOOR
+#ROAM
 flags-off:CLIGHT
 innate-freq:10
 spells:BR_POIS | ARROW
@@ -2496,9 +2493,9 @@ rarity:2
 experience:25
 blow:HIT:HURT:1d6
 blow:HIT:HURT:1d6
-flags:MALE | EVIL
+flags:MALE | S_EVIL2
 flags:DROP_60 | FORCE_SLEEP
-#ROAM | S_EVIL2
+#ROAM
 spell-freq:10
 spells:CONF | DARKNESS
 desc:A dwarf of one of the eastern kindreds who has fallen under the sway of
@@ -2589,8 +2586,8 @@ blow:INSULT
 blow:HIT:HURT:1d4
 blow:KICK:FRENZY:2d3
 flags:TAKE_ITEM | DROP_40 | RAND_25
-flags:REGENERATE | EVIL | HURT_LIGHT
-#ROAM | S_EVIL2
+flags:REGENERATE | S_EVIL2 | HURT_LIGHT
+#ROAM
 innate-freq:11
 spell-power:6
 spells:THROW
@@ -2740,8 +2737,7 @@ depth:8
 rarity:3
 experience:27
 blow:HIT:POISON:1d4
-flags:SMART | DROP_40 | TAKE_ITEM
-#S_EVIL1
+flags:SMART | S_EVIL1 | DROP_40 | TAKE_ITEM
 spell-freq:8
 spells:BLINK | CONF | BA_POIS | HEAL
 drop-base:potion:70:1:2
@@ -2761,9 +2757,8 @@ rarity:2
 experience:26
 blow:HIT:HURT:2d4
 blow:HIT:HURT:2d4
-flags:MALE | EVIL
+flags:MALE | S_EVIL2
 flags:DROP_1 | TAKE_ITEM
-#S_EVIL2
 innate-freq:8
 spells:SHOT | WHIP
 desc:An uncultured brute with a club, a sling and a whip.
@@ -2781,8 +2776,7 @@ depth:8
 rarity:4
 experience:28
 blow:HIT:HURT:1d10
-flags:DROP_40 | TAKE_ITEM | SILLY
-#S_EVIL1
+flags:DROP_40 | S_EVIL1 | TAKE_ITEM | SILLY
 innate-freq:11
 spells:THROW
 friends:45:1d5:Same
@@ -3536,10 +3530,10 @@ experience:38
 blow:CLAW:HURT:1d4
 blow:CLAW:HURT:1d4
 blow:BITE:EXP_10:2d4
-flags:DROP_60 | ONLY_GOLD | EVIL
+flags:DROP_60 | ONLY_GOLD | S_EVIL2
 flags:OPEN_DOOR | BASH_DOOR
 flags:FORCE_SLEEP | REGENERATE | SILLY
-#S_EVIL2 | ROAM
+# | ROAM
 spell-freq:13
 spells:WOUND | BA_POIS
 desc:A large hare with glowing red eyes. Technically, it's not a rabbit,
@@ -3839,8 +3833,8 @@ blow:INSULT
 blow:HIT:HURT:1d6
 blow:KICK:FRENZY:3d2
 flags:TAKE_ITEM | DROP_40 | RAND_25
-flags:REGENERATE | HURT_LIGHT | NO_HOLD
-#ROAM | S_EVIL2
+flags:REGENERATE | S_EVIL2 | HURT_LIGHT | NO_HOLD
+#ROAM
 innate-freq:7
 spell-freq:13
 spells:THROW | WHIP | SCARE 
@@ -3863,8 +3857,8 @@ rarity:4
 experience:32
 blow:HIT:HURT:1d3
 blow:HIT:HURT:1d3
-flags:DROP_20 | TAKE_ITEM | NO_HOLD | RAND_25
-#S_EVIL2 | ROAM1 
+flags:S_EVIL2 | DROP_20 | TAKE_ITEM | NO_HOLD | RAND_25
+#ROAM1 
 innate-freq:9
 spell-freq:13
 spell-power:6
@@ -4121,7 +4115,7 @@ blow:HIT:HURT:2d3
 blow:HIT:HURT:2d3
 flags:MALE | SMART | FORCE_SLEEP
 flags:DROP_60 
-#ROAM, S_EVIL1
+#ROAM
 spell-freq:3
 spell-power:7
 spells:HEAL | SCARE | HEAL_KIN
@@ -4169,7 +4163,7 @@ rarity:1
 experience:40
 blow:HIT:HURT:3d5
 blow:HIT:HURT:3d5
-flags:MALE | DROP_1 
+flags:MALE | S_EVIL1 | DROP_1 
 innate-freq:10
 spells:BOLT
 friends:35:1d2:Illusionist
@@ -4243,8 +4237,7 @@ depth:12
 rarity:2
 experience:50
 blow:HIT:HURT:2d10
-flags:DROP_40
-#S_EVIL2
+flags:DROP_40 | S_EVIL2
 friends-base:65:2d4:orc
 friends:98:2d4:Same
 desc:A hideous, smallish giant that is often found near or with orcs.
@@ -4534,9 +4527,9 @@ depth:13
 rarity:2
 experience:50
 blow:HIT:HURT:2d3
-flags:MALE | EVIL | SMART | FORCE_SLEEP
+flags:MALE | S_EVIL1 | SMART | FORCE_SLEEP
 flags:DROP_1 | OPEN_DOOR
-#S_EVIL1, ROAM
+# ROAM
 spell-freq:3
 spells:BLIND | BLINK | CONF | DARKNESS | HASTE | HOLD
 spells:SLOW | TPORT | TINVIS
@@ -5067,7 +5060,6 @@ experience:75
 blow:HIT:HURT:2d8
 blow:HIT:HURT:2d8
 flags:DROP_40
-#S_EVIL2
 friends:60:2d4:Ogre
 friends:100:3d4:Same
 desc:A massive orc-like figure with black skin and powerful arms.
@@ -5150,9 +5142,9 @@ rarity:2
 experience:50
 blow:HIT:HURT:3d4
 blow:HIT:HURT:3d4
-flags:DROP_40
-#S_EVIL2 (clearly, they're not always evil if you can play as a half-orc paladin)
-#flags-off:EVIL
+flags:DROP_40 | S_EVIL2
+#(clearly, they're not always evil if you can play as a half-orc paladin)
+flags-off:EVIL
 innate-freq:11
 spells:ARROW
 friends:35:2d3:hill orc
@@ -5160,7 +5152,7 @@ friends:60:2d4:Warg
 friends:50:1d2:orc tracker
 friends:95:3d5:Same
 desc:He is a hideous deformed cross-breed with man and orc, combining man's
-desc: strength and cunning with orcish evil.  The traitorous wizard Saruman is
+desc: strength and cunning with orcish brutality.  The traitorous wizard Saruman is
 desc: generally believed to be responsible for this abomination.
 
 name:hobglib
@@ -5177,8 +5169,8 @@ experience:59
 blow:HIT:POISON:1d5
 blow:HIT:ACID:1d6
 flags:ONLY_ITEM | BASH_DOOR | DROP_1 | ONLY_ITEM
-flags:NO_FEAR | IM_POIS | IM_ACID | KEEP_DIST
-#ROAM | S_EVIL1
+flags:NO_FEAR | IM_POIS | IM_ACID | KEEP_DIST | S_EVIL1
+#ROAM
 spell-freq:4
 spells:WOUND | SLOW | CONF | BLIND | HOLD | HASTE | BA_POIS
 #BE_ACID
@@ -5287,8 +5279,8 @@ rarity:3
 experience:67
 blow:CRUSH:HURT:2d6
 blow:SPIT:ELEC:2d7
-flags:DROP_40 | RAND_25 | IM_ELEC
-#S_EVIL2
+flags:DROP_40 | RAND_25 | IM_ELEC | S_EVIL2
+flags-off:EVIL
 innate-freq:11
 spells:BR_ELEC
 desc:A 12-legged giant blue serpent which sometimes walks and sometimes
@@ -5464,9 +5456,9 @@ experience:51
 blow:HIT:HURT:2d4
 blow:HIT:HURT:2d4
 blow:TOUCH:EAT_ITEM
-flags:MALE | EVIL
+flags:MALE | S_EVIL2
 flags:DROP_1 | OPEN_DOOR | TAKE_ITEM
-#S_EVIL2 | ROAM
+# ROAM
 innate-freq:8
 spells:SHOT
 drop:scroll:Phase Door:70:2:5
@@ -5493,9 +5485,9 @@ blow:HIT:TERRIFY:1d7
 blow:KICK:HURT:3d3
 blow:SPIT:HURT:1d5
 blow:INSULT:FRENZY
-flags:TAKE_ITEM | DROP_40 | BASH_DOOR
+flags:TAKE_ITEM | DROP_40 | BASH_DOOR | S_EVIL2
 flags:REGENERATE | HURT_LIGHT | NO_HOLD | NO_STUN
-#ROAM | S_EVIL2 | SCALE?
+#ROAM | SCALE?
 innate-freq:7
 spell-freq:11
 #spells:CURSE_PC
@@ -5795,8 +5787,9 @@ depth:10
 rarity:8
 experience:58
 blow:HIT:HURT:2d8
-flags:MALE | BASH_DOOR | DROP_1 | KILL_WALL | RUBBER
-#ROAM | S_EVIL2
+flags:MALE | S_EVIL2 | RUBBER
+flags:BASH_DOOR | DROP_1 | KILL_WALL
+#ROAM
 desc:A dwarf of the east mining for gold, wielding a dwarvish mattock.
 
 name:silver dust bunny
@@ -6023,8 +6016,7 @@ rarity:5
 experience:75
 blow:HIT:HURT:4d5
 blow:HIT:HURT:5d5
-flags:MALE | DROP_40 | TAKE_ITEM
-#S_EVIL2
+flags:MALE | S_EVIL2 | DROP_40 | TAKE_ITEM
 innate-freq:11
 spells:ARROW
 friends:76:3d3:same
@@ -6419,8 +6411,8 @@ blow:HIT:POISON:3d3
 blow:HIT:HURT:3d5
 flags:MALE | SMART | DROP_1 | DROP_20
 flags:IM_POIS | TAKE_ITEM | NO_SLEEP
-flags:KEEP_DIST
-#ROAM | S_EVIL2 | DISGUISE | SCALE
+flags:KEEP_DIST | S_EVIL2
+#ROAM | DISGUISE | SCALE
 spell-freq:6
 innate-freq:7
 spells:BOLT | SHRIEK | TINVIS
@@ -7468,8 +7460,7 @@ rarity:1
 experience:70
 blow:HIT:HURT:6d5
 blow:HIT:HURT:6d5
-flags:MALE | DROP_1 | TAKE_ITEM
-#S_EVIL2
+flags:MALE | S_EVIL2 | DROP_1 | TAKE_ITEM
 innate-freq:6
 spells:BOLT
 friends:12:1d4:same
@@ -7639,8 +7630,8 @@ blow:HIT:HURT:2d8
 blow:HIT:HURT:2d8
 blow:HIT:EAT_GOLD:4d4
 blow:HIT:EAT_ITEM:4d4
-flags:MALE | EVIL | DROP_2 | TAKE_ITEM
-#ROAM | S_EVIL2
+flags:MALE | S_EVIL2 | DROP_2 | TAKE_ITEM
+#ROAM 
 innate-freq:4
 spells:SHOT
 friends:40:1d1:Ranger
@@ -7846,9 +7837,8 @@ blow:CLAW:HURT:1d10
 blow:CLAW:HURT:1d10
 blow:BITE:HURT:2d8
 blow:CRUSH:HURT:2d6
-flags:ANIMAL | FORCE_SLEEP | REGENERATE
+flags:ANIMAL | S_EVIL2 | FORCE_SLEEP | REGENERATE
 flags:DROP_1 | OPEN_DOOR
-#S_EVIL2
 spell-freq:23
 spells:S_KIN | HASTE
 desc:In the eyes of this bear, there glimmers the faintest light of
@@ -8044,9 +8034,9 @@ experience:137
 blow:CLAW:POISON:3d4
 #DISEASE?
 blow:CLAW:EXP_10:2d4
-flags:IM_NETHER
+flags:IM_NETHER | S_EVIL2
 flags-off:EVIL | UNDEAD | IM_POIS | HURT_LIGHT
-#ROAM, S_EVIL2
+#ROAM
 spell-freq:9
 spells:SCARE | DARKNESS | SLOW
 #summon lesser undead (maybe I will do S_EXTRA like I did in DJA)
@@ -8179,10 +8169,10 @@ experience:179
 blow:HIT:POISON:4d5
 blow:HIT:HURT:4d5
 blow:HIT:HURT:5d5
-flags:MALE | FORCE_SLEEP | TAKE_ITEM
+flags:MALE | S_EVIL1 | FORCE_SLEEP | TAKE_ITEM
 flags:DROP_1 | DROP_40 | 
 flags:IM_POIS | IM_ACID | NO_STUN
-#S_EVIL2 | ROAM
+# ROAM (S_EVIL1 or 2?)
 innate-freq:8
 spell-freq:10
 spells:WOUND | BO_POIS | TRAPS | BOLT
@@ -8227,9 +8217,9 @@ experience:160
 blow:HIT:HURT:2d5
 blow:HIT:HURT:4d7
 blow:HIT:HURT:7d4
-flags:MALE | FORCE_SLEEP | TAKE_ITEM
+flags:MALE | S_EVIL2 | FORCE_SLEEP | TAKE_ITEM
 flags:DROP_60 | NO_FEAR
-#S_EVIL2 | ROAM
+# ROAM
 innate-freq:10
 spells:ARROW
 friends:62:2d4:Same
@@ -8250,8 +8240,7 @@ rarity:1
 experience:170
 blow:HIT:HURT:4d8
 blow:HIT:HURT:4d8
-flags:DROP_40 | OPEN_DOOR
-#S_EVIL1
+flags:DROP_40 | OPEN_DOOR | S_EVIL1
 innate-freq:10
 spells:BOULDER
 friends:52:1d7:white wolf
@@ -8577,8 +8566,7 @@ rarity:2
 experience:82
 blow:HIT:HURT:3d8
 blow:HIT:HURT:3d8
-flags:DROP_40
-#S_EVIL2
+flags:DROP_40 | S_EVIL2
 friends:40:3d2:Ogre
 friends:40:3d2:Black ogre
 friends:100:2d5:Same
@@ -8734,9 +8722,9 @@ rarity:4
 experience:141
 blow:HIT:HURT:3d5
 blow:HIT:POISON:4d4
-flags:MALE | SMART | INVISIBLE | KEEP_DIST
+flags:MALE | S_EVIL2 | SMART | INVISIBLE | KEEP_DIST
 flags:TAKE_ITEM | DROP_60 | DROP_20
-#S_EVIL2 | SCALE
+# SCALE
 innate-freq:3
 spell-freq:6
 spells:ARROW | BO_POIS | BLINK | TPORT
@@ -8955,8 +8943,7 @@ experience:293
 blow:HIT:HURT:3d6
 blow:HIT:HURT:3d6
 blow:HIT:HURT:3d6
-flags:DROP_60 | ONLY_ITEM | FORCE_SLEEP
-#S_EVIL2
+flags:DROP_60 | ONLY_ITEM | S_EVIL2 | FORCE_SLEEP
 spell-freq:5
 spells:WOUND | HOLD | SCARE | TPORT | TRAPS
 spells:BO_FIRE | HEAL_KIN | S_MONSTER
@@ -9016,12 +9003,13 @@ experience:261
 blow:CLAW:HURT:3d3
 #BHOLD
 blow:SPIT:BLIND:1d6
-#SBLINS
+#SBLIND
 blow:BITE:HURT:3d5
 blow:BUTT:HURT:5d2
-flags:DEMON | TAKE_ITEM | DROP_60 | MOVE_BODY | FORCE_SLEEP | SMART
+flags:S_EVIL2 | FEY | FORCE_SLEEP | SMART
+flags:TAKE_ITEM | DROP_60 | MOVE_BODY
 flags:BASH_DOOR | IM_COLD | IM_ELEC | NO_SLEEP | NO_FEAR | NO_CONF
-#S_EVIL2 | FEY | ROAM | TEMPLE
+# ROAM | TEMPLE
 spell-freq:4
 spells:SCARE | CONF | TRAPS | BLINK | DARKNESS | BLIND
 spells:TELE_AWAY | TELE_LEVEL
@@ -9143,7 +9131,7 @@ rarity:1
 experience:182
 blow:HIT:COLD:5d8
 blow:HIT:COLD:5d8
-flags:DROP_40 | OPEN_DOOR
+flags:DROP_40 | OPEN_DOOR | S_EVIL1
 flags:IM_COLD
 innate-freq:9
 spells:BOULDER
@@ -9165,9 +9153,9 @@ rarity:1
 experience:155
 blow:HIT:HURT:2d5
 blow:HIT:HURT:2d5
-flags:MALE | SMART | FORCE_SLEEP | KEEP_DIST
+flags:MALE | SMART | S_EVIL2 | FORCE_SLEEP | KEEP_DIST
 flags:OPEN_DOOR | DROP_1 | ONLY_ITEM
-#ROAM | S_EVIL2
+#ROAM
 spell-freq:3
 spells:BLIND | CONF | TPORT | TELE_AWAY
 spells:BO_COLD | BO_ELEC | BO_FIRE | S_MONSTER
@@ -9447,8 +9435,7 @@ blow:TOUCH:EXP_20
 blow:CLAW:LOSE_INT:2d3
 blow:CLAW:LOSE_WIS:2d3
 flags:DROP_40 | DROP_1 | FORCE_SLEEP | PASS_DOOR
-flags:IM_COLD | RAND_25 
-#S_EVIL2
+flags:IM_COLD | RAND_25 | S_EVIL2
 flags-off:EVIL | PASS_WALL
 spell-freq:12
 spells:BLIND | DRAIN_MANA | SLOW | SCARE
@@ -9842,7 +9829,7 @@ rarity:1
 experience:225
 blow:HIT:FIRE:6d8
 blow:HIT:FIRE:6d8
-flags:DROP_40 | OPEN_DOOR
+flags:DROP_40 | OPEN_DOOR | S_EVIL1
 flags:IM_FIRE
 innate-freq:8
 spells:BOULDER
@@ -10683,8 +10670,7 @@ blow:HIT:HURT:3d8
 blow:HIT:HURT:3d8
 blow:HIT:HURT:3d8
 blow:HIT:HURT:3d8
-flags:DROP_1 | FORCE_SLEEP
-#S_EVIL2
+flags:DROP_1 | FORCE_SLEEP | EVIL
 spell-freq:4
 spells:HEAL | HOLD | TRAPS
 spells:BA_COLD | S_MONSTER
@@ -10901,7 +10887,7 @@ rarity:1
 experience:280
 blow:HIT:HURT:7d8
 blow:HIT:HURT:7d8
-flags:DROP_40
+flags:DROP_40 | S_EVIL1
 flags:OPEN_DOOR | TAKE_ITEM
 innate-freq:5
 spells:BOULDER
@@ -11293,9 +11279,9 @@ blow:HIT:HURT:2d8
 blow:HIT:HURT:3d4
 blow:HIT:EAT_GOLD:4d4
 blow:HIT:EAT_ITEM:4d5
-flags:MALE 
+flags:MALE | S_EVIL2
 flags:DROP_2 | TAKE_ITEM
-#S_EVIL2 | ROAM | DISGUISE
+# ROAM | DISGUISE
 innate-freq:10
 spell-freq:5
 spells:BOLT | BLINK | TRAPS | TINVIS
@@ -11317,7 +11303,7 @@ hit-points:524
 light:2
 hearing:30
 armor-class:81
-sleepiness:255
+sleepiness:256
 depth:34
 rarity:5
 experience:902
@@ -11372,8 +11358,7 @@ rarity:3
 experience:580
 blow:HIT:HURT:10d6
 blow:HIT:HURT:10d8
-flags:DROP_60 | FORCE_SLEEP
-#S_EVIL1
+flags:DROP_60 | FORCE_SLEEP | S_EVIL1
 innate-freq:8
 spells:BOULDER
 desc:A forty foot tall monstrosity, it swings a gargantuan spiked club, too stupid to
@@ -12074,7 +12059,7 @@ plural:dúnedain of Angmar
 base:person
 color:P
 speed:120
-hit-points:256
+hit-points:255
 hearing:20
 armor-class:73
 sleepiness:21
@@ -12960,9 +12945,9 @@ experience:1600
 blow:BUTT:HURT:6d5
 blow:BUTT:HURT:6d5
 blow:CRUSH:EXP_10:4d5
-flags:EVIL | RUBBER | ANIMAL | FORCE_SLEEP | REGENERATE | KILL_BODY
+flags:S_EVIL2 | RUBBER | ANIMAL | FORCE_SLEEP | REGENERATE | KILL_BODY
 flags:IM_ELEC | IM_POIS | NO_SLEEP | NO_STUN
-#SILLY or RUBBER? | S_EVIL2
+#SILLY or RUBBER? 
 spell-freq:12
 spells:BA_POIS | HASTE | S_KIN | DARKNESS
 friends:55:1d5:mumak
@@ -13159,10 +13144,10 @@ rarity:2
 experience:1480
 blow:HIT:HURT:9d9
 blow:HIT:HURT:9d9
-flags:DROP_1 | FORCE_SLEEP
+flags:DROP_1 | FORCE_SLEEP | S_EVIL2
 flags:OPEN_DOOR | MOVE_BODY | TAKE_ITEM
 flags:IM_ACID | IM_COLD | IM_FIRE
-#S_EVIL2 | TEMPLE
+# TEMPLE
 innate-freq:8
 spells:BOULDER
 desc:A gigantic ugly humanoid with but one eye and very thick skin.
@@ -13182,10 +13167,10 @@ experience:2045
 blow:HIT:HURT:2d6
 blow:HIT:HURT:2d6
 blow:HIT:HURT:2d8
-flags:FEMALE | OPEN_DOOR | FORCE_SLEEP
+flags:FEMALE | S_EVIL2 | OPEN_DOOR | FORCE_SLEEP
 flags:DROP_2 | ONLY_ITEM
 flags:NO_SLEEP | NO_HOLD
-#S_EVIL2 | ROAM
+# ROAM
 spell-freq:2
 spells:BLIND | SHAPECHANGE | S_DRAGON
 drop-base:magic book:8:1:1
@@ -13712,9 +13697,10 @@ rarity:4
 experience:716
 blow:HIT:HURT:3d7
 blow:HIT:EXP_10:3d11
-flags:ONLY_ITEM | DROP_60 | TAKE_ITEM | FORCE_SLEEP | POWERFUL
-flags:BASH_DOOR | SMART | IM_DISEN | IM_COLD | IM_ELEC | IM_POIS
-#S_EVIL2 | FEY | ROAM
+flags:S_EVIL2 | FEY | SMART | FORCE_SLEEP | POWERFUL
+flags:ONLY_ITEM | DROP_60 | TAKE_ITEM
+flags:BASH_DOOR | IM_DISEN | IM_COLD | IM_ELEC | IM_POIS
+# ROAM
 innate-freq:4
 spell-freq:4
 spells:ARROW | BLIND | SCARE | CONF | HOLD | DARKNESS
@@ -13922,9 +13908,10 @@ experience:972
 blow:HIT:HURT:4d7
 blow:HIT:EXP_10:4d11
 blow:TOUCH:EAT_ITEM
-flags:ONLY_ITEM | DROP_1 | TAKE_ITEM | FORCE_SLEEP | POWERFUL
-flags:BASH_DOOR | SMART | IM_DISEN | IM_COLD | IM_ELEC | IM_POIS
-#S_EVIL2 | FEY | ROAM
+flags:S_EVIL2 | FEY | SMART | FORCE_SLEEP | POWERFUL
+flags:ONLY_ITEM | DROP_1 | TAKE_ITEM
+flags:BASH_DOOR | IM_DISEN | IM_COLD | IM_ELEC | IM_POIS
+#ROAM
 innate-freq:4
 spell-freq:4
 spells:ARROW | BLIND | CONF | HOLD | DARKNESS
@@ -13999,7 +13986,7 @@ rarity:1
 experience:1185
 blow:HIT:ELEC:9d8
 blow:HIT:ELEC:11d8
-flags:DROP_60 | ONLY_ITEM
+flags:DROP_60 | ONLY_ITEM | S_EVIL1
 flags:OPEN_DOOR | TAKE_ITEM
 flags:IM_POIS | IM_ELEC
 innate-freq:8
@@ -14141,7 +14128,7 @@ hit-points:1250
 light:2
 hearing:30
 armor-class:81
-sleepiness:255
+sleepiness:256
 depth:43
 rarity:4
 experience:1900
@@ -14167,7 +14154,7 @@ speed:120
 hit-points:1250
 hearing:30
 armor-class:81
-sleepiness:255
+sleepiness:256
 depth:43
 rarity:4
 experience:1900
@@ -15002,9 +14989,8 @@ blow:HIT:EXP_20:4d7
 blow:HIT:LOSE_CON:4d7
 blow:TOUCH:PARALYZE:4d4
 flags:ONLY_ITEM | DROP_2 | DROP_GOOD | BASH_DOOR
-flags:MALE | SMART | FORCE_SLEEP | TAKE_ITEM | POWERFUL
+flags:MALE | SMART | S_EVIL2 | FORCE_SLEEP | TAKE_ITEM | POWERFUL
 flags:IM_COLD | IM_POIS | IM_ELEC | IM_ACID
-#S_EVIL2
 innate-freq:9
 spell-freq:3
 spells:BR_DARK | BLIND | SCARE | MIND_BLAST | HOLD | WOUND | TELE_TO | BLINK | TPORT | 
@@ -15185,7 +15171,7 @@ blow:HIT:HURT:10d8
 blow:HIT:ELEC:10d8
 blow:HIT:ELEC:11d8
 flags:DROP_1 | OPEN_DOOR | TAKE_ITEM | FORCE_SLEEP
-flags:IM_COLD | IM_ELEC | IM_WATER
+flags:IM_COLD | IM_ELEC | IM_WATER | S_EVIL2
 innate-freq:5
 spell-freq:8
 spells:BLINK | CONF | SCARE | TELE_TO
@@ -15611,8 +15597,8 @@ blow:BITE:ACID:7d9
 blow:SPIT:BLIND:3d7
 #SBLIND
 flags:IM_POIS | IM_FIRE | NO_FEAR | NO_SLEEP | NO_CONF
-flags:RUBBER | POWERFUL | SPIRIT | FORCE_SLEEP | MOVE_BODY | MOVE_SLOW
-#S_EVIL2 | TEMPLE
+flags:S_EVIL2 | RUBBER | POWERFUL | SPIRIT | FORCE_SLEEP | MOVE_BODY | MOVE_SLOW
+#TEMPLE
 spell-freq:8
 spells:BO_ACID | BA_ACID | BO_WATE | BO_PLAS | BO_ICE | HASTE | BLIND
 friends-base:22:1d2:jelly
@@ -15816,7 +15802,7 @@ hit-points:997
 hearing:22
 smell:15
 armor-class:137
-sleepiness:255
+sleepiness:256
 depth:42
 rarity:7
 experience:7004
@@ -15843,7 +15829,7 @@ hit-points:2000
 light:2
 hearing:30
 armor-class:97
-sleepiness:255
+sleepiness:256
 depth:52
 rarity:4
 experience:2587
@@ -16403,10 +16389,9 @@ blow:HIT:CONFUSE:9d9
 blow:HIT:CONFUSE:9d9
 blow:HIT:CONFUSE:9d9
 blow:HIT:CONFUSE:9d9
-flags:SMART | FORCE_SLEEP
+flags:SMART | FORCE_SLEEP | S_EVIL1
 flags:DROP_4 | ONLY_ITEM
 flags:OPEN_DOOR | TAKE_ITEM
-#S_EVIL1
 innate-freq:6
 spell-freq:4
 spells:BOULDER | HEAL | BA_ELEC | BO_MANA | S_MONSTER
@@ -16452,9 +16437,9 @@ blow:HIT:EXP_40:5d7
 blow:HIT:LOSE_CON:5d7
 blow:TOUCH:PARALYZE:4d4
 flags:ONLY_ITEM | DROP_2 | DROP_20 | DROP_GOOD | BASH_DOOR
-flags:FEMALE | SMART | FORCE_SLEEP | TAKE_ITEM | POWERFUL
+flags:S_EVIL2 | FEMALE | SMART | FORCE_SLEEP | TAKE_ITEM | POWERFUL
 flags:IM_COLD | IM_POIS | IM_ELEC | IM_ACID
-#S_EVIL2 | TEMPLE
+#TEMPLE
 innate-freq:10
 spell-freq:3
 spells:WHIP | BR_FEAR | BR_AMNS | BA_DARK | BLIND | MIND_BLAST | DRAIN_MANA
@@ -16945,7 +16930,7 @@ hit-points:3500
 light:2
 hearing:30
 armor-class:90
-sleepiness:255
+sleepiness:256
 depth:60
 rarity:4
 experience:3700
@@ -16970,7 +16955,7 @@ speed:119
 hit-points:3500
 hearing:30
 armor-class:120
-sleepiness:255
+sleepiness:256
 depth:60
 rarity:4
 experience:3750
@@ -17365,7 +17350,7 @@ speed:120
 hit-points:4570
 hearing:30
 armor-class:94
-sleepiness:255
+sleepiness:256
 depth:65
 rarity:4
 experience:5000
@@ -17734,7 +17719,7 @@ color:z
 speed:120
 hit-points:3036
 hearing:20
-armor-class:256
+armor-class:255
 sleepiness:20
 depth:68
 rarity:3
@@ -18043,9 +18028,8 @@ blow:HIT:CONFUSE:11d12
 blow:HIT:CONFUSE:11d12
 blow:HIT:CONFUSE:12d12
 blow:HIT:CONFUSE:12d12
-flags:SMART | FORCE_SLEEP
+flags:S_EVIL1 | SMART | FORCE_SLEEP
 flags:DROP_3 | DROP_20 | ONLY_ITEM | TAKE_ITEM
-#S_EVIL1
 innate-freq:6
 spell-freq:5
 spells:BOULDER | HEAL | TELE_TO | BA_ELEC | BO_MANA | BO_WATE | S_MONSTER
@@ -18089,7 +18073,7 @@ hit-points:5000
 light:2
 hearing:30
 armor-class:120
-sleepiness:255
+sleepiness:256
 depth:71
 rarity:4
 experience:8000
@@ -18116,7 +18100,7 @@ hit-points:5000
 light:3
 hearing:30
 armor-class:112
-sleepiness:255
+sleepiness:256
 depth:71
 rarity:4
 experience:12000
@@ -19673,7 +19657,7 @@ blow:HIT:CONFUSE:12d12
 blow:HIT:CONFUSE:12d12
 blow:HIT:SHATTER:12d14
 blow:HIT:SHATTER:12d14
-flags:SMART | ATTR_FLICKER | FORCE_SLEEP
+flags:SMART | S_EVIL1 | ATTR_FLICKER | FORCE_SLEEP
 flags:DROP_4 | ONLY_ITEM | TAKE_ITEM
 innate-freq:6
 spell-freq:4

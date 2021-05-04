@@ -220,6 +220,13 @@ static void wr_monster(const struct monster *mon)
 	wr_s16b(mon->maxhp);
 	wr_byte(mon->mspeed);
 	wr_byte(mon->energy);
+
+	/* new for RubberBand */
+	wr_byte(mon->isevil);
+	wr_byte(mon->pcmet);
+	wr_byte(mon->nonagr);
+	wr_byte(mon->acharmed);
+
 	wr_byte(MON_TMD_MAX);
 
 	for (j = 0; j < MON_TMD_MAX; j++)

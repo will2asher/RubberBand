@@ -164,11 +164,10 @@ bool monster_has_spirit(const struct monster *mon)
 
 /**
  * Monster is evil
- * Why have separate functions for all these?
  */
 bool monster_is_evil(const struct monster *mon)
 {
-	return rf_has(mon->race->flags, RF_EVIL);
+	return (mon->isevil);
 }
 
 /**

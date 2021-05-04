@@ -292,6 +292,13 @@ static bool rd_monster(struct chunk *c, struct monster *mon)
 	rd_s16b(&mon->maxhp);
 	rd_byte(&mon->mspeed);
 	rd_byte(&mon->energy);
+
+	/* new for RubberBand */
+	rd_byte(&mon->isevil);
+	rd_byte(&mon->pcmet);
+	rd_byte(&mon->nonagr);
+	rd_byte(&mon->acharmed);
+
 	rd_byte(&tmp8u);
 
 	for (j = 0; j < tmp8u; j++)

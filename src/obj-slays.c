@@ -246,7 +246,7 @@ int slay_count(bool *slays)
  * \param slay is the slay we're testing for effectiveness
  * \param mon is the monster we're testing for being slain
  */
-bool react_to_specific_slay(struct slay *slay, const struct monster *mon)
+bool react_to_specific_slay(struct slay *slay, struct monster *mon)
 {
 	if (!slay->name) return false;
 	if (!mon->race->base) return false;
@@ -254,6 +254,17 @@ bool react_to_specific_slay(struct slay *slay, const struct monster *mon)
 	/* Check the race flag */
 	if (rf_has(mon->race->flags, slay->race_flag))
 		return true;
+
+	/* Slay evil doesn't just use the race flag */
+	if ((slay->race_flag == RF_EVIL) && (mon->isevil)) {
+		/* learn that this individual monster is evil */
+		mon->pcmet = 1;
+		return true;
+	}
+	else if (slay->race_flag == RF_EVIL) {
+		/* learn that this individual monster isn't evil */
+		mon->pcmet = 1;
+	}
 
 	/* Check for monster base */
 	if (slay->base && streq(slay->base, mon->race->base->name))
