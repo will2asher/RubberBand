@@ -500,8 +500,7 @@ flags:DROP_40 | ONLY_ITEM
 flags:RAND_25 | OPEN_DOOR | BASH_DOOR | TAKE_ITEM
 #ROAM
 spell-freq:11
-spells:HEAL | WOUND | BA_POIS
-#CURSE_PC
+spells:HEAL | WOUND | BA_POIS | CURSE_PC
 desc:all the other townspeople stay away from this ugly old woman.
 
 name:busy artist
@@ -3654,8 +3653,7 @@ flags:DROP_1 | TAKE_ITEM
 innate-freq:6
 spell-freq:6
 spells:WHIP
-spells:WOUND | SCARE | DARKNESS | BA_POIS | HEAL
-#CURSE_PC
+spells:WOUND | SCARE | DARKNESS | BA_POIS | HEAL | CURSE_PC
 drop-base:shadow book:5:1:1
 friends:5:1d2:scorn cat
 friends:22:1d2:Illusionist
@@ -3809,8 +3807,7 @@ flags:NO_FEAR | NO_CONF
 flags:EVIL | RUBBER | KEEP_DIST | TOWN_OR_DUN
 #ROAM | RETURNS
 spell-freq:8
-spells:DRAIN_MANA | TELE_AWAY | WOUND 
-#| CURSE_PC
+spells:DRAIN_MANA | TELE_AWAY | WOUND | CURSE_PC
 desc:This cat appears to be a normal cat but for its unmistakable look of scorn and
 desc: loathing for all humans. Scorn cats express to the extreme that feeling which
 desc: most cats share: that humans are not worth the space they take in the world.
@@ -5490,8 +5487,8 @@ flags:REGENERATE | HURT_LIGHT | NO_HOLD | NO_STUN
 #ROAM | SCALE?
 innate-freq:7
 spell-freq:11
-#spells:CURSE_PC
-spells:THROW | WHIP | SHOT | SCARE | DARKNESS 
+spells:THROW | WHIP | SHOT
+spells:CURSE_PC | SCARE | DARKNESS 
 friends:2:1d3:hobgoblin
 friends:16:1d2:goblin runt
 friends:40:1d5:goblin
@@ -5537,8 +5534,7 @@ flags:EVIL | ANIMAL | OPEN_DOOR | FORCE_SLEEP | RUBBER
 flags:NO_FEAR | NO_CONF | NO_SLEEP | NO_STUN | IM_ELEC | IM_DISEN 
 #ROAM
 spell-freq:4
-spells:BLIND | DRAIN_MANA | BLINK | DARKNESS | WOUND | S_UNDEAD 
-#CURSE_PC
+spells:BLIND | DRAIN_MANA | BLINK | DARKNESS | WOUND | S_UNDEAD | CURSE_PC
 desc:It's crossing your path...
 
 name:vyrm
@@ -5867,7 +5863,7 @@ desc: long (not including tentacles).
 
 name:guardian naga
 base:naga
-color:B
+color:b
 speed:110
 hit-points:142
 hearing:20
@@ -6533,8 +6529,8 @@ flags:TAKE_ITEM | SPIRIT | EVIL | SILLY | NO_FEAR
 #ROAM | SCALE
 #innate-freq:9
 spell-freq:9
-spells:BR_FEAR | WOUND | HASTE
-#HEAL_KIN | CURSE_PC | S_ILLUSION
+spells:BR_FEAR | WOUND | HASTE | CURSE_PC
+#HEAL_KIN | S_ILLUSION
 friends:30:1d3:elite winged monkey
 friends:85:2d5:winged monkey
 desc:Green skinned evil flying monkeys serve as mercenaries to whatever
@@ -6666,8 +6662,8 @@ flags:NO_STUN | NO_SLEEP | IM_POIS
 innate-freq:5
 spell-freq:5
 spells:WHIP | SHOT | THROW
-spells:CONF | DARKNESS | TRAPS | SCARE | BO_POIS | WOUND | TINVIS
-# | CURSE_PC | S_ILLUSION
+spells:CONF | DARKNESS | TRAPS | SCARE | BO_POIS | WOUND | TINVIS | CURSE_PC
+# | S_ILLUSION
 desc:Dominick is a partilarly cruel and sadistic goblin in his goblin city.
 desc:  Among his favorite things to do is tickle people with burning coals.
 
@@ -7142,9 +7138,8 @@ flags:NO_FEAR | IM_ELEC | IM_NETHER
 #ROAM (I think UNDEAD are automatically immune to nether?)
 innate-freq:6
 spell-freq:5
-spells:BR_DARK | BR_NETH | TINVIS
+spells:BR_DARK | BR_NETH | TINVIS | CURSE_PC
 spells:DRAIN_MANA | SCARE | BLINK | DARKNESS | S_UNDEAD
-#CURSE_PC
 desc:A feline undead which appears as a cat shaped shadow.
 
 name:harpy witch
@@ -7167,8 +7162,7 @@ flags:TAKE_ITEM | DROP_60 | DROP_20
 flags:OPEN_DOOR | BASH_DOOR | NO_SLEEP | IM_POIS
 spell-freq:9
 innate-freq:9
-spells:WHIP | SCARE | WOUND | HOLD | BO_POIS | S_MONSTER 
-#CURSE_PC
+spells:WHIP | SCARE | WOUND | CURSE_PC | HOLD | BO_POIS | S_MONSTER 
 friends:6:2d3:bull harpy
 friends:19:2d3:vulture harpy
 friends:19:1d6:eagle harpy
@@ -7989,10 +7983,9 @@ flags:RAND_25 | TAKE_ITEM | DROP_1 | DROP_40
 flags:OPEN_DOOR | BASH_DOOR | NO_SLEEP | NO_FEAR | NO_CONF
 spell-freq:14
 innate-freq:6
-spells:WHIP | SCARE | WOUND | BO_POIS 
-#CURSE_PC
-friends:85:2d4:eagle harpy:servant
-friends:100:3d3:vulture harpy:servant
+spells:WHIP | SCARE | WOUND | BO_POIS | CURSE_PC
+friends:60:2d4:eagle harpy:servant
+friends:100:2d5:vulture harpy:servant
 friends:100:1d3:harpy witch:servant
 friends:100:3d3:bull harpy:bodyguard
 desc:A queen among harpies, she's as ugly as any of them,
@@ -9012,8 +9005,7 @@ flags:BASH_DOOR | IM_COLD | IM_ELEC | NO_SLEEP | NO_FEAR | NO_CONF
 # ROAM | TEMPLE
 spell-freq:4
 spells:SCARE | CONF | TRAPS | BLINK | DARKNESS | BLIND
-spells:TELE_AWAY | TELE_LEVEL
-#CURSE_PC
+spells:TELE_AWAY | TELE_LEVEL | CURSE_PC
 #check what the shapechange spell actually does
 desc:A dark fairy which can take many shapes. Most commonly, it takes the shape of a
 desc: dark horse. It likes to give people chaotic midnight rides which end by throwing
@@ -9542,8 +9534,8 @@ flags:SMART | BASH_DOOR | REGENERATE | FORCE_SLEEP
 flags:IM_POIS | NO_FEAR | NO_CONF | NO_SLEEP | POWERFUL
 #TEMPLE
 spell-freq:5
-spells:WOUND | BA_POIS | HASTE | BLIND | TELE_AWAY | S_DEMON
-#CURSE_PC, summon lesser undead?
+spells:WOUND | BA_POIS | HASTE | BLIND | TELE_AWAY | S_DEMON | CURSE_PC
+#summon lesser undead?
 desc:An ancient inhuman witch with unnatural long life, she associates with
 desc: demons and werewolves and knows how to use black magic to drain your
 desc: living essence.
@@ -9801,9 +9793,9 @@ flags:DROP_4 | DROP_GOOD | ONLY_ITEM
 flags:RAND_25 | OPEN_DOOR | BASH_DOOR
 #ROAM
 spell-freq:5
-spells:BLIND | CONF | SCARE | S_KIN
+spells:BLIND | CONF | SCARE | CURSE_PC | S_KIN
 spells:BLINK | TELE_TO | TPORT | TELE_AWAY | TELE_LEVEL
-#CURSE_PC | ILLUSION_CLONE
+# | ILLUSION_CLONE
 friends:40:2d3:impsprite:servant
 friends-base:40:1d3:minor demon:servant
 friends-base:50:1d3:minor demon:servant
@@ -9923,8 +9915,8 @@ flags:TAKE_ITEM | DROP_2 |
 flags:IM_POIS | NO_FEAR | NO_SLEEP
 #(or SILLY instead of RUBBER?)
 spell-freq:3
-spells:SCARE | DARKNESS | WOUND | MIND_BLAST | BLINK | HASTE | S_UNDEAD
-#CURSE_PC | S_ILLUSION | S_EXTRA(nightmare)
+spells:SCARE | DARKNESS | WOUND | MIND_BLAST | BLINK | HASTE | CURSE_PC | S_UNDEAD
+# | S_ILLUSION | S_EXTRA(nightmare)
 desc:A mad alchemist with a specialty in bad dreams. He summons nightmares from smoking
 desc: vials of mysterious liquids.
 
@@ -10460,8 +10452,8 @@ flags:MOVE_BODY | RAND_25 | ONLY_ITEM | DROP_3 | DROP_GOOD
 innate-freq:5
 spell-freq:6
 spells:BR_TIME | BR_POIS | BR_DARK | BR_FEAR | BR_AMNS
-spells:BLIND | DRAIN_MANA | MIND_BLAST | 
-#CURSE_PC | INSANITY
+spells:BLIND | DRAIN_MANA | MIND_BLAST | CURSE_PC
+#INSANITY
 desc:A filthy and selfish demon determined to destroy the mind and will of men.
 
 ### Dungeon level 32 ###
@@ -10595,8 +10587,7 @@ flags:IM_COLD | IM_POIS | IM_ELEC | HURT_LIGHT | PASS_DOOR
 #ROAM
 innate-freq:6
 spell-freq:6
-spells:BR_DARK | BR_FEAR | DRAIN_MANA | TPORT
-#CURSE_PC
+spells:BR_DARK | BR_FEAR | DRAIN_MANA | TPORT | CURSE_PC
 desc:A minor demon from dwarvish superstition.  It symbolizes the darkness to come
 desc: when they expect, know, or wish that something bad will happen in the
 desc: mine.  When written as a symbol, it means "we await what follows with dread".
@@ -11010,9 +11001,9 @@ flags:IM_POIS | NO_STUN | NO_FEAR | NO_SLEEP | NO_CONF
 #ROAM | SCALE(?)
 innate-freq:5
 spell-freq:4
-spells:TELE_TO | DRAIN_MANA | WOUND | FORGET
+spells:TELE_TO | DRAIN_MANA | WOUND | FORGET | CURSE_PC
 spells:WHIP | BR_DARK | BR_FEAR | BO_POIS | BO_ICE | MIND_BLAST
-#CURSE_PC | S_NIGHTMARE | S_ILLUSION
+# | S_NIGHTMARE | S_ILLUSION
 desc:The goblin hag is an expert with magic and poisons, and her
 desc: enticing charms make you forget she's hiding a knife behind her back.
 
@@ -12494,8 +12485,7 @@ innate-freq:9
 spell-freq:3
 spells:SHRIEK | BR_DARK | BR_FEAR | MIND_BLAST
 spells:BLIND | WOUND | DRAIN_MANA | FORGET | HASTE
-spells:BA_COLD | BA_POIS | BO_NETH | S_UNDEAD
-#CURSE_PC
+spells:BA_COLD | BA_POIS | BO_NETH | S_UNDEAD | CURSE_PC
 friends-base:22:1d1:skeleton:servant
 friends:22:2d3:regenerating zombie
 friends:100:2d3:orc mummy:servant
@@ -12623,8 +12613,7 @@ flags:NO_FEAR | NO_CONF | NO_SLEEP
 flags:RAND_25 | INVISIBLE | NONLIVING | PASS_DOOR
 #ROAM
 spell-freq:5
-spells:BO_NETH | DARKNESS | WOUND | HOLD | DRAIN_MANA | S_DEMON
-#CURSE_PC
+spells:BO_NETH | DARKNESS | WOUND | HOLD | DRAIN_MANA | S_DEMON | CURSE_PC
 desc:Witch shadows haunt those who have ever used black magic, especially if they
 desc: have since changed their ways.  They are not restricted to such people though: they
 desc: don't mind tormenting any random person who comes along.
@@ -12653,8 +12642,7 @@ flags:NO_FEAR | NO_CONF | NO_SLEEP
 #ROAM | TEMPLE
 innate-freq:6
 spell-freq:5
-spells:BR_DARK | DRAIN_MANA | BLINK | WOUND | S_UNDEAD
-#CURSE_PC
+spells:BR_DARK | DRAIN_MANA | BLINK | WOUND | S_UNDEAD | CURSE_PC
 desc:Not content to cross your path, this evil cat will hunt down its prey
 desc: draining the luck and life from its victims.
 
@@ -12756,8 +12744,7 @@ flags:NO_CONF | NO_SLEEP | NO_FEAR | HURT_LIGHT
 #TEMPLE
 spell-freq:3
 spells:HASTE | TELE_TO | HOLD | BLIND | DRAIN_MANA | 
-spells:WOUND | BO_ACID | BA_COLD | MIND_BLAST
-#CURSE_PC
+spells:WOUND | BO_ACID | BA_COLD | MIND_BLAST | CURSE_PC
 desc:Also known as the Soul-Eater, it is a monster from the
 desc: dungeon dimensions which has found a way to stay on the material
 desc: plane. It is shaped like a giant eye with many powerful tentacles.
@@ -13484,8 +13471,8 @@ flags:IM_FIRE | IM_POIS | IM_ACID | NO_CONF | NO_SLEEP | NO_FEAR | NO_STUN
 flags:DROP_40 | IM_NETHER | REGENERATE | POWERFUL | PASS_DOOR
 innate-freq:7
 spell-freq:7
-spells:BR_POIS | BR_NETH | HOLD | SCARE | BO_POIS | TELE_SELF_TO
-#CURSE_PC
+spells:BR_POIS | BR_NETH
+spells:HOLD | SCARE | BO_POIS | TELE_SELF_TO | CURSE_PC
 desc:A small snake-like demon with a head on each end of its body and very strong
 desc: poison.  It's swings back and forth to bite with each head as it flies
 desc: toward you without wings.
@@ -13513,9 +13500,9 @@ flags:IM_POIS | IM_FIRE | IM_ELEC | HURT_LIGHT | RAND_25 | IM_SLIME
 flags-off:CLEAR_WEB
 innate-freq:8
 spell-freq:6
-spells:BR_DARK | SLOW | DARKNESS | DRAIN_MANA | TELE_TO | TPORT
+spells:BR_DARK | SLOW | DARKNESS | DRAIN_MANA | TELE_TO | TPORT | CURSE_PC
 spells:MIND_BLAST | BO_PLAS | FORGET | S_MONSTER | S_DEMON
-#CURSE_PC | INSANITY | S_ILLUSION
+# | INSANITY | S_ILLUSION
 desc:The summoning dark is a strange being out of dwarvish superstition.  A dwarven
 desc: high priest may unleash the summoning dark at someone as a curse. It is summoned
 desc: by its symbol: a circle with an eye and a tail.
@@ -13675,8 +13662,7 @@ flags:NO_CONF | NO_STUN | IM_ACID | IM_WATER
 flags-off:NO_SLEEP
 innate-freq:11
 spell-freq:11
-spells:BR_NETH | BR_FEAR | BLINK | SLOW | FORGET
-#CURSE_PC
+spells:BR_NETH | BR_FEAR | BLINK | SLOW | FORGET | CURSE_PC
 friends:80:2d3:same
 desc:A corpse from an ancient great battle, now reanimated with
 desc: evil enchantments to demoralize and lure wanderers to a
@@ -13704,8 +13690,7 @@ flags:BASH_DOOR | IM_DISEN | IM_COLD | IM_ELEC | IM_POIS
 innate-freq:4
 spell-freq:4
 spells:ARROW | BLIND | SCARE | CONF | HOLD | DARKNESS
-spells:BA_POIS | BLINK | TELE_TO | TPORT
-#CURSE_PC
+spells:BA_POIS | BLINK | TELE_TO | TPORT | CURSE_PC
 friends-base:22:1d3:dark fairy
 friends-base:35:1d1:dark fairy
 friends-base:70:1d1:dark fairy
@@ -13914,9 +13899,8 @@ flags:BASH_DOOR | IM_DISEN | IM_COLD | IM_ELEC | IM_POIS
 #ROAM
 innate-freq:4
 spell-freq:4
-spells:ARROW | BLIND | CONF | HOLD | DARKNESS
+spells:ARROW | BLIND | CONF | HOLD | DARKNESS | CURSE_PC
 spells:BO_POIS | BLINK | TELE_TO | TELE_SELF_TO
-#CURSE_PC
 friends-base:22:1d1:dark fairy
 friends-base:35:1d1:dark fairy
 friends:12:1d2:same
@@ -14050,11 +14034,10 @@ blow:KICK:HURT:5d4
 blow:KICK:HURT:5d4
 blow:BUTT:LOSE_WIS:10d6
 flags:NO_CONF | NO_FEAR | IM_POIS | IM_ELEC | IM_ACID | IM_DISEN
-flags:EVIL | ANIMAL | RAND_25 | DROP_1 | DROP_GOOD | FORCE_SLEEP
-#ROAM | FEY | TEMPLE
+flags:EVIL | ANIMAL | FEY | RAND_25 | DROP_1 | DROP_GOOD | FORCE_SLEEP
+#ROAM | TEMPLE
 spell-freq:6
-spells:MISSILE | BLIND | SLOW | BO_PLAS | MIND_BLAST
-#CURSE_PC
+spells:MISSILE | BLIND | SLOW | BO_PLAS | MIND_BLAST | CURSE_PC
 desc:This unicorn was once pure white but has since been corrupted,
 desc: and its magic has gone bad.
 
@@ -16389,7 +16372,7 @@ blow:HIT:CONFUSE:9d9
 blow:HIT:CONFUSE:9d9
 blow:HIT:CONFUSE:9d9
 blow:HIT:CONFUSE:9d9
-flags:SMART | FORCE_SLEEP | S_EVIL1
+flags:SMART | FORCE_SLEEP | S_EVIL2
 flags:DROP_4 | ONLY_ITEM
 flags:OPEN_DOOR | TAKE_ITEM
 innate-freq:6
@@ -16442,9 +16425,9 @@ flags:IM_COLD | IM_POIS | IM_ELEC | IM_ACID
 #TEMPLE
 innate-freq:10
 spell-freq:3
-spells:WHIP | BR_FEAR | BR_AMNS | BA_DARK | BLIND | MIND_BLAST | DRAIN_MANA
+spells:WHIP | BR_FEAR | BR_AMNS | BA_DARK | BLIND | MIND_BLAST | DRAIN_MANA | CURSE_PC
 spells:HOLD | WOUND | TELE_TO | BLINK | TPORT | TINVIS | S_MONSTER | S_KIN
-#CURSE_PC | S_ILLUSION
+# | S_ILLUSION
 friends-base:50:1d3:dark fairy:servant
 friends-base:50:1d3:dark fairy:servant
 friends-base:60:1d3:dark fairy:servant
@@ -16574,9 +16557,8 @@ flags:ONLY_ITEM | DROP_3 | DROP_GOOD
 flags:WEIRD_MIND | IM_COLD | NO_HOLD | NO_STUN | NO_FEAR
 innate-freq:15
 spell-freq:4
-spells:BR_AMNS | BLIND | HOLD | BO_NETH | BO_ICE | DARKNESS
+spells:BR_AMNS | BLIND | HOLD | BO_NETH | BO_ICE | DARKNESS | CURSE_PC
 spells:MIND_BLAST | DRAIN_MANA | S_UNDEAD | S_KIN
-#CURSE_PC
 desc:An apparition created by Sauron in the form of a woman. This phantom was made
 desc: to appear like Eilenel, the murdered wife of Gorlim the Unhappy, in order to
 desc: trap him into betraying Barahir and the outlaws of Dorthonion.
@@ -16607,8 +16589,7 @@ flags:RAND_25 | NO_FEAR | NO_CONF | NO_STUN | IM_POIS | IM_COLD | IM_ACID
 innate-freq:8
 spell-freq:4
 spells:DRAIN_MANA | SLOW | TPORT | MIND_BLAST | S_MONSTER
-spells:BR_DARK | BR_AMNS | BA_DARK | BO_NETH | BO_ICE
-#CURSE_PC
+spells:BR_DARK | BR_AMNS | BA_DARK | BO_NETH | BO_ICE | CURSE_PC
 desc:The enveloping dark is a strange demon out of dwarvish superstition.  It fills
 desc: the dungeon all around you.
 
@@ -16632,10 +16613,9 @@ flags:DEMON | SMART | DROP_1 | DROP_20 | RAND_25 | FORCE_SLEEP
 flags:NO_FEAR | NO_HOLD | IM_COLD | IM_FIRE | IM_ACID | IM_ELEC
 #TEMPLE
 spell-freq:3
-spells:TELE_TO | HOLD | BLINK | DRAIN_MANA | FORGET | BO_NETH
-#CURSE_PC
+spells:TELE_TO | HOLD | BLINK | DRAIN_MANA | FORGET | BO_NETH | CURSE_PC
 desc:An intensity selfish demon that thinks only of feeding itself.  It could eat
-desc: a heroes' feast for as many meals a day as a hobbit eats and still be
+desc: a heroes' feast twice as often as a hobbit eats and still be
 desc: famished.
 
 name:11-headed hydra
@@ -16744,8 +16724,8 @@ flags:EVIL | FORCE_SLEEP | POWERFUL | PASS_DOOR
 #ROAM | SCALE?
 spell-freq:4
 spells:BLIND | DRAIN_MANA | BLINK | DARKNESS | WOUND
-spells:TINVIS | S_UNDEAD
-#CURSE_PC | S_ILLUSION
+spells:TINVIS | S_UNDEAD | CURSE_PC
+# | S_ILLUSION
 desc:One of the nine magical black cats belonging to Queen Beruthiel.
 desc:  It's crossing your path...
 
@@ -16771,9 +16751,8 @@ flags:FORCE_SLEEP | ONLY_ITEM | DROP_GREAT | DROP_1
 #TEMPLE
 innate-freq:5
 spell-freq:4
-spells:WOUND | HOLD | TINVIS | S_UNDEAD
+spells:WOUND | HOLD | TINVIS | S_UNDEAD | CURSE_PC
 spells:BR_DARK | BR_NETH | BR_FEAR | BR_AMNS | BO_ICE
-#CURSE_PC
 desc:Nearly as powerful as the nazgul, this ancient royal corpse reaches
 desc: toward you with rotting spectral fingers, but the crown on its head
 desc: and the sword in its hand look quite solid.
@@ -16912,7 +16891,7 @@ blow:HIT:COLD:9d10
 blow:HIT:COLD:9d10
 blow:HIT:HURT:10d9
 blow:HIT:CONFUSE:10d9
-flags:UNIQUE | MALE | SMART | ATTR_FLICKER | FORCE_SLEEP
+flags:UNIQUE | MALE | EVIL | SMART | ATTR_FLICKER | FORCE_SLEEP
 flags:DROP_4 | DROP_GOOD | ONLY_ITEM
 flags:OPEN_DOOR | TAKE_ITEM | IM_COLD
 innate-freq:6
@@ -17201,8 +17180,7 @@ flags:IM_POIS | IM_COLD | IM_FIRE | IM_NETHER
 flags:NO_FEAR | NO_CONF | NO_SLEEP
 innate-freq:6
 spell-freq:7
-spells:BR_NETH | BR_DARK | S_HOUND | S_KIN
-#CURSE_PC
+spells:BR_NETH | BR_DARK | S_HOUND | S_KIN | CURSE_PC
 friends:50:2d4:warg:servant
 friends:50:2d3:hellhound:servant
 friends:100:2d3:werewolf:servant
@@ -17702,10 +17680,10 @@ flags:NO_FEAR | NO_SLEEP | NO_STUN | IM_POIS | IM_COLD | IM_ACID | IM_ELEC
 #ROAM | KEEP_DIST?
 innate-freq:7
 spell-freq:3
-spells:BRAIN_SMASH | TELE_TO | BLINK | TPORT | WOUND | TINVIS
+spells:BRAIN_SMASH | TELE_TO | BLINK | TPORT | WOUND | TINVIS | CURSE_PC
 spells:BR_DISE | BR_CHAO | BR_AMNS | BO_MANA | BA_DARK | DRAIN_MANA
 spells:S_MONSTERS | S_KIN | S_DEMON | S_ANIMAL
-#INSANITY | S_ILLUSIONS | ILLUSION_CLONE | CURSE_PC | HEAL_OTHER
+#INSANITY | S_ILLUSIONS | ILLUSION_CLONE | HEAL_OTHER
 desc:Commonly mistaken for a silly fairy that is mischvious in a rather
 desc: harmless way, but really he is anything but harmless.
 desc: Sometimes known as Robin Goodfellow, he is called that for the same
@@ -17865,7 +17843,7 @@ blow:HIT:HURT:12d12
 blow:HIT:HURT:12d12
 blow:HIT:CONFUSE:12d12
 blow:HIT:CONFUSE:12d12
-flags:UNIQUE | MALE | SMART | ATTR_FLICKER
+flags:UNIQUE | MALE | EVIL | SMART | ATTR_FLICKER
 flags:DROP_4 | DROP_GOOD | ONLY_ITEM
 flags:TAKE_ITEM | IM_FIRE | FORCE_SLEEP
 innate-freq:6
@@ -18028,7 +18006,7 @@ blow:HIT:CONFUSE:11d12
 blow:HIT:CONFUSE:11d12
 blow:HIT:CONFUSE:12d12
 blow:HIT:CONFUSE:12d12
-flags:S_EVIL1 | SMART | FORCE_SLEEP
+flags:S_EVIL2 | SMART | FORCE_SLEEP
 flags:DROP_3 | DROP_20 | ONLY_ITEM | TAKE_ITEM
 innate-freq:6
 spell-freq:5
@@ -18959,9 +18937,9 @@ flags:NO_FEAR | NO_SLEEP | IM_POIS | IM_FIRE | IM_ELEC | IM_ACID
 #ROAM | TEMPLE
 innate-freq:9
 spell-freq:3
-spells:WHIP | BR_AMNS | BR_INER | TRAPS | BRAIN_SMASH | DRAIN_MANA | BO_PLAS
+spells:WHIP | BR_AMNS | BR_INER | TRAPS | BRAIN_SMASH | DRAIN_MANA | BO_PLAS | CURSE_PC
 spells:DARKNESS | BLINK | TPORT | TELE_TO | TELE_LEVEL | S_MONSTER | S_DEMON
-#BR_CHAO(?) | CURSE_PC | S_ILLUSION | ILLUSION_CLONE
+#BR_CHAO(?) | S_ILLUSION | ILLUSION_CLONE
 friends:6:1d2:same
 desc:Small flying devils which wizards often mistake for lesser imps and
 desc: get killed attempting to control them.
@@ -19657,7 +19635,7 @@ blow:HIT:CONFUSE:12d12
 blow:HIT:CONFUSE:12d12
 blow:HIT:SHATTER:12d14
 blow:HIT:SHATTER:12d14
-flags:SMART | S_EVIL1 | ATTR_FLICKER | FORCE_SLEEP
+flags:SMART | S_EVIL2 | ATTR_FLICKER | FORCE_SLEEP
 flags:DROP_4 | ONLY_ITEM | TAKE_ITEM
 innate-freq:6
 spell-freq:4

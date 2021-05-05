@@ -186,10 +186,15 @@ static void remove_bad_spells(struct monster *mon, bitflag f[RSF_SIZE])
 	if (tdist > 2) rsf_off(f2, RSF_WHIP);
 	if (tdist > 3) rsf_off(f2, RSF_SPIT);
 
-	/* THROW range depends on spell power */
+	/* THROW and BOULDER range depends on spell power */
 	if ((mon->race->spell_power / 8) > 5) throwr = 9;
 	else throwr = (mon->race->spell_power / 8) + 3;
-	if (tdist > throwr) rsf_off(f2, RSF_THROW);
+	if (tdist > throwr) {
+		rsf_off(f2, RSF_THROW);
+		/* bigger maximum range for Boulders because the giants who throw them are really strong  */
+		throwr = (mon->race->spell_power / 8) + 3;
+		if (tdist > throwr) rsf_off(f2, RSF_BOULDER);
+	}
 
 	/* Update acquired knowledge */
 	if (OPT(player, birth_ai_learn)) {

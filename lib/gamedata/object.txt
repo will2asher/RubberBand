@@ -384,7 +384,7 @@ graphics:,:w
 level:0
 weight:2
 cost:100
-alloc:20:10 to 50
+alloc:18:10 to 50
 power:0
 msg:You feel your heart warm.
 effect:NOURISH:INC_BY
@@ -400,7 +400,7 @@ graphics:,:m
 level:0
 weight:2
 cost:1
-alloc:20:20 to 100
+alloc:18:20 to 100
 pile:10:1d3
 power:0
 msg:It burns your throat.
@@ -417,7 +417,7 @@ type:food
 graphics:,:w
 level:0
 weight:10
-cost:2000
+cost:5400
 alloc:10:60 to 100
 power:0
 msg:Refreshing!
@@ -438,7 +438,7 @@ graphics:,:d
 level:0
 weight:1
 cost:200
-alloc:10:5 to 100
+alloc:10:7 to 100
 pile:70:1d4
 power:10
 effect:CURE:BLIND
@@ -482,21 +482,46 @@ effect:RESTORE_STAT:CON
 effect:NOURISH:INC_BY
 dice:5
 
+#Clear mind effect is stronger now (more than just OPP_CONF)
 name:Clear Mind
 type:mushroom
 graphics:,:d
 level:0
 weight:1
-cost:200
-alloc:10:5 to 40
-pile:70:1d4
-power:8
+cost:300
+alloc:9:12 to 102
+pile:60:1d3
+power:11
 effect:RESTORE_MANA
 dice:20
 effect:CURE:CONFUSED
 effect:CURE:AFRAID
+effect:CURE:CHARMED
+effect:CURE:FRENZY
+effect:CURE:SDRUNK
+effect:CURE:IMAGE
+effect:TIMED_INC:CLEAR_MIND
+dice:41+7d7
+effect:NOURISH:INC_BY
+dice:5
+
+#weird but (mostly) good one
+name:First Sight and Second Thoughts
+type:mushroom
+graphics:,:d
+level:0
+weight:1
+cost:200
+alloc:6:5 to 80
+pile:60:1d4
+power:7
+effect:CURE:CONFUSED
+effect:CURE:BLIND
+effect:CURE:CHARMED
 effect:CURE:IMAGE
 effect:TIMED_INC:OPP_CONF
+dice:1+3d7
+effect:TIMED_INC:2NDTHOT
 dice:50+7d7
 effect:NOURISH:INC_BY
 dice:5
@@ -2609,6 +2634,18 @@ pile:10:2
 power:15
 effect:TELEPORT_LEVEL
 
+#rare weird one: 
+name:Treasure Map
+type:scroll
+graphics:?:w
+level:15
+weight:5
+cost:225
+alloc:5:14 to 105
+pile:3:2
+power:7
+effect:TIMED_INC:TREASMAP
+dice:50+7d7
 
 ### Detection ###
 

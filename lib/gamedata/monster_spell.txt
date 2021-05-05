@@ -50,7 +50,7 @@ hit:95
 effect:LASH:MISSILE:2
 lore:lash you if nearby
 lore-color-base:Orange
-message-vis:{name} lashes at you with a whip{oftype}.
+message-vis:{name} lashes at you with a whip {oftype}.
 message-miss:{name} lashes at you with a whip but misses.
 message-invis:You hear a crack.
 
@@ -339,7 +339,7 @@ name:BR_FEAR
 msgt:BR_FEARMS
 hit:100
 effect:BREATH:FEAR:0:30
-lore:force
+lore:fear
 lore-color-base:Orange
 lore-color-resist:Yellow
 message-vis:{name} breathes fear.
@@ -349,7 +349,7 @@ name:BR_AMNS
 msgt:BR_AMNESIA
 hit:100
 effect:BREATH:AMNESIA:0:30
-lore:force
+lore:amnesia
 lore-color-base:Orange
 lore-color-resist:Yellow
 message-vis:{name} breathes amnesia.
@@ -646,15 +646,15 @@ power-cutoff:16
 lore:cause medium wounds
 lore-color-base:Yellow
 lore-color-resist:Light Green
-message-vis:{name} points at {target} and curses horribly!
-message-invis:Something curses horribly!
+message-vis:{name} points at {target}, incanting ominously!
+message-invis:You hear an ominous incantation!
 message-save:Your body pulsates briefly.
 power-cutoff:32
 lore:cause serious wounds
 lore-color-base:Orange
 lore-color-resist:Light Green
-message-vis:{name} points at {target} and incants terribly!
-message-invis:Something incants terribly!
+message-vis:{name} points at {target}, chanting a dreadful incantation!
+message-invis:You hear a dire incantation!
 message-save:Your body shakes briefly.
 power-cutoff:50
 lore:cause critical wounds
@@ -727,7 +727,7 @@ expr:B:SPELL_POWER:/ 3
 lore:produce poison bolts
 lore-color-base:Orange
 lore-color-resist:Light Green
-message-vis:{name} spews a stream of poison.
+message-vis:{name} fires a stream of poison.
 message-invis:Something retches.
 
 name:BO_NETH
@@ -881,6 +881,19 @@ lore-color-resist:Light Green
 message-vis:{name} conjures up weird things.
 message-invis:Something messes with your mind.
 message-save:You retain your presence of mind.
+
+#kind of milder effects, but a longer duration than most timed effects
+name:CURSE_PC
+hit:100
+effect:TIMED_INC:PCCURSED
+dice:$B+3d12
+expr:B:SPELL_POWER:* 2
+lore:curse you
+lore-color-base:Orange
+lore-color-resist:Light Green
+message-vis:{name} casts a curse on you.
+message-invis:Something casts a curse on you.
+message-save:You resist the effects.
 
 name:SLOW
 hit:100
