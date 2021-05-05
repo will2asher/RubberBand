@@ -3794,8 +3794,9 @@ bool effect_handler_EARTHQUAKE(effect_handler_context_t *context)
 					/* Describe the monster */
 					monster_desc(m_name, sizeof(m_name), mon, MDESC_STANDARD);
 
-					/* Scream in pain */
-					msg("%s wails out in pain!", m_name);
+					/* Scream in pain (if it feels pain) */
+					if (!monster_is_destroyed(mon)) msg("%s wails out in pain!", m_name);
+					else msg("%s is damaged in the quake!", m_name);
 
 					/* Take damage from the quake */
 					damage = (safe_grids ? damroll(4, 8) : (mon->hp + 1));
@@ -5026,6 +5027,9 @@ bool effect_handler_TAP_UNLIFE(effect_handler_context_t *context)
 	target_get(&target);
 	mon = target_get_monster();
 
+	/* Non-agressive monster becomes agressive */
+	if ((amount) && (mon->nonagr)) mon->nonagr = 0;
+
 	/* Hurt the monster */
 	monster_desc(m_name, sizeof(m_name), mon, MDESC_TARG);
 	msg("You draw power from the %s.", m_name);
@@ -5094,6 +5098,8 @@ bool effect_handler_CURSE(effect_handler_context_t *context)
 		msg("No monster selected!");
 		return false;
 	}
+	/* Non-agressive monster becomes agressive */
+	if ((dam) && (mon->nonagr)) mon->nonagr = 0;
 
 	/* Hit it */
 	dead = mon_take_hit(mon, dam, &fear, " dies!");
@@ -5197,6 +5203,9 @@ bool effect_handler_JUMP_AND_BITE(effect_handler_context_t *context)
 	} else {
 		msg("You bite %s.", m_name);
 	}
+	/* Non-agressive monster becomes agressive */
+	if ((amount) && (mon->nonagr)) mon->nonagr = 0;
+
 	dead = mon_take_hit(mon, amount, &fear, " is drained dry!");
 
 	/* Heal and nourish */

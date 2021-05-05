@@ -810,6 +810,9 @@ bool py_attack_real(struct player *p, struct loc grid, bool *fear, bool offhand)
 	/* Pre-damage side effects */
 	blow_side_effects(p, mon);
 
+	/* Non-agressive monster becomes agressive */
+	if ((dmg) && (mon->nonagr)) mon->nonagr = 0;
+
 	/* Damage, check for hp drain, fear and death */
 	drain = MIN(mon->hp, dmg);
 	stop = mon_take_hit(mon, dmg, fear, NULL);
@@ -915,6 +918,8 @@ bool attempt_shield_bash(struct player *p, struct loc grid, bool *fear, bool off
 		if (randint1(bash_dam) > 30 + randint1(bash_dam / 2)) {
 			msgt(MSG_HIT_HI_SUPERB, "WHAMM!");
 		}
+		/* Non-agressive monster becomes agressive */
+		if ((bash_dam) && (mon->nonagr)) mon->nonagr = 0;
 
 		/* Damage, check for fear and death. */
 		if (mon_take_hit(mon, bash_dam, fear, NULL)) return true;
@@ -1157,6 +1162,8 @@ static void ranged_helper(struct player *p,	struct object *obj, int dir,
 						health_track(p->upkeep, mon);
 					}
 				}
+				/* Non-agressive monster becomes agressive */
+				if ((dmg) && (mon->nonagr)) mon->nonagr = 0;
 
 				/* Hit the monster, check for death */
 				if (!mon_take_hit(mon, dmg, &fear, note_dies)) {

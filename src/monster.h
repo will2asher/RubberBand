@@ -387,7 +387,7 @@ struct monster {
 	byte isevil;						/* individual monster is evil */
 	byte pcmet;							/* The player has learned whether this individual is evil or not */
 	byte nonagr;						/* monster is non-agressive */
-	byte acharmed;						/* for Charm monsters effect */
+	byte acharmed;						/* for Charm monsters effect (todo) */
 
 	bitflag mflag[MFLAG_SIZE];			/* Temporary monster flags */
 

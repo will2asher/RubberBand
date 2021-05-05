@@ -1813,8 +1813,8 @@ static bool process_monster_timed(struct chunk *c, struct monster *mon)
 		monster_reduce_sleep(c, mon);
 		return true;
 	} else {
-		/* Awake, active monsters may become aware */
-		if (one_in_(10) && mflag_has(mon->mflag, MFLAG_ACTIVE)) {
+		/* Awake, active monsters may become aware (unless they're non-agressive) */
+		if (one_in_(10) && mflag_has(mon->mflag, MFLAG_ACTIVE) && !mon->nonagr) {
 			mflag_on(mon->mflag, MFLAG_AWARE);
 		}
 	}

@@ -1152,6 +1152,10 @@ static bool project_m_player_attack(project_monster_handler_context_t *context)
 	enum mon_messages hurt_msg = context->hurt_msg;
 	struct monster *mon = context->mon;
 
+	/* If a monster is hurt by the player, it is no longer non-agressive */
+	if ((dam) && (context->origin.what == SRC_PLAYER) && (mon->nonagr))
+		mon->nonagr = 0;
+
 	/* The monster is going to be killed, so display a specific death message.
 	 * If the monster is not visible to the player, use a generic message.
 	 *
