@@ -1125,7 +1125,7 @@ static bool place_new_monster_one(struct chunk *c, struct loc grid,
 	mon->race = race;
 
 	/* normal sleepiness maxes out at 255 */
-	if (race->sleep == 256) {
+	if (race->sleep > 255) {
 		racesleep = 255;
 		/* monster is non-agressive */
 		mon->nonagr = 1;

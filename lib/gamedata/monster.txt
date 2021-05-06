@@ -498,8 +498,9 @@ blow:HIT:HURT:1d4
 flags:FEMALE | EVIL | TOWN_OR_DUN
 flags:DROP_40 | ONLY_ITEM
 flags:RAND_25 | OPEN_DOOR | BASH_DOOR | TAKE_ITEM
-#ROAM
+#ROAM (has spell power line to prevent spell power of zero)
 spell-freq:11
+spell-power:1
 spells:HEAL | WOUND | BA_POIS | CURSE_PC
 desc:all the other townspeople stay away from this ugly old woman.
 
@@ -542,7 +543,7 @@ blow:HIT:HURT:3d5
 flags:MALE | FORCE_SLEEP
 flags:DROP_40 | ONLY_ITEM
 flags:RAND_25 | OPEN_DOOR | BASH_DOOR | TAKE_ITEM
-#GOODMON | NONAGR
+#GOODMON
 desc:He had retired from battle and wants to live the rest
 desc: of his days in peace. If he fights, he'll fight relunctantly.
 

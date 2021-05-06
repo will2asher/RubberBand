@@ -215,6 +215,10 @@ static bool mon_set_timed(struct monster *mon,
 		if (player->upkeep->health_who == mon)
 			player->upkeep->redraw |= (PR_HEALTH);
 
+		/* Update if the monster became invisible/visible */
+		if (effect_type == MON_TMD_TINVIS)
+			player->upkeep->update |= (PU_MONSTERS);
+
 		player->upkeep->redraw |= (PR_MONLIST);
 	}
 

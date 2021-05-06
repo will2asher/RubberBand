@@ -504,6 +504,8 @@ effect:TIMED_INC:CLEAR_MIND
 dice:41+7d7
 effect:NOURISH:INC_BY
 dice:5
+desc:Having a clear mind gives a small boost to most skills as well as
+desc: protection against confusion.
 
 #weird but (mostly) good one
 name:First Sight and Second Thoughts
@@ -519,12 +521,78 @@ effect:CURE:CONFUSED
 effect:CURE:BLIND
 effect:CURE:CHARMED
 effect:CURE:IMAGE
-effect:TIMED_INC:OPP_CONF
-dice:1+3d7
 effect:TIMED_INC:2NDTHOT
 dice:50+7d7
 effect:NOURISH:INC_BY
 dice:5
+desc:Boosts first sight (infravision and searching) and second thoughts (saving throw),
+desc: but blocks second sight (telepathy and monster detection spells).
+
+#weird (mostly) bad one. (this "cures" a few good effects as well as a couple bad ones)
+name:the Singing Drunk
+type:mushroom
+graphics:,:d
+level:0
+weight:1
+cost:90
+alloc:7:4 to 83
+pile:70:1d4
+power:1
+effect:CURE:FRENZY
+effect:CURE:AFRAID
+effect:CURE:CLEAR_MIND
+effect:CURE:STEALTH
+effect:CURE:OPP_CONF
+effect:CURE:COVERTRACKS
+effect:TIMED_INC:BOLD
+dice:1+2d9
+effect:TIMED_INC:SDRUNK
+dice:20+7d8
+effect:NOURISH:INC_BY
+dice:4
+desc:Makes you about as stealthy and dexterous as the singing, happy drunk
+desc: (though perhaps not as happy).
+
+#another weird (mostly) bad one. (this "cures" a few good effects as well as a couple bad ones)
+name:Good Mood
+type:mushroom
+graphics:,:d
+level:0
+weight:1
+cost:90
+alloc:7:4 to 99
+pile:70:1d3
+power:1
+effect:CURE:SHERO
+effect:CURE:BLOODLUST
+effect:CURE:FRENZY
+effect:CURE:BLACKBREATH
+effect:TIMED_INC:CHARMED
+dice:20+7d8
+effect:NOURISH:INC_BY
+dice:5
+desc:It smells delicious and puts you in an especially good mood (which
+desc: makes you not feel like killing monsters).
+
+#another weird (mostly) bad one.
+name:Irritation
+type:mushroom
+graphics:,:d
+level:0
+weight:1
+cost:90
+alloc:7:16 to 86
+pile:70:1d3
+power:1
+effect:CURE:CHARMED
+effect:CURE:AFRAID
+effect:CURE:CLEAR_MIND
+effect:TIMED_INC:FRENZY
+dice:21+7d8
+effect:NOURISH:INC_BY
+dice:3
+desc:Its smell gets on your nerves. This will put you in a
+desc: reckless frenzy.
 
 name:Emergency
 type:mushroom
@@ -2878,7 +2946,7 @@ weight:5
 cost:10
 alloc:50:4 to 100
 pile:100:2d3
-power:7
+power:5
 effect:NOURISH:INC_TO
 dice:50
 
@@ -2938,7 +3006,7 @@ weight:5
 cost:250
 alloc:20:1 to 100
 pile:20:2
-power:19
+power:18
 effect:DEEP_DESCENT
 
 

@@ -57,6 +57,7 @@ void look_mon_desc(char *buf, size_t max, int m_idx)
 	struct monster *mon = cave_monster(cave, m_idx);
 
 	bool living = true;
+	bool knowev = false;
 
 	if (!mon) return;
 
@@ -93,11 +94,15 @@ void look_mon_desc(char *buf, size_t max, int m_idx)
 	if (mon->m_timed[MON_TMD_SLOW]) my_strcat(buf, ", slowed", max);
 	if (mon->m_timed[MON_TMD_FAST]) my_strcat(buf, ", hasted", max);
 	/* If the individual is evil, but the race isn't always evil, tell the player about the individual */
-	if ((mon->pcmet) && (mon->isevil) && (!rf_has(mon->race->flags, RF_EVIL))) 
+	if (mon->pcmet || OPT(player, cheat_hear)) knowev = true;
+	if ((knowev) && (mon->isevil) && (!rf_has(mon->race->flags, RF_EVIL))) 
 		my_strcat(buf, " (evil)", max);
 	/* Same if the individual is not evil, if the race is sometimes evil */
-	else if ((mon->pcmet) && (rf_has(mon->race->flags, RF_S_EVIL1) || rf_has(mon->race->flags, RF_S_EVIL2)))
+	else if ((knowev) && (rf_has(mon->race->flags, RF_S_EVIL1) || rf_has(mon->race->flags, RF_S_EVIL2)))
 		my_strcat(buf, " (not evil)", max);
+	/* Should I tell the player if a monster is non-agressive without cheat_hear? */
+	if ((OPT(player, cheat_hear)) && (mon->nonagr)) my_strcat(buf, " (non-agressive for now)", max);
+	if ((OPT(player, cheat_hear)) && (!mon->pcmet)) my_strcat(buf, " (not met)", max);
 }
 
 

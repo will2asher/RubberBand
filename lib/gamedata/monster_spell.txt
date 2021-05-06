@@ -886,7 +886,7 @@ message-save:You retain your presence of mind.
 name:CURSE_PC
 hit:100
 effect:TIMED_INC:PCCURSED
-dice:$B+3d12
+dice:$B+12d6
 expr:B:SPELL_POWER:* 2
 lore:curse you
 lore-color-base:Orange

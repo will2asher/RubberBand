@@ -2143,7 +2143,6 @@ void calc_bonuses(struct player *p, struct player_state *state, bool known_only,
 		state->skills[SKILL_DEVICE] = state->skills[SKILL_DEVICE] * 105 / 100;
 	}
 	if (p->timed[TMD_SHERO]) {
-		/* What's the difference between raising melee skill and state->to_h ? */
 		state->skills[SKILL_TO_HIT_MELEE] += 75;
 		state->to_a -= (10 + bluck);
 		state->skills[SKILL_DEVICE] = state->skills[SKILL_DEVICE] * 92 / 100;
@@ -2161,8 +2160,9 @@ void calc_bonuses(struct player *p, struct player_state *state, bool known_only,
 	/* Mushroom of the singing drunk, also a generally similar effect but hurts stealth and disarming */
 	if (p->timed[TMD_SDRUNK]) {
 		state->to_a -= (4 + bluck);
-		state->to_h -= 5;
+		state->to_h -= (2 + bluck);
 		state->skills[SKILL_STEALTH] -= 3;
+		state->skills[SKILL_TO_HIT_BOW] -= (2 + (bluck+1) / 2);
 		state->skills[SKILL_DEVICE] = state->skills[SKILL_DEVICE] * (90 - bluck*2) / 100;
 		state->skills[SKILL_SAVE] = state->skills[SKILL_SAVE] * 9 / 10;
 		state->skills[SKILL_DISARM_PHYS] = state->skills[SKILL_DISARM_PHYS] * 8 / 10;
@@ -2208,7 +2208,7 @@ void calc_bonuses(struct player *p, struct player_state *state, bool known_only,
 		state->to_a += 1;
 		state->see_infra += 3;
 		state->skills[SKILL_SAVE] = state->skills[SKILL_SAVE] * 12 / 10;
-		state->skills[SKILL_SEARCH] = state->skills[SKILL_SEARCH] * 11 / 10;
+		state->skills[SKILL_SEARCH] = state->skills[SKILL_SEARCH] * 12 / 10;
 		state->skills[SKILL_DISARM_PHYS] = state->skills[SKILL_DISARM_PHYS] * 105 / 100;
 		state->skills[SKILL_DISARM_MAGIC] = state->skills[SKILL_DISARM_MAGIC] * 11 / 10;
 	}

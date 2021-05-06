@@ -448,9 +448,9 @@ msgt:GENERIC
 
 name:SDRUNK
 desc:clumsy
-grade:o:10000:SDRUNK:You feel very clumsy.
-on-end:You feel less clumsy now.
-on-increase:You feel even more clumsy.
+grade:o:10000:SDRUNK:You feel clumsy and drunk.
+on-end:You feel more sober now.
+on-increase:You feel even more drunk.
 msgt:GENERIC
 
 name:XBLOW

@@ -798,9 +798,9 @@ bool effect_handler_MON_HEAL_HP(effect_handler_context_t *context)
 		mon->hp = mon->maxhp;
 
 		if (seen)
-			msg("%s looks REALLY healthy!", m_name);
+			msg("%s looks fully healthy!", m_name);
 		else
-			msg("%s sounds REALLY healthy!", m_name);
+			msg("%s sounds fully healthy!", m_name);
 	} else if (seen) { /* Partially healed */
 		msg("%s looks healthier.", m_name);
 	} else {
@@ -855,7 +855,7 @@ bool effect_handler_MON_HEAL_KIN(effect_handler_context_t *context)
 
 	if (seen) {
 		if (mon->hp == mon->maxhp) {
-			msg("%s looks REALLY healthy!", m_name);
+			msg("%s looks fully healthy!", m_name);
 		} else if (seen) { /* Partially healed */
 			msg("%s looks healthier.", m_name);
 		}
