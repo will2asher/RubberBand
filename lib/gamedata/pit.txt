@@ -147,8 +147,8 @@ spell-req:BR_COLD | BR_POIS
 
 name:Demons
 room:1
-alloc:1:105
-obj-rarity:0
+alloc:1:103
+obj-rarity:4
 mon-base:major demon
 mon-ban:Horned Reaper
 
@@ -164,6 +164,7 @@ room:2
 alloc:1:50
 obj-rarity:10
 flags-req:ANIMAL
+flags-ban:UNDEAD | MULTIPLY
 
 name:Undead
 room:2
@@ -182,20 +183,23 @@ flags-ban:KILL_BODY
 
 name:Kobolds
 room:1
-alloc:1:15
+alloc:2:14
 obj-rarity:0
 mon-base:kobold
 
 name:Creepy crawlies
 room:2
-alloc:1:20
+alloc:1:21
 obj-rarity:5
 mon-base:centipede
 mon-base:ant
 mon-base:spider
+mon-base:worm
+mon-base:rodent
 spell-ban:BLINK
 spell-ban:CONF
 spell-ban:SLOW
+flags-ban:MULTIPLY | SMULTIPLY
 
 name:Minor demons
 room:1
@@ -206,14 +210,14 @@ spell-ban:S_DEMON
 
 name:Spellcasters
 room:1
-alloc:1:20
+alloc:2:20
 obj-rarity:0
 spell-req:MISSILE
 #using MISSILE flag to identify spellcasters is ugly.
 
 name:Archers
 room:1
-alloc:1:50
+alloc:4:50
 obj-rarity:0
 innate-freq:4
 spell-req:ARROW
@@ -226,19 +230,19 @@ mon-base:naga
 
 name:Thieves
 room:1
-alloc:1:25
+alloc:3:25
 obj-rarity:0
 mon-base:person
 color:b
 
 name:Warriors
 room:1
-alloc:1:25
+alloc:2:25
 obj-rarity:0
 mon-base:person
 color:u
 color:s
-color:M
+color:m
 spell-ban:DARKNESS | ARROW
 
 name:Dark dwarves
@@ -247,16 +251,17 @@ alloc:1:40
 obj-rarity:0
 mon-base:humanoid
 color:D
-color:B
+color:b
 color:u
-color:P
+color:r
 color:s
 color:R
+color:W
 spell-ban:BRAIN_SMASH
 
 name:Eyes
 room:1
-alloc:1:30
+alloc:2:35
 obj-rarity:5
 mon-base:eye
 spell-ban:S_UNDEAD
@@ -270,11 +275,20 @@ mon-base:ogre
 
 name:Believers
 room:1
-alloc:1:35
+alloc:4:35
 obj-rarity:0
 mon-base:person
+mon-base:knight
 spell-req:HEAL
 spell-ban:S_ANIMAL
+
+name:Humans (any)
+room:2
+alloc:8:35
+obj-rarity:0
+mon-base:person
+mon-base:knight
+flags-ban:UNDEAD
 
 name:Serpents
 room:2
@@ -283,8 +297,12 @@ obj-rarity:5
 mon-base:snake
 mon-base:naga
 mon-base:hydra
+mon-base:worm
 spell-ban:BA_POIS
 spell-ban:BR_FIRE
+spell-ban:BR_ACID
+spell-ban:BR_ELEC
+flags-ban:MULTIPLY | SMULTIPLY
 
 name:Lesser undead
 room:2
@@ -298,9 +316,11 @@ spell-ban:TELE_AWAY
 
 name:Wizards
 room:1
-alloc:1:45
+alloc:2:46
 obj-rarity:0
 mon-base:person
+mon-base:knight
+mon-base:humanoid
 spell-req:CONF
 
 name:Vampires
@@ -319,7 +339,7 @@ mon-base:hydra
 
 name:Golems
 room:1
-alloc:1:65
+alloc:1:60
 obj-rarity:10
 mon-base:golem
 flags-ban:DRAGON
@@ -335,11 +355,31 @@ mon-base:ancient dragon
 spell-req:BR_SOUN
 spell-ban:BR_SHAR
 
-#name:Ainur
-#room:1
-#alloc:1:90
-#obj-rarity:0
-#mon-base:maia
+name:Fairies
+room:2
+alloc:7:40
+obj-rarity:1
+flags-req:FEY
+spell-ban:S_KIN
+
+name:Creatures of Light
+room:1
+alloc:7:37
+obj-rarity:2
+flags-req:CLIGHT
+spell-ban:S_KIN
+
+name:Abberations
+room:2
+alloc:6:38
+obj-rarity:3
+mon-base:eye
+mon-base:nulx
+mon-base:worm
+mon-base:lurker
+spell-ban:S_UNDEAD
+spell-ban:S_KIN
+flags-ban:MULTIPLY
 
 
 # New chosen monster types, not necessarily for pits and not used yet

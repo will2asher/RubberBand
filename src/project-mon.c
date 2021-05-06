@@ -58,8 +58,8 @@ static struct monster_race *poly_race(struct monster_race *race)
 	if (one_in_(100)) {
 		if (maxlvl > 85) maxlvl = 118;
 		else if (maxlvl > 60) maxlvl = 100;
-		else if (maxlvl > 45) maxlvl += 20 + rantint0(11);
-		else maxlvl += 15 + rantint0(6);
+		else if (maxlvl > 45) maxlvl += 19 + randint1(11);
+		else maxlvl += 14 + randint1(6);
 	}/* another not quite as small chance to widen the range a little */
 	else if (one_in_(40)) {
 		minlvl -= minlvl / 4;
@@ -852,6 +852,13 @@ static void project_monster_handler_KILL_DOOR(project_monster_handler_context_t 
 
 static void project_monster_handler_KILL_TRAP(project_monster_handler_context_t *context)
 {
+	/* Damage trap monsters (includes mimics, lurkers, creepying coins, and wall monsters) */
+	if ((context->mon->race->base->d_char == '^') || (context->mon->race->base->d_char == '?') ||
+		(context->mon->race->base->d_char == '#') || (context->mon->race->base->d_char == '$') ||
+		(context->mon->race->base->d_char == '.')) {
+		if (!context->dam) context->dam = damroll(3, 5);
+		return;
+	}
 	context->skipped = true;
 	context->dam = 0;
 }
@@ -1006,8 +1013,11 @@ static void project_monster_handler_MON_POLY(project_monster_handler_context_t *
 /* (Hurts undead and does nothing against otherwise nonliving monsters) */
 static void project_monster_handler_MON_HEAL(project_monster_handler_context_t *context)
 {
-	/* deal damage to undead */
-	if (rf_has(context->mon->race->flags, RF_UNDEAD)) return;
+	/* deal damage to undead (and learn that it's undead) */
+	if (rf_has(context->mon->race->flags, RF_UNDEAD)) { 
+		if (context->seen) rf_on(context->lore->flags, RF_UNDEAD);
+		return;
+	}
 	/* heal monster only if it lives */
 	else if (!rf_has(context->mon->race->flags, RF_NONLIVING)) {
 
@@ -1044,6 +1054,7 @@ static void project_monster_handler_MON_SPEED(project_monster_handler_context_t 
 static void project_monster_handler_MON_SLOW(project_monster_handler_context_t *context)
 {
 	if (context->charm && rf_has(context->mon->race->flags, RF_ANIMAL)) {
+		context->dam += context->dam / 2;
 		context->dam += context->dam / 2;
 	}
 	context->mon_timed[MON_TMD_SLOW] = context->dam;

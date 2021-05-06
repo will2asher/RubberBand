@@ -227,6 +227,8 @@ power:0
 msg:That tastes good.
 effect:NOURISH:INC_BY
 dice:10
+effect:HEAL_HP
+dice:2
 desc:Wrinkled, but sound and sweet.
 
 name:& Handful~ of Dried Fruits
@@ -240,6 +242,8 @@ power:0
 msg:That tastes good.
 effect:NOURISH:INC_BY
 dice:14
+effect:HEAL_HP
+dice:3
 desc:Fruit roughly chopped and sun-dried, prepared as marching rations for the
 desc: rangers of Ithilien.
 
@@ -270,6 +274,8 @@ power:0
 msg:That tastes good.
 effect:NOURISH:INC_BY
 dice:30
+effect:HEAL_HP
+dice:2
 desc:This nutritious but fairly bland food, called cram by the Lake-men who
 desc: make it is familiar to anyone contemplating long journeys.  It is
 desc: sustaining, but uninteresting except as a chewing exercise.
@@ -311,6 +317,8 @@ power:0
 msg:That tastes good.
 effect:NOURISH:INC_BY
 dice:38
+effect:HEAL_HP
+dice:3
 desc:A thick slice of pork, salted to keep it from spoiling.  It is very
 desc: filling.
 
@@ -326,6 +334,8 @@ power:1
 msg:Delicious!
 effect:NOURISH:INC_TO
 dice:60
+effect:HEAL_HP
+dice:4
 desc:The Beornings are renowned as the best bakers among men, and their
 desc: honey-cakes are deservedly prized.  Made of wheat flour with nuts and
 desc: honey and twice baked, they will sustain you through a long march.
@@ -344,7 +354,7 @@ effect:NOURISH:INC_TO
 dice:75
 effect:CURE:POISONED
 effect:HEAL_HP
-dice:20
+dice:24
 desc:Food of the elves is always good; their waybread is no exception.  These
 desc: thin cakes are wrapped in leaves and keep their tastiness for months.
 
@@ -375,7 +385,7 @@ msg:That tastes great!  A fine vintage.
 effect:NOURISH:INC_BY
 dice:3
 effect:TIMED_INC:BOLD
-dice:79+1d41
+dice:89+1d31
 desc:A fine way to wash down some otherwise unappetising rations.
 
 name:& Sip~ of Miruvor
@@ -423,6 +433,8 @@ power:0
 msg:Refreshing!
 effect:NOURISH:INC_TO
 dice:60
+effect:HEAL_HP
+dice:4
 effect:RESTORE_STAT:STR
 effect:RESTORE_STAT:CON
 effect:GAIN_STAT:STR
@@ -3176,6 +3188,8 @@ pile:10:2
 power:20000
 effect:RESTORE_STAT:STR
 effect:GAIN_STAT:STR
+effect:NOURISH:INC_BY
+dice:1
 
 name:Intelligence
 type:potion
@@ -3188,6 +3202,8 @@ pile:10:2
 power:20000
 effect:RESTORE_STAT:INT
 effect:GAIN_STAT:INT
+effect:NOURISH:INC_BY
+dice:1
 
 name:Wisdom
 type:potion
@@ -3200,6 +3216,8 @@ pile:10:2
 power:20000
 effect:RESTORE_STAT:WIS
 effect:GAIN_STAT:WIS
+effect:NOURISH:INC_BY
+dice:1
 
 name:Dexterity
 type:potion
@@ -3212,6 +3230,8 @@ pile:10:2
 power:20000
 effect:RESTORE_STAT:DEX
 effect:GAIN_STAT:DEX
+effect:NOURISH:INC_BY
+dice:1
 
 name:Constitution
 type:potion
@@ -3224,13 +3244,15 @@ pile:10:2
 power:20000
 effect:RESTORE_STAT:CON
 effect:GAIN_STAT:CON
+effect:NOURISH:INC_BY
+dice:1
 
 name:Augmentation
 type:potion
 graphics:!:d
 level:40
 weight:4
-cost:50000
+cost:42000
 alloc:20:40 to 102
 attack:1d1:0:0
 armor:0:0
@@ -3245,6 +3267,8 @@ effect:RESTORE_STAT:DEX
 effect:GAIN_STAT:DEX
 effect:RESTORE_STAT:CON
 effect:GAIN_STAT:CON
+effect:NOURISH:INC_BY
+dice:1
 
 name:Experience
 type:potion
@@ -3256,6 +3280,8 @@ alloc:50:65 to 100
 power:20000
 effect:GAIN_EXP
 dice:200000
+effect:NOURISH:INC_BY
+dice:1
 
 name:Luck
 type:potion
@@ -3267,6 +3293,10 @@ alloc:7:19 to 101
 power:14
 effect:GAIN_LUCK
 dice:1d2
+effect:HEAL_HP
+dice:2
+effect:NOURISH:INC_BY
+dice:1
 
 name:Mediocrity
 type:potion
@@ -3277,6 +3307,8 @@ cost:231
 alloc:8:22 to 101
 power:4
 effect:MEDIOC
+effect:NOURISH:INC_BY
+dice:1
 
 ### Healings ###
 
@@ -3406,6 +3438,8 @@ effect:RESTORE_STAT:DEX
 effect:RESTORE_STAT:CON
 effect:HEAL_HP
 dice:5000
+effect:NOURISH:INC_TO
+dice:50
 
 name:Neutralize Poison
 type:potion
@@ -3417,6 +3451,8 @@ alloc:60:1 to 35
 pile:25:2
 power:1
 effect:CURE:POISONED
+effect:NOURISH:INC_BY
+dice:1
 
 name:Restore Mana
 type:potion
@@ -3428,6 +3464,8 @@ alloc:64:15 to 100
 pile:25:2
 power:20
 effect:RESTORE_MANA
+effect:NOURISH:INC_BY
+dice:1
 
 
 ### Stat restore ###
@@ -3444,6 +3482,8 @@ alloc:40:30 to 100
 pile:25:2
 power:8
 effect:RESTORE_EXP
+effect:NOURISH:INC_BY
+dice:1
 
 
 ### Gain one/lose one potions ###
@@ -3460,6 +3500,8 @@ power:30
 effect:RESTORE_STAT:STR
 effect:GAIN_STAT:STR
 effect:LOSE_RANDOM_STAT:STR
+effect:NOURISH:INC_BY
+dice:1
 
 name:Intellect
 type:potion
@@ -3473,6 +3515,8 @@ power:25
 effect:RESTORE_STAT:INT
 effect:GAIN_STAT:INT
 effect:LOSE_RANDOM_STAT:INT
+effect:NOURISH:INC_BY
+dice:1
 
 name:Contemplation
 type:potion
@@ -3486,6 +3530,8 @@ power:25
 effect:RESTORE_STAT:WIS
 effect:GAIN_STAT:WIS
 effect:LOSE_RANDOM_STAT:WIS
+effect:NOURISH:INC_BY
+dice:1
 
 name:Nimbleness
 type:potion
@@ -3499,6 +3545,8 @@ power:25
 effect:RESTORE_STAT:DEX
 effect:GAIN_STAT:DEX
 effect:LOSE_RANDOM_STAT:DEX
+effect:NOURISH:INC_BY
+dice:1
 
 name:Toughness
 type:potion
@@ -3512,6 +3560,8 @@ power:30
 effect:RESTORE_STAT:CON
 effect:GAIN_STAT:CON
 effect:LOSE_RANDOM_STAT:CON
+effect:NOURISH:INC_BY
+dice:1
 
 
 ### Knowledge ###
@@ -3526,6 +3576,8 @@ alloc:40:25 to 100
 pile:25:2
 power:22
 effect:LIGHT_LEVEL
+dice:1
+effect:NOURISH:INC_BY
 dice:1
 
 name:*Enlightenment*
@@ -3552,6 +3604,8 @@ effect:DETECT_INVISIBLE_MONSTERS
 effect-yx:500:500
 effect:DETECT_VISIBLE_MONSTERS
 effect-yx:500:500
+effect:NOURISH:INC_BY
+dice:1
 
 
 ### Buffs ###
@@ -3567,6 +3621,8 @@ pile:25:2
 power:10
 effect:TIMED_INC:FAST:0:5
 dice:20+2d10
+effect:NOURISH:INC_BY
+dice:1
 
 name:Heroism
 type:potion
@@ -3582,6 +3638,8 @@ dice:10
 effect:CURE:AFRAID
 effect:TIMED_INC:HERO
 dice:25+1d25
+effect:NOURISH:INC_BY
+dice:1
 
 name:Berserk Strength
 type:potion
@@ -3609,7 +3667,9 @@ pile:25:2
 power:2
 effect:CURE:AFRAID
 effect:TIMED_INC:BOLD
-dice:3+1d5
+dice:2+1d3
+effect:NOURISH:INC_BY
+dice:1
 
 name:Resist Heat
 type:potion
@@ -3622,6 +3682,8 @@ pile:25:2
 power:4
 effect:TIMED_INC:OPP_FIRE
 dice:50+1d10
+effect:NOURISH:INC_BY
+dice:1
 
 name:Resist Cold
 type:potion
@@ -3634,6 +3696,8 @@ pile:25:2
 power:4
 effect:TIMED_INC:OPP_COLD
 dice:50+1d10
+effect:NOURISH:INC_BY
+dice:1
 
 name:Resist Poison
 type:potion
@@ -3647,6 +3711,8 @@ power:4
 effect:TIMED_INC:OPP_POIS
 dice:50+1d10
 effect:CURE:POISONED
+effect:NOURISH:INC_BY
+dice:1
 
 #True Seeing is something different now (I'll add that potion later)
 name:See Invisible
@@ -3661,6 +3727,8 @@ power:7
 effect:CURE:BLIND
 effect:TIMED_INC:SINVIS
 dice:50+2d6
+effect:NOURISH:INC_BY
+dice:1
 
 name:Infravision
 type:potion
@@ -3673,6 +3741,8 @@ pile:25:2
 power:5
 effect:TIMED_INC:SINFRA
 dice:100+4d25
+effect:NOURISH:INC_BY
+dice:1
 
 
 ### Useless buggers ###
@@ -3705,7 +3775,7 @@ dice:5+1d5
 effect:NOURISH:INC_BY
 dice:1
 
-#reduced a little
+#reduced duration a little
 name:Blindness
 type:potion
 graphics:!:d
@@ -3718,7 +3788,7 @@ attack:3d4:0:0
 armor:0:0
 power:0
 effect:TIMED_INC:BLIND
-dice:65+4d24
+dice:61+4d24
 effect:NOURISH:INC_BY
 dice:1
 
@@ -3775,11 +3845,11 @@ graphics:!:d
 level:10
 weight:4
 cost:0
-alloc:10:10 to 15
+alloc:10:11 to 39
 pile:25:2
 power:0
 effect:RANDOM
-dice:5
+dice:8
 effect:TIMED_INC:SCRAMBLE
 dice:20+1d20
 effect:SHAPECHANGE:bat
@@ -3787,6 +3857,14 @@ effect:DRAIN_STAT:INT
 effect:DRAIN_STAT:WIS
 effect:TIMED_INC:STONESKIN
 dice:20+1d20
+effect:TIMED_INC:SHERO
+dice:22+1d22
+effect:HEAL_HP
+dice:55
+effect:BREATH:ACID:0:20
+dice:55
+effect:NOURISH:INC_BY
+dice:1
 
 name:Salt Water
 type:potion
@@ -4506,7 +4584,7 @@ type:staff
 graphics:_:d
 level:5
 weight:50
-cost:350
+cost:230
 alloc:30:5 to 100
 attack:1d4:0:0
 armor:0:0
@@ -4537,6 +4615,8 @@ effect:CURE:BLIND
 effect:CURE:CUT
 effect:CURE:POISONED
 effect:CURE:STUN
+effect:CURE:FRENZY
+effect:CURE:SDRUNK
 effect:CURE:AMNESIA
 effect:CURE:CONFUSED
 
@@ -5048,6 +5128,7 @@ attack:1d1:0:0
 armor:0:0
 power:7
 effect:ALTER:KILL_TRAP
+dice:4d8
 time:30
 
 name:Light
