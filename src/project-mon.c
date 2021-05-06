@@ -55,7 +55,16 @@ static struct monster_race *poly_race(struct monster_race *race)
 	maxlvl = MAX(race->level + 10, (race->level * 5) / 4);
 
 	/* Small chance to allow something really strong */
-	if (one_in_(100)) maxlvl = 100;
+	if (one_in_(100)) {
+		if (maxlvl > 85) maxlvl = 118;
+		else if (maxlvl > 60) maxlvl = 100;
+		else if (maxlvl > 45) maxlvl += 20 + rantint0(11);
+		else maxlvl += 15 + rantint0(6);
+	}/* another not quite as small chance to widen the range a little */
+	else if (one_in_(40)) {
+		minlvl -= minlvl / 4;
+		maxlvl += maxlvl / 4;
+	}
 
 	/* Try to pick a new, non-unique race within our level range */
 	for (i = 0; i < 1000; i++) {
@@ -351,6 +360,11 @@ static void project_monster_hurt_only(project_monster_handler_context_t *context
 	if (rf_has(context->mon->race->flags, flag)) {
 		context->hurt_msg = hurt_msg;
 		context->die_msg = die_msg;
+	}	
+	/* Not all evil monsters have EVIL flag */
+	else if ((context->mon->isevil) && (flag == RF_EVIL)) {
+		context->hurt_msg = hurt_msg;
+		context->die_msg = die_msg;
 	}
 	else {
 		context->dam = 0;
@@ -394,11 +408,18 @@ static void project_monster_teleport_away(project_monster_handler_context_t *con
 {
 	if (context->seen) rf_on(context->lore->flags, flag);
 
-	if (rf_has(context->mon->race->flags, flag)) {
+	/* Not all evil monsters have EVIL flag */
+	if ((context->mon->isevil) && (flag == RF_EVIL)) {
 		context->teleport_distance = context->dam;
 		context->hurt_msg = MON_MSG_DISAPPEAR;
 		monster_wake(context->mon, false, 100);
-	} else {
+	} 
+	else if (rf_has(context->mon->race->flags, flag)) {
+		context->teleport_distance = context->dam;
+		context->hurt_msg = MON_MSG_DISAPPEAR;
+		monster_wake(context->mon, false, 100);
+	}
+	else {
 		context->skipped = true;
 	}
 
@@ -420,7 +441,12 @@ static void project_monster_scare(project_monster_handler_context_t *context, in
 {
     if (context->seen) rf_on(context->lore->flags, flag);
 
-	if (rf_has(context->mon->race->flags, flag)) {
+	/* Not all evil monsters have EVIL flag */
+	if ((context->mon->isevil) && (flag == RF_EVIL)) {
+		context->mon_timed[MON_TMD_FEAR] = adjust_radius(context, context->dam * 11 / 12);
+		monster_wake(context->mon, false, 100);
+	}
+	else if (rf_has(context->mon->race->flags, flag)) {
         context->mon_timed[MON_TMD_FEAR] = adjust_radius(context, context->dam);
 		monster_wake(context->mon, false, 100);
 	} else {
@@ -449,7 +475,15 @@ static void project_monster_dispel(project_monster_handler_context_t *context, i
 	if (rf_has(context->mon->race->flags, flag)) {
 		context->hurt_msg = MON_MSG_SHUDDER;
 		context->die_msg = MON_MSG_DISSOLVE;
-	} else {
+	} 
+	/* Not all evil monsters have EVIL flag */
+	else if ((context->mon->isevil) && (flag == RF_EVIL)) {
+		context->hurt_msg = MON_MSG_SHUDDER;
+		context->die_msg = MON_MSG_DISSOLVE;
+		/* Monster isn't inherently evil, so it takes (very) slightly less damage */
+		context->dam = context->dam * 19 / 20;
+	}
+	else {
 		context->skipped = true;
 		context->dam = 0;
 	}
@@ -473,7 +507,11 @@ static void project_monster_sleep(project_monster_handler_context_t *context, in
 {
 	if (context->seen && flag) rf_on(context->lore->flags, flag);
 
-	if (flag && !rf_has(context->mon->race->flags, flag)) {
+	/* Not all evil monsters have EVIL flag */
+	if ((context->mon->isevil) && (flag == RF_EVIL)) {
+		/* skip flag check */;
+	}
+	else if (flag && !rf_has(context->mon->race->flags, flag)) {
 		context->skipped = true;
 		context->dam = 0;
 	}
@@ -605,9 +643,10 @@ static void project_monster_handler_NETHER(project_monster_handler_context_t *co
 				rsf_on(context->lore->spell_flags, RSF_BR_NETH);
 			}
 
-			/* Otherwise learn about evil type */
+			/* Otherwise learn if monster is evil */
 			else {
 				rf_on(context->lore->flags, RF_EVIL);
+				context->mon->pcmet = 1;
 			}
 		}
 	}
@@ -622,7 +661,7 @@ static void project_monster_handler_NETHER(project_monster_handler_context_t *co
 		context->dam /= (randint1(6)+6);
 	}
 	/* Why should EVIL characters get halved damage from nether? Now it's 5/6 damage. */
-	else if (rf_has(context->mon->race->flags, RF_EVIL)) {
+	else if ((rf_has(context->mon->race->flags, RF_EVIL)) || (context->mon->isevil)) {
 		context->dam *= 5;
 		context->dam /= 6;
 		context->hurt_msg = MON_MSG_RESIST_SOMEWHAT;
@@ -964,21 +1003,31 @@ static void project_monster_handler_MON_POLY(project_monster_handler_context_t *
 }
 
 /* Heal Monster (use "dam" as amount of healing) */
+/* (Hurts undead and does nothing against otherwise nonliving monsters) */
 static void project_monster_handler_MON_HEAL(project_monster_handler_context_t *context)
 {
-	/* Heal */
-	context->mon->hp += context->dam;
+	/* deal damage to undead */
+	if (rf_has(context->mon->race->flags, RF_UNDEAD)) return;
+	/* heal monster only if it lives */
+	else if (!rf_has(context->mon->race->flags, RF_NONLIVING)) {
 
-	/* No overflow */
-	if (context->mon->hp > context->mon->maxhp)
-		context->mon->hp = context->mon->maxhp;
+		/* Heal */
+		context->mon->hp += context->dam;
 
-	/* Redraw (later) if needed */
-	if (player->upkeep->health_who == context->mon)
-		player->upkeep->redraw |= (PR_HEALTH);
+		/* No overflow */
+		if (context->mon->hp > context->mon->maxhp)
+			context->mon->hp = context->mon->maxhp;
 
-	/* Message */
-	else context->hurt_msg = MON_MSG_HEALTHIER;
+		/* Redraw (later) if needed */
+		if (player->upkeep->health_who == context->mon)
+			player->upkeep->redraw |= (PR_HEALTH);
+
+		/* Message */
+		else context->hurt_msg = MON_MSG_HEALTHIER;
+	}
+	else { /* NONLIVING */
+		context->skipped = true;
+	}
 
 	/* No "real" damage */
 	context->dam = 0;
@@ -1228,7 +1277,7 @@ static void project_m_apply_side_effects(project_monster_handler_context_t *cont
 
 		/* Saving throws depend on damage for direct poly, random for chaos */
 		if (typ == PROJ_MON_POLY)
-			savelvl = randint1(MAX(1, context->do_poly - 10)) + 10;
+			savelvl = randint1(MAX(1, context->do_poly/2)) + (context->do_poly+1) / 2;
 		else
 			savelvl = randint1(90);
 		if (mon->race->level > savelvl) {

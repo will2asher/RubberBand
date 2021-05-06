@@ -4285,6 +4285,7 @@ dice:250
 
 ### Rubbish ###
 
+#not complete rubbish anymore because it damages undead
 name:Heal Monster
 type:wand
 graphics:-:d
@@ -4311,7 +4312,7 @@ armor:0:0
 charges:8+d20
 power:0
 effect:BOLT_STATUS:MON_SPEED
-dice:100
+dice:95
 
 
 
@@ -4360,7 +4361,7 @@ charges:8+d8
 power:0
 effect:DARKEN_AREA
 effect:BALL:DARK_WEAK:3
-dice:10
+dice:12
 
 ### Destruction ###
 

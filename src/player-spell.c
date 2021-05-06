@@ -758,6 +758,7 @@ static int spell_value_base_monster_percent_hp_gone(void)
 	return mon ? (((mon->maxhp - mon->hp) * 100) / mon->maxhp) : 0;
 }
 
+/* todo: Add a code here for device skill */
 expression_base_value_f spell_value_base_by_name(const char *name)
 {
 	static const struct value_base_s {
