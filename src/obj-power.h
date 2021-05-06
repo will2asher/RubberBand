@@ -61,7 +61,7 @@
 #define VERYHIGH_TO_HIT		26
 #define HIGH_TO_DAM			16
 #define VERYHIGH_TO_DAM		26
-#define AMMO_RESCALER		20 /* this value is also used for torches */
+#define AMMO_RESCALER		18 /* this value is also used for torches */
 
 
 

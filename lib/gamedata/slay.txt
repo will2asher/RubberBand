@@ -43,14 +43,14 @@ power:101
 melee-verb:smite
 range-verb:pierces
 
-#code:FAIRY_3
-#name:fairies
-#race-flag:FEY
-#multiplier:3
-#o-multiplier:25
-#power:101
-#melee-verb:smite
-#range-verb:pierces
+code:FAIRY_3
+name:fairies
+race-flag:FEY
+multiplier:3
+o-multiplier:25
+power:101
+melee-verb:smite
+range-verb:pierces
 
 code:TROLL_3
 name:trolls

@@ -493,7 +493,7 @@ armor-class:4
 sleepiness:190
 depth:0
 rarity:1
-experience:9
+experience:6
 blow:HIT:HURT:1d4
 flags:FEMALE | EVIL | TOWN_OR_DUN
 flags:DROP_40 | ONLY_ITEM
@@ -677,7 +677,7 @@ desc:It is about three feet long with large teeth.
 name:rat snake
 base:snake
 color:U
-speed:108
+speed:109
 hit-points:6
 hearing:4
 smell:8
