@@ -169,7 +169,7 @@ visibility:0
 
 name:strange rune:rune of summoning
 graphics:^:B
-appear:2:3:0
+appear:2:11:0
 visibility:0
 flags:TRAP | FLOOR | ONETIME | MAGICAL
 effect:SUMMON:ANY
@@ -514,6 +514,7 @@ desc:A trap that clears the surrounding area.
 msg:The trap explodes, blasting the area clear!
 
 # blinding flash
+# Why is there 3 different blinding traps?
 
 name:trap:blinding flash trap
 graphics:^:light yellow
@@ -530,7 +531,7 @@ msg:A blazing light descends on you!
 
 name:trap:blinding trap
 graphics:^:light slate
-appear:1:5:0
+appear:2:5:0
 visibility:20+d5
 flags:TRAP | FLOOR | MAGICAL | ONETIME
 effect:BALL:DARK:4
@@ -573,7 +574,7 @@ desc:A trap designed to bleed you to death.
 
 # petrifier
 
-name:trap:petrifying trap
+name:trap:stoneskin trap
 graphics:^:blue
 appear:1:5:0
 visibility:20+d5
@@ -584,3 +585,16 @@ effect:TIMED_INC:STUN
 dice:20+1d20
 msg:You feel yourself turning to stone!
 desc:A trap that stuns you and gives you stoneskin.
+
+# real petrifier
+#name:trap:petrifying trap
+#graphics:^:blue
+#appear:3:35:0
+#visibility:20+d5
+#flags:TRAP | FLOOR | MAGICAL
+#effect:TIMED_INC:PETRIFIED
+#dice:20+1d20
+#effect:TIMED_INC:STUN
+#dice:5+1d15
+#msg:You feel yourself turning to stone!
+#desc:A trap that stuns you and turns you to stone.

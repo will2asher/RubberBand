@@ -661,6 +661,15 @@ static int project_player_handler_DARK_WEAK(project_player_handler_context_t *co
 
 static int project_player_handler_KILL_WALL(project_player_handler_context_t *context)
 {
+	/* If player is made of rock, then player should be hurt by rock remover */
+	if ((player_has(player, PF_ROCK)) || (player->timed[TMD_PETRIFIED])) {
+		/* return amount of damage */
+		return damroll(4, 6);
+	}
+	else if (player->timed[TMD_STONESKIN]) {
+		/* less damage than if you're actually made of rock */
+		return damroll(3, 4);
+	}
 	return 0;
 }
 
