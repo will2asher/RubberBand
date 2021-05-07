@@ -871,6 +871,27 @@ static void project_monster_handler_MAKE_DOOR(project_monster_handler_context_t 
 
 static void project_monster_handler_MAKE_TRAP(project_monster_handler_context_t *context)
 {
+	/* Heal trap monsters (includes mimics, lurkers, creepying coins, and wall monsters) */
+	if ((context->mon->race->base->d_char == '^') || (context->mon->race->base->d_char == '?') ||
+		(context->mon->race->base->d_char == '#') || (context->mon->race->base->d_char == '$') ||
+		(context->mon->race->base->d_char == '.')) {
+
+		/* Heal */
+		context->mon->hp += damroll(3, 4);
+
+		/* No overflow */
+		if (context->mon->hp > context->mon->maxhp)
+			context->mon->hp = context->mon->maxhp;
+
+		/* Redraw (later) if needed */
+		if (player->upkeep->health_who == context->mon)
+			player->upkeep->redraw |= (PR_HEALTH);
+
+		/* Message */
+		else context->hurt_msg = MON_MSG_HEALTHIER;
+		return;
+	}
+	/* else: most monsters */
 	context->skipped = true;
 	context->dam = 0;
 }
