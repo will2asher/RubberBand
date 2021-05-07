@@ -646,7 +646,7 @@ color:White
 
 code:MON_HEAL
 type:monster
-desc:heals monsters
+desc:heals living monsters and damages undead
 blind-desc:something
 obvious:1
 wake:1

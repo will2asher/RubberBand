@@ -359,6 +359,9 @@ static bool item_tester_hook_weapon(const struct object *obj)
  */
 static bool item_tester_hook_armour(const struct object *obj)
 {
+	/* special case for the main gauche. todo: make an object flag for this. */
+	/* (ugly: include weight check or else it'll include the *thancs and any blade with an ego that adds an ac bonus) */
+	if ((obj->tval == TV_SWORD) && (obj->weight == 25) && (obj->to_a > 0)) return true;
 	return tval_is_armor(obj);
 }
 

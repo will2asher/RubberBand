@@ -2206,7 +2206,7 @@ bool object_flavor_was_tried(const struct object *obj)
 }
 
 /**
- * Mark an object's flavour as as one the player is aware of.
+ * Mark an object's flavour as one the player is aware of.
  *
  * \param obj is the object whose flavour should be marked as aware
  */

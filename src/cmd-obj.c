@@ -312,7 +312,9 @@ void do_cmd_wield(struct command *cmd)
 		struct object* weapon = equipped_item_by_slot_name(player, "weapon");
 
 		/* Check if target weapon is light enough to wield in shield slot */
-		if ((obj->weight <= 110) && (obj->weight / 10 <= player->state.stat_use[STAT_STR] / 3)) {
+		/* (magic staffs can never be weilded in the off hand) */
+		if ((obj->weight <= 110) && (obj->weight / 10 <= player->state.stat_use[STAT_STR] / 3) &&
+			(!tval_is_staff(obj))) {
 			/* ask */
 			if (get_check("Wield in off-hand (shield slot)? ")) do_two = true;
 		}
@@ -655,7 +657,12 @@ static void use_aux(struct command *cmd, struct object *obj, enum use use,
 			}
 		} else {
 			/* Wearables may need update, other things become known or tried */
-			if (tval_is_wearable(work_obj)) {
+			/* staffs are wearable now, but they still learn on use */
+			if (tval_is_staff(work_obj)) {
+				object_learn_on_use(player, work_obj);
+				update_player_object_knowledge(player);
+			}
+			else if (tval_is_wearable(work_obj)) {
 				update_player_object_knowledge(player);
 			} else if (!was_aware && ident) {
 				object_learn_on_use(player, work_obj);
@@ -758,7 +765,7 @@ void do_cmd_use_staff(struct command *cmd)
 			"Use which staff? ",
 			"You have no staves to use.",
 			tval_is_staff,
-			USE_INVEN | USE_FLOOR | SHOW_FAIL) != CMD_OK) return;
+			USE_INVEN | USE_FLOOR | USE_EQUIP | SHOW_FAIL) != CMD_OK) return;
 
 	if (!obj_has_charges(obj)) {
 		msg("That staff has no charges.");

@@ -132,6 +132,7 @@ name:staff:Staff~
 graphics:light umber
 # max-stack:5
 flags:HATES_ACID | HATES_FIRE | EASY_KNOW
+flags:SHOW_DICE
 
 name:wand:Wand~
 graphics:green

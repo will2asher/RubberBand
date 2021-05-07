@@ -117,18 +117,25 @@ min-values:LIGHT[1]
 
 name:(Everburning)
 info:2500:10
-alloc:100:1 to 30
+alloc:100:1 to 32
 item:light:Lantern
 flags:NO_FUEL
 flags-off:TAKES_FUEL
 
 #imported from S
-name:of True Sight
+name:of See Invisible
 info:6000:10
 alloc:10:20 to 127
 item:light:Lantern
 flags:PROT_BLIND | SEE_INVIS
 
+# (I haven't finished implementing true sight yet, but it's more than just see invisible)
+#name:of True Sight
+#info:10000:10
+#alloc:4:32 to 127
+#item:light:Wooden Torch
+#item:light:Lantern
+#flags:PROT_BLIND | SEE_INVIS
 
 ### Weapons ###
 
@@ -137,6 +144,7 @@ info:20000:30
 alloc:10:15 to 127
 combat:d6:d6:d4
 type:sword
+type:staff
 type:polearm
 type:hafted
 flags:SEE_INVIS | BLESSED | PROT_FEAR | RAND_SUSTAIN
@@ -163,6 +171,7 @@ info:5000:20
 alloc:20:1 to 60
 type:sword
 type:polearm
+type:staff
 type:hafted
 flags:BLESSED | RAND_POWER
 values:WIS[d3]
@@ -203,6 +212,7 @@ info:10000:21
 alloc:10:10 to 127
 type:sword
 type:polearm
+type:staff
 type:hafted
 values:BLOWS[d2]
 min-values:BLOWS[0]
@@ -230,6 +240,7 @@ info:5000:19
 alloc:30:1 to 60
 type:sword
 type:polearm
+type:staff
 type:hafted
 flags:IGNORE_ACID
 values:RES_ACID[1]
@@ -240,6 +251,7 @@ info:4500:20
 alloc:30:1 to 60
 type:sword
 type:polearm
+type:staff
 type:hafted
 flags:IGNORE_ELEC
 values:RES_ELEC[1]
@@ -250,6 +262,7 @@ info:3500:15
 alloc:40:1 to 50
 type:sword
 type:polearm
+type:staff
 type:hafted
 flags:IGNORE_FIRE
 values:RES_FIRE[1]
@@ -260,6 +273,7 @@ info:3000:15
 alloc:40:1 to 50
 type:sword
 type:polearm
+type:staff
 type:hafted
 flags:IGNORE_COLD
 values:RES_COLD[1]
@@ -270,6 +284,7 @@ info:4000:15
 alloc:60:1 to 40
 type:sword
 type:polearm
+type:staff
 type:hafted
 brand:POIS_3
 
@@ -280,6 +295,7 @@ info:3000:18
 alloc:100:1 to 30
 type:sword
 type:polearm
+type:staff
 type:hafted
 slay:ANIMAL_2
 
@@ -288,6 +304,7 @@ info:3000:18
 alloc:60:1 to 40
 type:sword
 type:polearm
+type:staff
 type:hafted
 slay:EVIL_2
 
@@ -296,6 +313,7 @@ info:3500:18
 alloc:100:1 to 30
 type:sword
 type:polearm
+type:staff
 item:hafted:Whip
 item:hafted:Ball-and-Chain
 item:hafted:Morning Star
@@ -314,6 +332,7 @@ info:3500:14
 alloc:100:1 to 30
 type:sword
 type:polearm
+type:staff
 type:hafted
 slay:DEMON_3
 
@@ -322,6 +341,7 @@ info:2500:10
 alloc:150:1 to 21
 type:sword
 type:polearm
+type:staff
 type:hafted
 slay:ORC_3
 
@@ -330,6 +350,7 @@ info:2500:10
 alloc:150:1 to 25
 type:sword
 type:polearm
+type:staff
 type:hafted
 slay:TROLL_3
 
@@ -338,6 +359,7 @@ info:2500:14
 alloc:60:1 to 30
 type:sword
 type:polearm
+type:staff
 type:hafted
 slay:GIANT_3
 
@@ -346,6 +368,7 @@ info:3500:18
 alloc:100:1 to 30
 type:sword
 type:polearm
+type:staff
 type:hafted
 slay:DRAGON_3
 
@@ -365,6 +388,7 @@ info:6000:20
 alloc:40:1 to 45
 type:sword
 type:polearm
+type:staff
 type:hafted
 flags:RAND_RES_POWER
 values:INT[d2]
@@ -376,6 +400,7 @@ info:5000:20
 alloc:15:10 to 127
 type:sword
 type:polearm
+type:staff
 type:hafted
 flags:BLESSED | RAND_RES_POWER
 values:WIS[d2]
@@ -387,6 +412,7 @@ info:8000:24
 alloc:30:10 to 60
 type:sword
 type:polearm
+type:staff
 item:hafted:Whip
 item:hafted:Ball-and-Chain
 item:hafted:Morning Star
@@ -408,6 +434,7 @@ info:8000:16
 alloc:30:10 to 60
 type:sword
 type:polearm
+type:staff
 type:hafted
 flags:RAND_RES_POWER
 values:INT[d2]
@@ -419,6 +446,7 @@ info:4000:14
 alloc:60:1 to 40
 type:sword
 type:polearm
+type:staff
 type:hafted
 flags:RAND_RES_POWER
 values:DEX[d2]
@@ -430,6 +458,7 @@ info:4000:14
 alloc:60:1 to 45
 type:sword
 type:polearm
+type:staff
 type:hafted
 flags:RAND_RES_POWER
 values:STR[d2]
@@ -441,6 +470,7 @@ info:4700:15
 alloc:27:7 to 57
 type:sword
 type:polearm
+type:staff
 type:hafted
 flags:RAND_RES_POWER
 values:DEX[d3]
@@ -452,6 +482,7 @@ info:4000:16
 alloc:20:1 to 45
 type:sword
 type:polearm
+type:staff
 type:hafted
 flags:RAND_RES_POWER
 values:STR[d2]
@@ -463,6 +494,7 @@ info:8000:24
 alloc:30:10 to 60
 type:sword
 type:polearm
+type:staff
 type:hafted
 flags:RAND_RES_POWER
 values:CON[d2]
@@ -974,11 +1006,13 @@ flags:RAND_HI_RES
 values:STEALTH[d3]
 min-values:STEALTH[0]
 
+#also for magic staffs
 name:of the Magi
 info:2000:15
 alloc:10:30 to 127
 combat:0:0:d4
 type:cloak
+type:staff
 flags:SUST_INT | IGNORE_ACID | RAND_POWER
 values:INT[d2] | STEALTH[d3]
 min-values:INT[1] | STEALTH[1]

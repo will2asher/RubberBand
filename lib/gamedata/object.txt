@@ -4433,7 +4433,7 @@ level:5
 weight:50
 cost:0
 alloc:10:5 to 40
-attack:1d4:0:0
+attack:1d5:0:0
 armor:0:0
 charges:8+d8
 power:0
@@ -4450,7 +4450,7 @@ level:40
 weight:50
 cost:350
 alloc:20:40 to 100
-attack:1d4:0:0
+attack:1d5:0:0
 armor:0:0
 charges:3+d5
 power:5
@@ -4463,7 +4463,7 @@ level:50
 weight:50
 cost:6000
 alloc:20:50 to 100
-attack:1d4:0:0
+attack:1d6:0:0
 armor:0:0
 charges:1+d3
 power:12
@@ -4658,7 +4658,7 @@ level:70
 weight:50
 cost:5000
 alloc:10:70 to 100
-attack:1d4:0:0
+attack:1d5:0:0
 armor:0:0
 charges:1+d2
 power:20
@@ -4732,7 +4732,7 @@ level:20
 weight:50
 cost:800
 alloc:20:20 to 80
-attack:1d4:0:0
+attack:1d5:0:0
 armor:0:0
 charges:6+d5
 power:5
@@ -4788,7 +4788,7 @@ level:70
 weight:50
 cost:4500
 alloc:10:70 to 100
-attack:1d4:0:0
+attack:1d5:0:0
 armor:0:0
 charges:2+1d2
 power:20

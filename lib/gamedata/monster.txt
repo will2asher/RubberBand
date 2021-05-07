@@ -2587,7 +2587,7 @@ blow:INSULT
 blow:HIT:HURT:1d4
 blow:KICK:FRENZY:2d3
 flags:TAKE_ITEM | DROP_40 | RAND_25
-flags:REGENERATE | S_EVIL2 | HURT_LIGHT
+flags:REGENERATE | S_EVIL2
 #ROAM
 innate-freq:11
 spell-power:6
@@ -3832,7 +3832,7 @@ blow:INSULT
 blow:HIT:HURT:1d6
 blow:KICK:FRENZY:3d2
 flags:TAKE_ITEM | DROP_40 | RAND_25
-flags:REGENERATE | S_EVIL2 | HURT_LIGHT | NO_HOLD
+flags:REGENERATE | S_EVIL2 | NO_HOLD
 #ROAM
 innate-freq:7
 spell-freq:13
@@ -5485,7 +5485,7 @@ blow:KICK:HURT:3d3
 blow:SPIT:HURT:1d5
 blow:INSULT:FRENZY
 flags:TAKE_ITEM | DROP_40 | BASH_DOOR | S_EVIL2
-flags:REGENERATE | HURT_LIGHT | NO_HOLD | NO_STUN
+flags:REGENERATE | NO_HOLD | NO_STUN
 #ROAM | SCALE?
 innate-freq:7
 spell-freq:11
@@ -6243,8 +6243,8 @@ blow:HIT:POISON:1d6
 blow:INSULT:FRENZY
 #CLAWB, SBLIND
 flags:EVIL | TAKE_ITEM | DROP_20 | BASH_DOOR
-flags:REGENERATE | HURT_LIGHT | IM_POIS | NO_HOLD
-#ROAM | SCALE?
+flags:REGENERATE | IM_POIS | NO_HOLD
+#ROAM | SCALE?, not sure it should have NO_HOLD?
 innate-freq:6
 spell-freq:11
 spells:THROW | WHIP | SHOT | SCARE | WOUND 

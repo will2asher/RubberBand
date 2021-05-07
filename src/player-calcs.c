@@ -1951,6 +1951,10 @@ void calc_bonuses(struct player *p, struct player_state *state, bool known_only,
 	/* Calculate light */
 	calc_light(p, state, update);
 
+	/* You don't stand out as much if you don't have a light (but you also might fumble around in the dark...) */
+	/* I'll add this back when I add darkvision */
+	/*if (!state->cur_light) state->skills[SKILL_STEALTH] += 1;*/
+
 	/* Unlight - needs change if anything but resist is introduced for dark */
 	if (player_has(p, PF_UNLIGHT) && character_dungeon) {
 		state->el_info[ELEM_DARK].res_level = 1;

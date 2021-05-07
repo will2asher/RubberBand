@@ -207,6 +207,7 @@ bool tval_is_weapon(const struct object *obj)
 		case TV_HAFTED:
 		case TV_POLEARM:
 		case TV_DIGGING:
+		case TV_STAFF:
 		case TV_BOW:
 		case TV_BOLT:
 		case TV_ARROW:
@@ -242,6 +243,7 @@ bool tval_is_melee_weapon(const struct object *obj)
 		case TV_HAFTED:
 		case TV_POLEARM:
 		case TV_DIGGING:
+		case TV_STAFF:
 			return true;
 		default:
 			return false;
@@ -268,6 +270,7 @@ bool tval_has_variable_power(const struct object *obj)
 		case TV_SOFT_ARMOR:
 		case TV_HARD_ARMOR:
 		case TV_DRAG_ARMOR:
+		case TV_STAFF:
 		case TV_LIGHT:
 		case TV_AMULET:
 		case TV_RING:
@@ -284,6 +287,7 @@ bool tval_is_wearable(const struct object *obj)
 		case TV_DIGGING:
 		case TV_HAFTED:
 		case TV_POLEARM:
+		case TV_STAFF:
 		case TV_SWORD:
 		case TV_BOOTS:
 		case TV_GLOVES:
