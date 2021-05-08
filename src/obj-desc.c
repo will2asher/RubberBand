@@ -321,8 +321,14 @@ static size_t obj_desc_name(char *buf, size_t max, size_t end,
 	/* Append extra names of various kinds */
 	if (object_is_known_artifact(obj))
 		strnfcat(buf, max, &end, " %s", obj->artifact->name);
-	else if ((obj->known->ego && !(mode & ODESC_NOEGO)) || (obj->ego && store))
+	else if ((obj->known->ego && !(mode & ODESC_NOEGO)) || (obj->ego && store)) {
+		if (obj->kind->tval == TV_STAFF) {
+			/* Staffs can have both flavors and egos */
+			if (aware && !obj->artifact && (terse)) strnfcat(buf, max, &end, " '%s'", obj->kind->name);
+			else if (aware && !obj->artifact) strnfcat(buf, max, &end, " of %s", obj->kind->name);
+		}
 		strnfcat(buf, max, &end, " %s", obj->ego->name);
+	}
 	else if (aware && !obj->artifact &&
 			 (obj->kind->flavor || obj->kind->tval == TV_SCROLL)) {
 		if (terse)

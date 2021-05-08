@@ -962,6 +962,8 @@ int apply_magic(struct object *obj, int lev, bool allow_artifacts, bool good,
 		if (great || (randint0(100) < great_chance))
 			power = 2;
 	}
+	/* egos and bonuses on staffs should be rare */
+	if ((obj->tval == TV_STAFF) && (one_in_(3))) power = 0;
 
 	/* Roll for artifact creation */
 	if (allow_artifacts) {

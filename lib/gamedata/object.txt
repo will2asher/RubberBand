@@ -4744,7 +4744,7 @@ type:staff
 graphics:_:d
 level:20
 weight:50
-cost:2000
+cost:4000
 alloc:50:20 to 100
 attack:1d4:0:0
 armor:0:0
@@ -4758,7 +4758,7 @@ type:staff
 graphics:_:d
 level:40
 weight:50
-cost:2000
+cost:4000
 alloc:20:40 to 100
 attack:1d4:0:0
 armor:0:0
@@ -4786,7 +4786,7 @@ type:staff
 graphics:_:d
 level:70
 weight:50
-cost:4500
+cost:5400
 alloc:10:70 to 100
 attack:1d5:0:0
 armor:0:0
@@ -4820,7 +4820,7 @@ type:rod
 graphics:-:d
 level:30
 weight:15
-cost:3000
+cost:3050
 alloc:30:50 to 100
 attack:1d1:0:0
 armor:0:0
