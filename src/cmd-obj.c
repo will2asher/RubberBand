@@ -310,19 +310,35 @@ void do_cmd_wield(struct command *cmd)
 	if ((tval_is_melee_weapon(obj)) && (player_has(player, PF_2WEAPON))) {
 		/* Get weapon */
 		struct object* weapon = equipped_item_by_slot_name(player, "weapon");
+		bool offhandok = false;
+
+		/* Sword are easier to wield in the off-hand than other weapons */
+		/* max weight to wield off-hand is 11lbs or 1/3 of your strength for swords */
+		if ((obj->tval == TV_SWORD) && (obj->weight <= 110) && (obj->weight / 10 <= player->state.stat_use[STAT_STR] / 3))
+			offhandok = true;
+		/* max weight to wield off-hand is 6.5lbs or 1/4 of your strength for other weapons */
+		else if ((obj->weight <= 65) && (obj->weight / 10 <= player->state.stat_use[STAT_STR] / 4))
+			offhandok = true;
 
 		/* Check if target weapon is light enough to wield in shield slot */
 		/* (magic staffs can never be weilded in the off hand) */
-		if ((obj->weight <= 110) && (obj->weight / 10 <= player->state.stat_use[STAT_STR] / 3) &&
-			(!tval_is_staff(obj))) {
+		if (offhandok) {
 			/* ask */
 			if (get_check("Wield in off-hand (shield slot)? ")) do_two = true;
 		}
 
-		/* Wielded weapon too heavy to hold a second weapon (Yet we allow shields, but whatever) */
+		/* Check if main weapon is too heavy to wield an off-hand weapon at the same time */
+		/* (Also easier for swords than other weapons: max 17lbs or (STR - 3) ) */
 		/* (I used the bastard sword as a reference: It weighs 14lbs,
 		/*  so you need at least 17 STR to wield a bastard sword with one hand.) */
-		if ((do_two) && ((weapon->weight >= 170) || (weapon->weight / 10 + 3 > player->state.stat_ind[STAT_STR]))) 
+		if ((obj->tval == TV_SWORD) && (weapon->weight >= 170) || (weapon->weight / 10 + 3 > player->state.stat_ind[STAT_STR]))
+			offhandok = false;
+		/* max 15.5lbs or (STR - 4) for non-swords (a battle axe is 15.5lbs) */
+		else if ((weapon->weight >= 155) || (weapon->weight / 10 + 4 > player->state.stat_ind[STAT_STR]))
+			offhandok = false;
+
+		/* Wielded weapon too heavy to hold a second weapon (Yet we allow shields, but whatever) */
+		if ((do_two) && (!offhandok)) 
 		{
 			object_desc(o_name, sizeof(o_name), weapon, ODESC_BASE);
 			msg("Your %s is too heavy for you to wield a second weapon at the same time.", o_name);

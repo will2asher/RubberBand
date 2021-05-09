@@ -1406,10 +1406,17 @@ static bool describe_combat(textblock *tb, const struct object *obj)
 
 	/* Some classes can wield weapons in the off-hand */
 	if ((tval_is_melee_weapon(obj)) && (player_has(player, PF_2WEAPON))) {
+		bool offhandok = false;
+
 		/* Check weapon weight */
-		if ((obj->weight <= 110) && (obj->weight / 10 <= player->state.stat_use[STAT_STR] / 3)) {
+		if ((obj->tval == TV_SWORD) && (obj->weight <= 110) && (obj->weight / 10 <= player->state.stat_use[STAT_STR] / 3))
+			offhandok = true;
+		/* max weight to wield off-hand is 6.5lbs or 1/4 of your strength for other weapons */
+		else if ((obj->weight <= 65) && (obj->weight / 10 <= player->state.stat_use[STAT_STR] / 4))
+			offhandok = true;
+
+		if (offhandok)
 			textblock_append_c(tb, COLOUR_L_WHITE, "You may wield this weapon in the off-hand (shield slot).\n");
-		}
 	}
 
 	/* Something has been said */

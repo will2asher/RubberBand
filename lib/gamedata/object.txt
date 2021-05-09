@@ -13,7 +13,7 @@
 # level: level
 # weight : weight
 # cost : cost
-# attack : base damage : plus to-hit : plus to-dam
+# attack : base damage : plus to-hit : plus to-dam : (add a place here for crit bonus)
 # armor: base armor class : plus to-armor class
 # alloc: commonness : min " to " max
 # charges: charges
@@ -742,9 +742,9 @@ type:sword
 graphics:|:W
 level:0
 weight:12
-cost:40
+cost:45
 alloc:20:0 to 100
-pile:11:1d4
+pile:12:1d4
 attack:1d4:0:0
 armor:0:0
 flags:THROWING
@@ -755,31 +755,32 @@ type:sword
 graphics:|:W
 level:7
 weight:32
-cost:54
+cost:70
 alloc:17:7 to 100
 attack:1d5:0:0
 armor:0:0
 flags:THROWING
-desc:A dagger long enough to be used as a sword by the smaller races.
+desc:A dagger long enough to be used as a sword by a hobbit.
 
 name:& Stiletto~
 type:sword
 graphics:|:W
-level:3
+level:5
 weight:18
-cost:55
+cost:56
 alloc:9:6 to 100
 attack:2d2:2:0
 desc:A small, thin stabbing blade which can pierce armor especially well. It is
 desc: commonly used by assassins and others of dishonorable professions.
 
+#todo: add a flag to let it count as a shield for enchant armor scrolls (among other things)
 name:& Main Gauche~
 type:sword
 graphics:|:W
 level:3
 weight:25
 cost:40
-alloc:15:3 to 100
+alloc:18:3 to 100
 attack:1d3:0:0
 armor:1:0
 desc:A short thrusting blade with a large guard, primarily used in duels.
@@ -881,7 +882,7 @@ graphics:|:W
 level:20
 weight:120
 cost:580
-alloc:20:20 to 100
+alloc:19:20 to 100
 attack:3d5:0:0
 armor:0:0
 desc:A slightly curved long-handled slashing sword with a single-edged
@@ -904,7 +905,7 @@ graphics:|:r
 level:40
 weight:260
 cost:850
-alloc:20:40 to 100
+alloc:19:40 to 100
 attack:4d5:0:0
 armor:0:0
 desc:A giant, curved blade designed to cleave the head cleanly from the body.
@@ -943,7 +944,7 @@ graphics:\:D
 level:20
 weight:150
 cost:200
-alloc:18:20 to 100
+alloc:18:10 to 70
 attack:2d4:0:0
 armor:0:0
 desc:A weighty iron ball, suspended by a chain from a sturdy oaken handle.
@@ -954,7 +955,7 @@ graphics:\:D
 level:10
 weight:150
 cost:396
-alloc:20:10 to 100
+alloc:20:14 to 100
 attack:2d6:0:0
 armor:0:0
 desc:A sturdy wooden pole connected by a chain to a ball of steel, which often
@@ -964,9 +965,9 @@ name:& Flail~
 type:hafted
 graphics:\:D
 level:10
-weight:150
+weight:156
 cost:353
-alloc:20:10 to 100
+alloc:20:11 to 100
 attack:2d6:0:0
 armor:0:0
 desc:Two heavy bars of wood connected by a short link of chain, capable of
@@ -1016,19 +1017,17 @@ graphics:\:U
 level:1
 weight:45
 cost:12
-alloc:17:1 to 50
+alloc:17:1 to 47
 attack:1d4:0:0
 armor:0:0
 desc:Not as long, sturdy, or straight as a quarterstaff, but it'll
 desc: work as a weapon in a pinch.
 
-#I'd make this an even 11lbs, but then it'd be possible to wield in the shield slot, which I don't want.
-#(11lbs is the maximum a weapon can be to wield as an off-hand weapon.)
 name:& Quarterstaff~
 type:hafted
 graphics:\:U
 level:10
-weight:115
+weight:110
 cost:180
 alloc:21:10 to 100
 attack:1d9:0:0
@@ -1129,7 +1128,7 @@ graphics:/:s
 level:10
 weight:160
 cost:320
-alloc:20:10 to 100
+alloc:19:10 to 100
 attack:1d8:0:0
 armor:1:0
 desc:A more robust version of the basic polearm, with a double-edged knife
@@ -1142,7 +1141,7 @@ graphics:/:y
 level:5
 weight:70
 cost:120
-alloc:20:5 to 100
+alloc:19:5 to 100
 attack:1d10:0:0
 armor:0:0
 desc:A three-pronged spear, originally for catching fish.
@@ -1160,15 +1159,14 @@ desc:The most successful of the polearms, the halberd has a long haft mounted
 desc: with a heavy axe blade and opposing spike, and topped by a thrusting
 desc: spine.
 
-#Made a little heavier to keep you from being able to wield an off-hand weapon at the same time.
 name:& Pike~
 type:polearm
 graphics:/:s
 level:15
-weight:170
+weight:160
 cost:365
 alloc:20:15 to 100
-attack:1d12:0:0
+attack:2d5:0:0
 armor:0:0
 desc:A fifteen foot spear, requiring two hands to wield, principally used in
 desc: infantry formations.
@@ -1200,12 +1198,12 @@ attack:2d6:0:0
 armor:0:0
 desc:A narrow axe head opposed by a crow's beak for penetrating armour.
 
-#was "Broad axe"
+#was "Broad axe". 155 is the maximum a non-sword can weigh and still wield an off-hand weapon at the same time.
 name:& Battle Axe~
 type:polearm
 graphics:/:s
 level:15
-weight:160
+weight:155
 cost:314
 alloc:18:14 to 100
 attack:2d6:0:0
@@ -1228,7 +1226,7 @@ name:& Lochaber Axe~
 type:polearm
 graphics:/:D
 level:45
-weight:250
+weight:240
 cost:750
 alloc:20:45 to 100
 attack:3d8:0:0
