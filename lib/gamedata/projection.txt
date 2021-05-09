@@ -147,7 +147,7 @@ lash-desc:slime
 numerator:6
 denominator:8+1d4
 divisor:6
-# (comes to about 186 if the player makes his saving throw)
+# (comes to about 186 maximum if the player makes his saving throw)
 damage-cap:233
 msgt:BR_SLIMEMS
 obvious:1

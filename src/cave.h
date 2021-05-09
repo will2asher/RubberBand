@@ -246,6 +246,20 @@ extern int FEAT_GRANITE;
 extern int FEAT_PERM;
 extern int FEAT_LAVA;
 
+/* New features for Rubberband (none actually used yet) */
+extern int FEAT_FIRE;
+extern int FEAT_TREE;
+extern int FEAT_DEAD_TREE;
+extern int FEAT_FIRE_TREE;
+extern int FEAT_OPIT;
+extern int FEAT_SLIME_PUDDLE;
+extern int FEAT_ACID_PUDDLE;
+extern int FEAT_WATER;
+extern int FEAT_WATER_DEEP;
+extern int FEAT_STATUE;
+extern int FEAT_FOUNTAIN;
+extern int FEAT_WHIRLWIND;
+extern int FEAT_NEXUS_STONE;
 
 /* Current level */
 extern struct chunk *cave;

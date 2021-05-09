@@ -152,14 +152,14 @@ lore-color-resist:Yellow
 lore-color-immune:Light Green
 lash-type:ICE
 
-#name:SLIME
-#power:20
-#eval:10
-#desc:slime
-#lore-color-base:Orange
-#lore-color-resist:Yellow
-#lore-color-immune:Light Green
-#lash-type:ICE
+name:SLIME
+power:20
+eval:10
+desc:slime
+lore-color-base:Orange
+lore-color-resist:Yellow
+lore-color-immune:Light Green
+lash-type:SLIME
 
 name:BLIND
 power:0

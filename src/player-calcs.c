@@ -1511,6 +1511,10 @@ static void calc_hitpoints(struct player *p)
 	/* Get "1/100th hitpoint bonus per level" value */
 	bonus = adj_con_mhp[p->state.stat_ind[STAT_CON]];
 
+	/* HP penalty for sliming (doubled if slime >= 20) */
+	if (p->slimed > 0) bonus -= p->slimed * 5;
+	if (p->slimed >= 20) bonus -= p->slimed * 5;
+
 	/* Calculate hitpoints */
 	mhp = p->player_hp[p->lev-1] + (bonus * p->lev / 100);
 
@@ -2069,6 +2073,15 @@ void calc_bonuses(struct player *p, struct player_state *state, bool known_only,
 
 	/* Other timed effects */
 	player_flags_timed(p, state->flags);
+
+	/* effects of slime (also affects max HP and if you get 50 points of slime, you lose HP fast) */
+	if (p->slimed >= 4) {
+		state->to_h -= p->slimed/4;
+		if (p->slimed >= 14) {
+			state->speed -= p->slimed / 14;
+			state->skills[SKILL_STEALTH] -= p->slimed / 14;
+		}
+	}
 
 	/* similar effect to FRENZY but no upside and tends to have longer duration */
 	/* Comes first in timed effects because it gives bad luck which affects some other effects */

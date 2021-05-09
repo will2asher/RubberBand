@@ -1004,6 +1004,53 @@ static void melee_effect_handler_UNLUCKY(melee_effect_handler_context_t* context
 }
 
 /**
+ * Melee effect handler: Slime the player
+ */
+static void melee_effect_handler_SLIME(melee_effect_handler_context_t* context)
+{
+	int savechance = player->state.skills[SKILL_SAVE] / 2;
+	/* DEX and CON affect saving throw for slime */
+	savechance += adj_dex_th[player->state.stat_ind[STAT_DEX]];
+	savechance += adj_con_fix[player->state.stat_ind[STAT_CON]] * 4 / 3;
+	if (context->damage < 1) context->damage = 1;
+
+	/* Attempt a saving throw */
+	if (randint0(98 + context->rlev) < savechance) {
+		msg("You resist the effects.");
+		/* reduce damage */
+		context->damage = context->damage * 5 / 6;
+	}
+	else {
+		/* slime (50 points of slime kills) */
+		int amount = ((context->damage * 3 / 2) + context->rlev / 4) / 5;
+		if (context->rlev > 40) amount = ((context->damage * 3 / 2) + 10) / 5;
+
+		/* bounds on sliming hits */
+		if (amount < 1) amount = 1;
+		if (amount > 9) amount = 8 + randint1((amount-8) / 2);
+		if (amount > 20) amount = 20;
+
+		/* slime the player */
+		player->slimed += amount;
+		msg("You've been slimed.");
+
+		/* Let they player know why he's dying... */
+		if (player->slimed >= 50) msg("You have a deadly level of slime.");
+
+		/* occational warning message (depending on HP warning setting) */
+		else if ((player->opts.hitpoint_warn > 0) && (player->slimed >= 40 - player->opts.hitpoint_warn) && 
+			(randint0(300 - (player->opts.hitpoint_warn * 20)) < player->slimed * 2))
+			msg("Your body can't survive much more sliming.");
+	}
+
+	/* Take damage */
+	if (monster_damage_target(context, true)) return;
+
+	/* Obvious */
+	context->obvious = true;
+}
+
+/**
  * Melee effect handler: Terrify the player.
  */
 static void melee_effect_handler_TERRIFY(melee_effect_handler_context_t *context)
@@ -1212,6 +1259,7 @@ melee_effect_handler_f melee_handler_for_blow_effect(const char *name)
 		{ "CONFUSE", melee_effect_handler_CONFUSE },
 		{ "FRENZY", melee_effect_handler_FRENZY },
 		{ "UNLUCKY", melee_effect_handler_UNLUCKY },
+		{ "SLIME", melee_effect_handler_SLIME },
 		{ "TERRIFY", melee_effect_handler_TERRIFY },
 		{ "PARALYZE", melee_effect_handler_PARALYZE },
 		{ "LOSE_STR", melee_effect_handler_LOSE_STR },

@@ -764,7 +764,7 @@ static struct panel *get_panel_combat(void) {
 }
 
 static struct panel *get_panel_skills(void) {
-	struct panel *p = panel_allocate(8);
+	struct panel *p = panel_allocate(9);
 
 	int skill;
 	byte attr;
@@ -807,6 +807,14 @@ static struct panel *get_panel_skills(void) {
 	if (player->timed[TMD_SLOW]) skill += 10;
 	attr = skill < 110 ? COLOUR_L_UMBER : COLOUR_L_GREEN;
 	panel_line(p, attr, "Speed", "%s", show_speed());
+
+	/* Slime */
+	if (player->slimed > 35) attr = COLOUR_L_RED;
+	else if (player->slimed >= 20) attr = COLOUR_YELLOW;
+	else if (player->slimed >= 5) attr = COLOUR_ORANGE;
+	else if (player->slimed > 0) attr = COLOUR_L_UMBER;
+	else attr = COLOUR_L_GREEN;
+	panel_line(p, attr, "Slime level", "%d", player->slimed);
 
 	return p;
 }

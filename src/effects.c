@@ -1351,6 +1351,42 @@ bool effect_handler_GAIN_LUCK(effect_handler_context_t* context)
 	return true;
 }
 
+/* Chance to Slime (for slime molds and slime mold juice) */
+bool effect_handler_SLIME_CHANCE(effect_handler_context_t* context)
+{
+	int chance = effect_calculate_value(context, false);
+	int die = randint0(100);
+	/* bad luck factor */
+	if (player->p_luck < 0) chance += ABS(player->p_luck) * 2;
+
+	if (die < chance / 5) player->slimed += 2;
+	else if (die < chance) player->slimed += 1;
+	msg("You feel slimey.");
+
+	context->ident = true;
+	return true;
+}
+
+/* Heal slime */
+bool effect_handler_HEAL_SLIME(effect_handler_context_t* context)
+{
+	int amount = effect_calculate_value(context, false);
+	bool anyslime = false;
+	if (player->slimed > 0) anyslime = true;
+
+	player->slimed -= amount;
+
+	if (player->slimed < 1) {
+		player->slimed = 0;
+		/* Message only if player had any sliming beforehand */
+		if (anyslime) msg("You feel free of slime.");
+	}
+	else msg("You feel less slimey.");
+
+	context->ident = true;
+	return true;
+}
+
 /**
  * Drain some light from the player's light source, if possible
  */

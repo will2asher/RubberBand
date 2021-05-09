@@ -548,14 +548,25 @@ static int project_player_handler_PLASMA(project_player_handler_context_t *conte
 
 static int project_player_handler_SLIME(project_player_handler_context_t* context)
 {
-	int duration = 2;
-	if (context->dam >= 4) duration += randint1(context->dam / 2);
+	int duration = 3;
+	int sdam = context->dam * 2 / 3;
+	/* (+5 before the multiplier to make sure the saving throw is a positive number, max is 20*5 = 100) */
+	int dexsave = (adj_dex_th[player->state.stat_ind[STAT_DEX]] + 5) * 5;
 
-	if (duration > 32) duration = 32;
+	/* give the player a minimum chance to save */
+	if (sdam >= 95) sdam = 95;
+
+	/* (max 27 stunning) */
+	if (sdam >= 8) duration += randint1(sdam / 4);
 
 	/* Stun and slime (allows a DEX_based saving throw) */
-	if (randint0(adj_dex_th[player->state.stat_ind[STAT_DEX]] * 2) > context->dam)
+	if (randint1(dexsave) > sdam)
 	{
+		msg("You resist the effects!");
+		/* reduced damage */
+		context->dam = context->dam * 4 / 5;
+	}
+	else {
 		/* Stun */
 		if (!player_of_has(player, OF_PROT_STUN)) {
 			(void)player_inc_timed(player, TMD_STUN, duration, true, true);
@@ -563,13 +574,18 @@ static int project_player_handler_SLIME(project_player_handler_context_t* contex
 		else {
 			equip_learn_flag(player, OF_PROT_STUN);
 		}
-		/* Still need to add the SLIMED player condition, but not sure about using a timed effect */
-		/* (void)player_inc_timed(player, TMD_SLIMED, duration*2, true, true); */
-	}
-	else {
-		msg("You resist the effects!");
-		/* reduced damage */
-		context->dam = context->dam * 4 / 5;
+		/* Slime the player (50 points of slime kills) */
+		if (sdam >= 20) player->slimed += sdam / 10;
+		else player->slimed += 1;
+		msg("You've been slimed.");
+
+		/* Let they player know why he's dying... */
+		if (player->slimed >= 50) msg("You have a deadly level of slime.");
+
+		/* occational warning message (depending on HP warning setting) */
+		else if ((player->opts.hitpoint_warn > 0) && (player->slimed >= 40 - player->opts.hitpoint_warn) &&
+			(randint0(300 - (player->opts.hitpoint_warn * 20)) < player->slimed * 2))
+			msg("Your body can't survive much more sliming.");
 	}
 	return 0;
 }

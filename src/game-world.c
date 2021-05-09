@@ -593,6 +593,13 @@ void process_world(struct chunk *c)
 	if (player->timed[TMD_POISONED])
 		take_hit(player, 1, "poison");
 
+	/* Slime (only at high levels of sliming and only if not made of rock) */
+	if (!player_has(player, PF_ROCK)) {
+		if (player->slimed >= 50) take_hit(player, player->slimed * 2 / 3, "slime");
+		else if (player->slimed >= 45) take_hit(player, 10, "slime");
+		else if (player->slimed >= 40) take_hit(player, 4, "slime");
+	}
+
 	/* Take damage from cuts, worse from serious cuts */
 	if (player->timed[TMD_CUT]) {
 		if (player_has(player, PF_ROCK)) {
@@ -624,17 +631,17 @@ void process_world(struct chunk *c)
 		effect_simple(EF_HEAL_HP, source_player(), "30", 0, 0, 0, 0, 0, &ident);
 	}
 
-	/* Effects of Black Breath */
+	/* Effects of Black Breath (good luck slightly slows the effect) */
 	if (player->timed[TMD_BLACKBREATH]) {
-		if (one_in_(2)) {
+		if (one_in_(2 + (player->p_luck + 1) / 2)) {
 			msg("The Black Breath sickens you.");
 			player_stat_dec(player, STAT_CON, false);
 		}
-		if (one_in_(2)) {
+		if (one_in_(2 + player->p_luck / 2)) {
 			msg("The Black Breath saps your strength.");
 			player_stat_dec(player, STAT_STR, false);
 		}
-		if (one_in_(2)) {
+		if (one_in_(2 + player->p_luck / 2)) {
 			/* Life draining */
 			int drain = 100 + (player->exp / 100) * z_info->life_drain_percent;
 			msg("The Black Breath dims your life force.");

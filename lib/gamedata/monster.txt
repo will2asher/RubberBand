@@ -1144,7 +1144,7 @@ depth:3
 rarity:2
 experience:4
 blow:CRAWL:ACID:1d2
-#blow:CRAWL:SLIME:1d2
+blow:CRAWL:SLIME:1d2
 flags:DROP_60 | RAND_25 | RAND_50
 flags:IM_ACID | IM_POIS | HURT_COLD | NO_CONF | NO_SLEEP
 desc:It's green and it's oozing.
@@ -1747,8 +1747,7 @@ depth:5
 rarity:1
 experience:16
 blow:TOUCH:EAT_FOOD:1d1
-blow:HIT:HURT:1d1
-#SLIME
+blow:HIT:SLIME:1d1
 flags:DROP_20 | DROP_60 | S_EVIL2
 flags:RAND_25 | RAND_50
 #ROAM
@@ -1796,7 +1795,7 @@ name:arrow launcher
 base:trap monster
 color:s
 speed:115
-hit-points:25
+hit-points:30
 hearing:15
 armor-class:30
 sleepiness:1
@@ -2024,8 +2023,7 @@ sleepiness:35
 depth:6
 rarity:2
 experience:16
-blow:TOUCH:HURT:1d6
-#SLIME
+blow:TOUCH:SLIME:1d6
 flags:RUBBER | SMULTIPLY | HURT_COLD | PASS_DOOR
 flags:IM_ACID | IM_POIS | NO_CONF
 desc:It is a large oozing pile of green slime.
@@ -4857,7 +4855,7 @@ sleepiness:41
 depth:14
 rarity:4
 experience:59
-#blow:TOUCH:SLIME:1d2
+blow:TOUCH:SLIME:1d2
 blow:TOUCH:EAT_LIGHT:1d3
 blow:BITE:POISON:1d6
 flags:WEIRD_MIND | EVIL | RUBBER | COLD_BLOOD | IM_POIS
@@ -5242,8 +5240,8 @@ sleepiness:35
 depth:15
 rarity:4
 experience:39
-blow:TOUCH:ACID:2d8
-#blow:TOUCH:SLIME
+blow:TOUCH:ACID:2d7
+blow:TOUCH:SLIME:1d3
 flags:RAND_25 | TAKE_ITEM | NO_FEAR
 flags:PASS_DOOR | WATER_HIDE | SMULTIPLY
 desc: a slow-moving acidic lump.
@@ -5510,8 +5508,7 @@ sleepiness:33
 depth:16
 rarity:2
 experience:31
-blow:TOUCH:HURT:1d9
-#SLIME
+blow:TOUCH:SLIME:1d9
 flags:IM_ACID | IM_POIS | HURT_COLD | NO_CONF | 
 flags:RUBBER | SMULTIPLY
 desc:It is a huge oozing pile of green slime.
@@ -7241,7 +7238,7 @@ depth:19
 rarity:9
 experience:339
 blow:CRAWL:EAT_FOOD:1d5
-#blow:TOUCH:SLIME:2d8
+blow:TOUCH:SLIME:2d8
 blow:CRAWL:POISON:1d11
 blow:TOUCH:ACID:2d6
 flags:EVIL | UNIQUE | WEIRD_MIND | SILLY | PASS_DOOR
@@ -9384,8 +9381,7 @@ depth:28
 rarity:3
 experience:63
 blow:TOUCH:ACID:2d4
-blow:TOUCH:ACID:1d9
-#SLIME
+blow:TOUCH:SLIME:1d8
 flags:IM_ACID | IM_POIS | IM_WATER | HURT_COLD
 flags:TAKE_ITEM | DROP_60 | DROP_40
 flags:NO_CONF | NO_SLEEP | MULTIPLY | PASS_DOOR | WATER_HIDE
@@ -9571,7 +9567,7 @@ sleepiness:34
 depth:29
 rarity:3
 experience:398
-#blow:HIT:SLIME:1d8
+blow:HIT:SLIME:1d8
 blow:STING:POISON:1d8
 blow:BITE:ACID:3d6
 flags:ANIMAL | BASH_DOOR | IM_ACID | IM_POIS
@@ -10531,12 +10527,12 @@ depth:32
 rarity:3
 experience:311
 blow:GAZE:EXP_20
-blow:CRAWL:ACID:2d4
-blow:BITE:HURT:1d10
-#SLIME
+blow:CRAWL:ACID:2d5
+blow:BITE:SLIME:1d8
 blow:BITE:POISON:2d6
 flags:EVIL | BASH_DOOR | MOVE_BODY | CLEAR_WEB | 
 flags:IM_ACID | IM_POIS | IM_WATER
+#PUDDLE
 spell-freq:21
 spells:S_KIN | SLOW
 desc:A huge wormlike shape dripping acid, twisted by evil sorcery into a foul
@@ -11800,7 +11796,7 @@ sleepiness:22
 depth:32
 rarity:4
 experience:397
-#blow:BITE:SLIME:1d12
+blow:BITE:SLIME:1d10
 blow:BITE:LOSE_INT:1d12
 blow:BITE:CONFUSE:3d6
 blow:SPIT:ACID:3d6
@@ -11953,7 +11949,7 @@ sleepiness:51
 depth:36
 rarity:3
 experience:365
-#blow:TOUCH:SLIME:2d4
+blow:TOUCH:SLIME:2d4
 blow:TOUCH:ACID:1d9
 blow:ENGULF:ACID:2d10
 flags:POWERFUL | FORCE_SLEEP
@@ -12374,12 +12370,10 @@ sleepiness:8
 depth:37
 rarity:5
 experience:176
-blow:TOUCH:HURT:1d11
-#SLIME
+blow:TOUCH:SLIME:1d10
 blow:TOUCH:ACID:1d11
 blow:TOUCH:ACID:2d9
-flags:TAKE_ITEM | MULTIPLY
-flags:DROP_20 | DROP_1
+flags:TAKE_ITEM | DROP_20 | DROP_1
 flags:NO_CONF | NO_SLEEP | IM_ACID | IM_POIS
 flags:PASS_DOOR | SMULTIPLY | WATER_HIDE
 friends:22:1d2:same
@@ -13996,7 +13990,7 @@ experience:346
 blow:SPIT:ACID:3d4
 blow:SPIT:POISON:3d6
 blow:ENGULF:ACID:3d6
-#blow:ENGULF:SLIME:3d6
+blow:ENGULF:SLIME:3d6
 flags:SMULTIPLY | PASS_DOOR
 flags:NO_STUN | IM_POIS | IM_ACID
 desc:A giant acidic slime spreading itself over the dungeon.
@@ -15239,7 +15233,7 @@ experience:196
 blow:TOUCH:LOSE_INT
 blow:TOUCH:HUNGER:2d8
 blow:ENGULF:ACID:2d8
-#blow:ENGULF:SLIME:3d6
+blow:ENGULF:SLIME:3d6
 flags:DROP_40 | TAKE_ITEM | ATTR_FLICKER
 flags:NO_CONF | NO_SLEEP | IM_COLD | IM_POIS | IM_ACID
 flags:PASS_DOOR | WATER_HIDE | SMULTIPLY | COLD_BLOOD
@@ -15994,14 +15988,13 @@ experience:4309
 blow:GAZE:LOSE_INT:2d8
 #INSANITY
 #blow:TOUCH:BHOLD:3d9
-blow:CRAWL:POISON:3d11
-#SLIME
+blow:CRAWL:SLIME:3d11
 blow:CRUSH:ACID:3d13
 flags:SPIRIT | WEIRD_MIND | FORCE_SLEEP | POWERFUL
 flags:DROP_1 | DROP_40 | ONLY_ITEM | MOVE_BODY
 flags:IM_ELEC | IM_POIS | NO_CONF | NO_SLEEP | NO_FEAR
 spell-freq:9
-spells:MIND_BLAST
+spells:MIND_BLAST | BO_POIS
 #INSANITY
 friends:85:1d5:Same
 desc:An indescribable horrible mass of eyes and tentacles from some other dimension.
@@ -19417,8 +19410,7 @@ experience:33600
 blow:GAZE:LOSE_WIS:8d8
 #INSANITY
 #blow:TOUCH:BHOLD:9d9
-blow:CRAWL:POISON:11d11
-#SLIME
+blow:CRAWL:SLIME:11d11
 blow:CRUSH:ACID:13d13
 flags:SPIRIT | WEIRD_MIND | FORCE_SLEEP | POWERFUL
 flags:DROP_2 | DROP_40 | ONLY_ITEM | KILL_BODY | KILL_ITEM
@@ -20174,7 +20166,7 @@ rarity:4
 experience:1936
 blow:SPIT:POISON:6d16
 #DISEASE
-#blow:ENGULF:SLIME:9d12
+blow:ENGULF:SLIME:9d12
 blow:ENGULF:ACID:9d13
 blow:ENGULF:LOSE_ALL:6d16
 flags:FORCE_SLEEP | POWERFUL | NO_STUN | KILL_ITEM | KILL_BODY

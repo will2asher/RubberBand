@@ -67,9 +67,9 @@
 # is to use a wand, staff or rod.
 
 # 'weight' is in tenth-pounds.
-# 110 (11lbs) is the maximum weight for a weapon to be able to be wielded in the
+# 110 (11lbs) is the maximum weight for a sword to be able to be wielded in the
 #  off-hand (may be less in-game depending on STR).
-# 170 (17lbs) is the cutoff weight for a main weapon to keep you from being able to
+# 170 (17lbs) is the cutoff weight for a sword to keep you from being able to
 #  wield an off-hand weapon at the same time (also may be less in-game depending on STR).
 
 # 'cost' is the item's base value.
@@ -259,8 +259,11 @@ power:0
 msg:That tastes better than nothing.
 effect:NOURISH:INC_BY
 dice:16
+effect:SLIME_CHANCE
+dice:20
 desc:A strange fungal growth, prone to moving if not observed.  Not very tasty
 desc: but quite filling.
+#(dice of SLIME_CHANCE is % chance to cause sliming.)
 
 name:& Ration~ of Food
 type:food
@@ -291,17 +294,19 @@ pile:50:1d3
 power:0
 msg:That tastes disgusting.
 effect:RANDOM
-dice:5
+dice:6
 effect:NOURISH:INC_BY
-dice:20
+dice:21
 effect:NOURISH:INC_BY
 dice:18
 effect:NOURISH:INC_BY
-dice:10
+dice:11
 effect:NOURISH:SET_TO
 dice:1d4
 effect:NOURISH:SET_TO
-dice:5+1d4
+dice:6+1d4
+effect:SLIME_CHANCE
+dice:98
 desc:A grey-looking piece of dried flesh of you dare not guess what creature.
 desc:  You would have to be desperate to eat this.
 
@@ -355,6 +360,8 @@ dice:75
 effect:CURE:POISONED
 effect:HEAL_HP
 dice:24
+effect:HEAL_SLIME
+dice:2
 desc:Food of the elves is always good; their waybread is no exception.  These
 desc: thin cakes are wrapped in leaves and keep their tastiness for months.
 
@@ -427,7 +434,7 @@ type:food
 graphics:,:w
 level:0
 weight:10
-cost:5400
+cost:5450
 alloc:10:60 to 100
 power:0
 msg:Refreshing!
@@ -439,6 +446,8 @@ effect:RESTORE_STAT:STR
 effect:RESTORE_STAT:CON
 effect:GAIN_STAT:STR
 effect:GAIN_STAT:CON
+effect:HEAL_SLIME
+dice:1
 desc:This looks like pure water, but its scent reminds you of the smell of a
 desc: distant wood borne from afar by a cool breeze at night.
 
@@ -606,6 +615,60 @@ dice:3
 desc:Its smell gets on your nerves. This will put you in a
 desc: reckless frenzy.
 
+name:Fast Attacks
+type:mushroom
+graphics:,:d
+level:0
+weight:1
+cost:90
+alloc:7:15 to 105
+pile:30:1d2
+power:1
+effect:TIMED_DEC:CHARMED
+dice:3d4
+effect:TIMED_DEC:AFRAID
+dice:3d4
+effect:TIMED_INC:XBLOW
+dice:23+5d7
+effect:NOURISH:INC_BY
+dice:2
+effect:RANDOM
+dice:4
+effect:TIMED_INC:FRENZY
+dice:4+4d7
+effect:TIMED_INC:SHERO
+dice:4+4d6
+effect:TIMED_INC:BOLD
+dice:3+2d9
+effect:TIMED_INC:PARALYZED
+dice:1d2
+
+#Raise luck with drawbacks
+name:Filthy Luck
+type:mushroom
+graphics:,:d
+level:0
+weight:1
+cost:90
+alloc:6:13 to 107
+pile:70:1d3
+power:1
+effect:SLIME_CHANCE
+dice:76
+effect:NOURISH:INC_BY
+dice:1d3
+effect:GAIN_LUCK
+dice:1d2
+effect:RANDOM
+dice:3
+effect:TIMED_INC:POISONED
+dice:5+6d4
+effect:DRAIN_STAT:DEX
+effect:DRAIN_STAT:CON
+#effect:TIMED_INC:DISEASE (instead of CON drain later)
+#dice:5+8d8
+desc:It smells disgusting.
+
 name:Emergency
 type:mushroom
 graphics:,:d
@@ -623,6 +686,8 @@ effect:TIMED_INC:OPP_COLD
 dice:25+5d5
 effect:HEAL_HP
 dice:200
+effect:HEAL_SLIME
+dice:1d2
 effect:NOURISH:INC_BY
 dice:5
 
@@ -715,6 +780,8 @@ effect:RESTORE_STAT:STR
 effect:RESTORE_STAT:CON
 effect:CURE:POISONED
 #effect:CURE:DISEASE
+effect:HEAL_SLIME
+dice:1
 desc:It makes you very hungry but otherwise healthy.
 
 name:Shadows
@@ -3388,6 +3455,8 @@ effect:CURE:POISONED
 effect:CURE:STUN
 effect:CURE:AMNESIA
 effect:CURE:CONFUSED
+effect:HEAL_SLIME
+dice:1d4
 effect:NOURISH:INC_BY
 dice:1
 
@@ -3409,6 +3478,8 @@ effect:CURE:POISONED
 effect:CURE:STUN
 effect:CURE:AMNESIA
 effect:CURE:CONFUSED
+effect:HEAL_SLIME
+dice:4d2
 
 name:Life
 type:potion
@@ -3436,6 +3507,8 @@ effect:RESTORE_STAT:DEX
 effect:RESTORE_STAT:CON
 effect:HEAL_HP
 dice:5000
+effect:HEAL_SLIME
+dice:50
 effect:NOURISH:INC_TO
 dice:50
 
@@ -3756,6 +3829,9 @@ pile:70:2d3
 power:0
 effect:NOURISH:INC_BY
 dice:6+1d6
+effect:SLIME_CHANCE
+dice:16
+#(dice of SLIME_CHANCE is % chance to cause sliming.)
 
 name:Sleep
 type:potion
@@ -3773,7 +3849,7 @@ dice:5+1d5
 effect:NOURISH:INC_BY
 dice:1
 
-#reduced duration a little
+#reduced duration
 name:Blindness
 type:potion
 graphics:!:d
@@ -4576,6 +4652,8 @@ effect:CURE:CUT
 effect:CURE:POISONED
 effect:CURE:STUN
 effect:CURE:CONFUSED
+effect:HEAL_SLIME
+dice:1
 
 name:Cure Light Wounds
 type:staff
@@ -4617,6 +4695,8 @@ effect:CURE:FRENZY
 effect:CURE:SDRUNK
 effect:CURE:AMNESIA
 effect:CURE:CONFUSED
+effect:HEAL_SLIME
+dice:1d2
 
 
 ### Killing staffs ###
@@ -4704,6 +4784,8 @@ effect:CURE:BLIND
 effect:CURE:CONFUSED
 effect:CURE:IMAGE
 effect:CURE:AMNESIA
+effect:HEAL_SLIME
+dice:1
 
 
 ### Utility ###
@@ -5047,6 +5129,8 @@ effect:HEAL_HP
 dice:500
 effect:CURE:CUT
 effect:CURE:STUN
+effect:HEAL_SLIME
+dice:1
 time:1000
 
 name:Restoration

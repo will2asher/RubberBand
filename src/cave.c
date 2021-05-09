@@ -53,6 +53,19 @@ int FEAT_QUARTZ_K;
 int FEAT_GRANITE;
 int FEAT_PERM;
 int FEAT_LAVA;
+int FEAT_FIRE;
+int FEAT_TREE;
+int FEAT_DEAD_TREE;
+int FEAT_FIRE_TREE;
+int FEAT_OPIT;
+int FEAT_SLIME_PUDDLE;
+int FEAT_ACID_PUDDLE;
+int FEAT_WATER;
+int FEAT_WATER_DEEP;
+int FEAT_STATUE;
+int FEAT_FOUNTAIN;
+int FEAT_WHIRLWIND;
+int FEAT_NEXUS_STONE;
 
 /**
  * Global array for looping through the "keypad directions".
@@ -342,6 +355,7 @@ void set_terrain(void)
 	FEAT_GRANITE = lookup_feat("granite wall");
 	FEAT_PERM = lookup_feat("permanent wall");
 	FEAT_LAVA = lookup_feat("lava");
+	FEAT_TREE = lookup_feat("tree");
 }
 
 /**

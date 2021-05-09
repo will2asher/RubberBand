@@ -1079,7 +1079,7 @@ alloc:355:2 to 38
 combat:0:0:d7
 type:shield
 item:sword:main gauche
-flags:RAND_BASE_RES | RAND_SUSTAIN
+flags:RAND_BASE_RES
 flags:IGNORE_ACID | IGNORE_ELEC | IGNORE_FIRE | IGNORE_COLD
 
 name:(Dwarven)

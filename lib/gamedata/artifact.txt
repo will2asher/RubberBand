@@ -316,12 +316,12 @@ desc:An heirloom of the dauntless Lords of Rhûn far to the east, and a name
 desc: of dismay to creatures natural and unnatural.
 
 name:'Sting'
-base-object:sword:Short Sword
+base-object:sword:Long Dagger
 level:20
 weight:75
 cost:100000
 alloc:6:20 to 100
-attack:1d7:7:8
+attack:1d5:7:9
 armor:0:0
 flags:PROT_FEAR | FREE_ACT | SEE_INVIS
 values:SPEED[3] | BLOWS[2] | STR[1] | DEX[1] | CON[1] | LIGHT[1] | RES_LIGHT[1]
