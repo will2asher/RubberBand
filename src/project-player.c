@@ -664,9 +664,14 @@ static int project_player_handler_LIGHT_WEAK(project_player_handler_context_t *c
 
 static int project_player_handler_DARK_WEAK(project_player_handler_context_t *context)
 {
-	if (player_resists(player, ELEM_DARK)) {
+	bool saves = false;
+
+	/* Allow easy saving throw against blindness of weak darkness */
+	if (randint0(100) < player->state.skills[SKILL_SAVE] * 5 / 4) saves = true;
+
+	if ((player_resists(player, ELEM_DARK)) || (saves)) {
 		if (!player_has(player, PF_UNLIGHT)) {
-			msg("You resist the effect!");
+			msg("You blink away the darkness.");
 		}
 		return 0;
 	}
