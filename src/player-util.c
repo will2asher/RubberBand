@@ -149,7 +149,7 @@ void dungeon_change_level(struct player *p, int dlev)
  * when he dies, since the "You die." message is shown before setting
  * the player to "dead".
  */
-void take_hit(struct player *p, int dam, const char *kb_str)
+void take_hit(struct player* p, int dam, const char* kb_str)
 {
 	int old_chp = p->chp;
 
@@ -164,7 +164,7 @@ void take_hit(struct player *p, int dam, const char *kb_str)
 	/* Apply damage reduction */
 	dam -= p->state.dam_red;
 	if (p->state.perc_dam_red) {
-		dam -= (dam * p->state.perc_dam_red) / 100 ;
+		dam -= (dam * p->state.perc_dam_red) / 100;
 	}
 	if (dam <= 0) return;
 
@@ -178,7 +178,7 @@ void take_hit(struct player *p, int dam, const char *kb_str)
 	 * Unenviable task of separating what should and should not cause rage
 	 * If we eliminate the most exploitable cases it should be fine.
 	 * All traps and lava currently give mana, which could be exploited  */
-	if (player_has(p, PF_COMBAT_REGEN)  && strcmp(kb_str, "poison")
+	if (player_has(p, PF_COMBAT_REGEN) && strcmp(kb_str, "poison")
 		&& strcmp(kb_str, "a fatal wound") && strcmp(kb_str, "starvation")) {
 		/* lose X% of hitpoints get X% of spell points */
 		s32b sp_gain = (MAX((s32b)p->msp, 10) << 16) / (s32b)p->mhp * dam;
@@ -220,7 +220,8 @@ void take_hit(struct player *p, int dam, const char *kb_str)
 		}
 		else if ((p->wizard || OPT(p, cheat_live)) && !get_check("Die? ")) {
 			event_signal(EVENT_CHEAT_DEATH);
-		} else {
+		}
+		else {
 			if (p->timed[TMD_BLOODLUST] && (p->chp + p->timed[TMD_BLOODLUST] + p->lev >= 0)) {
 				msg("So great was his prowess and skill in warfare, the Elves said: ");
 				msg("'The Mormegil cannot be slain, save by mischance.'");
@@ -254,6 +255,9 @@ void take_hit(struct player *p, int dam, const char *kb_str)
 		msgt(MSG_HITPOINT_WARN, "*** LOW HITPOINT WARNING! ***");
 		event_signal(EVENT_MESSAGE_FLUSH);
 	}
+
+	/* cancel CHARM effect when low on HP */
+	if (p->chp < p->mhp / 4) player_clear_timed(p, TMD_CHARMED, true);
 }
 
 /**
