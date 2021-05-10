@@ -1021,7 +1021,7 @@ dice:$B+d8
 expr:B:SPELL_POWER:/ 4
 lore:turn itself invisible
 lore-color-base:Yellow
-message-vis:{name} vanishes from sight.
+message-vis:{name} becomes transparent.
 message-invis:Something mutters.
 
 name:TRAPS
