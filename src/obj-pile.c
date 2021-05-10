@@ -432,6 +432,23 @@ bool object_stackable(const struct object *obj1, const struct object *obj2,
 		if (obj1->pval + obj2->pval > MAX_PVAL)
 			return false;
 
+		/* (staffs can have egos and combat bonuses now) */
+		/* Require identical values (but allow stacking differing bonuses) */
+		if (obj1->ac != obj2->ac) return false;
+		if (obj1->dd != obj2->dd) return false;
+		if (obj1->ds != obj2->ds) return false;
+
+		/* Require all identical modifiers */
+		for (i = 0; i < OBJ_MOD_MAX; i++)
+			if (obj1->modifiers[i] != obj2->modifiers[i])
+				return (false);
+
+		/* Require identical ego-item types */
+		if (obj1->ego != obj2->ego) return false;
+
+		/* Require identical curses */
+		if (!curses_are_equal(obj1, obj2)) return false;
+
 		/* ... otherwise ok */
 	} else if (tval_is_weapon(obj1) || tval_is_armor(obj1) ||
 		tval_is_jewelry(obj1) || tval_is_light(obj1)) {
@@ -551,7 +568,7 @@ void object_origin_combine(struct object *obj1, const struct object *obj2)
  *
 * These assumptions are enforced by the "object_similar()" code.
  */
-static void object_absorb_merge(struct object *obj1, const struct object *obj2)
+static void object_absorb_merge(struct object *obj1, struct object *obj2)
 {
 	int total;
 
@@ -563,12 +580,23 @@ static void object_absorb_merge(struct object *obj1, const struct object *obj2)
 	}
 
 	/* Merge inscriptions */
-	if (obj2->note)
-		obj1->note = obj2->note;
+	if (obj2->note) obj1->note = obj2->note;
 
 	/* Combine timeouts for rod stacking */
 	if (tval_can_have_timeout(obj1))
 		obj1->timeout += obj2->timeout;
+
+	/* when combining staffs only, disenchant combat bonuses to allow stacking */
+	if (obj1->tval == TV_STAFF) {
+		/* combine bonuses, using the lower of the two */
+		if (obj1->to_h > obj2->to_h) obj1->to_h = obj2->to_h;
+		else obj2->to_h = obj1->to_h;
+		if (obj1->to_d > obj2->to_d) obj1->to_d = obj2->to_d;
+		else obj2->to_d = obj1->to_d;
+		/* (not that to_a is likely to be on staffs but for sake of completeness...) */
+		if (obj1->to_a > obj2->to_a) obj1->to_a = obj2->to_a;
+		else obj2->to_a = obj1->to_a;
+	}	
 
 	/* Combine pvals for wands and staves */
 	if (tval_can_have_charges(obj1) || tval_is_money(obj1)) {

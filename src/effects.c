@@ -1361,7 +1361,7 @@ bool effect_handler_SLIME_CHANCE(effect_handler_context_t* context)
 
 	if (die < chance / 5) player->slimed += 2;
 	else if (die < chance) player->slimed += 1;
-	msg("You feel slimey.");
+	if (die < chance) msg("You feel slimy.");
 
 	context->ident = true;
 	return true;
@@ -1381,7 +1381,7 @@ bool effect_handler_HEAL_SLIME(effect_handler_context_t* context)
 		/* Message only if player had any sliming beforehand */
 		if (anyslime) msg("You feel free of slime.");
 	}
-	else msg("You feel less slimey.");
+	else msg("You feel less slimy.");
 
 	context->ident = true;
 	return true;
