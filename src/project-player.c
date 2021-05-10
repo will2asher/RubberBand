@@ -665,9 +665,11 @@ static int project_player_handler_LIGHT_WEAK(project_player_handler_context_t *c
 static int project_player_handler_DARK_WEAK(project_player_handler_context_t *context)
 {
 	bool saves = false;
+	int edam = context->dam;
+	if (edam > 40) edam = 40;
 
-	/* Allow easy saving throw against blindness of weak darkness */
-	if (randint0(100) < player->state.skills[SKILL_SAVE] * 5 / 4) saves = true;
+	/* Allow saving throw against blindness of weak darkness */
+	if (randint0(50 + edam * 3 / 2) < player->state.skills[SKILL_SAVE]) saves = true;
 
 	if ((player_resists(player, ELEM_DARK)) || (saves)) {
 		if (!player_has(player, PF_UNLIGHT)) {

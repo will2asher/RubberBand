@@ -1004,11 +1004,13 @@ message-vis:{name} commands {target} to go far away.
 message-invis:Something commands you to go far away.
 message-save:You feel unstable for a second, but it passes.
 
+#The dice affects the player's chances of resisting the blindness
 name:DARKNESS
 hit:100
 effect:DARKEN_AREA
 effect:BALL:DARK_WEAK:3
-dice:10
+dice:10+1d$S
+expr:S:SPELL_POWER:/ 3
 lore:create darkness
 lore-color-base:Light Green
 message-vis:{name} surrounds {target} in darkness.
