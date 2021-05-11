@@ -57,6 +57,20 @@
 
 # 'color' is the colour of the projection
 
+code:MISSILE
+name:magic missiles
+type:element
+desc:a missile
+player-desc:magical energy
+blind-desc:something
+lash-desc: 
+divisor:6
+damage-cap:0
+msgt:GENERIC
+obvious:1
+wake:1
+color:Violet
+
 code:ACID
 name:acid
 type:element
@@ -423,19 +437,6 @@ msgt:GENERIC
 obvious:1
 wake:1
 color:Red
-
-code:MISSILE
-name:magic missiles
-type:element
-desc:a missile
-player-desc:magical energy
-blind-desc:something
-divisor:6
-damage-cap:0
-msgt:GENERIC
-obvious:1
-wake:1
-color:Violet
 
 code:MANA
 name:mana

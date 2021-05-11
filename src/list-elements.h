@@ -3,6 +3,7 @@
  * \brief Elements used in spells and other attacks.
  * (has to match projection.txt)
  */
+ELEM(MISSILE)
 ELEM(ACID)
 ELEM(ELEC)
 ELEM(FIRE)
@@ -27,7 +28,6 @@ ELEM(FEAR)
 ELEM(AMNESIA)
 ELEM(PLASMA)
 ELEM(METEOR)
-ELEM(MISSILE)
 ELEM(MANA)
 ELEM(HOLY_ORB)
 ELEM(ARROW)

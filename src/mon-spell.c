@@ -151,20 +151,31 @@ static void spell_message(struct monster *mon,
 				case SPELL_TAG_TYPE: {
 					/* Get the attack type (assuming lash) */
 					int type = mon->race->blow[0].effect->lash_type;
-					char *type_name = projections[type].lash_desc;
 
-					strnfcat(buf, sizeof(buf), &end, type_name);
+					/* It doesn't seem to set MISSILE as the default correctly */
+					if (!type) break;
+					else {
+						char* type_name = projections[type].lash_desc;
+
+						/* (Only add a space if the spit has a type) */
+						strnfcat(buf, sizeof(buf), &end, " ");
+						if (type_name) strnfcat(buf, sizeof(buf), &end, type_name);
+					}
 					break;
 				}
 
 				case SPELL_TAG_OF_TYPE: {
 					/* Get the attack type (assuming lash) */
 					int type = mon->race->blow[0].effect->lash_type;
-					char *type_name = projections[type].lash_desc;
+					/* paranoia */
+					if (!type) break;
+					else {
+						char* type_name = projections[type].lash_desc;
 
-					if (type_name) {
-						strnfcat(buf, sizeof(buf), &end, " of ");
-						strnfcat(buf, sizeof(buf), &end, type_name);
+						if (type_name) {
+							strnfcat(buf, sizeof(buf), &end, " of ");
+							strnfcat(buf, sizeof(buf), &end, type_name);
+						}
 					}
 					break;
 				}
@@ -253,8 +264,8 @@ void do_mon_spell(int index, struct monster *mon, bool seen)
 	}
 
 	/* Tell the player what's going on */
-	disturb(player);
 	spell_message(mon, spell, seen, hits);
+	disturb(player);
 
 	if (hits) {
 		struct monster_spell_level *level = spell->level;

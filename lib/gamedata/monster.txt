@@ -3797,7 +3797,7 @@ hit-points:34
 hearing:35
 smell:29
 armor-class:31
-sleepiness:35
+sleepiness:33
 depth:11
 rarity:4
 experience:39
@@ -7939,7 +7939,7 @@ desc:A giant wasp with a huge stinger, specially bred to attack intruders.
 name:glarx
 base:golem
 color:v
-speed:103
+speed:104
 hit-points:103
 hearing:11
 armor-class:44
@@ -7953,7 +7953,7 @@ blow:GAZE:PARALYZE:1d13
 #B:GAZEB:PARALYZE:2d8
 flags:RUBBER | BASH_DOOR | FORCE_SLEEP
 flags:IM_ELEC | IM_POIS | HURT_WATER
-spell-freq:7
+spell-freq:6
 spells:HASTE | SLOW | BO_ELEC | BE_ELEC | BA_POIS | DARKNESS
 desc:A very strange type of golem with two heads, partly made from metal with one robotlike
 desc: head which zaps lightning, and partly made of the body parts of evil monsters

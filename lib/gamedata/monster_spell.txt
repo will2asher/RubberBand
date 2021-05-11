@@ -45,22 +45,23 @@ lore-color-base:Orange
 message-vis:{name} makes a high-pitched shriek.
 message-invis:Something makes a high-pitched shriek.
 
+#(There's no space between whip and {oftype} on purpose)
 name:WHIP
 hit:95
 effect:LASH:MISSILE:2
 lore:lash you if nearby
 lore-color-base:Orange
-message-vis:{name} lashes at you with a whip {oftype}.
+message-vis:{name} lashes at you with a whip{oftype}.
 message-miss:{name} lashes at you with a whip but misses.
 message-invis:You hear a crack.
 
-# Where does the type come from?
+#(There's no space between spits and {type} on purpose)
 name:SPIT
 hit:85
 effect:LASH:MISSILE:3
 lore:spit at you from a distance
 lore-color-base:Orange
-message-vis:{name} spits {type} at you.
+message-vis:{name} spits{type} at you.
 message-miss:{name} spits at you but misses.
 message-invis:You hear a soft sound.
 
