@@ -66,7 +66,7 @@ message-miss:{name} spits at you but misses.
 message-invis:You hear a soft sound.
 
 name:THROW
-hit:60
+hit:63
 effect:BOLT:ARROW:4
 dice:$Dd4
 expr:D:SPELL_POWER:/ 8 + 1
@@ -74,8 +74,8 @@ lore:throw things at you
 lore-color-base:Orange
 #I'd like to change the message based on the monster base. hmmm. I guess I'll just call them rocks.
 #message-vis:{name} throws a piece of fruit at you. (for trees)
-message-vis:{name} throws a rock at you.
-message-miss:{name} throws a rock at you but misses.
+message-vis:{name} throws a rock at {target}.
+message-miss:{name} throws a rock but misses.
 message-invis:You hear something fly through the air.
 
 name:SHOT
@@ -795,10 +795,11 @@ lore-color-base:Yellow
 message-vis:{name} fires a magic missile.
 message-invis:Something mumbles.
 
+#was dice:$B+5d5
 name:BE_ELEC
 hit:100
 effect:SHORT_BEAM:ELEC:5
-dice:$B+5d5
+dice:$B+3d7
 expr:B:SPELL_POWER:* 2 + 30
 lore:shoot sparks of lightning
 lore-color-base:Orange

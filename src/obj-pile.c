@@ -386,10 +386,8 @@ bool object_stackable(const struct object *obj1, const struct object *obj2,
 	int i;
 
 	/* Equipment items don't stack */
-	if (object_is_equipped(player->body, obj1))
-		return false;
-	if (object_is_equipped(player->body, obj2))
-		return false;
+	if (object_is_equipped(player->body, obj1)) return false;
+	if (object_is_equipped(player->body, obj2)) return false;
 
 	/* If either item is unknown, do not stack */
 	if (mode & OSTACK_LIST && obj1->kind != obj1->known->kind) return false;
@@ -433,21 +431,23 @@ bool object_stackable(const struct object *obj1, const struct object *obj2,
 			return false;
 
 		/* (staffs can have egos and combat bonuses now) */
-		/* Require identical values (but allow stacking differing bonuses) */
-		if (obj1->ac != obj2->ac) return false;
-		if (obj1->dd != obj2->dd) return false;
-		if (obj1->ds != obj2->ds) return false;
+		if (obj1->tval == TV_STAFF) {
+			/* Require identical values (but allow stacking differing bonuses) */
+			if (obj1->ac != obj2->ac) return false;
+			if (obj1->dd != obj2->dd) return false;
+			if (obj1->ds != obj2->ds) return false;
 
-		/* Require all identical modifiers */
-		for (i = 0; i < OBJ_MOD_MAX; i++)
-			if (obj1->modifiers[i] != obj2->modifiers[i])
-				return (false);
+			/* Require all identical modifiers */
+			for (i = 0; i < OBJ_MOD_MAX; i++)
+				if (obj1->modifiers[i] != obj2->modifiers[i])
+					return (false);
 
-		/* Require identical ego-item types */
-		if (obj1->ego != obj2->ego) return false;
+			/* Require identical ego-item types */
+			if (obj1->ego != obj2->ego) return false;
 
-		/* Require identical curses */
-		if (!curses_are_equal(obj1, obj2)) return false;
+			/* Require identical curses */
+			if (!curses_are_equal(obj1, obj2)) return false;
+		}
 
 		/* ... otherwise ok */
 	} else if (tval_is_weapon(obj1) || tval_is_armor(obj1) ||

@@ -320,13 +320,9 @@ static void do_cmd_wiz_bamf(void)
 static void do_cmd_wiz_change_aux(void)
 {
 	int i;
-
 	int tmp_int;
-
 	long tmp_long;
-
 	char tmp_val[160];
-
 	char ppp[80];
 
 

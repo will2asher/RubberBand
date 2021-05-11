@@ -386,8 +386,8 @@ struct monster {
 	/* new for Rubberband: (todo: no effect yet) */
 	byte isevil;						/* individual monster is evil */
 	byte pcmet;							/* The player has learned whether this individual is evil or not */
-	byte nonagr;						/* monster is non-agressive */
-	byte acharmed;						/* for Charm monsters effect (todo) */
+	byte nonagr;						/* monster is non-agressive (not sure if this works atm) */
+	byte acharmed;						/* for Charm monsters effect (todo- maybe this should be a monster timed effect) */
 
 	bitflag mflag[MFLAG_SIZE];			/* Temporary monster flags */
 

@@ -7954,13 +7954,12 @@ blow:GAZE:PARALYZE:1d13
 flags:RUBBER | BASH_DOOR | FORCE_SLEEP
 flags:IM_ELEC | IM_POIS | HURT_WATER
 spell-freq:6
-spells:HASTE | SLOW | BO_ELEC | BE_ELEC | BA_POIS | DARKNESS
-desc:A very strange type of golem with two heads, partly made from metal with one robotlike
-desc: head which zaps lightning, and partly made of the body parts of evil monsters
-desc: including harpies, gorgons, and nagas.  It's second head is usually a
-desc: gorgon's head.  If it wasn't a golem it would be the most hideous female imaginable,
-desc: but it's a golem so it's not really female. It was (not surprisingly) invented by a
-desc: mad and deranged wizard who worshipped evil gods.
+spells:HASTE | SLOW | BO_ELEC | BA_POIS | DARKNESS
+desc:One of the most hideous things imaginable, a glarx is a strange type of golem
+desc: with two heads, partly made from metal with one robotlike head which zaps
+desc: lightning, and partly made of the body parts of evil monsters including
+desc: harpies, gorgons, and nagas.  It's second head is usually a gorgon's head.
+desc: It was (not surprisingly) invented by a mad and deranged wizard who worshipped evil gods.
 
 name:harpy queen
 base:hybrid
@@ -9318,6 +9317,7 @@ experience:135
 blow:ENGULF:ELEC:3d4
 flags:ATTR_FLICKER | IM_ELEC
 innate-freq:4
+spell-power:23
 spell-freq:5
 spells:BR_ELEC | BE_ELEC
 desc:A shimmering tornado of air, sparks crackle along its length.
@@ -11482,8 +11482,8 @@ blow:HIT:ELEC:4d6
 blow:HIT:ELEC:4d6
 flags:COLD_BLOOD | BASH_DOOR | FORCE_SLEEP
 flags:IM_POIS | IM_ELEC
-spell-freq:3
-spell-power:20
+spell-freq:4
+spell-power:23
 spells:BO_ELEC | BE_ELEC | TELE_SELF_TO
 desc:A man-shaped form of living lightning.  Sparks and shocks crackle all over
 desc: this madly capering figure, as it leaps and whirls around and about you.
@@ -12355,6 +12355,7 @@ blow:SPORE:DRAIN_CHARGES:1d11
 blow:SPORE:DRAIN_CHARGES:1d11
 flags:NEVER_MOVE | COLD_BLOOD | IM_ELEC | IM_POIS
 spell-freq:7
+spell-power:32
 spells:TELE_TO | TELE_SELF_TO | BLINK | BE_ELEC
 desc:You'd hate to think what would happen if you eat this, it makes your hair stand on
 desc: end and your magical items feel powerless.

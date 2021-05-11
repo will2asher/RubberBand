@@ -102,6 +102,29 @@ static void spell_message(struct monster *mon,
 		in_cursor = level->message;
 	}
 
+	/* ugly hack: change THROW spell message for tree monsters */
+	if ((hits) && (seen) && (spell->index == RSF_THROW) && (mon->race->d_char == 'l')) {
+		char m_name[80];
+		char t_name[80];
+		struct monster* t_mon;
+		monster_desc(m_name, sizeof(m_name), mon, MDESC_STANDARD);
+
+		strnfcat(buf, sizeof(buf), &end, m_name);
+		strnfcat(buf, sizeof(buf), &end, " throws a piece of fruit at ");
+		/* get target */
+		if (mon->target.midx > 0) {
+			t_mon = cave_monster(cave, mon->target.midx);
+			monster_desc(t_name, sizeof(t_name), t_mon, MDESC_TARG);
+			strnfcat(buf, sizeof(buf), &end, t_name);
+		}
+		else {
+			strnfcat(buf, sizeof(buf), &end, "you");
+		}
+		strnfcat(buf, sizeof(buf), &end, ".");
+		msgt(spell->msgt, "%s", buf);
+		return;
+	}
+
 	next = strchr(in_cursor, '{');
 	while (next) {
 		/* Copy the text leading up to this { */
