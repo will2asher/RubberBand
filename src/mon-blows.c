@@ -1258,6 +1258,7 @@ melee_effect_handler_f melee_handler_for_blow_effect(const char *name)
 		{ "BLIND", melee_effect_handler_BLIND },
 		{ "CONFUSE", melee_effect_handler_CONFUSE },
 		{ "FRENZY", melee_effect_handler_FRENZY },
+		{ "CHARM", melee_effect_handler_CHARM },
 		{ "UNLUCKY", melee_effect_handler_UNLUCKY },
 		{ "SLIME", melee_effect_handler_SLIME },
 		{ "TERRIFY", melee_effect_handler_TERRIFY },

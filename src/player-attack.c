@@ -849,6 +849,7 @@ bool attempt_shield_bash(struct player *p, struct loc grid, bool *fear, bool off
 	struct object *shield = slot_object(p, slot_by_name(p, "arm"));
 	int nblows = p->state.num_blows / 100;
 	int bash_quality, bash_dam, energy_lost;
+	int nostumble;
 
 	/* Bashing chance depends on melee skill, DEX, and a level bonus. */
 	int bash_chance = p->state.skills[SKILL_TO_HIT_MELEE] / 8 +
@@ -890,7 +891,8 @@ bool attempt_shield_bash(struct player *p, struct loc grid, bool *fear, bool off
 	if (offhandhit) {
 		if (py_attack_real(p, grid, fear, true)) return true;
 	}
-	else {
+	else { /* (shield bash) */
+
 		/* Calculate attack quality, a mix of momentum and accuracy. */
 		bash_quality = p->state.skills[SKILL_TO_HIT_MELEE] / 4 + p->wt / 8 +
 			p->upkeep->total_weight / 80 + shield->weight / 2;
@@ -936,11 +938,17 @@ bool attempt_shield_bash(struct player *p, struct loc grid, bool *fear, bool off
 	}
 
 	/* The player will sometimes stumble. */
-	if (35 + adj_dex_th[p->state.stat_ind[STAT_DEX]] < randint1(60)) {
+	nostumble = 35 + adj_dex_th[p->state.stat_ind[STAT_DEX]];
+
+	/* stumble less often during an off-hand weapon attack */
+	nostumble += ((adj_dex_th[p->state.stat_ind[STAT_DEX]] + 1) * 2 / 3) + p->state.skills[SKILL_TO_HIT_MELEE] / 6;
+
+	if (nostumble < randint1(60)) {
 		/* Lose 26-75% of a turn due to stumbling after shield bash. */
-		energy_lost = randint1(50) + 25;
+		energy_lost = randint1(51 - ((adj_dex_th[p->state.stat_ind[STAT_DEX]]+1)/3)) + 25;
+
 		/* Don't lose as much energy for an off-hand weapon attack. */
-		if (offhandhit) energy_lost = randint1(40) + 10;
+		if (offhandhit) energy_lost = randint1(42 - (adj_dex_th[p->state.stat_ind[STAT_DEX]] / 2)) + 10;
 
 		if (energy_lost >= 20) msgt(MSG_GENERIC, "You stumble!");
 		p->upkeep->energy_use += energy_lost * z_info->move_energy / 100;

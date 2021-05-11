@@ -8,7 +8,7 @@
 
 # === Understanding monster.txt ===
 
-# name: monster name:
+# name: monster
 # plural: monster name plural (if non-standard)
 # base: template name
 # glyph: symbol
@@ -20131,6 +20131,7 @@ desc:A giant relative of the xorn, the giant xarens play catch with boulders in 
 desc: centre of the earth.
 
 name:giant effretti
+base:elemental monster
 color:z
 speed:131
 hit-points:5858

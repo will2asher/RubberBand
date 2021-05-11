@@ -173,7 +173,7 @@ desc:Dark Fairy
 # the get_vault_monster code.  hmmm... What if I use an ascii character that looks almost like an i but isn't?
 # (Let's the do almost-an-'i' for the dark fairies.)
 # But then I'll want to do something to make it easier to get monster recall, but I'll have to hardcode that part.
-# ...well, that didn't work. I guess I'll just cut out 
+# ...well, that didn't work. I guess I'll just finish cutting out yeeks and icky things.
 #name:icky thing
 #glyph:i
 #pain:1
@@ -449,7 +449,6 @@ desc:Xorn or other elemental monster
 #glyph:x is the only unused letter glyph (will probably be gargoyles later)
 
 # Light Fairies
-# changed glyph to something that's almost a 'y' but isn't
 name:light fairy
 glyph:y
 pain:1

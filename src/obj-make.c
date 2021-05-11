@@ -403,16 +403,19 @@ void ego_apply_magic(struct object *obj, int level)
 	if (kf_has(obj->ego->kind_flags, KF_RAND_SUSTAIN)) {
 		create_obj_flag_mask(newf, false, OFT_SUST, OFT_MAX);
 		of_on(obj->flags, get_new_attr(obj->flags, newf));
-	} else if (kf_has(obj->ego->kind_flags, KF_RAND_POWER) || (pick == 1)) {
+	} /* else (I don't know why these should be mutually exclusive) */
+	if (kf_has(obj->ego->kind_flags, KF_RAND_POWER) || (pick == 1)) {
 		create_obj_flag_mask(newf, false, OFT_PROT, OFT_MISC, OFT_MAX);
 		of_on(obj->flags, get_new_attr(obj->flags, newf));
-	} else if (kf_has(obj->ego->kind_flags, KF_RAND_BASE_RES) || (pick > 1)) {
+	} /* else */
+	if (kf_has(obj->ego->kind_flags, KF_RAND_BASE_RES) || (pick > 1)) {
 		/* Get a base resist if available, mark it as random */
 		if (random_base_resist(obj, &resist)) {
 			obj->el_info[resist].res_level = 1;
 			obj->el_info[resist].flags |= EL_INFO_RANDOM | EL_INFO_IGNORE;
 		}
-	} else if (kf_has(obj->ego->kind_flags, KF_RAND_HI_RES)) {
+	} /* else */
+	if (kf_has(obj->ego->kind_flags, KF_RAND_HI_RES)) {
 		/* Get a high resist if available, mark it as random */
 		if (random_high_resist(obj, &resist)) {
 			obj->el_info[resist].res_level = 1;
@@ -762,8 +765,7 @@ bool make_fake_artifact(struct object *obj, const struct artifact *artifact)
  */
 static void apply_magic_weapon(struct object *obj, int level, int power)
 {
-	if (power <= 0)
-		return;
+	if (power <= 0) return;
 
 	obj->to_h += randint1(5) + m_bonus(5, level);
 	obj->to_d += randint1(5) + m_bonus(5, level);
@@ -812,8 +814,7 @@ static void apply_magic_weapon(struct object *obj, int level, int power)
  */
 static void apply_magic_armour(struct object *obj, int level, int power)
 {
-	if (power <= 0)
-		return;
+	if (power <= 0) return;
 
 	obj->to_a += randint1(5) + m_bonus(5, level);
 	if (power > 1)
@@ -861,8 +862,7 @@ void object_prep(struct object *obj, struct object_kind *k, int lev,
 	/* Assign pval for food, oil and launchers */
 	if (tval_is_edible(obj) || tval_is_potion(obj) || tval_is_fuel(obj) ||
 		tval_is_launcher(obj))
-		obj->pval
-			= randcalc(k->pval, lev, rand_aspect);
+		obj->pval = randcalc(k->pval, lev, rand_aspect);
 
 	/* Default fuel */
 	if (tval_is_light(obj)) {
@@ -963,7 +963,7 @@ int apply_magic(struct object *obj, int lev, bool allow_artifacts, bool good,
 			power = 2;
 	}
 	/* egos and bonuses on staffs should be rare */
-	if ((obj->tval == TV_STAFF) && (!one_in_(3))) power = 0;
+	if ((obj->tval == TV_STAFF) && (!one_in_(4))) power = 0;
 
 	/* Roll for artifact creation */
 	if (allow_artifacts) {
@@ -984,8 +984,7 @@ int apply_magic(struct object *obj, int lev, bool allow_artifacts, bool good,
 	}
 
 	/* Try to make an ego item */
-	if (power == 2)
-		make_ego_item(obj, lev);
+	if (power == 2) make_ego_item(obj, lev);
 
 	/* Give it a chance to be cursed */
 	if (one_in_(20) && tval_is_wearable(obj)) {
@@ -1056,6 +1055,7 @@ bool kind_is_good(const struct object_kind *kind)
 			if (randcalc(kind->to_d, 0, MINIMISE) < 0) return (false);
 			return true;
 		}
+		/* (staffs are wieldable now, but don't get marked as "good" for combat bonuses) */
 
 		/* Ammo -- Arrows/Bolts are good */
 		case TV_BOLT:
@@ -1166,7 +1166,7 @@ struct object_kind *get_obj_num(int level, bool good, int tval)
  * \param good is whether the object is to be good
  * \param great is whether the object is to be great
  * \param extra_roll is whether we get an extra roll in apply_magic()
- * \param value is the value to be returned to the calling function
+ * \param value is the value to be returned to the calling function (for level feelings)
  * \param tval is the desired tval, or 0 if we allow any tval
  *
  * \return a pointer to the newly allocated object, or NULL on failure.
@@ -1180,7 +1180,7 @@ struct object *make_object(struct chunk *c, int lev, bool good, bool great,
 
 	/* Treasure maps make objects more likely to be "good". (The one_in_number may need tweaking)
 	 * (only while we're generating a level -not for monster drops) */
-	if ((player->timed[TMD_TREASMAP]) && (!character_dungeon) && (one_in_(10)))
+	if ((player->timed[TMD_TREASMAP] > 0) && (!character_dungeon) && (one_in_(10)))
 		good = true;
 
 	/* Try to make a special artifact */
@@ -1210,8 +1210,8 @@ struct object *make_object(struct chunk *c, int lev, bool good, bool great,
 			break;
 		}
 	}
-	if (!kind)
-		return NULL;
+
+	if (!kind) return NULL;
 
 	/* Make the object, prep it and apply magic */
 	new_obj = object_new();

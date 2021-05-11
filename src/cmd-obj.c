@@ -331,11 +331,13 @@ void do_cmd_wield(struct command *cmd)
 		/* (Also easier for swords than other weapons: max 17lbs or (STR - 3) ) */
 		/* (I used the bastard sword as a reference: It weighs 14lbs,
 		/*  so you need at least 17 STR to wield a bastard sword with one hand.) */
-		if ((obj->tval == TV_SWORD) && (weapon->weight >= 170) || (weapon->weight / 10 + 3 > player->state.stat_ind[STAT_STR]))
-			offhandok = false;
-		/* max 15.5lbs or (STR - 4) for non-swords (a battle axe is 15.5lbs) */
-		else if ((weapon->weight >= 155) || (weapon->weight / 10 + 4 > player->state.stat_ind[STAT_STR]))
-			offhandok = false;
+		if (weapon) {
+			if ((obj->tval == TV_SWORD) && (weapon->weight >= 170) || (weapon->weight / 10 + 3 > player->state.stat_ind[STAT_STR]))
+				offhandok = false;
+			/* max 15.5lbs or (STR - 4) for non-swords (a battle axe is 15.5lbs) */
+			else if ((weapon->weight >= 155) || (weapon->weight / 10 + 4 > player->state.stat_ind[STAT_STR]))
+				offhandok = false;
+		}
 
 		/* Wielded weapon too heavy to hold a second weapon (Yet we allow shields, but whatever) */
 		if ((do_two) && (!offhandok)) 

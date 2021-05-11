@@ -49,6 +49,7 @@ static quality_ignore_struct quality_mapping[] =
 	{ ITYPE_SHARP,					TV_SWORD,		"" },
 	{ ITYPE_SHARP,					TV_POLEARM,		"" },
 	{ ITYPE_BLUNT,					TV_HAFTED,		"" },
+	{ ITYPE_BLUNT,					TV_STAFF,		"" },
 	{ ITYPE_SLING,					TV_BOW,			"Sling" },
 	{ ITYPE_BOW,					TV_BOW,			"Bow" },
 	{ ITYPE_CROSSBOW,				TV_BOW,			"Crossbow" },
@@ -254,20 +255,16 @@ int apply_autoinscription(struct object *obj)
 	runes_autoinscribe(obj);
 
 	/* No note - don't inscribe */
-	if (!note)
-		return 0;
+	if (!note) return 0;
 
 	/* Don't re-inscribe if it's already inscribed */
-	if (obj->note)
-		return 0;
+	if (obj->note) return 0;
 
 	/* Don't inscribe unless the player is carrying it */
-	if (!object_is_carried(player, obj))
-		return 0;
+	if (!object_is_carried(player, obj)) return 0;
 
 	/* Don't inscribe if ignored */
-	if (ignore_item_ok(obj))
-		return 0;
+	if (ignore_item_ok(obj)) return 0;
 
 	/* Get an object description */
 	object_desc(o_name, sizeof(o_name), obj, ODESC_PREFIX | ODESC_FULL);
@@ -289,8 +286,8 @@ int apply_autoinscription(struct object *obj)
 int remove_autoinscription(s16b kind)
 {
 	struct object_kind *k = objkind_byid(kind);
-	if (!k)
-		return 0;
+
+	if (!k) return 0;
 
 	/* Unaware */
 	if (!k->aware) {
@@ -493,6 +490,8 @@ byte ignore_level_of(const struct object *obj)
 		} else {
 			value = IGNORE_AVERAGE;
 		}
+		/* Don't ignore staffs based on combat bonuses (of lack thereof) */
+		if (obj->tval == TV_STAFF) value = IGNORE_MAX;
 
 		if (obj->ego)
 			value = IGNORE_ALL;
@@ -571,14 +570,13 @@ void kind_ignore_when_unaware(struct object_kind *kind)
 bool object_is_ignored(const struct object *obj)
 {
 	byte type;
+	bool badstaff = false;
 
 	/* Objects that aren't yet known can't be ignored */
-	if (!obj->known)
-		return false;
+	if (!obj->known) return false;
 
 	/* Do ignore individual objects that marked ignore */
-	if (obj->known->notice & OBJ_NOTICE_IGNORE)
-		return true;
+	if (obj->known->notice & OBJ_NOTICE_IGNORE) return true;
 
 	/* Don't ignore artifacts unless marked to be ignored */
 	if (obj->artifact ||
@@ -587,17 +585,20 @@ bool object_is_ignored(const struct object *obj)
 
 	/* Do ignoring by kind */
 	if (object_flavor_is_aware(obj) ?
-		 kind_is_ignored_aware(obj->kind) :
-		 kind_is_ignored_unaware(obj->kind))
-		return true;
+		kind_is_ignored_aware(obj->kind) :
+		kind_is_ignored_unaware(obj->kind)) {
+
+		/* Ego versions of ignored staff types may still be worth noticing */
+		if ((obj->tval == TV_STAFF) && (obj->ego)) badstaff = true; /* skip the return */
+		else return true;
+	}
 
 	/* Ignore ego items if known */
 	if (obj->known->ego && ego_is_ignored(obj->ego->eidx, ignore_type_of(obj)))
 		return true;
 
 	type = ignore_type_of(obj);
-	if (type == ITYPE_MAX)
-		return false;
+	if (type == ITYPE_MAX) return false;
 
 	/* Ignore items known not to be artifacts */
 	if ((obj->known->notice & OBJ_NOTICE_ASSESSED) && !obj->artifact &&
@@ -632,8 +633,7 @@ bool ignore_known_item_ok(const struct object *obj)
 {
 	struct object *base_obj = cave->objects[obj->oidx];
 
-	if (player->unignoring)
-		return false;
+	if (player->unignoring) return false;
 
 	/* Get the real object and check its ignore properties */
 	assert(base_obj);
