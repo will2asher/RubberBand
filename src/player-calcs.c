@@ -1590,6 +1590,11 @@ static void calc_light(struct player *p, struct player_state *state,
 		/* Alter p->state.cur_light if reasonable */
 	    state->cur_light += amt;
 	}
+
+	/* Timed effect: Torchlight */
+	if ((player->timed[TMD_TORCHLIGHT]) && (state->cur_light < 2 + p->lev / 16)) 
+		state->cur_light = 2 + p->lev / 16;
+	else if (player->timed[TMD_TORCHLIGHT]) state->cur_light += 1 + p->lev / 16;
 }
 
 /**

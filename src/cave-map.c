@@ -107,7 +107,7 @@ void map_info(struct loc grid, struct grid_data *g)
 
 		/* Darkness or torchlight */
 		if (!square_isglow(cave, grid)) {
-			if (player_has(player, PF_UNLIGHT) && !square_islit(cave, grid)) {
+			if ((player_has(player, PF_UNLIGHT) || (player->timed[TMD_DARKVIS])) && !square_islit(cave, grid)) {
 				g->lighting = LIGHTING_DARK;
 			} else if (OPT(player, view_yellow_light)) {
 				g->lighting = LIGHTING_TORCH;
@@ -119,7 +119,7 @@ void map_info(struct loc grid, struct grid_data *g)
 				if (square_islit(cave, grid)) {
 					if (OPT(player, view_yellow_light)) {
 						g->lighting = LIGHTING_TORCH;
-					} else if (player_has(player, PF_UNLIGHT)) {
+					} else if ((player_has(player, PF_UNLIGHT)) || (player->timed[TMD_DARKVIS])) {
 						g->lighting = LIGHTING_DARK;
 					} else {
 						g->lighting = LIGHTING_LOS;

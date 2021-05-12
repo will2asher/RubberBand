@@ -262,12 +262,20 @@ static int project_player_handler_DARK(project_player_handler_context_t *context
 		return 0;
 	}
 
-	(void)player_inc_timed(player, TMD_BLIND, 2 + randint1(5), true, true);
+	if ((player->timed[TMD_DARKVIS]) && (randint0(100) < 19 + player->p_luck) && (context->power < 70)) {
+		msg("You resist the effect!");
+		return 0;
+	}
+	else (void)player_inc_timed(player, TMD_BLIND, 2 + randint1(5), true, true);
 
 	/* Unresisted dark from powerful monsters is bad news */
 	if (context->power >= 70) {
+		/* slight resist against extra effects */
+		int pres = player->p_luck;
+		if (player->timed[TMD_DARKVIS]) pres += 5;
+
 		/* Life draining */
-		if (randint0(context->dam) > 100) {
+		if (randint0(context->dam) > 100 + pres) {
 			if (player_of_has(player, OF_HOLD_LIFE)) {
 				equip_learn_flag(player, OF_HOLD_LIFE);
 			} else {
@@ -278,14 +286,14 @@ static int project_player_handler_DARK(project_player_handler_context_t *context
 		}
 
 		/* Slowing */
-		if (randint0(context->dam) > 200) {
+		if (randint0(context->dam) > 200 + pres*2) {
 			msg("You feel unsure of yourself in the darkness.");
 			(void)player_inc_timed(player, TMD_SLOW, context->dam / 100, true,
 								   false);
 		}
 
 		/* Amnesia */
-		if (randint0(context->dam) > 300) {
+		if (randint0(context->dam) > 300 + pres*3) {
 			msg("Darkness penetrates your mind!");
 			(void)player_inc_timed(player, TMD_AMNESIA, context->dam / 100,
 								   true, false);
@@ -666,10 +674,13 @@ static int project_player_handler_DARK_WEAK(project_player_handler_context_t *co
 {
 	bool saves = false;
 	int edam = context->dam;
+	int asave = player->state.skills[SKILL_SAVE];
 	if (edam > 40) edam = 40;
+	/* Darkvision gives slightly better chance at saving */
+	if (player->timed[TMD_DARKVIS]) asave -= 4;
 
 	/* Allow saving throw against blindness of weak darkness */
-	if (randint0(50 + edam * 3 / 2) < player->state.skills[SKILL_SAVE]) saves = true;
+	if (randint0(50 + edam * 3 / 2) < asave) saves = true;
 
 	if ((player_resists(player, ELEM_DARK)) || (saves)) {
 		if (!player_has(player, PF_UNLIGHT)) {

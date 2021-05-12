@@ -513,3 +513,15 @@ desc:petrified
 grade:r:10000:Petrifd:You begin turning to stone (deeper than the skin...)
 on-end:A fleshy shade returns to your skin.
 msgt:GENERIC
+
+name:DARKVIS
+desc:darkvision
+grade:b:10000:DARKVIS:You can see in the dark.
+on-end:Your darkvision expires.
+msgt:GENERIC
+
+name:TORCHLIGHT
+desc:Torchlight
+grade:y:10000:TORCHL:Your light shines brighter.
+on-end:Your light returns to normal.
+msgt:GENERIC

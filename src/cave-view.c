@@ -584,8 +584,18 @@ static void update_view_one(struct chunk *c, struct loc grid, struct player *p)
 	if (d > z_info->max_sight) return;
 
 	/* UNLIGHT players have a special radius of view */
-	if (player_has(p, PF_UNLIGHT) && (p->state.cur_light <= 1)) {
-		close = d < (2 + p->lev / 6 - p->state.cur_light);
+	if ((player_has(p, PF_UNLIGHT) || (player->timed[TMD_DARKVIS])) && (p->state.cur_light <= 1)) {
+		int ulrange = 0, dvrange = 0;
+		if (player_has(p, PF_UNLIGHT)) ulrange = (2 + p->lev / 6 - p->state.cur_light);
+		if (player->timed[TMD_DARKVIS]) dvrange = 4;
+
+		/* Use the better see-in-the-dark ability */
+		if (ulrange > dvrange) close = d < ulrange;
+		else close = d < dvrange;
+	}
+	/* Darkvision works even if you have a light */
+	else if ((player->timed[TMD_DARKVIS]) && (p->state.cur_light < 4)) {
+		close = d < 4;
 	}
 
 	/* Special case for wall lighting. If we are a wall and the square in
@@ -686,7 +696,7 @@ void update_view(struct chunk *c, struct player *p)
 
 	/* Assume we can view the player grid */
 	sqinfo_on(square(c, p->grid)->info, SQUARE_VIEW);
-	if (p->state.cur_light > 0 || square_isglow(c, p->grid) ||
+	if (p->state.cur_light > 0 || square_isglow(c, p->grid) || player->timed[TMD_DARKVIS] ||
 		player_has(p, PF_UNLIGHT)) {
 		sqinfo_on(square(c, p->grid)->info, SQUARE_SEEN);
 	}
