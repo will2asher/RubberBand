@@ -453,7 +453,7 @@ s16b spell_chance(int spell_index)
 
 	/* Confusion and Amnesia make spells very difficult (but still possible at least) */
 	if ((player->timed[TMD_AMNESIA]) && (player->timed[TMD_CONFUSED])) {
-		chance = 60 + chance;
+		chance = 60 + chance / 2 + randint1(chance/2 + 1);
 	}
 	else if ((player->timed[TMD_AMNESIA]) || (player->timed[TMD_CONFUSED])) {
 		chance = 50 + chance / 2;
@@ -463,6 +463,8 @@ s16b spell_chance(int spell_index)
 	if ((chance > 95) && (!player->timed[TMD_CONFUSED])) {
 		chance = 95;
 	}
+	/* Ensure some tiny chance even when confused (false hope?) */
+	else if (chance > 98) chance = 98;
 
 	/* Return the chance */
 	return (chance);

@@ -4912,16 +4912,17 @@ bool effect_handler_BRAND_BOLTS(effect_handler_context_t *context)
 
 
 /**
- * Turn a staff into arrows
+ * Turn a staff into (usually ordinary) arrows
  */
 bool effect_handler_CREATE_ARROWS(effect_handler_context_t *context)
 {
-	int lev;
+	int lev, lfac;
 	struct object *obj, *staff, *arrows;
 	const char *q, *s;
 	int itemmode = (USE_INVEN | USE_FLOOR);
 	bool good = false, great = false;
 	bool none_left = false;
+	int elev = player->lev;
 
 	/* Get an item */
 	q = "Make arrows from which staff? ";
@@ -4938,13 +4939,24 @@ bool effect_handler_CREATE_ARROWS(effect_handler_context_t *context)
 
 	/* Extract the object "level" */
 	lev = obj->kind->level;
+	/* ego staffs are better */
+	if (obj->ego) {
+		lev += 3; 
+		elev += 2;
+	}
 
-	/* Roll for good */
-	if (randint1(lev) > 25) {
+	/* luck factor */
+	lfac = 0;
+	if (player->p_luck > 0) lfac += (player->p_luck+1)/2;
+	else if (player->p_luck < -1) lfac = -1;
+
+	/* Roll for good (less than half the chance as the stronger spell for "good" or "great" arrows) */
+	if (randint1(lev) > 58 - lfac) {
 		good = true;
-		/* Roll for great */
-		if (randint1(lev) > 50) {
-			great = true;
+		/* Roll for great (maybe) */
+		if (randint1(lev) > 88 - lfac) {
+			elev += 2;
+			if (randint0(100) < 70) great = true;
 		}
 	}
 
@@ -4955,13 +4967,86 @@ bool effect_handler_CREATE_ARROWS(effect_handler_context_t *context)
 		staff = floor_object_for_use(obj, 1, true, &none_left);
 	}
 
-	if (staff->known) {
-		object_delete(&staff->known);
+	if (staff->known) object_delete(&staff->known);
+	object_delete(&staff);
+
+	if (elev > 3) elev = elev * 3 / 4;
+	/* Make some arrows */
+	arrows = make_object(cave, elev, good, great, false, NULL, TV_ARROW);
+
+	/* Make it less likely (but still possible) to get a large stack with the weaker spell */
+	if (arrows->number > 22) arrows->number = 21 + randint1(arrows->number - 21);
+
+	drop_near(cave, &arrows, 0, player->grid, true, true);
+
+	return true;
+}
+
+
+/**
+ * Turn a staff into (usually good) arrows
+ */
+bool effect_handler_MAGIC_ARROWS(effect_handler_context_t* context)
+{
+	int lev, lfac; 
+	int elev = player->lev;
+	struct object* obj, * staff, * arrows;
+	const char* q, * s;
+	int itemmode = (USE_INVEN | USE_FLOOR);
+	bool good = false, great = false;
+	bool none_left = false;
+
+	/* Get an item */
+	q = "Make arrows from which staff? ";
+	s = "You have no staff to use.";
+	if (context->cmd) {
+		if (cmd_get_item(context->cmd, "tgtitem", &obj, q, s,
+			item_tester_hook_staff, itemmode)) {
+			return false;
+		}
 	}
+	else if (!get_item(&obj, q, s, 0, item_tester_hook_staff,
+		itemmode)) {
+		return false;
+	}
+
+	/* Extract the object "level" */
+	lev = obj->kind->level;
+	/* ego staffs are better */
+	if (obj->ego) {
+		lev += 5;
+		elev += 3;
+	}
+
+	/* luck factor */
+	lfac = 0;
+	if (player->p_luck > 0) lfac += player->p_luck;
+	else if (player->p_luck < -1) lfac = -1;
+
+	/* Roll for good */
+	if (randint1(lev) > 25 - lfac) {
+		good = true;
+		elev += 2;
+		/* Roll for great */
+		if (randint1(lev) > 50 - lfac) {
+			great = true;
+			elev += 3;
+		}
+	}
+
+	/* Destroy the staff */
+	if (object_is_carried(player, obj)) {
+		staff = gear_object_for_use(obj, 1, true, &none_left);
+	}
+	else {
+		staff = floor_object_for_use(obj, 1, true, &none_left);
+	}
+
+	if (staff->known) object_delete(&staff->known);
 	object_delete(&staff);
 
 	/* Make some arrows */
-	arrows = make_object(cave, player->lev, good, great, false, NULL, TV_ARROW);
+	arrows = make_object(cave, elev, good, great, false, NULL, TV_ARROW);
 	drop_near(cave, &arrows, 0, player->grid, true, true);
 
 	return true;
