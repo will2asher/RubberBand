@@ -386,7 +386,7 @@ graphics:,:r
 level:0
 weight:10
 cost:4
-alloc:10:101 to 102
+alloc:9:101 to 104
 power:0
 msg:That tastes great!  A fine vintage.
 effect:NOURISH:INC_BY
@@ -637,9 +637,9 @@ dice:4
 effect:TIMED_INC:FRENZY
 dice:4+4d7
 effect:TIMED_INC:SHERO
-dice:4+4d6
+dice:4+4d5
 effect:TIMED_INC:BOLD
-dice:3+2d9
+dice:2+2d9
 effect:TIMED_INC:PARALYZED
 dice:1d2
 
@@ -3792,7 +3792,7 @@ graphics:!:d
 level:3
 weight:4
 cost:50
-alloc:40:3 to 40
+alloc:38:3 to 40
 pile:25:2
 power:7
 effect:CURE:BLIND
@@ -3814,6 +3814,18 @@ effect:TIMED_INC:SINFRA
 dice:100+4d25
 effect:NOURISH:INC_BY
 dice:1
+
+name:Darkvision
+type:potion
+graphics:!:d
+level:15
+weight:4
+cost:63
+alloc:6:15 to 71
+pile:20:2d2
+power:6
+effect:TIMED_INC:DARKVIS
+dice:60+4d21
 
 
 ### Useless buggers ###
