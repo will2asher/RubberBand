@@ -16,6 +16,7 @@
  *    are included in all such copies.  Other copyrights may also apply.
  */
 #include "angband.h"
+#include "cave.h"
 #include "effects.h"
 #include "init.h"
 #include "mon-attack.h"
@@ -142,7 +143,10 @@ static void spell_message(struct monster *mon,
 			switch (spell_tag_lookup(tag)) {
 				case SPELL_TAG_NAME: {
 					char m_name[80];
-					monster_desc(m_name, sizeof(m_name), mon, MDESC_STANDARD);
+					/* With TINVIS, the monster may be seen when the spell is cast, but not when we give the message */
+					if ((spell->index == RSF_TINVIS) && (seen)) 
+						monster_desc(m_name, sizeof(m_name), mon, MDESC_STANDARD | MDESC_SHOW);
+					else monster_desc(m_name, sizeof(m_name), mon, MDESC_STANDARD);
 
 					strnfcat(buf, sizeof(buf), &end, m_name);
 					break;
@@ -286,8 +290,11 @@ void do_mon_spell(int index, struct monster *mon, bool seen)
 		}
 	}
 
+	/* the message for TINVIS depends on whether you can still see the monster after the spell is cast */
+	if ((spell->index == RSF_TINVIS) && (seen)) /* so delay the message */;
+
 	/* Tell the player what's going on */
-	spell_message(mon, spell, seen, hits);
+	else spell_message(mon, spell, seen, hits);
 	disturb(player);
 
 	if (hits) {
@@ -306,6 +313,27 @@ void do_mon_spell(int index, struct monster *mon, bool seen)
 		} else {
 			effect_do(spell->effect, source_monster(mon->midx), NULL, &ident, true, 0, 0, 0, NULL);
 		}
+	}
+
+	/* Check if the player can still see the monster */
+	if ((spell->index == RSF_TINVIS) && (seen)) {
+		/* update the mosnter early so we know which message to give */
+		update_mon(mon, cave, false);
+
+		/* Give a custom message if the player can still see the now-invisible monster */
+		/* (copied relevant parts from spell_message() ) */
+		if (monster_is_visible(mon)) {
+			char buf[1024] = "\0";
+			size_t end = 0;
+			/* Get the monster name */
+			char m_name[80];
+			monster_desc(m_name, sizeof(m_name), mon, MDESC_STANDARD);
+			strnfcat(buf, sizeof(buf), &end, m_name);
+			strnfcat(buf, sizeof(buf), &end, " becomes transparent.");
+			msgt(spell->msgt, "%s", buf);
+		}
+		/* Else give the default message ("X vanishes from view!") */
+		else spell_message(mon, spell, seen, hits);
 	}
 }
 

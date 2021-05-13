@@ -5544,7 +5544,7 @@ hit-points:33
 hearing:16
 smell:11
 armor-class:66
-sleepiness:14
+sleepiness:11
 depth:16
 rarity:4
 experience:62

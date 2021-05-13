@@ -4326,6 +4326,7 @@ effect:BOLT_STATUS:AWAY_ALL
 dice:$B
 expr:B:MAX_SIGHT:* 5
 
+#Effect changed from ALTER to LINE so it can damage trap monsters
 name:Disable Traps
 type:wand
 graphics:-:d
@@ -4337,7 +4338,7 @@ attack:1d1:0:0
 armor:0:0
 charges:4+d5
 power:7
-effect:ALTER:KILL_TRAP
+effect:LINE:KILL_TRAP
 
 name:Wonder
 type:wand
@@ -5211,6 +5212,7 @@ dice:$B
 expr:B:MAX_SIGHT:* 5
 time:25
 
+#Effect changed from ALTER to LINE so it can damage trap monsters
 name:Disable Traps
 type:rod
 graphics:-:d

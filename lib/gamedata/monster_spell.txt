@@ -1018,6 +1018,7 @@ lore-color-base:Light Green
 message-vis:{name} surrounds {target} in darkness.
 message-invis:Something mumbles.
 
+#This is hard coded to give a different message if you can still see the monster after the spell is cast.
 name:TINVIS
 hit:100
 effect:MON_TIMED_INC:TINVIS
@@ -1025,7 +1026,7 @@ dice:$B+d8
 expr:B:SPELL_POWER:/ 4
 lore:turn itself invisible
 lore-color-base:Yellow
-message-vis:{name} becomes transparent.
+message-vis:{name} vanishes from view!
 message-invis:Something mutters.
 
 name:TRAPS

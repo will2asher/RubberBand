@@ -856,7 +856,7 @@ static void project_monster_handler_KILL_TRAP(project_monster_handler_context_t 
 	if ((context->mon->race->base->d_char == '^') || (context->mon->race->base->d_char == '?') ||
 		(context->mon->race->base->d_char == '#') || (context->mon->race->base->d_char == '$') ||
 		(context->mon->race->base->d_char == '.')) {
-		if (!context->dam) context->dam = damroll(3, 5);
+		if (!context->dam) context->dam = damroll(4, 6);
 		return;
 	}
 	context->skipped = true;

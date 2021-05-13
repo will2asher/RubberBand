@@ -314,9 +314,7 @@ void update_mon(struct monster *mon, struct chunk *c, bool full)
 	assert(mon != NULL);
 
 	/* Return if this is not the current level */
-	if (c != cave) {
-		return;
-	}
+	if (c != cave) return;
 
 	lore = get_lore(mon->race);
 	
@@ -403,7 +401,7 @@ void update_mon(struct monster *mon, struct chunk *c, bool full)
 			easy = flag = false;
 	}
 
-	/* Is the monster is now visible? */
+	/* Is the monster now visible? */
 	if (flag) {
 		/* Learn about the monster's mind */
 		if (telepathy_ok) {
