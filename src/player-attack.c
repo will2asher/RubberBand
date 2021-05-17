@@ -1384,6 +1384,7 @@ void do_cmd_throw(struct command *cmd) {
 	range = MIN(((str + 20) * 10) / weight, 10);
 
 	/* Make sure the player isn't throwing wielded items */
+	/* (XXX Maybe this should ask for confirmation instead of completely forbidding it) */
 	if (object_is_equipped(player->body, obj)) {
 		msg("You cannot throw wielded items.");
 		return;

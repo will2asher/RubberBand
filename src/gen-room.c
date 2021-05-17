@@ -965,7 +965,6 @@ static bool build_room_template(struct chunk *c, struct loc centre, int ymax,
 	int dx, dy, rnddoors, doorpos;
 	const char *t;
 	bool rndwalls, light;
-	
 
 	assert(c);
 
@@ -1003,7 +1002,7 @@ static bool build_room_template(struct chunk *c, struct loc centre, int ymax,
 
 			/* Analyze the grid */
 			switch (*t) {
-			case '%': set_marked_granite(c, grid, SQUARE_WALL_OUTER); break;
+			case '%': set_marked_granite(c, grid, SQUARE_WALL_SPEC); break;
 			case '#': set_marked_granite(c, grid, SQUARE_WALL_SOLID); break;
 			case '+': place_closed_door(c, grid); break;
 			case '^': if (one_in_(4)) place_trap(c, grid, -1, c->depth); break;
@@ -1034,7 +1033,7 @@ static bool build_room_template(struct chunk *c, struct loc centre, int ymax,
 				/* Put something nice in this square
 				 * Object (80%) or Stairs (20%) */
 				if ((randint0(100) < 80) || OPT(player, birth_levels_persist))
-					place_object(c, grid, c->depth, false, false,
+					place_object(c, grid, c->depth + 2, false, false,
 								 ORIGIN_SPECIAL, 0);
 				else
 					place_random_stairs(c, grid);
@@ -1183,7 +1182,7 @@ bool build_vault(struct chunk *c, struct loc centre, struct vault *v)
 				 * vault, but rather is part of the "door step" to the
 				 * vault. We don't mark it icky so that the tunneling
 				 * code knows its allowed to remove this wall. */
-				set_marked_granite(c, grid, SQUARE_WALL_OUTER);
+				set_marked_granite(c, grid, SQUARE_WALL_SPEC);
 				icky = false;
 				break;
 			}
@@ -1191,6 +1190,8 @@ bool build_vault(struct chunk *c, struct loc centre, struct vault *v)
 			case '#': set_marked_granite(c, grid, SQUARE_WALL_INNER); break;
 				/* Permanent wall */
 			case '@': square_set_feat(c, grid, FEAT_PERM); break;
+				/* tree */
+			case ';': square_set_feat(c, grid, FEAT_TREE); break;
 				/* Gold seam */
 			case '*': {
 				square_set_feat(c, grid, one_in_(2) ? FEAT_MAGMA_K :
@@ -1235,7 +1236,6 @@ bool build_vault(struct chunk *c, struct loc centre, struct vault *v)
 			case '`': square_set_feat(c, grid, FEAT_LAVA); break;
 				/* Included to allow simple inclusion of FA vaults */
 			case '/': /*square_set_feat(c, grid, FEAT_WATER)*/; break;
-			case ';': /*square_set_feat(c, grid, FEAT_TREE)*/; break;
 			}
 
 			/* Part of a vault */
@@ -1253,7 +1253,7 @@ bool build_vault(struct chunk *c, struct loc centre, struct vault *v)
 			if (*t == ' ') continue;
 
 			/* Most alphabetic characters signify monster races. */
-			if (isalpha(*t) && (*t != 'x')) {
+			if (isalpha(*t)) {
 				/* If the symbol is not yet stored, ... */
 				if (!strchr(racial_symbol, *t)) {
 					/* ... store it for later processing. */
@@ -1616,6 +1616,8 @@ bool build_circular(struct chunk *c, struct loc centre, int rating)
 
 	/* Occasional light */
 	bool light = c->depth <= randint1(25) ? true : false;
+	/* Rare light in deeper rooms */
+	if ((c->depth > 11) && (one_in_(100))) light = true;
 
 	/* Find and reserve lots of space in the dungeon.  Get center of room. */
 	if ((centre.y >= c->height) || (centre.x >= c->width)) {
@@ -1625,7 +1627,7 @@ bool build_circular(struct chunk *c, struct loc centre, int rating)
 
 	/* Generate outer walls and inner floors */
 	fill_circle(c, centre.y, centre.x, radius + 1, 1, FEAT_GRANITE,
-				SQUARE_WALL_OUTER, light);
+				SQUARE_WALL_SPEC, light);
 	fill_circle(c, centre.y, centre.x, radius, 0, FEAT_FLOOR,
 				SQUARE_NONE, light);
 
@@ -1681,6 +1683,8 @@ bool build_simple(struct chunk *c, struct loc centre, int rating)
 
 	/* Occasional light */
 	if (c->depth <= randint1(25)) light = true;
+	/* Rare light in deeper rooms */
+	if ((c->depth > 11) && (one_in_(72 + c->depth * 2))) light = true;
 
 	/* Generate new room */
 	generate_room(c, y1-1, x1-1, y2+1, x2+1, light);
@@ -1727,6 +1731,8 @@ bool build_overlap(struct chunk *c, struct loc centre, int rating)
 
 	/* Occasional light */
 	if (c->depth <= randint1(25)) light = true;
+	/* Rare light in deeper rooms */
+	if ((c->depth > 11) && (one_in_(75 + c->depth * 2))) light = true;
 
 	/* Determine extents of room (a) */
 	y1a = randint1(4);
@@ -1813,6 +1819,8 @@ bool build_crossed(struct chunk *c, struct loc centre, int rating)
 
 	/* Occasional light */
 	if (c->depth <= randint1(25)) light = true;
+	/* Rare light in deeper rooms */
+	if ((c->depth > 11) && (one_in_(75 + c->depth * 2))) light = true;
 
 	/* Pick inner dimension */
 	wy = 1;
@@ -1972,6 +1980,8 @@ bool build_large(struct chunk *c, struct loc centre, int rating)
 
 	/* Occasional light */
 	if (c->depth <= randint1(25)) light = true;
+	/* Rare light in deeper rooms */
+	if ((c->depth > 11) && (one_in_(80 + c->depth * 2))) light = true;
 
 	/* Find and reserve some space in the dungeon.  Get center of room. */
 	if ((centre.y >= c->height) || (centre.x >= c->width)) {
@@ -2644,6 +2654,8 @@ bool build_moria(struct chunk *c, struct loc centre, int rating)
 	int height, width;
 
 	bool light = c->depth <= randint1(35);
+	/* Rare light in deeper rooms */
+	if ((c->depth > 11) && (one_in_(80 + c->depth * 2))) light = true;
 
 	/* Pick a room size */
 	height = 8 + randint0(5);
@@ -2737,6 +2749,8 @@ bool build_room_of_chambers(struct chunk *c, struct loc centre, int rating)
 
 	/* Deeper in the dungeon, chambers are less likely to be lit. */
 	bool light = (randint0(45) > c->depth) ? true : false;
+	/* Rare light in deeper rooms */
+	if ((c->depth > 21) && (one_in_(90 + c->depth * 2))) light = true;
 
 	/* Calculate a level-dependent room size. */
 	height = 20 + m_bonus(20, c->depth);

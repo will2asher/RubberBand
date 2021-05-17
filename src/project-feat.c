@@ -89,30 +89,34 @@ static void project_feature_handler_KILL_WALL(project_feature_handler_context_t 
 	const struct loc grid = context->grid;
 
 	/* Non-walls (etc) */
-	if (square_ispassable(cave, grid) && !square_seemslikewall(cave, grid))
-		return;
+	if (square_ispassable(cave, grid) && !square_seemslikewall(cave, grid)) return;
 
 	/* Permanent walls */
 	if (square_isperm(cave, grid)) return;
 
+	/* Not all non-passable features are made of rock... */
+	if (square_isatree(cave, context->grid) || square_iswater(cave, context->grid)) return;
+
 	/* Different treatment for different walls */
-	if (square_isrubble(cave, grid)) {
+	if (square_isrubble(cave, grid) || square_has_statue(cave, grid)) {
 		/* Message */
 		if (square_isseen(cave, grid)) {
-			msg("The rubble turns into mud!");
+			if (square_has_statue(cave, grid)) msg("The statue turns into mud!");
+			else msg("The rubble turns into mud!");
 			context->obvious = true;
 
 			/* Forget the wall */
 			square_forget(cave, grid);
 		}
 
-		/* Destroy the rubble */
+		/* Destroy the rubble (or statue) */
 		square_destroy_rubble(cave, grid);
 
-		/* Hack -- place an object */
-		if (randint0(100) < 10){
+		/* Hack -- place an object (this should be done when the rubble or statue is placed) */
+		if (randint0(100) < 10) {
 			if (square_isseen(cave, grid)) {
-				msg("There was something buried in the rubble!");
+				if (square_has_statue(cave, grid)) msg("The was something hidden in the statue!");
+				else msg("There was something buried in the rubble!");
 				context->obvious = true;
 			}
 			place_object(cave, grid, player->depth, false, false,
@@ -252,8 +256,7 @@ static void project_feature_handler_MAKE_DOOR(project_feature_handler_context_t 
 	if (!square_isfloor(cave, grid)) return;
 
 	/* Push objects off the grid */
-	if (square_object(cave, grid))
-		push_object(grid);
+	if (square_object(cave, grid)) push_object(grid);
 
 	/* Create closed door */
 	square_add_door(cave, grid, true);
@@ -290,6 +293,17 @@ static void project_feature_handler_ACID(project_feature_handler_context_t *cont
 		/* Observe */
 		context->obvious = true;
 	}
+
+	/* Can create puddles if powerful enough. */
+	if ((context->dam > randint1(1200) + 300) &&
+		square_can_puddle(cave, context->grid)) {
+		/* Forget the floor, make a puddle. */
+		square_unmark(cave, context->grid);
+		square_set_feat(cave, context->grid, FEAT_ACID_PUDDLE);
+
+		/* Objects that have survived should move */
+		push_object(context->grid);
+	}
 }
 
 static void project_feature_handler_ELEC(project_feature_handler_context_t *context)
@@ -298,6 +312,28 @@ static void project_feature_handler_ELEC(project_feature_handler_context_t *cont
 	if (square_isview(cave, context->grid) && !player->timed[TMD_BLIND]) {
 		/* Observe */
 		context->obvious = true;
+	}
+
+	/* Sometimes set trees on fire */
+	if ((square_isatree(cave, context->grid)) && (randint0(100) < 11 + context->dam / 20)) {
+		square_set_feat(cave, context->grid, FEAT_FIRE_TREE);
+	}
+
+	/* Can destroy statues as well */
+	if ((context->dam > randint1(1200) + 350) &&
+		square_has_statue(cave, context->grid)) {
+		bool occupied = square_isoccupied(cave, context->grid);
+		/* (small statues are projectable) */
+		bool small = square_isprojectable(cave, context->grid);
+
+		/* Forget the statue */
+		square_unmark(cave, context->grid);
+		if ((randint0(100) < 20) && !occupied && !small) {
+			square_set_feat(cave, context->grid, FEAT_RUBBLE);
+		}
+		else {
+			square_set_feat(cave, context->grid, FEAT_PASS_RUBBLE);
+		}
 	}
 }
 
@@ -314,9 +350,14 @@ static void project_feature_handler_FIRE(project_feature_handler_context_t *cont
 		square_destroy_trap(cave, context->grid);
 	}
 
+	/* Often set trees on fire */
+	if ((square_isatree(cave, context->grid)) && (randint0(100) < 75 + context->dam / 25)) {
+		square_set_feat(cave, context->grid, FEAT_FIRE_TREE);
+	}
+
 	/* Can create lava if extremely powerful. */
-	if ((context->dam > randint1(1800) + 600) &&
-		square_isfloor(cave, context->grid)) {
+	if ((context->dam > randint1(2000) + 350) &&
+		square_can_puddle(cave, context->grid)) {
 		/* Forget the floor, make lava. */
 		square_unmark(cave, context->grid);
 		square_set_feat(cave, context->grid, FEAT_LAVA);
@@ -334,13 +375,22 @@ static void project_feature_handler_COLD(project_feature_handler_context_t *cont
 		context->obvious = true;
 	}
 
+	/* Sometimes put out fires */
+	if ((square_isatree(cave, context->grid)) && (square_isfiery(cave, context->grid))) {
+		if (randint0(100) < 11 + context->dam / 5) {
+			if (one_in_(2)) square_set_feat(cave, context->grid, FEAT_FLOOR);
+			else square_set_feat(cave, context->grid, FEAT_DEAD_TREE);
+		}
+	}
+
 	/* Sufficiently intense cold can solidify lava. */
-	if ((context->dam > randint1(900) + 300) &&
+	else if ((context->dam > randint1(900) + 300) &&
 		square_isfiery(cave, context->grid)) {
 		bool occupied = square_isoccupied(cave, context->grid);
 
 		square_unmark(cave, context->grid);
-		if (one_in_(2)) {
+		/* (INTERESTING is the only flag that regular fires have that lava doesn't have) */
+		if ((one_in_(2)) || square_isinteresting(cave, context->grid)) {
 			square_set_feat(cave, context->grid, FEAT_FLOOR);
 		} else if (one_in_(2) && !occupied) {
 			square_set_feat(cave, context->grid, FEAT_RUBBLE);
@@ -357,6 +407,12 @@ static void project_feature_handler_POIS(project_feature_handler_context_t *cont
 		/* Observe */
 		context->obvious = true;
 	}
+
+	/* Can kill trees if powerful enough. (and possibly put out fires if the tree is on fire but whatever -we'll put that down to the force of the air in the breath) */
+	if ((context->dam > randint1(1200) + 350) &&
+		square_isatree(cave, context->grid)) {
+		square_set_feat(cave, context->grid, FEAT_DEAD_TREE);
+	}
 }
 
 /* Light up the grid */
@@ -368,6 +424,12 @@ static void project_feature_handler_LIGHT(project_feature_handler_context_t *con
 /* Darken the grid */
 static void project_feature_handler_DARK(project_feature_handler_context_t *context)
 {
+	/* Can kill trees if powerful enough. (trees need light to live) */
+	if ((context->dam > randint1(1200) + 350) &&
+		square_isatree(cave, context->grid)) {
+		square_set_feat(cave, context->grid, FEAT_DEAD_TREE);
+	}
+
 	project_feature_handler_DARK_WEAK(context);
 }
 
@@ -396,6 +458,24 @@ static void project_feature_handler_NEXUS(project_feature_handler_context_t *con
 		/* Observe */
 		context->obvious = true;
 	}
+#if later
+	/* (Later) Can teleport some terrain features if powerful enough */
+	if ((context->dam > randint1(900) + 350) &&
+		square_isinteresting(cave, context->grid)) {	/*?*/
+		XXX
+	}
+#endif
+
+	/* May (rarely) create a nexus stone if powerful enough. */
+	if ((context->dam > randint1(3000) + 360) &&
+		square_isfloor(cave, context->grid)) {
+		/* Forget the floor, make nexus stone. */
+		square_unmark(cave, context->grid);
+		square_set_feat(cave, context->grid, FEAT_NEXUS_STONE);
+
+		/* Move objects */
+		push_object(context->grid);
+	}
 }
 
 static void project_feature_handler_NETHER(project_feature_handler_context_t *context)
@@ -404,6 +484,12 @@ static void project_feature_handler_NETHER(project_feature_handler_context_t *co
 	if (square_isview(cave, context->grid) && !player->timed[TMD_BLIND]) {
 		/* Observe */
 		context->obvious = true;
+	}
+
+	/* Can kill trees if powerful enough. (and possibly put out fires if the tree is on fire but whatever -we'll put that down to the force of the air in the breath) */
+	if ((context->dam > randint1(1050) + 350) &&
+		square_isatree(cave, context->grid)) {
+		square_set_feat(cave, context->grid, FEAT_DEAD_TREE);
 	}
 }
 
@@ -414,9 +500,31 @@ static void project_feature_handler_CHAOS(project_feature_handler_context_t *con
 		/* Observe */
 		context->obvious = true;
 	}
+
+	/* Can polymorph terrain features if powerful enough (but not doors) */
+	if ((context->dam > randint1(2000) + 350) && !square_isperm(cave, context->grid) &&
+		square_isinteresting(cave, context->grid) && !square_isdoor(cave, context->grid)) {
+		int die = randint1(100);
+		/* Forget whatever used to be there */
+		square_unmark(cave, context->grid);
+
+		if (die < 15) square_set_feat(cave, context->grid, FEAT_TREE);					/* 15% */
+		else if (die < 17) square_set_feat(cave, context->grid, FEAT_FIRE_TREE);		/* 2% */
+		else if (die < 20) square_set_feat(cave, context->grid, FEAT_DEAD_TREE);		/* 3% */
+		else if (die < 35) square_set_feat(cave, context->grid, FEAT_RUBBLE);			/* 15% */
+		else if (die < 50) square_set_feat(cave, context->grid, FEAT_PASS_RUBBLE);		/* 15% */
+		else if (die < 52) square_set_feat(cave, context->grid, FEAT_QUARTZ_K);			/* 2% */
+		else if (die < 55) square_set_feat(cave, context->grid, FEAT_MAGMA_K);			/* 3% */
+		else if (die < 65) square_set_feat(cave, context->grid, FEAT_STATUE);			/* 10% */
+		else if (die < 75) square_set_feat(cave, context->grid, FEAT_SM_STATUE);		/* 10% */
+		else if (die < 85) square_set_feat(cave, context->grid, FEAT_OPIT);				/* 10% */
+		else if (die < 90) square_set_feat(cave, context->grid, FEAT_SLIME_PUDDLE);		/* 5% */
+		else if (die < 95) square_set_feat(cave, context->grid, FEAT_ACID_PUDDLE);		/* 5% */
+		else square_set_feat(cave, context->grid, FEAT_WHIRLWIND);						/* 5% */
+	}
 }
 
-static void project_feature_handler_DISEN(project_feature_handler_context_t *context)
+static void project_feature_handler_DISEN(project_feature_handler_context_t* context)
 {
 	/* Grid is in line of sight and player is not blind */
 	if (square_isview(cave, context->grid) && !player->timed[TMD_BLIND]) {
@@ -431,6 +539,28 @@ static void project_feature_handler_WATER(project_feature_handler_context_t *con
 	if (square_isview(cave, context->grid) && !player->timed[TMD_BLIND]) {
 		/* Observe */
 		context->obvious = true;
+	}
+
+	/* Put out fires */
+	if ((square_isatree(cave, context->grid)) && (square_isfiery(cave, context->grid))) {
+		if (randint0(100) < 50 + context->dam / 5) {
+			if (one_in_(2)) square_set_feat(cave, context->grid, FEAT_FLOOR);
+			else square_set_feat(cave, context->grid, FEAT_DEAD_TREE);
+		}
+	}
+	/* normal fire (doesn't affect lava) */
+	else if ((square_isfiery(cave, context->grid)) && (square_isinteresting(cave, context->grid))) {
+		if (randint0(100) < 70 + context->dam / 5) square_set_feat(cave, context->grid, FEAT_FLOOR);
+	}
+
+	/* Can create puddles if powerful enough. */
+	else if ((context->dam > randint1(900) + 300) &&
+		square_can_puddle(cave, context->grid)) {
+		/* Forget the floor, make a puddle. */
+		square_unmark(cave, context->grid);
+		square_set_feat(cave, context->grid, FEAT_WATER);
+
+		/* (Objects can stay in the water) */
 	}
 }
 
@@ -520,9 +650,14 @@ static void project_feature_handler_PLASMA(project_feature_handler_context_t *co
 		context->obvious = true;
 	}
 
+	/* Sometimes set trees on fire */
+	if ((square_isatree(cave, context->grid)) && (randint0(100) < 50 + context->dam / 25)) {
+		square_set_feat(cave, context->grid, FEAT_FIRE_TREE);
+	}
+
 	/* Can create lava if extremely powerful. */
-	if ((context->dam > randint1(1800) + 600) &&
-		square_isfloor(cave, context->grid)) {
+	if ((context->dam > randint1(2000) + 350) &&
+		square_can_puddle(cave, context->grid)) {
 		/* Forget the floor, make lava. */
 		square_unmark(cave, context->grid);
 		square_set_feat(cave, context->grid, FEAT_LAVA);
@@ -548,6 +683,16 @@ static void project_feature_handler_SLIME(project_feature_handler_context_t* con
 		/* Observe */
 		context->obvious = true;
 	}
+
+	/* Can create puddles if powerful enough. */
+	if ((context->dam > randint1(900) + 300) &&
+		square_can_puddle(cave, context->grid)) {
+		/* Forget the floor, make a puddle. */
+		square_unmark(cave, context->grid);
+		square_set_feat(cave, context->grid, FEAT_SLIME_PUDDLE);
+
+		/* (Objects can stay in the puddle) */
+	}
 }
 
 static void project_feature_handler_MISSILE(project_feature_handler_context_t *context)
@@ -568,6 +713,7 @@ static void project_feature_handler_MANA(project_feature_handler_context_t *cont
 	}
 }
 
+/* (This used to destroy cursed objects, maybe re-add something like that) */
 static void project_feature_handler_HOLY_ORB(project_feature_handler_context_t *context)
 {
 	/* Grid is in line of sight and player is not blind */

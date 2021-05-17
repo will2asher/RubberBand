@@ -315,52 +315,61 @@ resist-flag:IM_FIRE
 name:pile of passable rubble
 graphics:::u
 priority:13
-flags:ROCK | PASSABLE | INTERESTING | TORCH
+flags:ROCK | PASSABLE | INTERESTING | TORCH | SLOWS
 info:0:1
 desc:Ends LOS, stops missiles, bolts, and beams, and reduces the radius of ball 
 desc:spells.  May dissolve or be tunnelled to normal floor, and can be walked 
-desc:through by the player and monsters.
+desc:through (slowly) by the player and monsters.
 
-#	None of the following are actually coded yet:
+# RB: New Terrain
+
+name:slide
+graphics:>:Z
+priority:25
+flags:LOS | PROJECT | PASSABLE | PERMANENT | INTERESTING | STAIR | DOWNSTAIR
+flags:EASY | TORCH
+desc:A slide down to a deeper part of the dungeon. You can't tell how far
+desc: down it goes...
 
 name:tree
 graphics:1:g
 priority:13
-flags:INTERESTING | TORCH | NO_FLOW
-#FLAMMABLE
+flags:INTERESTING | NO_FLOW | TREE
+#FLAMMABLE (I'll probably use the TREE flag for this)
 info:0:2
 confused-msg:bangs into a tree
 desc:There aren't a lot of trees to be found underground, but some do manage to survive
 desc: usually by magic. (Ends LOS, stops missiles, bolts, and beams.  May burn or be
 desc: tunnelled to a dead tree, and then to normal floor.)
 
-#PROJECT?
 name:dead tree
 graphics:1:u
 priority:13
-flags:LOS | PASSABLE | OBJECT | INTERESTING | TORCH
+flags:LOS | PASSABLE | PROJECT | OBJECT | INTERESTING | TORCH | TREE | SLOWS
 #FLAMMABLE
 info:0:1
-desc:Dead trees are easy to climb over. (Ends LOS, stops missiles, bolts,
-desc: and beams.  May be tunnelled to normal floor, and can be
+desc:Dead trees are easy to climb over. (Slows movement.
+desc: May be tunnelled to normal floor, and can be
 desc: walked over by the player and monsters.)
 
 #never created except by setting a tree on fire
 name:burning tree
-graphics:1:R
+graphics:1:r
 priority:13
-flags:INTERESTING | BRIGHT | NO_FLOW | NO_SCENT
+flags:INTERESTING | BRIGHT | NO_FLOW | NO_SCENT | FIERY | TREE
 confused-msg:bangs into a burning tree
 desc:There aren't a lot of trees to be found underground, but some do manage to survive
 desc: usually by magic. (Ends LOS, stops missiles, bolts, and beams.  May dissolve or be
 desc: tunnelled to normal floor.)
+
+#	None of the following are actually coded yet:
 
 name:fire
 graphics:::R
 priority:11
 flags:INTERESTING | PROJECT | FIERY | PASSABLE | BRIGHT | NO_SCENT
 look-prefix:a
-#desc:
+desc:It's a fire.
 walk-msg:The fire will burn you!  Really step on it? 
 run-msg:A fire blocks your path.  Step into it? 
 hurt-msg:The fire burns you!
@@ -373,7 +382,7 @@ resist-flag:IM_FIRE
 name:open pit
 graphics:^:D
 priority:10
-flags:INTERESTING | LOS | PASSABLE | PROJECT | OBJECT
+flags:INTERESTING | LOS | PASSABLE | PROJECT | OBJECT | SLOWS
 #confused-msg:falls into a pit
 desc:Disarming a pit often just keeps the pit from being hidden.
 desc: You can walk through its grid around it, but you still have a chance of
@@ -382,37 +391,37 @@ desc: You can drop a pile of rubble here to make it into normal floor.
 
 #Doesn't do actual hp damage, but may cause sliming.
 name:puddle of slime
-graphics:.:G
+graphics:::G
 priority:10
-flags:INTERESTING | LOS | PROJECT | PASSABLE | OBJECT | TRAP | TORCH
+flags:INTERESTING | LOS | PROJECT | PASSABLE | OBJECT | TRAP | SLOWS | PSLIME
 walk-msg:The slime might stick to you.  Really step in? 
 run-msg:A puddle of slime blocks your path.  Step into it? 
 hurt-msg:The slime sticks to you!
-#resist-flag:
+resist-flag:IM_SLIME
 desc:A puddle of icky slime.
 
-name:puddle of acid
-graphics:.:o
+name:pool of acid
+graphics:::o
 priority:10
-flags:INTERESTING | LOS | PROJECT | PASSABLE | BRIGHT | NO_SCENT
+flags:INTERESTING | LOS | PROJECT | PASSABLE | BRIGHT | NO_SCENT | ODAMG
 walk-msg:The acid will burn you!  Really step in? 
 run-msg:Acid blocks your path.  Step into it? 
 hurt-msg:The acid burns you!
 die-msg:melting in acid
 resist-flag:IM_ACID
-desc:A puddle of glowing acid.
+desc:A small pool of glowing acid.
 
 name:water
-graphics:.:B
+graphics:/:B
 priority:7
-flags:INTERESTING | LOS | PROJECT | PASSABLE | OBJECT | TORCH | NO_SCENT
+flags:INTERESTING | LOS | PROJECT | PASSABLE | OBJECT | TORCH | NO_SCENT | SLOWS | WATER
 desc:Water shallow enough to wade through easily.
 
 #should this be able to hold objects? (May remove the permanent flag at some point in future)
 name:deep water
-graphics:.:b
+graphics:/:b
 priority:11
-flags:LOS | PROJECT | NO_FLOW | NO_SCENT | PERMANENT
+flags:LOS | PROJECT | NO_FLOW | NO_SCENT | PERMANENT | WATER
 walk-msg:You can't swim.  Really step in the deep water? 
 run-msg:Deep water blocks your path.  Step into it? 
 hurt-msg:You sink in the water!
@@ -424,18 +433,28 @@ desc:Deep water.
 name:statue
 graphics:::z
 priority:13
-flags:ROCK | NO_FLOW | INTERESTING | TORCH
+flags:ROCK | NO_FLOW | INTERESTING | STATUE | TORCH
 info:0:2
 confused-msg:bumps into a statue
 desc:A statue of a famous commander of Morgoth's armies. (Ends LOS, stops
 desc: missiles, bolts, and beams.  May dissolve or be tunnelled to
 desc: normal floor.)
 
+name:small statue
+graphics:::z
+priority:13
+flags:LOS | PROJECT | ROCK | NO_FLOW | INTERESTING | STATUE | TORCH
+info:0:1
+confused-msg:bumps into a statue
+desc:A statue of a famous commander of Morgoth's armies. (Small statues don't
+desc: block LOS or projectiles.  May dissolve or be tunnelled to
+desc: normal floor.)
+
 #todo: fountains make (shallow) water in all adjacent floor spaces at level creation.
 name:fountain
 graphics:::B
 priority:13
-flags:ROCK | NO_SCENT | NO_FLOW | INTERESTING | TORCH
+flags:ROCK | NO_SCENT | NO_FLOW | INTERESTING | STATUE | TORCH
 info:0:3
 confused-msg:bumps into a fountain
 desc:A statue of a gargoyle spouting water from its mouth. (Ends LOS, stops
@@ -444,17 +463,17 @@ desc: normal floor.)
 
 #disrupts projectiles, but mostly the same as clear floor. not sure if it should have EASY flag
 name:small whirlwind
-graphics:`:W
+graphics:.:Z
 priority:6
-flags:LOS | PROJECT | PASSABLE | FLOOR | OBJECT | EASY | TRAP | TORCH | INTERESTING | NO_SCENT
-desc:An open floor or bare ground.  Can be walked across by anything, and can 
-desc:hold traps or items.  Does not break line of sight, but may disrupt projectiles shot
-desc: through its space.
+flags:LOS | PROJECT | PASSABLE | FLOOR | OBJECT | EASY | TRAP | TORCH | INTERESTING | NO_SCENT | SLOWS
+desc:Strangely moving air in an open floor space.  Can be walked across by anything, and
+desc: can hold traps or items. Does not break line of sight, but may disrupt projectiles
+desc: shot or thrown through its space.
 
 name:nexus stone
 graphics:::V
 priority:12
-flags:LOS | PROJECT | PASSABLE | NO_FLOW | EASY
+flags:LOS | PROJECT | PASSABLE | EASY | FLOOR | INTERESTING | NEXUS_ST
 walk-msg:Stepping on this stone will make you teleport randomly (unless you have nexus resistance or teleport control). Really step onto it?
 run-msg:There's a nexus stone in your path.  Step onto it? 
 #resist-flag:RES_NEXUS (?)

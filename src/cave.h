@@ -155,7 +155,7 @@ struct grid_data {
 	bool unseen_money;		/* Is there some unaware money there? */
 
 	enum grid_light_level lighting; /* Light level */
-	bool in_view; 			/* Can the player can currently see the grid? */
+	bool in_view; 			/* Can the player currently see the grid? */
 	bool is_player;
 	bool hallucinate;
 };
@@ -247,6 +247,7 @@ extern int FEAT_PERM;
 extern int FEAT_LAVA;
 
 /* New features for Rubberband (none actually used yet) */
+extern int FEAT_SLIDE;
 extern int FEAT_FIRE;
 extern int FEAT_TREE;
 extern int FEAT_DEAD_TREE;
@@ -257,6 +258,7 @@ extern int FEAT_ACID_PUDDLE;
 extern int FEAT_WATER;
 extern int FEAT_WATER_DEEP;
 extern int FEAT_STATUE;
+extern int FEAT_SM_STATUE;
 extern int FEAT_FOUNTAIN;
 extern int FEAT_WHIRLWIND;
 extern int FEAT_NEXUS_STONE;
@@ -307,6 +309,8 @@ bool feat_is_projectable(int feat);
 bool feat_is_torch(int feat);
 bool feat_is_bright(int feat);
 bool feat_is_fiery(int feat);
+bool feat_is_damaging(int feat);
+bool feat_slows_movement(int feat);
 bool feat_is_no_flow(int feat);
 bool feat_is_no_scent(int feat);
 bool feat_is_smooth(int feat);
@@ -323,6 +327,9 @@ bool square_isquartz(struct chunk *c, struct loc grid);
 bool square_ismineral(struct chunk *c, struct loc grid);
 bool square_hasgoldvein(struct chunk *c, struct loc grid);
 bool square_isrubble(struct chunk *c, struct loc grid);
+bool square_iswater(struct chunk* c, struct loc grid);
+bool square_isatree(struct chunk *c, struct loc grid);
+bool square_slows_movement(struct chunk *c, struct loc grid);
 bool square_issecretdoor(struct chunk *c, struct loc grid);
 bool square_isopendoor(struct chunk *c, struct loc grid);
 bool square_iscloseddoor(struct chunk *c, struct loc grid);

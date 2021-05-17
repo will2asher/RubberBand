@@ -91,6 +91,7 @@ void do_cmd_go_up(struct command *cmd)
 
 /**
  * Go down one level
+ * (or more than one level if using a slide)
  */
 void do_cmd_go_down(struct command *cmd)
 {
@@ -119,12 +120,25 @@ void do_cmd_go_down(struct command *cmd)
 	/* Hack -- take a turn */
 	player->upkeep->energy_use = z_info->move_energy;
 
-	/* Success */
-	msgt(MSG_STAIRS_DOWN, "You enter a maze of down staircases.");
+	/* Slides (usually) go down more than one level */
+	if (square_feat(cave, player->grid)->fidx == FEAT_SLIDE) {
+		int slidedown = randint1(3);
+		if (randint0(10) < 4) slidedown = 2; /* most common */
+		if (one_in_(8)) slidedown += randint1(2);
+		if (one_in_(40)) slidedown++;
+		descend_to = dungeon_get_next_level(player->depth, slidedown);
 
-	/* Create a way back */
-	player->upkeep->create_up_stair = true;
-	player->upkeep->create_down_stair = false;
+		if (slidedown > 3) msgt(MSG_STAIRS_DOWN, "You slide down a long, dark slide.");
+		else msgt(MSG_STAIRS_DOWN, "You slide down a dark slide.");
+	}
+	else {
+		/* Success */
+		msgt(MSG_STAIRS_DOWN, "You enter a maze of down staircases.");
+
+		/* Create a way back (only if using stairs) */
+		player->upkeep->create_up_stair = true;
+		player->upkeep->create_down_stair = false;
+	}
 
 	/* Change level */
 	dungeon_change_level(player, descend_to);
@@ -434,7 +448,6 @@ void do_cmd_close(struct command *cmd)
  */
 static bool do_cmd_tunnel_test(struct loc grid)
 {
-
 	/* Must have knowledge */
 	if (!square_isknown(cave, grid)) {
 		msg("You see nothing there.");
@@ -449,7 +462,12 @@ static bool do_cmd_tunnel_test(struct loc grid)
 
 	/* Must be a wall/door/etc */
 	if (!(square_isdiggable(cave, grid) || square_iscloseddoor(cave, grid))) {
-		msg("You see nothing there to tunnel.");
+
+		/* Trying to chop down a burning tree... */
+		if ((square_isfiery(cave, grid)) && (square_isatree(cave, grid)))
+			msg("You can't chop down the tree while it's on fire.");
+
+		else msg("You see nothing there to tunnel.");
 		return (false);
 	}
 
@@ -470,6 +488,9 @@ static bool do_cmd_tunnel_test(struct loc grid)
  */
 static bool twall(struct loc grid)
 {
+	bool digtree = square_isatree(cave, grid);
+	bool small = square_ispassable(cave, grid);
+
 	/* Paranoia -- Require a wall or door or some such */
 	if (!(square_isdiggable(cave, grid) || square_iscloseddoor(cave, grid)))
 		return (false);
@@ -480,8 +501,11 @@ static bool twall(struct loc grid)
 	/* Forget the wall */
 	square_forget(cave, grid);
 
+	/* chopping down a live tree produces a dead tree (which can then be chopped up again) */
+	if ((digtree) && (!small)) square_set_feat(cave, grid, FEAT_DEAD_TREE);
+
 	/* Remove the feature */
-	square_tunnel_wall(cave, grid);
+	else square_tunnel_wall(cave, grid);
 
 	/* Update the visuals */
 	player->upkeep->update |= (PU_UPDATE_VIEW | PU_MONSTERS);
@@ -505,6 +529,8 @@ static bool do_cmd_tunnel_aux(struct loc grid)
 	bool okay = false;
 	bool gold = square_hasgoldvein(cave, grid);
 	bool rubble = square_isrubble(cave, grid);
+	bool digtree = square_isatree(cave, grid);
+	bool small = square_ispassable(cave, grid);
 	int weapon_slot = slot_by_name(player, "weapon");
 	struct object *current_weapon = slot_object(player, weapon_slot);
 	struct object *best_digger = NULL;
@@ -565,6 +591,12 @@ static bool do_cmd_tunnel_aux(struct loc grid)
 			/* Found treasure */
 			place_gold(cave, grid, player->depth, ORIGIN_FLOOR);
 			msg("You have found something!");
+		} else if ((digtree) && (small)) {
+			/* dead tree */
+			msg("You finish chopping up the tree.");
+		} else if (digtree) {
+			/* live tree (turns into dead tree) */
+			msg("You finish chopping down the tree.");
 		} else {
 			msg("You have finished the tunnel.");
 		}
@@ -1031,6 +1063,11 @@ void move_player(int dir, bool disarm)
 				msgt(MSG_HITWALL, "You feel a door blocking your way.");
 				square_memorize(cave, grid);
 				square_light_spot(cave, grid);
+			}
+			else if ((square_isatree(cave, grid)) && (!square_ispassable(cave, grid))) {
+				msgt(MSG_HITWALL, "You feel a tree blocking your way.");
+				square_memorize(cave, grid);
+				square_light_spot(cave, grid);
 			} else {
 				msgt(MSG_HITWALL, "You feel a wall blocking your way.");
 				square_memorize(cave, grid);
@@ -1038,10 +1075,11 @@ void move_player(int dir, bool disarm)
 			}
 		} else {
 			if (square_isrubble(cave, grid))
-				msgt(MSG_HITWALL,
-					 "There is a pile of rubble blocking your way.");
+				msgt(MSG_HITWALL, "There is a pile of rubble blocking your way.");
 			else if (square_iscloseddoor(cave, grid))
 				msgt(MSG_HITWALL, "There is a door blocking your way.");
+			else if ((square_isatree(cave, grid)) && (!square_ispassable(cave, grid)))
+				msgt(MSG_HITWALL, "There is a tree blocking your way.");
 			else
 				msgt(MSG_HITWALL, "There is a wall blocking your way.");
 		}
@@ -1179,9 +1217,14 @@ static bool do_cmd_walk_test(struct loc grid)
 		if (square_isrubble(cave, grid)) {
 			/* Rubble */
 			msgt(MSG_HITWALL, "There is a pile of rubble in the way!");
-		} else if (square_iscloseddoor(cave, grid)) {
+		}
+		else if (square_iscloseddoor(cave, grid)) {
 			/* Door */
 			return true;
+		}
+		else if ((square_isatree(cave, grid)) && (!square_ispassable(cave, grid))) {
+			/* tree */
+			msgt(MSG_HITWALL, "There is a tree in the way!");
 		} else {
 			/* Wall */
 			msgt(MSG_HITWALL, "There is a wall in the way!");
@@ -1217,7 +1260,8 @@ void do_cmd_walk(struct command *cmd)
 		/* Clear the web, finish turn */
 		msg("You clear the web.");
 		square_destroy_trap(cave, player->grid);
-		player->upkeep->energy_use = z_info->move_energy;
+		/* clearing a web shouldn't take a whole turn */
+		player->upkeep->energy_use = z_info->move_energy * 3 / 4;
 		return;
 	}
 
@@ -1231,7 +1275,13 @@ void do_cmd_walk(struct command *cmd)
 	if (!do_cmd_walk_test(grid))
 		return;
 
-	player->upkeep->energy_use = energy_per_move(player);
+	/* Some terrain slows movement */
+	if (square_slows_movement(cave, player->grid)) {
+		int nspeed = energy_per_move(player);
+		player->upkeep->energy_use = nspeed * 5 / 4;
+	}
+
+	else player->upkeep->energy_use = energy_per_move(player);
 
 	/* Attempt to disarm unless it's a trap and we're trapsafe */
 	move_player(dir, !(square_isdisarmabletrap(cave, grid) && trapsafe));
@@ -1255,7 +1305,8 @@ void do_cmd_jump(struct command *cmd)
 		/* Clear the web, finish turn */
 		msg("You clear the web.");
 		square_destroy_trap(cave, player->grid);
-		player->upkeep->energy_use = z_info->move_energy;
+		/* clearing a web shouldn't take a whole turn */
+		player->upkeep->energy_use = z_info->move_energy * 3 / 4;
 		return;
 	}
 
@@ -1268,7 +1319,13 @@ void do_cmd_jump(struct command *cmd)
 	if (!do_cmd_walk_test(grid))
 		return;
 
-	player->upkeep->energy_use = energy_per_move(player);
+	/* Some terrain slows movement */
+	if (square_slows_movement(cave, player->grid)) {
+		int nspeed = energy_per_move(player);
+		player->upkeep->energy_use = nspeed * 5 / 4;
+	}
+
+	else player->upkeep->energy_use = energy_per_move(player);
 
 	move_player(dir, false);
 }
@@ -1293,7 +1350,9 @@ void do_cmd_run(struct command *cmd)
 		/* Clear the web, finish turn */
 		msg("You clear the web.");
 		square_destroy_trap(cave, player->grid);
-		player->upkeep->energy_use = z_info->move_energy;
+
+		/* clearing a web shouldn't take a whole turn */
+		player->upkeep->energy_use = z_info->move_energy * 3 / 4;
 		return;
 	}
 

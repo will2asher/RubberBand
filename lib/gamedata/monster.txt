@@ -1795,7 +1795,7 @@ name:arrow launcher
 base:trap monster
 color:s
 speed:115
-hit-points:30
+hit-points:35
 hearing:15
 armor-class:30
 sleepiness:1
@@ -6398,7 +6398,7 @@ speed:115
 hit-points:66
 hearing:22
 armor-class:32
-sleepiness:12
+sleepiness:6
 depth:19
 rarity:4
 experience:91
@@ -7682,10 +7682,10 @@ name:hidden arrow launcher
 base:trap monster
 color:W
 speed:116
-hit-points:70
+hit-points:90
 hearing:15
 armor-class:60
-sleepiness:2
+sleepiness:1
 depth:23
 rarity:4
 experience:101
@@ -9968,7 +9968,7 @@ desc: you, wielding a huge club and pushing his own followers rudely aside.
 
 name:ghast
 base:vampire
-color:u
+color:o
 speed:119
 hit-points:165
 hearing:29

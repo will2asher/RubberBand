@@ -29,7 +29,8 @@ enum
 {
 	TYP_RUBBLE,	/*!< Rubble */
 	TYP_TRAP,	/*!< Trap */
-	TYP_GOLD,	/*!< Gold */
+    TYP_TREE,	/*!< Tree */
+    TYP_GOLD,	/*!< Gold */
 	TYP_OBJECT,	/*!< Object */
 	TYP_GOOD,	/*!< Good object */
 	TYP_GREAT	/*!< Great object */

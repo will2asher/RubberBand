@@ -1180,8 +1180,8 @@ static size_t prt_terrain(int row, int col)
  */
 static size_t prt_dtrap(int row, int col)
 {
-	/* The player is in a trap-detected grid */
-	if (square_isdtrap(cave, player->grid)) {
+	/* The player is in a trap-detected grid (no traps in the town, so no need for detection) */
+	if ((square_isdtrap(cave, player->grid)) && (player->depth)) {
 		/* The player is on the border */
 		if (square_dtrap_edge(cave, player->grid))
 			c_put_str(COLOUR_YELLOW, "DTrap ", row, col);

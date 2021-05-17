@@ -119,6 +119,7 @@ world:feeling-total:100
 world:feeling-need:10
 
 # Number of levels for each stair
+# DO NOT CHANGE THIS.
 world:stair-skip:1
 
 # Energy needed by player or monsters to move

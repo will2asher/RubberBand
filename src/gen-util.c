@@ -353,8 +353,7 @@ void new_player_spot(struct chunk *c, struct player *p)
 	}
 
     /* Create stairs the player came down if allowed and necessary */
-    if (!OPT(p, birth_connect_stairs))
-		;
+    if (!OPT(p, birth_connect_stairs)) /*skip*/;
 	else if (p->upkeep->create_down_stair)
 		square_set_feat(c, grid, FEAT_MORE);
 	else if (p->upkeep->create_up_stair)
@@ -389,7 +388,10 @@ static void place_stairs(struct chunk *c, struct loc grid, int feat)
 		square_set_feat(c, grid, FEAT_MORE);
     else if (is_quest(c->depth) || c->depth >= z_info->max_depth - 1)
 		square_set_feat(c, grid, FEAT_LESS);
-    else
+	/* Slides have a certain level range */
+	else if ((feat == FEAT_SLIDE) && ((c->depth < 12) || (c->depth > 94)))
+		square_set_feat(c, grid, FEAT_MORE);
+	else
 		square_set_feat(c, grid, feat);
 }
 
@@ -619,7 +621,11 @@ bool alloc_object(struct chunk *c, int set, int typ, int depth, byte origin)
     /* Place something */
     switch (typ) {
     case TYP_RUBBLE: place_rubble(c, grid); break;
-    case TYP_TRAP: place_trap(c, grid, -1, depth); break;
+	case TYP_TREE: {
+		if (!randint0(8 - depth/15)) square_set_feat(c, grid, FEAT_DEAD_TREE);
+		else square_set_feat(c, grid, FEAT_TREE);
+	}
+	case TYP_TRAP: place_trap(c, grid, -1, depth); break;
     case TYP_GOLD: place_gold(c, grid, depth, origin); break;
     case TYP_OBJECT: place_object(c, grid, depth, false, false, origin, 0);
 		break;
@@ -656,7 +662,7 @@ void vault_objects(struct chunk *c, struct loc grid, int depth, int num)
 			if (randint0(100) < 75)
 				place_object(c, near, depth, false, false, ORIGIN_SPECIAL, 0);
 			else
-				place_gold(c, near, depth, ORIGIN_VAULT);
+				place_gold(c, near, depth + 1, ORIGIN_VAULT);
 
 			/* Placement accomplished */
 			break;

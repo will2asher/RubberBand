@@ -1056,6 +1056,7 @@ static struct chunk *cave_generate(struct player *p, int height, int width)
 				sqinfo_off(square(chunk, grid)->info, SQUARE_WALL_INNER);
 				sqinfo_off(square(chunk, grid)->info, SQUARE_WALL_OUTER);
 				sqinfo_off(square(chunk, grid)->info, SQUARE_WALL_SOLID);
+				sqinfo_off(square(chunk, grid)->info, SQUARE_WALL_SPEC);
 				sqinfo_off(square(chunk, grid)->info, SQUARE_MON_RESTRICT);
 
 				if (square_isstairs(chunk, grid)) {

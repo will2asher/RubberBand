@@ -54,6 +54,7 @@ int FEAT_GRANITE;
 int FEAT_PERM;
 int FEAT_LAVA;
 int FEAT_FIRE;
+int FEAT_SLIDE;
 int FEAT_TREE;
 int FEAT_DEAD_TREE;
 int FEAT_FIRE_TREE;
@@ -63,6 +64,7 @@ int FEAT_ACID_PUDDLE;
 int FEAT_WATER;
 int FEAT_WATER_DEEP;
 int FEAT_STATUE;
+int FEAT_SM_STATUE;
 int FEAT_FOUNTAIN;
 int FEAT_WHIRLWIND;
 int FEAT_NEXUS_STONE;
@@ -355,7 +357,21 @@ void set_terrain(void)
 	FEAT_GRANITE = lookup_feat("granite wall");
 	FEAT_PERM = lookup_feat("permanent wall");
 	FEAT_LAVA = lookup_feat("lava");
+	FEAT_SLIDE = lookup_feat("slide");
 	FEAT_TREE = lookup_feat("tree");
+	FEAT_FIRE = lookup_feat("fire");
+	FEAT_DEAD_TREE = lookup_feat("dead tree");
+	FEAT_FIRE_TREE = lookup_feat("burning tree");
+	FEAT_OPIT = lookup_feat("open pit");
+	FEAT_SLIME_PUDDLE = lookup_feat("puddle of slime");
+	FEAT_ACID_PUDDLE = lookup_feat("pool of acid");
+	FEAT_WATER = lookup_feat("water");
+	FEAT_WATER_DEEP = lookup_feat("deep water");
+	FEAT_STATUE = lookup_feat("statue");
+	FEAT_SM_STATUE = lookup_feat("small statue");
+	FEAT_FOUNTAIN = lookup_feat("fountain");
+	FEAT_WHIRLWIND = lookup_feat("small whirlwind");
+	FEAT_NEXUS_STONE = lookup_feat("nexus stone");
 }
 
 /**

@@ -193,6 +193,10 @@ static bool monster_hates_grid(struct chunk *c, struct monster *mon,
 		!rf_has(mon->race->flags, square_feat(c, grid)->resist_flag)) {
 		return true;
 	}
+	/* Water can damage some monsters too */
+	/* (and cats hate water even though they aren't damaged by it) */
+	if (square_iswater(c, grid) && (rf_has(mon->race->flags, RF_HURT_WATER) ||
+		(mon->race->d_char == 'f'))) return true;
 	return false;
 }
 
@@ -573,10 +577,11 @@ static bool get_move_find_safety(struct chunk *c, struct monster *mon)
 			/* Skip illegal locations */
 			if (!square_in_bounds_fully(c, grid)) continue;
 
-			/* PASS_DOOR monsters can also pass over rubble XX */
+			/* PASS_DOOR monsters can pass rubble as well */
+			if (rf_has(mon->race->flags, RF_PASS_DOOR) && square_isrubble(c, grid)) /*okay*/;
 
 			/* Skip locations in a wall */
-			if (!square_ispassable(c, grid)) continue;
+			else if (!square_ispassable(c, grid)) continue;
 
 			/* Ignore too-distant grids */
 			if (c->noise.grids[grid.y][grid.x] >
@@ -1159,9 +1164,8 @@ static bool monster_turn_can_move(struct chunk *c, struct monster *mon,
 		return false;
 	}
 
-	/* PASS_DOOR monsters can pass rubble as well XX */
-	/* (this is more complicated than I thought it'd be. I'll do it later.)*/
-	/* if (rf_has(mon->race->flags, RF_PASS_DOOR)) */
+	/* PASS_DOOR monsters can pass rubble as well */
+	if (rf_has(mon->race->flags, RF_PASS_DOOR) && square_isrubble(c, new)) return true;
 
 	/* Floor is open? */
 	if (square_ispassable(c, new)) {

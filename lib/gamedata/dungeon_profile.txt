@@ -10,7 +10,7 @@
 # block_size is the size of the blocks which the dungeon is divided into; a
 # room will never cross a block boundary.  rooms is the number of rooms to
 # aim for.  unusual is a measure of how likely high rarity roooms are to
-# appear - higher values give less rare rooms.  rarity is the maximum rarity
+# appear - higher values give fewer rare rooms.  rarity is the maximum rarity
 # room allowed with this cave profile
 
 # tunnel: rnd : chg : con : pen : jct
@@ -75,10 +75,13 @@ name:cavern
 params:1:0:200:0
 alloc:10
 
+# params: block_size : rooms : unusual : rarity
+# tunnel: rnd : chg : con : pen : jct
+#tunnel:10:30:15:25:50 (V)
 ## Classic
 name:classic
 params:11:50:200:2
-tunnel:10:30:15:25:50
+tunnel:10:30:14:27:52
 streamer:5:2:3:90:2:40
 alloc:90
 
@@ -86,6 +89,7 @@ alloc:90
 room:Greater vault:0:44:66:35:0:0:100
 
 # Very rare rooms (rarity = 2)
+room:room of chambers:0:44:66:10:0:2:4
 room:monster pit:0:11:33:5:1:2:8
 room:monster nest:0:11:33:5:1:2:16
 room:Medium vault:0:22:33:30:0:2:38
@@ -103,6 +107,8 @@ room:room template:3:11:33:30:0:1:100
 # Normal rooms (rarity = 0)
 room:simple room:0:11:33:1:0:0:100
 
+# params: block_size : rooms : unusual : rarity
+# tunnel: rnd : chg : con : pen : jct
 ## Modified
 name:modified
 params:1:50:300:2

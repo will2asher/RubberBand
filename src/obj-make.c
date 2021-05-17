@@ -1180,8 +1180,11 @@ struct object *make_object(struct chunk *c, int lev, bool good, bool great,
 
 	/* Treasure maps make objects more likely to be "good". (The one_in_number may need tweaking)
 	 * (only while we're generating a level -not for monster drops) */
-	if ((player->timed[TMD_TREASMAP] > 0) && (!character_dungeon) && (one_in_(10)))
+#if 0
+	if ((player->timed[TMD_TREASMAP] > 0) && (!character_dungeon) && (one_in_(10))) {
 		good = true;
+	}
+#endif
 
 	/* Try to make a special artifact */
 	if (one_in_(good ? 10 : 1000)) {
@@ -1311,9 +1314,7 @@ struct object *make_gold(int lev, char *coin_type)
 	object_prep(new_gold, money_kind(coin_type, value), lev, RANDOMISE);
 
 	/* If we're playing with no_selling, increase the value */
-	if (OPT(player, birth_no_selling) && player->depth)	{
-		value *= 5;
-	}
+	if (OPT(player, birth_no_selling) && player->depth)	value *= 5;
 
 	/* Cap gold at max short (or alternatively make pvals s32b) */
 	if (value >= SHRT_MAX) {

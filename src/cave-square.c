@@ -150,11 +150,26 @@ bool feat_is_bright(int feat)
 }
 
 /**
- * True if the feature is internally lit.
+ * True if the feature is fire-based. (lava, fire, burning tree)
  */
 bool feat_is_fiery(int feat)
 {
 	return tf_has(f_info[feat].flags, TF_FIERY);
+}
+
+/* FIERY features aren't the only damaging ones anymore (also acid) */
+bool feat_is_damaging(int feat)
+{
+	if (tf_has(f_info[feat].flags, TF_FIERY) || tf_has(f_info[feat].flags, TF_ODAMG)) return true;
+	return false;
+}
+
+/**
+ * True if the feature slows movement. (and should be passable)
+ */
+bool feat_slows_movement(int feat)
+{
+	return tf_has(f_info[feat].flags, TF_SLOWS);
 }
 
 /**
@@ -284,6 +299,21 @@ bool square_isrubble(struct chunk *c, struct loc grid)
 {
     return (!tf_has(f_info[square(c, grid)->feat].flags, TF_WALL) &&
 			tf_has(f_info[square(c, grid)->feat].flags, TF_ROCK));
+}
+
+/**
+ * True if the square has a tree.
+ */
+bool square_isatree(struct chunk *c, struct loc grid)
+{
+	return (tf_has(f_info[square(c, grid)->feat].flags, TF_TREE));
+}
+/**
+ * True if the square slows movement.
+ */
+bool square_slows_movement(struct chunk *c, struct loc grid)
+{
+	return (feat_slows_movement(square(c, grid)->feat));
 }
 
 /**
@@ -505,7 +535,9 @@ bool square_iswall_inner(struct chunk *c, struct loc grid) {
  */
 bool square_iswall_outer(struct chunk *c, struct loc grid) {
 	assert(square_in_bounds(c, grid));
-	return sqinfo_has(square(c, grid)->info, SQUARE_WALL_OUTER);
+	if (sqinfo_has(square(c, grid)->info, SQUARE_WALL_OUTER) ||
+		sqinfo_has(square(c, grid)->info, SQUARE_WALL_SPEC)) return true;
+	return false;
 }
 
 /**
@@ -622,11 +654,14 @@ bool square_canputitem(struct chunk *c, struct loc grid) {
 }
 
 /**
- * True if the square can be dug: this includes rubble and non-permanent walls.
+ * True if the square can be dug: this includes rubble, trees, and non-permanent walls.
  */
 bool square_isdiggable(struct chunk *c, struct loc grid) {
+	/* can't chop down a tree while it's on fire */
+	if (square_isfiery(c, grid)) return false;
+
 	return (square_ismineral(c, grid) ||
-			square_issecretdoor(c, grid) || 
+			square_issecretdoor(c, grid) || square_isatree(c, grid) ||
 			square_isrubble(c, grid));
 }
 
@@ -733,11 +768,47 @@ bool square_islitwall(struct chunk *c, struct loc grid) {
 }
 
 /**
- * True if the cave square can damage the inhabitant - only lava so far
+ * True if the cave square can damage the inhabitant - lava, fire, and acid
  */
 bool square_isdamaging(struct chunk *c, struct loc grid) {
 	assert(square_in_bounds(c, grid));
-	return feat_is_fiery(square(c, grid)->feat);
+	return feat_is_damaging(square(c, grid)->feat);
+}
+
+/**
+ * True if the cave square is water-filled
+ */
+bool square_iswater(struct chunk* c, struct loc grid) {
+	assert(square_in_bounds(c, grid));
+	return (tf_has(f_info[square(c, grid)->feat].flags, TF_WATER));
+}
+
+/**
+ * True if the cave square has a statue
+ */
+bool square_has_statue(struct chunk* c, struct loc grid) {
+	assert(square_in_bounds(c, grid));
+	return (tf_has(f_info[square(c, grid)->feat].flags, TF_STATUE));
+}
+
+/**
+ * True if the cave square has a nexus stone
+ */
+bool square_has_nexus(struct chunk* c, struct loc grid) {
+	assert(square_in_bounds(c, grid));
+	return (tf_has(f_info[square(c, grid)->feat].flags, TF_NEXUS_ST));
+}
+
+/**
+ * True if the cave square easily allows puddles (or lava, etc)
+ * (in V, only empty floor could turn to lava)
+ */
+bool square_can_puddle(struct chunk* c, struct loc grid) {
+	assert(square_in_bounds(c, grid));
+
+	/* I don't feel like making a flag just for this... */
+	if (square(c, grid)->feat == lookup_feat("open pit")) return true;
+	return square_isfloor(c, grid);
 }
 
 /**
@@ -1305,6 +1376,7 @@ void square_destroy_decoy(struct chunk *c, struct loc grid)
 	}
 }
 
+/* Why have two functions that are exactly the same here? */
 void square_tunnel_wall(struct chunk *c, struct loc grid)
 {
 	square_set_feat(c, grid, FEAT_FLOOR);
@@ -1354,6 +1426,7 @@ void square_destroy(struct chunk *c, struct loc grid) {
 	int feat = FEAT_FLOOR;
 	int r = randint0(200);
 
+	/* Add chance of rubble here */
 	if (r < 20)
 		feat = FEAT_GRANITE;
 	else if (r < 70)
@@ -1373,6 +1446,7 @@ void square_earthquake(struct chunk *c, struct loc grid) {
 		return;
 	}
 
+	/* Add chance of rubble here */
 	if (t < 20)
 		f = FEAT_GRANITE;
 	else if (t < 70)
@@ -1393,8 +1467,9 @@ void square_upgrade_mineral(struct chunk *c, struct loc grid)
 		square_set_feat(c, grid, FEAT_QUARTZ_K);
 }
 
+/* (also used to destroy statues) */
 void square_destroy_rubble(struct chunk *c, struct loc grid) {
-	assert(square_isrubble(c, grid));
+	/* assert(square_isrubble(c, grid)); */
 	square_set_feat(c, grid, FEAT_FLOOR);
 }
 

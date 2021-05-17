@@ -2929,6 +2929,23 @@ power:20
 effect:REMOVE_CURSE
 dice:50+d50
 
+name:Temporary Branding
+type:scroll
+graphics:?:w
+level:10
+weight:5
+cost:125
+alloc:8:15 to 103
+pile:8:2
+power:18
+effect:RANDOM
+dice:2
+effect:TIMED_INC:ATT_FIRE
+dice:20+5d6
+effect:TIMED_INC:ATT_COLD
+dice:20+5d6
+
+
 ### Summoning ###
 
 name:Summon Monster
@@ -3748,7 +3765,7 @@ graphics:!:d
 level:30
 weight:4
 cost:30
-alloc:40:30 to 100
+alloc:40:30 to 103
 pile:25:2
 power:4
 effect:TIMED_INC:OPP_FIRE
@@ -3762,10 +3779,26 @@ graphics:!:d
 level:30
 weight:4
 cost:30
-alloc:40:30 to 100
+alloc:40:30 to 103
 pile:25:2
 power:4
 effect:TIMED_INC:OPP_COLD
+dice:50+1d10
+effect:NOURISH:INC_BY
+dice:1
+
+name:Resist Acid and Electricity
+type:potion
+graphics:!:d
+level:30
+weight:4
+cost:33
+alloc:21:29 to 103
+pile:25:2
+power:4
+effect:TIMED_INC:OPP_ACID
+dice:50+1d10
+effect:TIMED_INC:OPP_ELEC
 dice:50+1d10
 effect:NOURISH:INC_BY
 dice:1
@@ -3776,7 +3809,7 @@ graphics:!:d
 level:20
 weight:4
 cost:30
-alloc:40:20 to 100
+alloc:40:20 to 103
 pile:25:2
 power:4
 effect:TIMED_INC:OPP_POIS
@@ -3785,7 +3818,7 @@ effect:CURE:POISONED
 effect:NOURISH:INC_BY
 dice:1
 
-#True Seeing is something different now (I'll add that potion later)
+#True Seeing is something different now (I'll add that potion later once diguises and illusions work)
 name:See Invisible
 type:potion
 graphics:!:d
@@ -4074,12 +4107,26 @@ alloc:4:35 to 102
 attack:1d1:0:0
 armor:0:0
 charges:6+d8
-power:5
+power:6
 effect:BEAM:LIGHT
 dice:4d12
 effect:BOLT_OR_BEAM:HOLY_ORB
 dice:8d8
 #roughly equivelent to 14d8 total
+
+name:Rift
+type:wand
+graphics:-:d
+level:31
+weight:10
+cost:1200
+alloc:8:30 to 102
+attack:1d1:0:0
+armor:0:0
+charges:4+d6
+power:6
+effect:BEAM:GRAVITY
+dice:9d8
 
 ### Balls ###
 
@@ -5146,6 +5193,7 @@ effect:HEAL_SLIME
 dice:1
 time:1000
 
+#Should Restoration cure DISEASE since it temporarily lowers stats?
 name:Restoration
 type:rod
 graphics:-:d

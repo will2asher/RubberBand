@@ -20,6 +20,7 @@
  * cave->squares, which should only be applied to granite.  SQUARE_WALL_SOLID
  * indicates the wall should not be tunnelled; SQUARE_WALL_INNER is the
  * inward-facing wall of a room; SQUARE_WALL_OUTER is the outer wall of a room.
+ * SQUARE_WALL_SPEC is for walls for special round rooms to allow corner doors.
  *
  * We use SQUARE_WALL_SOLID to prevent multiple corridors from piercing a wall
  * in two adjacent locations, which would be messy, and SQUARE_WALL_OUTER
@@ -223,7 +224,13 @@ static void build_tunnel(struct chunk *c, struct loc grid1, struct loc grid2)
 			continue;
 
 		/* Pierce "outer" walls of rooms */
-		if (square_is_granite_with_flag(c, tmp_grid, SQUARE_WALL_OUTER)) {
+		if ((square_is_granite_with_flag(c, tmp_grid, SQUARE_WALL_OUTER)) ||
+			(square_is_granite_with_flag(c, tmp_grid, SQUARE_WALL_SPEC))) {
+			bool wall_spec = false;
+
+			/* Special room walls should allow doors in corners */
+			if (square_is_granite_with_flag(c, tmp_grid, SQUARE_WALL_SPEC)) wall_spec = true;
+
 			/* Get the "next" location */
 			struct loc grid = loc_sum(tmp_grid, offset);
 
@@ -233,11 +240,31 @@ static void build_tunnel(struct chunk *c, struct loc grid1, struct loc grid2)
 			/* Hack -- Avoid solid permanent walls */
 			if (square_isperm(c, grid)) continue;
 
-			/* Hack -- Avoid outer/solid granite walls */
-			if (square_is_granite_with_flag(c, grid, SQUARE_WALL_OUTER)) 
+			/* Hack -- Avoid solid granite walls */
+			if (square_is_granite_with_flag(c, grid, SQUARE_WALL_SOLID))
 				continue;
-			if (square_is_granite_with_flag(c, grid, SQUARE_WALL_SOLID)) 
-				continue;
+
+			if (!wall_spec) {
+				/* Hack -- Avoid outer granite walls */
+				if (square_is_granite_with_flag(c, grid, SQUARE_WALL_OUTER))
+					continue;
+			}
+			else {
+				if ((square_is_granite_with_flag(c, grid, SQUARE_WALL_OUTER)) ||
+					(square_is_granite_with_flag(c, grid, SQUARE_WALL_SPEC))) {
+					int spacey = 0;
+
+					/* count non-wall spaces */
+					for (grid.y = grid1.y - 1; grid.y <= grid1.y + 1; grid.y++) {
+						for (grid.x = grid1.x - 1; grid.x <= grid1.x + 1; grid.x++) {
+							if (!square_isgranite(c, grid)) spacey += 1;
+						}
+					}
+					/* Since tunnels aren't turned into floor until later, corners should */
+					/* have exactly 1 floor space adjacent to them (inside the room) */
+					if (spacey != 1) continue;
+				}
+			}
 
 			/* Accept this location */
 			grid1 = tmp_grid;
@@ -261,7 +288,7 @@ static void build_tunnel(struct chunk *c, struct loc grid1, struct loc grid2)
 
 			/* Accept the location */
 			grid1 = tmp_grid;
-		} else if (square_isgranite(c, tmp_grid) || square_isperm(c, tmp_grid)){
+		} else if (square_isgranite(c, tmp_grid) || square_isperm(c, tmp_grid)) {
 			/* Tunnel through all other walls */
 
 			/* Accept this location */
@@ -411,6 +438,7 @@ struct chunk *classic_gen(struct player *p, int min_height, int min_width) {
     int by, bx = 0, tby, tbx, key, rarity, built;
     int num_rooms, size_percent;
     int dun_unusual = dun->profile->dun_unusual;
+	int stairs;
 
     bool **blocks_tried;
 	struct chunk *c;
@@ -499,10 +527,12 @@ struct chunk *classic_gen(struct player *p, int min_height, int min_width) {
 		/* (DUN_UNUSUAL is usually 200) */
 		i = 0;
 		rarity = 0;
+#if 0
 		/* Treasure map effect makes special rooms more common */
 		if ((player->timed[TMD_TREASMAP]) && (dun_unusual > 180)) {
 			dun_unusual -= 30;
 		}
+#endif
 		while (i == rarity && i < dun->profile->max_rarity) {
 			if (randint0(dun_unusual) < 50 + c->depth / 2) rarity++;
 			i++;
@@ -580,7 +610,15 @@ struct chunk *classic_gen(struct player *p, int min_height, int min_width) {
 		build_streamer(c, FEAT_QUARTZ, dun->profile->str.qc);
 
     /* Place 3 or 4 down stairs near some walls */
-    alloc_stairs(c, FEAT_MORE, rand_range(3, 4));
+	stairs = rand_range(3, 4);
+
+	/* Sometimes replace a downstair with a slide */
+	if ((c->depth > 8) && (one_in_(20 - c->depth / 20))) {
+		if ((stairs > 3) || (one_in_(15 - c->depth / 20))) stairs -= 1;
+		alloc_stairs(c, FEAT_SLIDE, 1);
+	}
+	alloc_stairs(c, FEAT_MORE, stairs);
+	/* alloc_stairs(c, FEAT_MORE, rand_range(3, 4)); */
 
     /* Place 1 or 2 up stairs near some walls */
     alloc_stairs(c, FEAT_LESS, rand_range(1, 2));
@@ -1801,6 +1839,10 @@ static void town_gen_layout(struct chunk *c, struct player *p)
 				}
 			}
 		}
+
+		/* And some trees */
+		alloc_objects(c, SET_BOTH, TYP_TREE, 3 + randint1(11), 0, 0);
+
 		success = true;
 	}
 
@@ -1960,6 +2002,14 @@ struct chunk *modified_chunk(int depth, int height, int width)
 		 * a depth^2/DUN_UNUSUAL^2 chance of being > 1, up to MAX_RARITY. */
 		i = 0;
 		rarity = 0;
+
+#if 0
+		/* Treasure map effect makes special rooms more common */
+		if ((player->timed[TMD_TREASMAP]) && (dun_unusual > 180)) {
+			dun_unusual -= 30;
+		}
+#endif
+
 		while (i == rarity && i < dun->profile->max_rarity) {
 			if (randint0(dun_unusual) < 50 + c->depth / 2) rarity++;
 			i++;
@@ -2090,7 +2140,14 @@ struct chunk *modified_gen(struct player *p, int min_height, int min_width) {
 
     /* Place 3 or 4 down stairs near some walls */
 	if (!OPT(p, birth_levels_persist) || !chunk_find_adjacent(p, false)) {
-		alloc_stairs(c, FEAT_MORE, rand_range(3, 4));
+		int stairs = randint1(2) + 2; /* (same as rand_range(3, 4) ) */
+
+		/* Sometimes replace a downstair with a slide */
+		if ((c->depth > 8) && (one_in_(20 - c->depth/20))) {
+			if (stairs > 3) stairs -= 1;
+			alloc_stairs(c, FEAT_SLIDE, 1);
+		}
+		alloc_stairs(c, FEAT_MORE, stairs);
 	}
 
     /* Place 1 or 2 up stairs near some walls */
@@ -2902,6 +2959,9 @@ struct chunk *gauntlet_gen(struct player *p, int min_height, int min_width) {
 				  c->depth, ORIGIN_FLOOR);
 	alloc_objects(c, SET_BOTH, TYP_GOLD, Rand_normal(z_info->both_gold_av, 3),
 				  c->depth, ORIGIN_FLOOR);
+
+	/* And occationally some trees */
+	if (randint0(80) < 20 - c->depth/4) alloc_objects(c, SET_ROOM, TYP_TREE, 3 + randint1(9), c->depth, 0);
 
 	return c;
 }

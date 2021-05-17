@@ -1746,7 +1746,6 @@ static void do_cmd_wiz_query(void)
 	char cmd;
 	int flag = 0;
 
-
 	/* Get a "debug command" */
 	if (!get_com("Debug Command Query: ", &cmd)) return;
 
@@ -1766,6 +1765,7 @@ static void do_cmd_wiz_query(void)
 		case 'i': flag = (SQUARE_WALL_INNER); break;
 		case 'o': flag = (SQUARE_WALL_OUTER); break;
 		case 'l': flag = (SQUARE_WALL_SOLID); break;
+		case 'p': flag = (SQUARE_WALL_SPEC); break;
 		case 'x': flag = (SQUARE_MON_RESTRICT); break;
 	}
 

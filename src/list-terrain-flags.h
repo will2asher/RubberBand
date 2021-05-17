@@ -10,8 +10,8 @@
 
 /*  symbol     descr */
 TF(NONE,        "")
-TF(LOS,        "Allows line of sight")
-TF(PROJECT,    "Allows projections to pass through")
+TF(LOS,        "Allows line of sight")								/* (unused in V) */
+TF(PROJECT,    "Allows projections to pass through")				/* Also used for line of sight */
 TF(PASSABLE,   "Can be passed through by all creatures")
 TF(INTERESTING,"Is noticed on looking around")
 TF(PERMANENT,  "Is permanent")
@@ -41,3 +41,10 @@ TF(DOWNSTAIR,  "Is a down staircase")
 TF(SMOOTH,     "Should have smooth boundaries")
 TF(BRIGHT,     "Is internally lit")
 TF(FIERY,      "Is fire-based")
+TF(ODAMG,	   "Is damaging (but not fire-based)")
+TF(PSLIME,     "Can slime the player")
+TF(TREE,		"Is a tree")
+TF(SLOWS,		"Slows movement")				/* incl. passable rubble, shallow water, and slime puddles */
+TF(WATER,       "Is water")
+TF(STATUE,      "Is a statue")
+TF(NEXUS_ST,    "Is a nexus stone")
