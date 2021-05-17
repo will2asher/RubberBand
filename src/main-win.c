@@ -1954,11 +1954,11 @@ static errr Term_bigcurs_win(int x, int y)
 
 
 /**
- * Low level graphics (Assumes valid input).
- *
- * Erase a "block" of "n" characters starting at (x,y).
+ * Help Term_wipe_win(), Term_pict_win(), and Term_pict_win_alpha():
+ * erase a nc x nr block of characters where the upper left corner
+ * of the block is at (x,y).
  */
-static errr Term_wipe_win(int x, int y, int n)
+static errr Term_wipe_win_helper(int x, int y, int nc, int nr)
 {
 	term_data *td = (term_data*)(Term->data);
 
@@ -1967,9 +1967,9 @@ static errr Term_wipe_win(int x, int y, int n)
 
 	/* Rectangle to erase in client coords */
 	rc.left = x * td->tile_wid + td->size_ow1;
-	rc.right = rc.left + n * td->tile_wid;
+	rc.right = rc.left + nc * td->tile_wid;
 	rc.top = y * td->tile_hgt + td->size_oh1;
-	rc.bottom = rc.top + td->tile_hgt;
+	rc.bottom = rc.top + nr * td->tile_hgt;
 
 	hdc = GetDC(td->w);
 	SetBkColor(hdc, RGB(0, 0, 0));
@@ -1979,6 +1979,17 @@ static errr Term_wipe_win(int x, int y, int n)
 
 	/* Success */
 	return 0;
+}
+
+
+/**
+ * Low level graphics (Assumes valid input).
+ *
+ * Erase a "block" of "n" characters starting at (x,y).
+ */
+static errr Term_wipe_win(int x, int y, int n)
+{
+	return Term_wipe_win_helper(x, y, n, 1);
 }
 
 
@@ -2132,7 +2143,7 @@ static errr Term_pict_win(int x, int y, int n,
 	th2 = mh * h2;
 
 	/* Erase the grids */
-	for (i = 0; i < mh; ++i) Term_wipe_win(x, y + i, n * mw);
+	Term_wipe_win_helper(x, y, n * mw, mh);
 
 	/* Location of window cell */
 	x2 = x * w2 + td->size_ow1;
@@ -2375,7 +2386,7 @@ static errr Term_pict_win_alpha(int x, int y, int n,
 	th2 = mh * h2;
 
 	/* Erase the grids */
-	for (i = 0; i < mh; ++i) Term_wipe_win(x, y + i, n * mw);
+	Term_wipe_win_helper(x, y, n * mw, mh);
 
 	/* Location of window cell */
 	x2 = x * w2 + td->size_ow1;
