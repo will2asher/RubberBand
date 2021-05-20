@@ -89,16 +89,17 @@ alloc:90
 room:Greater vault:0:44:66:35:0:0:100
 
 # Very rare rooms (rarity = 2)
-room:room of chambers:0:44:66:10:0:2:4
 room:monster pit:0:11:33:5:1:2:8
 room:monster nest:0:11:33:5:1:2:16
 room:Medium vault:0:22:33:30:0:2:38
-room:Lesser vault:0:22:33:20:0:2:55
+room:room of chambers:0:44:65:10:0:2:40
+room:Lesser vault:0:22:33:12:0:2:60
 
 # Unusual rooms (rarity = 1)
-room:large room:0:11:33:3:0:1:15
-room:crossed room:0:11:33:3:0:1:35
-room:circular room:0:22:22:1:0:1:50
+room:Interesting room:0:44:55:2:0:1:10
+room:large room:0:11:33:3:0:1:25
+room:crossed room:0:11:33:3:0:1:40
+room:circular room:0:22:22:1:0:1:55
 room:overlap room:0:11:33:1:0:1:70
 room:room template:1:11:33:1:0:1:95
 room:room template:2:11:33:10:0:1:99

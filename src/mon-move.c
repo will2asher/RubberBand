@@ -188,7 +188,13 @@ static bool monster_can_move(struct chunk *c, struct monster *mon,
 static bool monster_hates_grid(struct chunk *c, struct monster *mon,
 							   struct loc grid)
 {
-	/* Only some creatures can handle damaging terrain */
+	/* monsters ignore slime puddles (for now at least -I may change that later) */
+	if (square(c, grid)->feat == FEAT_SLIME_PUDDLE) return false;
+
+	/* monsters ignore open pits for now (until I implement monster size and the FLY flag) */
+	if (square(c, grid)->feat == FEAT_OPIT) return false;
+
+	/* Only some creatures can handle damaging terrain (besides slime puddles) */
 	if (square_isdamaging(c, grid) &&
 		!rf_has(mon->race->flags, square_feat(c, grid)->resist_flag)) {
 		return true;
@@ -1530,6 +1536,10 @@ static void monster_turn(struct chunk *c, struct monster *mon)
 	/* Get the monster name */
 	monster_desc(m_name, sizeof(m_name), mon, MDESC_CAPITAL | MDESC_IND_HID);
 
+	/* camouflaged monsters usually prefer to stay camouflaged */
+	if (monster_is_camouflaged(mon) && monster_is_visible(mon) && monster_is_in_view(mon) &&
+		(randint0(100) < 75)) return;
+
 	/* If we're in a web, deal with that */
 	if (square_iswebbed(c, mon->grid)) {
 		/* Learn web behaviour */
@@ -1626,8 +1636,7 @@ static void monster_turn(struct chunk *c, struct monster *mon)
 				rf_on(lore->flags, RF_NEVER_BLOW);
 
 			/* Some monsters never attack */
-			if (rf_has(mon->race->flags, RF_NEVER_BLOW))
-				continue;
+			if (rf_has(mon->race->flags, RF_NEVER_BLOW)) continue;
 
 			/* Player charms animals 
 			 * (todo: this should really be a one-time effect on each individual animal) */
@@ -1659,7 +1668,7 @@ static void monster_turn(struct chunk *c, struct monster *mon)
 				return;
 			}
 			/* Some monsters move slower than they cast/attack */
-			else if ((rf_has(mon->race->flags, RF_MOVE_SLOW)) && (one_in_(3))) {
+			else if ((rf_has(mon->race->flags, RF_MOVE_SLOW)) && (randint0(100) < 60)) {
 					/* Learn about lack of movement */
 					if (monster_is_visible(mon))
 						rf_on(lore->flags, RF_MOVE_SLOW);
@@ -1703,7 +1712,7 @@ static void monster_turn(struct chunk *c, struct monster *mon)
 	}
 
 	/* If we see an unaware monster do something, become aware of it */
-	if (did_something && monster_is_camouflaged(mon))
+	if (did_something && monster_is_camouflaged(mon) && monster_is_visible(mon) && monster_is_in_view(mon))
 		become_aware(mon);
 }
 
@@ -1758,6 +1767,9 @@ static void monster_reduce_sleep(struct chunk *c, struct monster *mon)
 	int player_noise = 1 << (30 - stealth);
 	int notice = randint0(1024);
 	struct monster_lore *lore = get_lore(mon->race);
+
+	/* Certain monsters wake especially easily */
+	if (mon->race->sleep == 1) notice = 500 + randint0(524);
 
 	/* Aggravation */
 	if (player_of_has(player, OF_AGGRAVATE)) {

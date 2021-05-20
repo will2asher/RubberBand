@@ -68,6 +68,7 @@ int FEAT_SM_STATUE;
 int FEAT_FOUNTAIN;
 int FEAT_WHIRLWIND;
 int FEAT_NEXUS_STONE;
+int FEAT_CHASM;
 
 /**
  * Global array for looping through the "keypad directions".
@@ -372,6 +373,7 @@ void set_terrain(void)
 	FEAT_FOUNTAIN = lookup_feat("fountain");
 	FEAT_WHIRLWIND = lookup_feat("small whirlwind");
 	FEAT_NEXUS_STONE = lookup_feat("nexus stone");
+	FEAT_CHASM = lookup_feat("chasm");
 }
 
 /**

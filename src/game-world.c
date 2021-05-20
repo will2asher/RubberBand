@@ -1002,13 +1002,13 @@ void on_new_level(void)
 	/* Refresh */
 	event_signal(EVENT_REFRESH);
 
-	if (player->upkeep->arena_level) {
-		return;
-	}
+	if (player->upkeep->arena_level) return;
+
+	/* Treasure maps get used up when going to a new level */
+	if (player->depth >= 10) player_dec_timed(player, TMD_TREASMAP, 25, true);
 
 	/* Announce (or repeat) the feeling */
-	if (player->depth)
-		display_feeling(false);
+	if (player->depth) display_feeling(false);
 
 	/* Check the surroundings */
 	search(player);

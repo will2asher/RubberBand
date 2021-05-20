@@ -142,8 +142,7 @@ void monster_list_collect(monster_list_t *list)
 	if (list == NULL || list->entries == NULL)
 		return;
 
-	if (!monster_list_can_update(list))
-		return;
+	if (!monster_list_can_update(list)) return;
 
 	/* Use cave_monster_max() here in case the monster list isn't compacted. */
 	for (i = 1; i < cave_monster_max(cave); i++) {

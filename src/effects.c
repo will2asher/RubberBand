@@ -678,6 +678,10 @@ bool effect_handler_DAMAGE(effect_handler_context_t *context)
 			struct trap *trap = context->origin.which.trap;
 			char *article = is_a_vowel(trap->kind->desc[0]) ? "an " : "a ";
 			strnfmt(killer, sizeof(killer), "%s%s", article, trap->kind->desc);
+
+			/* beam arg is used as a damage multiplier for trap doors that go down multiple levels */
+			if ((context->beam > 1) && (dam > 1)) 
+				dam += (dam * (context->beam - 1))/2 + randint0((dam * (context->beam - 1)) / 2);
 			break;
 		}
 
@@ -895,7 +899,7 @@ bool effect_handler_NOURISH(effect_handler_context_t *context)
 		player_dec_timed(player, TMD_FOOD, MAX(amount, 0), false);
 	} else if (context->subtype == 2) {
 		/* Set food level to amount, vomiting if necessary */
-		bool message = player->timed[TMD_FOOD] > amount;
+		bool message = ((player->timed[TMD_FOOD] > amount) && (amount < 70));
 		if (message) {
 			msg("You vomit!");
 		}
@@ -4078,9 +4082,7 @@ bool effect_handler_BALL(effect_handler_context_t *context)
 			}
 
 			/* Powerful monster */
-			if (monster_is_powerful(mon)) {
-				rad++;
-			}
+			if (monster_is_powerful(mon)) rad++;
 
 			flg |= PROJECT_PLAY;
 			flg &= ~(PROJECT_STOP | PROJECT_THRU);

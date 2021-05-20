@@ -1005,7 +1005,7 @@ static bool build_room_template(struct chunk *c, struct loc centre, int ymax,
 			case '%': set_marked_granite(c, grid, SQUARE_WALL_SPEC); break;
 			case '#': set_marked_granite(c, grid, SQUARE_WALL_SOLID); break;
 			case '+': place_closed_door(c, grid); break;
-			case '^': if (one_in_(4)) place_trap(c, grid, -1, c->depth); break;
+			case '^': if (one_in_(3)) place_trap(c, grid, -1, c->depth); break;
 			case 'x': {
 
 				/* If optional walls are generated, put a wall in this square */
@@ -1190,8 +1190,20 @@ bool build_vault(struct chunk *c, struct loc centre, struct vault *v)
 			case '#': set_marked_granite(c, grid, SQUARE_WALL_INNER); break;
 				/* Permanent wall */
 			case '@': square_set_feat(c, grid, FEAT_PERM); break;
-				/* tree */
-			case ';': square_set_feat(c, grid, FEAT_TREE); break;
+				/* Tree (or tree monster) (excluded from other letters later) */
+			case 'l': {
+				int tmdie = 15;
+				/* (less likely to place a tree monster at shallow depths) */
+				if (player->depth < 14) tmdie = 40 + (15 - player->depth) * 2;
+				else if (player->depth < 25) tmdie += (25 - player->depth) * 2;
+				if (one_in_(tmdie)) { 
+					/* Place a tree if it fails to find a tree monster (shouldn't happen, but just in case) */
+					if (!sp_vault_monster(c, 'l', v->typ, grid)) square_set_feat(c, grid, FEAT_TREE);
+				}
+				else if (one_in_(6 - player->depth/29)) square_set_feat(c, grid, FEAT_DEAD_TREE);
+				else square_set_feat(c, grid, FEAT_TREE); 
+				break; 
+			}
 				/* Gold seam */
 			case '*': {
 				square_set_feat(c, grid, one_in_(2) ? FEAT_MAGMA_K :
@@ -1200,20 +1212,30 @@ bool build_vault(struct chunk *c, struct loc centre, struct vault *v)
 			}
 				/* Rubble */
 			case ':': {
-				square_set_feat(c, grid, one_in_(2) ? FEAT_PASS_RUBBLE :
-								FEAT_RUBBLE);
+				square_set_feat(c, grid, one_in_(2) ? FEAT_PASS_RUBBLE : FEAT_RUBBLE);
 				break;
 			}
 				/* Secret door */
 			case '+': place_secret_door(c, grid); break;
-				/* Trap */
-			case '^': if (one_in_(4)) place_trap(c, grid, -1, c->depth); break;
-				/* Treasure or a trap */
+				/* Trap. (with chance of trap monster instead */
+			case '^': {
+				if (one_in_(25)) { /* trap monster */
+					/* "?" symbols allows trap monsters, mimics, creeping coins, lurkers, and wall monsters */
+					if (!sp_vault_monster(c, '?', v->typ, grid)) place_trap(c, grid, -1, c->depth);
+				}
+				else if (one_in_(3)) place_trap(c, grid, -1, c->depth);
+				break; 
+			}
+					/* Treasure or a trap */
 			case '&': {
 				if (randint0(100) < 75) {
-					place_object(c, grid, c->depth, false, false, ORIGIN_VAULT,
-								 0);
-				} else if (one_in_(4)) {
+					place_object(c, grid, c->depth, false, false, ORIGIN_VAULT, 0);
+				}
+				else if (one_in_(25)) { /* trap monster */
+						/* "?" symbols allows trap monsters, mimics, creeping coins, lurkers, and wall monsters */
+						if (!sp_vault_monster(c, '?', v->typ, grid)) place_trap(c, grid, -1, c->depth);
+				}
+				else if (one_in_(3)) {
 					place_trap(c, grid, -1, c->depth);
 				}
 				break;
@@ -1234,8 +1256,55 @@ bool build_vault(struct chunk *c, struct loc centre, struct vault *v)
 			}
 				/* Lava */
 			case '`': square_set_feat(c, grid, FEAT_LAVA); break;
-				/* Included to allow simple inclusion of FA vaults */
-			case '/': /*square_set_feat(c, grid, FEAT_WATER)*/; break;
+				/* Water */
+			case '/': square_set_feat(c, grid, FEAT_WATER); break;
+			case '{': square_set_feat(c, grid, FEAT_WATER_DEEP); break;
+				/* Chasm */
+			case '}': square_set_feat(c, grid, FEAT_CHASM); break;
+				/* Fountain */
+			case ';': make_fountain(c, grid); break;
+				/* random special feature */
+			case ')': {
+				int featdie = randint0(100);
+				if (featdie < 20) { /* tree or tree monster  (20%) */
+					int tmdie = 12;
+					/* (less likely to place a tree monster at shallow depths) */
+					if (player->depth < 14) tmdie = 40 + (15 - player->depth) * 2;
+					else if (player->depth < 25) tmdie += (25 - player->depth) * 2;
+					if (one_in_(tmdie)) {
+						/* Place a tree if it fails to find a tree monster (shouldn't happen, but just in case) */
+						if (!sp_vault_monster(c, 'l', v->typ, grid)) square_set_feat(c, grid, FEAT_TREE);
+					}
+					else if (one_in_(5)) square_set_feat(c, grid, FEAT_DEAD_TREE);
+					else square_set_feat(c, grid, FEAT_TREE);
+					break;
+				}
+				else if (featdie < 31) { /* chest  (11%) */
+					place_object(c, grid, c->depth + 5, false, false, ORIGIN_VAULT, TV_CHEST); 
+					/* Sometimes add a monster to guard the chest */
+					if (one_in_(2)) 
+						pick_and_place_monster(c, grid, c->depth + 4, true, true, ORIGIN_DROP_VAULT);
+					break;
+				}
+				/* nexus stone (5%) */
+				else if (featdie < 36) { square_set_feat(c, grid, FEAT_NEXUS_STONE); break; }
+				/* small chance of rubble (3%) */
+				else if (featdie < 39) { square_set_feat(c, grid, one_in_(2) ? FEAT_PASS_RUBBLE : FEAT_RUBBLE); break; }
+				/* small chance of chasm (3%) */
+				else if (featdie < 42) { square_set_feat(c, grid, FEAT_CHASM); break; }
+				/* small chance of lava (3%) */
+				else if (featdie < 45) { square_set_feat(c, grid, FEAT_LAVA); break; }
+				/* Fountain (15%) */
+				else if (featdie < 60) { make_fountain(c, grid); break; }
+				/* small chance of mimic or trap monster (3%) */
+				else if (featdie < 45) { square_set_feat(c, grid, FEAT_LAVA); break; }
+				/* else fall through to random statue (40% for now) */
+			}
+			case '[': { /* random statue */
+				if (one_in_(2)) square_set_feat(c, grid, FEAT_STATUE); 
+				else square_set_feat(c, grid, FEAT_SM_STATUE);
+				break;
+			}
 			}
 
 			/* Part of a vault */
@@ -1252,8 +1321,9 @@ bool build_vault(struct chunk *c, struct loc centre, struct vault *v)
 			/* Hack -- skip "non-grids" */
 			if (*t == ' ') continue;
 
-			/* Most alphabetic characters signify monster races. */
-			if (isalpha(*t)) {
+			/* alphabetic characters signify monster races. */
+			/* (tree monsters ('l') are handled separately, also see 'j' above) */
+			if ((isalpha(*t)) && (*t != 'l')) {
 				/* If the symbol is not yet stored, ... */
 				if (!strchr(racial_symbol, *t)) {
 					/* ... store it for later processing. */
@@ -1267,14 +1337,20 @@ bool build_vault(struct chunk *c, struct loc centre, struct vault *v)
 				switch (*t) {
 					/* An ordinary monster, object (sometimes good), or trap. */
 				case '1': {
-					if (one_in_(2)) {
+					if (randint0(100) < 40) { /* was (one_in_(2)) */
 						pick_and_place_monster(c, grid, c->depth , true, true,
 											   ORIGIN_DROP_VAULT);
-					} else if (one_in_(2)) {
+					}
+					else if (one_in_(2)) {
 						place_object(c, grid, c->depth,
-									 one_in_(8) ? true : false, false,
-									 ORIGIN_VAULT, 0);
-					} else if (one_in_(4)) {
+							one_in_(8) ? true : false, false,
+							ORIGIN_VAULT, 0);
+					} 
+					else if (one_in_(25)) { /* trap monster */
+							/* "?" symbols allows trap monsters, mimics, creeping coins, lurkers, and wall monsters */
+						if (!sp_vault_monster(c, '?', v->typ, grid)) place_trap(c, grid, -1, c->depth);
+					}
+					else if (one_in_(2)) {
 						place_trap(c, grid, -1, c->depth);
 					}
 					break;
@@ -1390,6 +1466,7 @@ bool build_vault(struct chunk *c, struct loc centre, struct vault *v)
 	}
 
 	/* Place specified monsters */
+	/* Todo: chance to substitute 'j'elly for ',' mushrooom patch (because you can't specify mushroom patch in vault.txt) */
 	get_vault_monsters(c, racial_symbol, v->typ, data, y1, y2, x1, x2);
 
 	return true;
@@ -2545,7 +2622,6 @@ bool build_template(struct chunk *c, struct loc centre, int rating)
 
 
 
-
 /**
  * Build an interesting room.
  * \param c the chunk the room is being built in
@@ -2566,8 +2642,8 @@ bool build_interesting(struct chunk *c, struct loc centre, int rating)
  */
 bool build_lesser_vault(struct chunk *c, struct loc centre, int rating)
 {
-	if (!streq(dun->profile->name, "classic") && (one_in_(2)))
-		return build_vault_type(c, centre, "Lesser vault (new)");
+	/* if (!streq(dun->profile->name, "classic") && (one_in_(2))) */
+	if (one_in_(2)) return build_vault_type(c, centre, "Lesser vault (new)");
 	return build_vault_type(c, centre, "Lesser vault");
 }
 
@@ -2580,8 +2656,8 @@ bool build_lesser_vault(struct chunk *c, struct loc centre, int rating)
  */
 bool build_medium_vault(struct chunk *c, struct loc centre, int rating)
 {
-	if (!streq(dun->profile->name, "classic") && (one_in_(2)))
-		return build_vault_type(c, centre, "Medium vault (new)");
+	/* if (!streq(dun->profile->name, "classic") && (one_in_(2))) */
+	if (one_in_(2)) return build_vault_type(c, centre, "Medium vault (new)");
 	return build_vault_type(c, centre, "Medium vault");
 }
 
@@ -2634,9 +2710,13 @@ bool build_greater_vault(struct chunk *c, struct loc centre, int rating)
 	/* Non-classic profiles need to adjust the probability */
 	if (!streq(dun->profile->name, "classic") && !one_in_(3)) return false;
 
+#if old
 	if (!streq(dun->profile->name, "classic") && (one_in_(2))) {
 		return build_vault_type(c, centre, "Greater vault (new)");
 	}
+#else
+	if (one_in_(2)) return build_vault_type(c, centre, "Greater vault (new)");
+#endif
 	return build_vault_type(c, centre, "Greater vault");
 }
 

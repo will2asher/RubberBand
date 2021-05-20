@@ -405,7 +405,7 @@ pain:1
 flags:UNDEAD | EVIL | COLD_BLOOD | SPIRIT | FORCE_SLEEP
 flags:OPEN_DOOR | BASH_DOOR | CLEAR_WEB
 flags:HURT_LIGHT | IM_COLD | IM_POIS
-desc:Vampire or ghoul
+desc:Vampire or Ghoul
 #removed: NO_CONF | NO_SLEEP | NO_STUN | HURT_FIRE | REGENERATE
 
 # Always awake, elemental objects which engulf and breathe their element(s)
@@ -456,14 +456,13 @@ flags:SPIRIT | RUBBER | FEY | CLIGHT
 flags:OPEN_DOOR | CLEAR_WEB
 desc:Light Fairy
 
-# (or yeeks if VISH is turned on)
 #name:yeek
 #glyph:y
 #pain:1
 #flags:SPIRIT | VISH | OPEN_DOOR | CLEAR_WEB
 #desc:Yeek
 
-# Yetis are a couple of niche monsters, big furry bear-like creatures
+# Yetis are a couple of niche monsters, big furry ape-like creatures
 name:yeti
 glyph:Y
 pain:1
@@ -548,11 +547,10 @@ desc:Trap Monster
 name:wall monster
 glyph:#
 pain:1
-flags:COLD_BLOOD | EMPTY_MIND
+flags:COLD_BLOOD | EMPTY_MIND | HURT_ROCK
 flags:BASH_DOOR | CLEAR_WEB | NONLIVING
-flags:IM_POIS | NO_CONF | NO_SLEEP | NO_FEAR | IM_DISEN
+flags:IM_POIS | NO_CONF | NO_SLEEP | NO_FEAR | NO_STUN | IM_DISEN
 desc:Wall Monster
-
 
 ##### Special templates #####
 

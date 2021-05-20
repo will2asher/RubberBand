@@ -6277,10 +6277,10 @@ spells:BR_SOUN
 desc:A big frog covered in ugly oozing warts, it makes a loud "CROAK".
 
 name:rubble mimic
-base:golem
+base:wall monster
 glyph::
 color:w
-speed:106
+speed:107
 hit-points:118
 hearing:11
 armor-class:68
@@ -6290,8 +6290,8 @@ rarity:4
 experience:87
 blow:BUTT:HURT:6d2
 blow:HIT:HURT:2d7
-flags:BASH_DOOR | FORCE_SLEEP | COLD_BLOOD | UNAWARE
-flags:HURT_ROCK | IM_POIS | IM_COLD | IM_FIRE
+flags:FORCE_SLEEP | UNAWARE
+flags:IM_COLD | IM_FIRE
 #BLOCK_LOS | ATTR_CLEAR?
 innate-freq:8
 spells:THROW | BOULDER

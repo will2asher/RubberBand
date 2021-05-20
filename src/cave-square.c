@@ -298,6 +298,7 @@ bool square_hasgoldvein(struct chunk *c, struct loc grid)
 bool square_isrubble(struct chunk *c, struct loc grid)
 {
     return (!tf_has(f_info[square(c, grid)->feat].flags, TF_WALL) &&
+			!tf_has(f_info[square(c, grid)->feat].flags, TF_STATUE) &&
 			tf_has(f_info[square(c, grid)->feat].flags, TF_ROCK));
 }
 
@@ -784,6 +785,14 @@ bool square_iswater(struct chunk* c, struct loc grid) {
 }
 
 /**
+ * True if the cave square is a chasm
+ */
+bool square_isachasm(struct chunk* c, struct loc grid) {
+	assert(square_in_bounds(c, grid));
+	return (tf_has(f_info[square(c, grid)->feat].flags, TF_CHASM));
+}
+
+/**
  * True if the cave square has a statue
  */
 bool square_has_statue(struct chunk* c, struct loc grid) {
@@ -1245,6 +1254,26 @@ void square_set_feat(struct chunk *c, struct loc grid, int feat)
 		sqinfo_off(square(c, grid)->info, SQUARE_WALL_INNER);
 		sqinfo_off(square(c, grid)->info, SQUARE_WALL_OUTER);
 		sqinfo_off(square(c, grid)->info, SQUARE_WALL_SOLID);
+	}
+}
+
+/**
+ * Make a fountain.
+ *
+ * Use square_set_feat() to make the fountain itself, then flood adjacent floor grids with (shallow) water.
+ */
+void make_fountain(struct chunk *c, struct loc grid)
+{
+	int d;
+	square_set_feat(c, grid, FEAT_FOUNTAIN);
+
+	/* Flood adjacent grids */
+	for (d = 0; d < 8; d++) {
+		/* Extract the location (copied from next_to_corr() ) */
+		struct loc grid1 = loc_sum(grid, ddgrid_ddd[d]);
+
+		if (square_isfloor(c, grid1)) square_set_feat(c, grid1, FEAT_WATER);
+		else if (square(c, grid1)->feat == FEAT_OPIT) square_set_feat(c, grid1, FEAT_WATER);
 	}
 }
 

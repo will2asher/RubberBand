@@ -131,8 +131,7 @@ void dungeon_change_level(struct player *p, int dlev)
 
 	/* If we're returning to town, update the store contents
 	   according to how long we've been away */
-	if (!dlev && daycount)
-		store_update();
+	if (!dlev && daycount) store_update();
 
 	/* Leaving, make new level */
 	p->upkeep->generate_level = true;
@@ -789,8 +788,12 @@ int player_check_terrain_damage(struct player *p, struct loc grid)
 	int dam_taken = 0;
 
 	if (square_isfiery(cave, grid)) {
-		int base_dam = 100 + randint1(100);
+		int base_dam = 100 + randint1(88 + p->depth / 6);
 		int res = p->state.el_info[ELEM_FIRE].res_level;
+
+		/* A small fire doesn't do nearly as much damage as lava */
+		if (square(player->cave, grid)->feat == FEAT_FIRE) 
+			base_dam = 9 + p->depth / 10 + randint0(10 + p->depth / 9);
 
 		/* Fire damage */
 		dam_taken = adjust_dam(p, ELEM_FIRE, base_dam, RANDOMISE, res, false);
@@ -798,6 +801,34 @@ int player_check_terrain_damage(struct player *p, struct loc grid)
 		/* Feather fall makes one lightfooted. */
 		if (player_of_has(p, OF_FEATHER)) {
 			dam_taken /= 2;
+		}
+	}
+	else if (square(player->cave, grid)->feat == FEAT_ACID_PUDDLE) {
+		int base_dam = 10 + p->depth / 9 + randint0(10 + p->depth / 5);
+		int res = p->state.el_info[ELEM_ACID].res_level;
+
+		/* Acid damage */
+		dam_taken = adjust_dam(p, ELEM_ACID, base_dam, RANDOMISE, res, false);
+
+		/* Feather fall makes two lightfooted. */
+		if (player_of_has(p, OF_FEATHER)) {
+			dam_taken = dam_taken * 2 / 3;
+		}
+	}
+	/* open pits are not as damgerous */
+	else if (square(player->cave, grid)->feat == FEAT_OPIT) {
+		int balance = 24 + adj_dex_dis[p->state.stat_ind[STAT_DEX]] + player->p_luck;
+		/* Feather falling eliminates danger from pits */
+		if (player_of_has(p, OF_FEATHER)) return 0;
+
+		/* high DEX can reduce damage chance to zero */
+		if (randint1(32 + player->depth/10) > balance) {
+			/* spiked pit traps do 4d6 damage, so this should do less than that */
+			if (player->depth >= 30) dam_taken = damroll(3, 6);
+			else dam_taken = damroll(2, 6);
+
+			/* chance for a little more damage if you fail very badly */
+			if (randint1(32 + player->depth / 10) > balance) dam_taken += randint1(6);
 		}
 	}
 
@@ -811,16 +842,45 @@ void player_take_terrain_damage(struct player *p, struct loc grid)
 {
 	int dam_taken = player_check_terrain_damage(p, grid);
 
-	if (!dam_taken) {
-		return;
+	/* Slime puddle: no actual hp damage */
+	if (square(p->cave, grid)->feat == FEAT_SLIME_PUDDLE) {
+		int slimec = 50 - adj_dex_dis[p->state.stat_ind[STAT_DEX]] * 2;
+		int die = randint0(100);
+		/* Luck factor */
+		if (p->p_luck > 0) slimec -= ((adj_dex_dis[p->state.stat_ind[STAT_DEX]] + 1) * (p->p_luck + 1)) / 2;
+		if (p->p_luck < 0) slimec += ABS(p->p_luck * 2);
+		/* (Maybe I'll add slime resistance sometime later */
+
+		/* Feather fall makes one lightfooted. */
+		if (player_of_has(p, OF_FEATHER)) slimec = slimec * 2 / 3;
+
+		/* Slime the player */
+		if (die < slimec / 5) p->slimed += 2;
+		else if (die < slimec) p->slimed += 1;
+		/* message */
+		if (die < slimec) msg(square_feat(cave, grid)->hurt_msg);
 	}
+
+	if (!dam_taken) return;
 
 	/* Damage the player and inventory */
 	take_hit(player, dam_taken, square_feat(cave, grid)->die_msg);
+
 	if (square_isfiery(cave, grid)) {
 		msg(square_feat(cave, grid)->hurt_msg);
-		inven_damage(player, PROJ_FIRE, dam_taken);
+
+		/* A small fire isn't as likely to damage inventory as lava */
+		if ((square(player->cave, grid)->feat == FEAT_FIRE) && (randint0(100) < 70)) /* skip inven_damage */;
+		else inven_damage(player, PROJ_FIRE, dam_taken);
 	}
+	/* (Not all damaging features are fiery anymore) */
+	else if (square(p->cave, grid)->feat == FEAT_ACID_PUDDLE) {
+		msg(square_feat(cave, grid)->hurt_msg);
+
+		/* It's just a shallow pool of acid, don't damage inventory as often */
+		if (randint0(100) < 46 - p->p_luck*3) inven_damage(player, PROJ_ACID, dam_taken);
+	}
+	else msg(square_feat(cave, grid)->hurt_msg);
 }
 
 /**

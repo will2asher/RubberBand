@@ -316,6 +316,7 @@ static void project_feature_handler_ELEC(project_feature_handler_context_t *cont
 
 	/* Sometimes set trees on fire */
 	if ((square_isatree(cave, context->grid)) && (randint0(100) < 11 + context->dam / 20)) {
+		square_unmark(cave, context->grid);
 		square_set_feat(cave, context->grid, FEAT_FIRE_TREE);
 	}
 
@@ -351,7 +352,8 @@ static void project_feature_handler_FIRE(project_feature_handler_context_t *cont
 	}
 
 	/* Often set trees on fire */
-	if ((square_isatree(cave, context->grid)) && (randint0(100) < 75 + context->dam / 25)) {
+	if ((square_isatree(cave, context->grid)) && (randint0(100) < 65 + context->dam / 10)) {
+		square_unmark(cave, context->grid);
 		square_set_feat(cave, context->grid, FEAT_FIRE_TREE);
 	}
 
@@ -378,6 +380,7 @@ static void project_feature_handler_COLD(project_feature_handler_context_t *cont
 	/* Sometimes put out fires */
 	if ((square_isatree(cave, context->grid)) && (square_isfiery(cave, context->grid))) {
 		if (randint0(100) < 11 + context->dam / 5) {
+			square_unmark(cave, context->grid);
 			if (one_in_(2)) square_set_feat(cave, context->grid, FEAT_FLOOR);
 			else square_set_feat(cave, context->grid, FEAT_DEAD_TREE);
 		}
@@ -411,6 +414,7 @@ static void project_feature_handler_POIS(project_feature_handler_context_t *cont
 	/* Can kill trees if powerful enough. (and possibly put out fires if the tree is on fire but whatever -we'll put that down to the force of the air in the breath) */
 	if ((context->dam > randint1(1200) + 350) &&
 		square_isatree(cave, context->grid)) {
+		square_unmark(cave, context->grid);
 		square_set_feat(cave, context->grid, FEAT_DEAD_TREE);
 	}
 }
@@ -489,6 +493,7 @@ static void project_feature_handler_NETHER(project_feature_handler_context_t *co
 	/* Can kill trees if powerful enough. (and possibly put out fires if the tree is on fire but whatever -we'll put that down to the force of the air in the breath) */
 	if ((context->dam > randint1(1050) + 350) &&
 		square_isatree(cave, context->grid)) {
+		square_unmark(cave, context->grid);
 		square_set_feat(cave, context->grid, FEAT_DEAD_TREE);
 	}
 }
@@ -501,8 +506,8 @@ static void project_feature_handler_CHAOS(project_feature_handler_context_t *con
 		context->obvious = true;
 	}
 
-	/* Can polymorph terrain features if powerful enough (but not doors) */
-	if ((context->dam > randint1(2000) + 350) && !square_isperm(cave, context->grid) &&
+	/* Can polymorph "interesting" terrain features if powerful enough (but not permanent features or doors) */
+	if ((context->dam > randint1(2100) + 350) && !square_isperm(cave, context->grid) &&
 		square_isinteresting(cave, context->grid) && !square_isdoor(cave, context->grid)) {
 		int die = randint1(100);
 		/* Forget whatever used to be there */
@@ -522,6 +527,8 @@ static void project_feature_handler_CHAOS(project_feature_handler_context_t *con
 		else if (die < 95) square_set_feat(cave, context->grid, FEAT_ACID_PUDDLE);		/* 5% */
 		else square_set_feat(cave, context->grid, FEAT_WHIRLWIND);						/* 5% */
 	}
+	/* Later: polymorph statue descriptions */
+	/* else if (square_has_statue(cave, context->grid)) */
 }
 
 static void project_feature_handler_DISEN(project_feature_handler_context_t* context)
@@ -530,6 +537,12 @@ static void project_feature_handler_DISEN(project_feature_handler_context_t* con
 	if (square_isview(cave, context->grid) && !player->timed[TMD_BLIND]) {
 		/* Observe */
 		context->obvious = true;
+	}
+
+	/* Can disenchant nexus stones */
+	if ((context->dam > randint1(900) + 350) && square_has_nexus(cave, context->grid)) {
+		square_unmark(cave, context->grid);
+		square_set_feat(cave, context->grid, FEAT_FLOOR);
 	}
 }
 
@@ -544,13 +557,17 @@ static void project_feature_handler_WATER(project_feature_handler_context_t *con
 	/* Put out fires */
 	if ((square_isatree(cave, context->grid)) && (square_isfiery(cave, context->grid))) {
 		if (randint0(100) < 50 + context->dam / 5) {
+			square_unmark(cave, context->grid);
 			if (one_in_(2)) square_set_feat(cave, context->grid, FEAT_FLOOR);
 			else square_set_feat(cave, context->grid, FEAT_DEAD_TREE);
 		}
 	}
 	/* normal fire (doesn't affect lava) */
 	else if ((square_isfiery(cave, context->grid)) && (square_isinteresting(cave, context->grid))) {
-		if (randint0(100) < 70 + context->dam / 5) square_set_feat(cave, context->grid, FEAT_FLOOR);
+		if (randint0(100) < 70 + context->dam / 5) {
+			square_unmark(cave, context->grid);
+			square_set_feat(cave, context->grid, FEAT_FLOOR);
+		}
 	}
 
 	/* Can create puddles if powerful enough. */
@@ -651,7 +668,8 @@ static void project_feature_handler_PLASMA(project_feature_handler_context_t *co
 	}
 
 	/* Sometimes set trees on fire */
-	if ((square_isatree(cave, context->grid)) && (randint0(100) < 50 + context->dam / 25)) {
+	if ((square_isatree(cave, context->grid)) && (randint0(100) < 50 + context->dam / 20)) {
+		square_unmark(cave, context->grid);
 		square_set_feat(cave, context->grid, FEAT_FIRE_TREE);
 	}
 

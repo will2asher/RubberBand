@@ -1272,12 +1272,11 @@ bool mon_take_hit(struct monster *mon, int dam, bool *fear, const char *note)
 	monster_wake(mon, false, 100);
 	mon_clear_timed(mon, MON_TMD_HOLD, MON_TMD_FLG_NOTIFY);
 
-	/* Become aware of its presence */
-	if (monster_is_camouflaged(mon))
-		become_aware(mon);
-
 	/* No damage, we're done */
 	if (dam == 0) return false;
+
+	/* Become aware of its presence (only if dam > 0) */
+	if (monster_is_camouflaged(mon)) become_aware(mon);
 
 	/* Covering tracks is no longer possible */
 	player->timed[TMD_COVERTRACKS] = 0;
@@ -1324,19 +1323,41 @@ void kill_arena_monster(struct monster *mon)
  */
 void monster_take_terrain_damage(struct monster *mon)
 {
+	bool fear = false;
+	int damg = 0;
 	/* Damage the monster */
 	if (square_isfiery(cave, mon->grid)) {
-		bool fear = false;
-
 		if (!rf_has(mon->race->flags, RF_IM_FIRE)) {
-			mon_take_nonplayer_hit(100 + randint1(100), mon, MON_MSG_CATCH_FIRE,
-								   MON_MSG_DISINTEGRATES);
-		}
+			/* lava damages a lot */
+			if (square(cave, mon->grid)->feat == FEAT_LAVA) damg = 100 + randint1(100);
+			/* normal fires don't do nearly as much damage as lava */
+			else damg = 8 + randint0(16);
 
-		if (fear && monster_is_visible(mon)) {
-			add_monster_message(mon, MON_MSG_FLEE_IN_TERROR, true);
+			mon_take_nonplayer_hit(damg, mon, MON_MSG_CATCH_FIRE, MON_MSG_DISINTEGRATES);
 		}
 	}	
+	/* (not all damaging terrain is fiery anymore) */
+	else if (square(cave, mon->grid)->feat == FEAT_ACID_PUDDLE) {
+		if (!rf_has(mon->race->flags, RF_IM_ACID)) {
+			damg = 11 + randint0(13 + player->depth / 5);
+
+			/* partial resist */
+			if (rf_has(mon->race->flags, RF_IM_SLIME) || rf_has(mon->race->flags, RF_IM_WATER)) 
+				damg = damg * 3 / 4;
+
+			mon_take_nonplayer_hit(damg, mon, MON_MSG_LOSE_SKIN, MON_MSG_DISSOLVE);
+		}
+	}
+	/* some monsters are hurt by water */
+	else if (square_iswater(cave, mon->grid) && (rf_has(mon->race->flags, RF_HURT_WATER))) {
+		damg = 24 + randint0(22 + player->depth / 8);
+
+		mon_take_nonplayer_hit(damg, mon, MON_MSG_LOSE_SKIN, MON_MSG_DISSOLVE);
+	}
+
+	if (fear && monster_is_visible(mon)) {
+		add_monster_message(mon, MON_MSG_FLEE_IN_TERROR, true);
+	}
 }
 
 /**
@@ -1344,10 +1365,20 @@ void monster_take_terrain_damage(struct monster *mon)
  */
 bool monster_taking_terrain_damage(struct monster *mon)
 {
+	/* monsters ignore slime puddles (for now at least -I may change that later) */
+	if (square(cave, mon->grid)->feat == FEAT_SLIME_PUDDLE) return false;
+
+	/* monsters ignore open pits for now (until I implement monster size and the FLY flag) */
+	if (square(cave, mon->grid)->feat == FEAT_OPIT) return false;
+
 	if (square_isdamaging(cave, mon->grid) &&
 		!rf_has(mon->race->flags, square_feat(cave, mon->grid)->resist_flag)) {
 		return true;
 	}
+	/* Water can damage some monsters too */
+	/* (cats don't actually take damage from water, but they act like they do) */
+	if (square_iswater(cave, mon->grid) && (rf_has(mon->race->flags, RF_HURT_WATER) ||
+		(mon->race->d_char == 'f'))) return true;
 
 	return false;
 }

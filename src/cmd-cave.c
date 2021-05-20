@@ -20,6 +20,7 @@
 #include "cave.h"
 #include "cmd-core.h"
 #include "cmds.h"
+#include "effects.h"
 #include "game-event.h"
 #include "game-input.h"
 #include "generate.h"
@@ -805,10 +806,15 @@ static bool do_cmd_disarm_aux(struct loc grid)
 		msgt(MSG_DISARM, "You have disarmed the %s.", trap->kind->name);
 		player_exp_gain(player, 1 + power);
 
+		/* Pits sometimes turn into open pits */
+		if (trf_has(trap->flags, TRF_PIT) && one_in_(3))
+			square_set_feat(cave, grid, FEAT_OPIT);
+
 		/* Trap is gone */
 		square_forget(cave, grid);
 		square_destroy_trap(cave, grid);
-	} else if (randint0(100) < chance) {
+	}
+	else if (randint0(100) < chance) {
 		event_signal(EVENT_INPUT_FLUSH);
 		msg("You failed to disarm the %s.", trap->kind->name);
 
@@ -1068,7 +1074,14 @@ void move_player(int dir, bool disarm)
 				msgt(MSG_HITWALL, "You feel a tree blocking your way.");
 				square_memorize(cave, grid);
 				square_light_spot(cave, grid);
-			} else {
+			} 
+			/* maybe have a chance for the player to fall in if blind, confused, etc (or not -that would be nasty) */
+			else if (square_isachasm(cave, grid)) {
+				msgt(MSG_HITWALL, "You feel the floor drop off in that direction.");
+				square_memorize(cave, grid);
+				square_light_spot(cave, grid);
+			}
+			else {
 				msgt(MSG_HITWALL, "You feel a wall blocking your way.");
 				square_memorize(cave, grid);
 				square_light_spot(cave, grid);
@@ -1080,14 +1093,69 @@ void move_player(int dir, bool disarm)
 				msgt(MSG_HITWALL, "There is a door blocking your way.");
 			else if ((square_isatree(cave, grid)) && (!square_ispassable(cave, grid)))
 				msgt(MSG_HITWALL, "There is a tree blocking your way.");
+			else if (square_isachasm(cave, grid))
+				msgt(MSG_HITWALL, "There is a chasm in your way.");
 			else
 				msgt(MSG_HITWALL, "There is a wall blocking your way.");
 		}
-	} else if (square_isdamaging(cave, grid)) {
+	} 
+	/* Nexus stones are special */
+	else if (square_has_nexus(cave, grid)) {
+		struct feature* feat = square_feat(cave, grid);
+
+		/* No need to confirm movement if you have RES_NEXUS */
+		if ((player->state.el_info[ELEM_NEXUS].res_level) || (get_check(feat->walk_msg))) {
+			int die = randint0(100);
+			bool chosen = false;
+
+			if (player->state.el_info[ELEM_NEXUS].res_level) {
+				/* With RES_NEXUS, you may get to choose whether to teleport or not */
+				if (randint0(100) < 16 + player->p_luck * 4) {
+					if (!get_check("teleport?")) die = 99;
+					/* less chance of short distance (or failing to trigger) if you choose to teleport */
+					else { 
+						die = 15 + randint0(81); 
+						chosen = true;
+					}
+				}
+				/* otherwise RES_NEXUS keeps you from teleporting */
+				else die = 99;
+			}
+
+			/* possible side effects */
+			else if (randint0(100) < 11 - player->p_luck * 2)
+				(void)player_inc_timed(player, TMD_PHAZED, 20 + randint1(20), true, true);
+
+			/* various distances */
+			if (die < 20) effect_simple(EF_TELEPORT, source_none(), "12", 1, 0, 0, 0, 0, NULL); /* 20% */
+			else if (die < 48) effect_simple(EF_TELEPORT, source_none(), "47", 1, 0, 0, 0, 0, NULL); /* 28% */
+			else if (die < 91) effect_simple(EF_TELEPORT, source_none(), "100", 1, 0, 0, 0, 0, NULL); /* 43% */
+			else { /* 9% */
+				/* (No message if you have RES_nexus unless you chose to teleport) */
+				if ((!player->state.el_info[ELEM_NEXUS].res_level) || (chosen))
+					msg("The nexus stone fails to trigger.");
+				/* Move player normally */
+				monster_swap(player->grid, grid);
+
+				/* Update view and search (I think this is done automatically when teleporting) */
+				update_view(cave, player);
+				search(player);
+			}
+		}
+	}
+	else if (square_isdamaging(cave, grid)) {
 		/* Some terrain can damage the player */
 		bool step = true;
 		struct feature *feat = square_feat(cave, grid);
 		int dam_taken = player_check_terrain_damage(player, grid);
+
+		/* (No actual hp damage but still harmful: simulate an amount of damage appropriate to danger level) */
+		if (feat == FEAT_SLIME_PUDDLE) {
+			if (player->slimed >= 46) dam_taken = player->slimed * 15; /* 50 is deadly */
+			else if (player->slimed >= 38) dam_taken = player->slimed * 6;
+			else if (player->slimed >= 25) dam_taken = player->slimed * 2;
+			else dam_taken = 1;
+		}
 
 		/* Check if running, or going to cost more than a third of hp */
 		if (player->upkeep->running && dam_taken) {
@@ -1209,8 +1277,7 @@ static bool do_cmd_walk_test(struct loc grid)
 	}
 
 	/* If we don't know the grid, allow attempts to walk into it */
-	if (!square_isknown(cave, grid))
-		return true;
+	if (!square_isknown(cave, grid)) return true;
 
 	/* Require open space */
 	if (!square_ispassable(cave, grid)) {
@@ -1222,10 +1289,23 @@ static bool do_cmd_walk_test(struct loc grid)
 			/* Door */
 			return true;
 		}
-		else if ((square_isatree(cave, grid)) && (!square_ispassable(cave, grid))) {
+		else if (square_iswater(cave, grid)) {
+			/* deep water */
+			msgt(MSG_HITWALL, "That water is too deep to wade through.");
+		}
+		else if (square_isatree(cave, grid)) {
 			/* tree */
 			msgt(MSG_HITWALL, "There is a tree in the way!");
-		} else {
+		} 
+		else if (square_has_statue(cave, grid)) {
+			/* chasm */
+			msgt(MSG_HITWALL, "There is a statue in the way!");
+		}
+		else if (square_isachasm(cave, grid)) {
+			/* chasm */
+			msgt(MSG_HITWALL, "There is a chasm in the way!");
+		}
+		else {
 			/* Wall */
 			msgt(MSG_HITWALL, "There is a wall in the way!");
 		}

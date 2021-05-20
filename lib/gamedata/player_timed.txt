@@ -444,6 +444,7 @@ desc:phased
 grade:y:5000:PHAZED:You feel very unstable.
 on-end:A feeling of stability returns.
 on-increase:You feel more unstable.
+fail:2:NEXUS
 msgt:GENERIC
 
 name:SDRUNK

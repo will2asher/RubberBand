@@ -439,6 +439,7 @@ struct chunk *classic_gen(struct player *p, int min_height, int min_width) {
     int num_rooms, size_percent;
     int dun_unusual = dun->profile->dun_unusual;
 	int stairs;
+	int dvault = 0;
 
     bool **blocks_tried;
 	struct chunk *c;
@@ -527,12 +528,11 @@ struct chunk *classic_gen(struct player *p, int min_height, int min_width) {
 		/* (DUN_UNUSUAL is usually 200) */
 		i = 0;
 		rarity = 0;
-#if 0
 		/* Treasure map effect makes special rooms more common */
-		if ((player->timed[TMD_TREASMAP]) && (dun_unusual > 180)) {
+		if ((player->timed[TMD_TREASMAP]) && (dun_unusual > 180) && 
+			(player->depth >= 10) && (dvault < randint1(2))) {
 			dun_unusual -= 30;
 		}
-#endif
 		while (i == rarity && i < dun->profile->max_rarity) {
 			if (randint0(dun_unusual) < 50 + c->depth / 2) rarity++;
 			i++;
@@ -550,6 +550,8 @@ struct chunk *classic_gen(struct player *p, int min_height, int min_width) {
 			
 			if (room_build(c, by, bx, profile, false)) {
 				built++;
+				/* Count vaults */
+				if ((profile.rarity > 1) && (profile.level >= 10)) dvault++;
 				break;
 			}
 		}
@@ -1941,6 +1943,7 @@ struct chunk *modified_chunk(int depth, int height, int width)
 	int num_rooms = dun->profile->n_room_profiles;
     int dun_unusual = dun->profile->dun_unusual;
 	struct connector *join = dun->join;
+	int dvault = 0;
 
     /* Make the cave */
     struct chunk *c = cave_new(height, width);
@@ -2003,12 +2006,11 @@ struct chunk *modified_chunk(int depth, int height, int width)
 		i = 0;
 		rarity = 0;
 
-#if 0
 		/* Treasure map effect makes special rooms more common */
-		if ((player->timed[TMD_TREASMAP]) && (dun_unusual > 180)) {
+		if ((player->timed[TMD_TREASMAP]) && (dun_unusual > 180) && 
+			(player->depth >= 10) && (dvault < randint1(2))) {
 			dun_unusual -= 30;
 		}
-#endif
 
 		while (i == rarity && i < dun->profile->max_rarity) {
 			if (randint0(dun_unusual) < 50 + c->depth / 2) rarity++;
@@ -2024,7 +2026,11 @@ struct chunk *modified_chunk(int depth, int height, int width)
 			struct room_profile profile = dun->profile->room_profiles[i];
 			if (profile.rarity > rarity) continue;
 			if (profile.cutoff <= key) continue;
-			if (room_build(c, by, bx, profile, true)) break;
+			if (room_build(c, by, bx, profile, true)) { 
+				/* Count vaults built */
+				if ((profile.rarity > 1) && (profile.level >= 10)) dvault++;
+				break;
+			}
 		}
     }
 

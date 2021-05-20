@@ -2786,11 +2786,14 @@ graphics:?:w
 level:15
 weight:5
 cost:225
-alloc:5:14 to 105
+alloc:5:15 to 105
 pile:3:2
 power:7
 effect:TIMED_INC:TREASMAP
 dice:50+7d7
+desc:If you are deep enough for vaults to appear, this makes you
+desc: much more likely to find a vault on the next level. Otherwise, 
+desc: it just makes objects on the next level slightly more likely to be good.
 
 ### Detection ###
 

@@ -132,7 +132,7 @@ static const int adj_wis_sav[STAT_RANGE] =
 /**
  * Stat Table (DEX) -- disarming
  */
-static const int adj_dex_dis[STAT_RANGE] =
+const int adj_dex_dis[STAT_RANGE] =
 {
 	0	/* 3 */,
 	0	/* 4 */,

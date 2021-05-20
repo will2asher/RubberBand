@@ -488,6 +488,7 @@ extern void hit_trap(struct loc grid, int delayed)
 	bool ident = false;
 	struct trap *trap;
 	struct effect *effect;
+	int trapfall = 1;
 
 	/* The player is safe from all traps */
 	if (player_is_trapsafe(player)) return;
@@ -536,6 +537,13 @@ extern void hit_trap(struct loc grid, int delayed)
 			(randint0(100) < player->state.skills[SKILL_SAVE]))
 			saved = true;
 
+		/* Trap doors sometimes go down more than one level (trapfall starts at 1, max 5, but rarely more than 3) */
+		if (trf_has(trap->kind->flags, TRF_DOWN) && (player->depth < 94) && (player->depth > 9) &&
+			(randint0(100) < 20)) {
+			trapfall += randint1(2);
+			if (randint0(100) < 9) trapfall += randint1(2);
+		}
+
 		/* Save, or fire off the trap */
 		if (saved) {
 			if (trap->kind->msg_good)
@@ -544,7 +552,8 @@ extern void hit_trap(struct loc grid, int delayed)
 			if (trap->kind->msg_bad)
 				msg(trap->kind->msg_bad);
 			effect = trap->kind->effect;
-			effect_do(effect, source_trap(trap), NULL, &ident, false, 0, 0, 0, NULL);
+			/* (trapfall is used a damage multiplier for trap doors here) */
+			effect_do(effect, source_trap(trap), NULL, &ident, false, 0, trapfall, 0, NULL);
 
 			/* Trap may have gone */
 			if (!square_trap(cave, grid)) break;
@@ -563,9 +572,10 @@ extern void hit_trap(struct loc grid, int delayed)
 		}
 
 		/* Some traps drop you a dungeon level */
-		if (trf_has(trap->kind->flags, TRF_DOWN))
-			dungeon_change_level(player,
-								 dungeon_get_next_level(player->depth, 1));
+		if (trf_has(trap->kind->flags, TRF_DOWN)) {
+			/* (Trap doors sometimes drop you more than one level down now) */
+			dungeon_change_level(player, dungeon_get_next_level(player->depth, trapfall));
+		}
 
 		/* Some traps drop you onto them */
 		if (trf_has(trap->kind->flags, TRF_PIT))
@@ -573,6 +583,11 @@ extern void hit_trap(struct loc grid, int delayed)
 
 		/* Some traps disappear after activating, all have a chance to */
 		if (trf_has(trap->kind->flags, TRF_ONETIME) || one_in_(3)) {
+			/* Pits sometimes turn into open pits */
+			if (trf_has(trap->kind->flags, TRF_PIT) && one_in_(2)) {
+				square_set_feat(cave, grid, FEAT_OPIT);
+			}
+
 			square_destroy_trap(cave, grid);
 			square_forget(cave, grid);
 		}

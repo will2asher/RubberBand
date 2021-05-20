@@ -1459,13 +1459,20 @@ void wiz_cheat_death(void)
 	(void)player_clear_timed(player, TMD_CONFUSED, true);
 	(void)player_clear_timed(player, TMD_POISONED, true);
 	(void)player_clear_timed(player, TMD_AFRAID, true);
+	(void)player_clear_timed(player, TMD_CHARMED, true);
 	(void)player_clear_timed(player, TMD_PARALYZED, true);
 	(void)player_clear_timed(player, TMD_IMAGE, true);
 	(void)player_clear_timed(player, TMD_STUN, true);
 	(void)player_clear_timed(player, TMD_CUT, true);
+	(void)player_clear_timed(player, TMD_PHAZED, true);
+	(void)player_clear_timed(player, TMD_BLACKBREATH, true);
+	(void)player_clear_timed(player, TMD_INSANE, true);
+	(void)player_clear_timed(player, TMD_DISEASE, true);
+	(void)player_clear_timed(player, TMD_PCCURSED, true);
 
 	/* Prevent starvation */
-	player_set_timed(player, TMD_FOOD, PY_FOOD_MAX - 1, false);
+	/* player_set_timed(player, TMD_FOOD, PY_FOOD_MAX - 15, false); */
+	effect_simple(EF_NOURISH, source_player(), "85", 2, 0, 0, 0, 0, NULL);
 
 	/* Cancel recall */
 	if (player->word_recall)
@@ -1534,15 +1541,22 @@ static void do_cmd_wiz_cure_all(void)
 	(void)player_clear_timed(player, TMD_CONFUSED, true);
 	(void)player_clear_timed(player, TMD_POISONED, true);
 	(void)player_clear_timed(player, TMD_AFRAID, true);
+	(void)player_clear_timed(player, TMD_CHARMED, true);
 	(void)player_clear_timed(player, TMD_PARALYZED, true);
 	(void)player_clear_timed(player, TMD_IMAGE, true);
 	(void)player_clear_timed(player, TMD_STUN, true);
 	(void)player_clear_timed(player, TMD_CUT, true);
 	(void)player_clear_timed(player, TMD_SLOW, true);
 	(void)player_clear_timed(player, TMD_AMNESIA, true);
+	(void)player_clear_timed(player, TMD_PHAZED, true);
+	(void)player_clear_timed(player, TMD_BLACKBREATH, true);
+	(void)player_clear_timed(player, TMD_INSANE, true);
+	(void)player_clear_timed(player, TMD_DISEASE, true);
+	(void)player_clear_timed(player, TMD_PCCURSED, true);
 
 	/* No longer hungry */
-	player_set_timed(player, TMD_FOOD, PY_FOOD_FULL - 1, false);
+	/* player_set_timed(player, TMD_FOOD, PY_FOOD_FULL - 25, false); */
+	effect_simple(EF_NOURISH, source_player(), "75", 2, 0, 0, 0, 0, NULL);
 
 	/* Redraw everything */
 	do_cmd_redraw();
@@ -1813,7 +1827,6 @@ static void do_cmd_wiz_query(void)
 static void do_cmd_wiz_features(void)
 {
 	int y, x;
-
 	char cmd;
 
 	/* OMG hax */
@@ -1833,6 +1846,12 @@ static void do_cmd_wiz_features(void)
 	int featp[] = {FEAT_PERM};
 	int featr[] = {FEAT_RUBBLE};
 	int feata[] = {FEAT_PASS_RUBBLE};
+	int featw[] = {FEAT_WATER, FEAT_WATER_DEEP };
+	int feati[] = { FEAT_OPIT };
+	int featv[] = { FEAT_LAVA };
+	int featl[] = { FEAT_TREE };
+	int feats[] = { FEAT_STATUE, FEAT_SM_STATUE };
+	int featn[] = { FEAT_CHASM };
 	int length = 0;
 
 
@@ -1872,6 +1891,19 @@ static void do_cmd_wiz_features(void)
 		case 'r': feat = featr; length = 1; break;
 		/* Passable rubble */
 		case 'a': feat = feata; length = 1; break;
+		/* Water */
+		case 'w': feat = featw; length = 1; break;
+		/* Open Pits */
+		case 'i': feat = feati; length = 1; break;
+		/* Lava */
+		case 'v': feat = featv; length = 1; break;
+		/* Statue */
+		case 's': feat = feats; length = 1; break;
+		/* Trees */
+		case 'l': feat = featl; length = 1; break;
+		/* Chasm */
+		case 'n': feat = featn; length = 1; break;
+
 		/* Invalid entry */
 		default: return;
 	}

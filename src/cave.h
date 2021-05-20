@@ -246,7 +246,7 @@ extern int FEAT_GRANITE;
 extern int FEAT_PERM;
 extern int FEAT_LAVA;
 
-/* New features for Rubberband (none actually used yet) */
+/* New features for Rubberband */
 extern int FEAT_SLIDE;
 extern int FEAT_FIRE;
 extern int FEAT_TREE;
@@ -262,6 +262,7 @@ extern int FEAT_SM_STATUE;
 extern int FEAT_FOUNTAIN;
 extern int FEAT_WHIRLWIND;
 extern int FEAT_NEXUS_STONE;
+extern int FEAT_CHASM;
 
 /* Current level */
 extern struct chunk *cave;
@@ -328,8 +329,12 @@ bool square_ismineral(struct chunk *c, struct loc grid);
 bool square_hasgoldvein(struct chunk *c, struct loc grid);
 bool square_isrubble(struct chunk *c, struct loc grid);
 bool square_iswater(struct chunk* c, struct loc grid);
+bool square_isachasm(struct chunk* c, struct loc grid);
+bool square_has_statue(struct chunk* c, struct loc grid);
+bool square_has_nexus(struct chunk* c, struct loc grid);
 bool square_isatree(struct chunk *c, struct loc grid);
 bool square_slows_movement(struct chunk *c, struct loc grid);
+bool square_can_puddle(struct chunk* c, struct loc grid);
 bool square_issecretdoor(struct chunk *c, struct loc grid);
 bool square_isopendoor(struct chunk *c, struct loc grid);
 bool square_iscloseddoor(struct chunk *c, struct loc grid);
@@ -404,7 +409,6 @@ bool square_isbelievedwall(struct chunk *c, struct loc grid);
 bool square_suits_stairs_well(struct chunk *c, struct loc grid);
 bool square_suits_stairs_ok(struct chunk *c, struct loc grid);
 
-
 const struct square *square(struct chunk *c, struct loc grid);
 struct feature *square_feat(struct chunk *c, struct loc grid);
 int square_light(struct chunk *c, struct loc grid);
@@ -423,6 +427,7 @@ int square_num_walls_diagonal(struct chunk *c, struct loc grid);
 
 /* Feature placers */
 void square_set_feat(struct chunk *c, struct loc grid, int feat);
+void make_fountain(struct chunk *c, struct loc grid);
 void square_set_mon(struct chunk *c, struct loc grid, int midx);
 void square_set_obj(struct chunk *c, struct loc grid, struct object *obj);
 void square_set_trap(struct chunk *c, struct loc grid, struct trap *trap);

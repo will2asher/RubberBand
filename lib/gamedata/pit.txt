@@ -217,7 +217,7 @@ spell-req:MISSILE
 
 name:Archers
 room:1
-alloc:4:50
+alloc:4:42
 obj-rarity:0
 innate-freq:4
 spell-req:ARROW
@@ -247,7 +247,7 @@ spell-ban:DARKNESS | ARROW
 
 name:Dark dwarves
 room:1
-alloc:1:40
+alloc:1:36
 obj-rarity:0
 mon-base:humanoid
 color:D
@@ -381,6 +381,16 @@ spell-ban:S_UNDEAD
 spell-ban:S_KIN
 flags-ban:MULTIPLY
 
+# extrememly rare as a nest, used mainly for chosing a themed monster for vaults. (Do not change its name)
+name:Mimic or trap monster
+room:2
+alloc:15:32
+obj-rarity:1
+mon-base:mimic
+mon-base:trap monster
+mon-base:creeping coins
+mon-base:lurker
+mon-base:wall monster
 
 # New chosen monster types, not necessarily for pits and not used yet
 

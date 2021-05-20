@@ -352,6 +352,7 @@ void spread_monsters(struct chunk *c, const char *type, int depth, int num,
 					 int y0, int x0, int dy, int dx, byte origin);
 void get_vault_monsters(struct chunk *c, char racial_symbol[], char *vault_type,
 						const char *data, int y1, int y2, int x1, int x2);
+bool sp_vault_monster(struct chunk* c, char racial_symbol, char* vault_type, struct loc grid);
 void get_chamber_monsters(struct chunk *c, int y1, int x1, int y2, int x2, char *name, int area);
 
 

@@ -204,10 +204,6 @@ static struct monster_race *get_mon_race_aux(long total,
  * same table, which is then used to choose an appropriate monster, in
  * a relatively efficient manner.
  *
- * Note that town monsters will *only* be created in the town, and
- * "normal" monsters will *never* be created in the town, unless the
- * level is modified, for example, by polymorph or summoning.
- *
  * There is a small chance (1/25) of boosting the given depth by
  * a small amount (up to four levels), except in the town.
  *
@@ -240,7 +236,6 @@ struct monster_race *get_mon_num(int level)
 
 		/* Default */
 		table[i].prob3 = 0;
-
 
 		/* Get the chosen monster */
 		race = &r_info[table[i].index];
@@ -1189,7 +1184,7 @@ static bool place_new_monster_one(struct chunk *c, struct loc grid,
 	/* Some monster races are sometimes evil and sometimes not */
 	else if ((rf_has(race->flags, RF_S_EVIL1)) || (rf_has(race->flags, RF_S_EVIL2))) {
 		int evilc = 34;
-		if (rf_has(race->flags, RF_S_EVIL2)) evilc = 67;
+		if (rf_has(race->flags, RF_S_EVIL2)) evilc = 66;
 		if (randint0(100) < evilc) mon->isevil = 1;
 		else mon->isevil = 0;
 	}
@@ -1246,7 +1241,6 @@ static bool place_new_monster_group(struct chunk *c, struct loc grid,
 									int total, byte origin)
 {
 	int n, i;
-
 	int loc_num;
 
 	/* Locations of the placed monsters */
