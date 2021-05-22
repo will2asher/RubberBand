@@ -17,6 +17,10 @@ To build the new Cocoa front-end::
     cd src
     make -f Makefile.osx
 
+That'll create a self-contained Mac application, Angband.app, in the directory
+above src.  You may use that application where it is or move it to wherever
+is convenient for you.
+
 Debug build
 ~~~~~~~~~~~
 
@@ -48,8 +52,8 @@ Native builds
 ~~~~~~~~~~~~~
 
 Linux builds using autotools. There are several different front ends that you
-can optionally build (GCU, SDL, X11, and GTK) using arguments to configure
-such as --enable-sdl, --disable-gtk, etc. Each front end has different
+can optionally build (GCU, SDL, SDL2, and X11) using arguments to configure
+such as --enable-sdl, --disable-x11, etc. Each front end has different
 dependencies (e.g. ncurses, SDL libraries, etc).
 
 If your source files are from cloning the git repository, you'll first need
@@ -64,6 +68,15 @@ To build Angband to be run in-place, then run this::
 
     ./configure --with-no-install [other options as needed]
     make
+
+That'll create an executable in the src directory.  You can run it from the
+same directory where you ran make with::
+
+    src/angband
+
+To see what command line options are accepted, use::
+
+    src/angband -?
 
 To build Angband to be installed in some other location, run this::
 
@@ -156,6 +169,16 @@ Then configure the cross-comilation and perform the compilation itself::
 	./configure --enable-win --disable-curses --build=i686-pc-linux-gnu --host=i586-mingw32msvc
 	make
 
+One way to run the generated executable, src/angband.exe, with wine is to first
+set up symbolic links to the executable and DLLs it uses::
+
+	ln -s src/angband.exe .
+	ln -s src/win/dll/*.dll .
+
+Then use wine::
+
+	wine angband.exe
+
 Mingw installs commands like 'i586-mingw32msvc-gcc'. The value of --host
 should be that same command with the '-gcc' removed. Instead of i586 you may
 see i686, amd64, etc. The value of --build should be the host you're building
@@ -199,8 +222,9 @@ That is not necessary if your source files are from the source archive,
 a .tar.gz file, for a release.
 
 Then run these commands::
-	./configure --enable-win
-	make
+
+        ./configure --enable-win
+        make
 
 The install target almost certainly won't work
 
