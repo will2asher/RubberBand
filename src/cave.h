@@ -379,6 +379,8 @@ bool square_canputitem(struct chunk *c, struct loc grid);
 bool square_isdiggable(struct chunk *c, struct loc grid);
 bool square_iswebbable(struct chunk *c, struct loc grid);
 bool square_is_monster_walkable(struct chunk *c, struct loc grid);
+bool square_ispassdoorable(struct chunk* c, struct loc grid);
+bool square_isflyable(struct chunk* c, struct loc grid);
 bool square_ispassable(struct chunk *c, struct loc grid);
 bool square_isprojectable(struct chunk *c, struct loc grid);
 bool square_iswall(struct chunk *c, struct loc grid);

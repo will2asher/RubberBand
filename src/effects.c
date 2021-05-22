@@ -2916,7 +2916,6 @@ bool effect_handler_BANISH(effect_handler_context_t *context)
 {
 	int i;
 	unsigned dam = 0;
-
 	char typ;
 
 	context->ident = true;
@@ -3001,7 +3000,6 @@ bool effect_handler_MASS_BANISH(effect_handler_context_t *context)
 bool effect_handler_PROBE(effect_handler_context_t *context)
 {
 	int i;
-
 	bool probe = false;
 
 	/* Probe all (nearby) monsters */

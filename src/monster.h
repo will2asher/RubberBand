@@ -324,6 +324,12 @@ struct monster_race {
 	int smell;				/* Monster sense of smell (0-50, standard 20) */
 	int speed;				/* Speed (normally 110) */
 	int light;				/* Light intensity */
+	int msize;				/* Size level of monster */
+	int elem;			/* What the monster is made of (ints are easier for me to deal with) */
+/*	# monster elements : 1 = flesh / bone (default), 2 = earth / rock, 3 = fire, 4 = water,
+	# 5 = air / nexus, 6 = acid, 7 = slime, 8 = nether, 9 = poison, 10 = wood / vegetation,
+	# 11 = frost, 12 = metal / other / multi-hued, 13 = dark spirit / demon / fey,
+	# 14 = glass / shards, 15 = lightning / elec / static, 16 = sound / force / stunning, 17 = light spirit/fey */
 
 	int mexp;				/* Exp value for kill */
 
@@ -388,11 +394,14 @@ struct monster {
 	byte pcmet;							/* The player has learned whether this individual is evil or not */
 	byte nonagr;						/* monster is non-agressive (not sure if this works atm) */
 	byte acharmed;						/* for Charm monsters effect (todo- maybe this should be a monster timed effect) */
+	/*byte grabbed;						/* Monster is holding the player */
 
 	bitflag mflag[MFLAG_SIZE];			/* Temporary monster flags */
 
 	struct object *mimicked_obj;		/* Object this monster is mimicking */
 	struct object *held_obj;			/* Object being held (if any) */
+
+/*	struct feature *mimicked_feat;		/* Terrain feature monster is mimicking */
 
 	byte attr;  						/* attr last used for drawing monster */
 

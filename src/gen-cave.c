@@ -654,6 +654,10 @@ struct chunk *classic_gen(struct player *p, int min_height, int min_width) {
     alloc_objects(c, SET_BOTH, TYP_GOLD, Rand_normal(z_info->both_gold_av, 3),
 				  c->depth, ORIGIN_FLOOR);
 
+	/* And occationally some trees or rubble in rooms */
+	if (randint0(100) < 17 - c->depth / 5) alloc_objects(c, SET_ROOM, TYP_TREE, 3 + randint1(9), c->depth, 0);
+	else if (randint0(100) < 11 + c->depth / 5) alloc_objects(c, SET_ROOM, TYP_RUBBLE, 2 + randint1(8), c->depth, 0);
+
     return c;
 }
 
@@ -1416,7 +1420,7 @@ struct chunk *cavern_gen(struct player *p, int min_height, int min_width) {
 	k = MAX((4 * k * (h * w)) / (z_info->dungeon_hgt * z_info->dungeon_wid), 6);
 
 	/* Put some rubble in corridors */
-	alloc_objects(c, SET_BOTH, TYP_RUBBLE, randint1(k), c->depth, 0);
+	alloc_objects(c, SET_BOTH, TYP_RUBBLE, 1 + randint1(k - 1), c->depth, 0);
 
 	/* Place some traps in the dungeon, */
 	alloc_objects(c, SET_CORR, TYP_TRAP, randint1(k), c->depth, 0);
@@ -2193,6 +2197,10 @@ struct chunk *modified_gen(struct player *p, int min_height, int min_width) {
     alloc_objects(c, SET_BOTH, TYP_GOLD, Rand_normal(z_info->both_gold_av, 3),
 				  c->depth, ORIGIN_FLOOR);
 
+	/* And occationally some trees or rubble in rooms */
+	if (randint0(100) < 17 - c->depth / 5) alloc_objects(c, SET_ROOM, TYP_TREE, 3 + randint1(9), c->depth, 0);
+	else if (randint0(100) < 11 + c->depth / 5) alloc_objects(c, SET_ROOM, TYP_RUBBLE, 2 + randint1(8), c->depth, 0);
+
     return c;
 }
 
@@ -2385,7 +2393,7 @@ struct chunk *moria_gen(struct player *p, int min_height, int min_width) {
     k = MAX(MIN(c->depth / 3, 10), 2);
 
     /* Put some rubble in corridors */
-    alloc_objects(c, SET_CORR, TYP_RUBBLE, randint1(k), c->depth, 0);
+    alloc_objects(c, SET_CORR, TYP_RUBBLE, 1 + randint1(k-1), c->depth, 0);
 
     /* Place some traps in the dungeon, reduce frequency by factor of 5 */
     alloc_objects(c, SET_CORR, TYP_TRAP, randint1(k)/5, c->depth, 0);
@@ -2966,8 +2974,8 @@ struct chunk *gauntlet_gen(struct player *p, int min_height, int min_width) {
 	alloc_objects(c, SET_BOTH, TYP_GOLD, Rand_normal(z_info->both_gold_av, 3),
 				  c->depth, ORIGIN_FLOOR);
 
-	/* And occationally some trees */
-	if (randint0(80) < 20 - c->depth/4) alloc_objects(c, SET_ROOM, TYP_TREE, 3 + randint1(9), c->depth, 0);
+	/* And occationally some rubble in rooms */
+	if (randint0(100) < 11 + c->depth/5) alloc_objects(c, SET_ROOM, TYP_RUBBLE, 3 + randint1(5), c->depth, 0);
 
 	return c;
 }

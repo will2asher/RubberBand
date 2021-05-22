@@ -1074,7 +1074,7 @@ static void player_kill_monster(struct monster *mon, const char *note)
 	if (rlvl < 1) rlvl = 1;
 
 	/* reduced XP for TOWN_OR_DUN monsters killed in the town */
-	if ((rf_has(mon->race->flags, RF_TOWN_OR_DUN)) == (player->depth == 0)) div = div * 2;
+	if (!player->depth) div = div * 2;
 
 	/* Give some experience for the kill */
 	new_exp = ((long)mon->race->mexp * rlvl) / div;
@@ -1278,7 +1278,7 @@ bool mon_take_hit(struct monster *mon, int dam, bool *fear, const char *note)
 	/* Become aware of its presence (only if dam > 0) */
 	if (monster_is_camouflaged(mon)) become_aware(mon);
 
-	/* Covering tracks is no longer possible */
+	/* Covering tracks is no longer possible (I don't think this goes here) */
 	player->timed[TMD_COVERTRACKS] = 0;
 
 	/* Hurt it */

@@ -432,7 +432,7 @@ walk-msg:You can't swim.  Really step in the deep water?
 run-msg:Deep water blocks your path.  Step into it? 
 hurt-msg:You sink in the water!
 die-msg:drowning in water
-confused-msg:falls into the water
+confused-msg:slips into deep water and drowns
 #resist-flag:WATER_HIDE | FLY
 desc:Deep water. It looks black in the dim light of the dungeon.
 desc: (In real life, this would look the same as shallow water. Lucky for you, this isn't real life.)

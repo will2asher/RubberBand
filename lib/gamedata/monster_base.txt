@@ -45,14 +45,14 @@ desc:Amphibian
 name:bat
 glyph:b
 pain:4
-flags:ANIMAL
+flags:ANIMAL | FLY
 desc:Bat
 
 # Quickish monsters usually with some effect beyond melee
 name:bird
 glyph:B
 pain:8
-flags:ANIMAL | CLEAR_WEB
+flags:ANIMAL | FLY | CLEAR_WEB
 desc:Bird
 
 # Wolves are animals which mostly come in packs, and are associated with evil
@@ -75,7 +75,7 @@ desc:Centipede
 name:dragon
 glyph:d
 pain:1
-flags:DRAGON | EVIL | SPIRIT
+flags:DRAGON | EVIL | SPIRIT | FLY
 flags:FORCE_SLEEP | CLEAR_WEB
 desc:Dragon
 #S_EVIL instead? (probably different individually)
@@ -86,7 +86,7 @@ name:ancient dragon
 glyph:D
 pain:1
 flags:DRAGON | EVIL | POWERFUL | SMART | SPIRIT
-flags:DROP_4
+flags:DROP_4 | FLY
 flags:MOVE_BODY | CLEAR_WEB | FORCE_SLEEP
 flags:NO_HOLD | NO_CONF | IM_SLIME
 desc:Ancient Dragon/Wyrm
@@ -122,7 +122,7 @@ desc:Feline (Cat)
 name:fly
 glyph:F
 pain:7
-flags:ANIMAL | WEIRD_MIND
+flags:ANIMAL | WEIRD_MIND | FLY
 flags:RAND_50 | FORCE_SLEEP
 desc:Dragon Fly (or other flying bug)
 
@@ -133,7 +133,7 @@ glyph:G
 pain:1
 flags:UNDEAD | EVIL | COLD_BLOOD | SPIRIT
 flags:INVISIBLE
-flags:PASS_WALL
+flags:PASS_WALL | FLY
 flags:IM_POIS | NO_CONF | NO_SLEEP | IM_SLIME
 desc:Ghost
 #IM_COLD | NO_HOLD | NO_STUN  not by default
@@ -184,7 +184,7 @@ desc:Dark Fairy
 name:insect
 glyph:I
 pain:7
-flags:ANIMAL | WEIRD_MIND
+flags:ANIMAL | WEIRD_MIND | FLY
 desc:Insect
 
 # Mostly non-moving creatures which touch for various effects
@@ -271,7 +271,7 @@ pain:2
 flags:BASH_DOOR | CLEAR_WEB | RUBBER
 flags:IM_ACID | IM_WATER | IM_SLIME | WATER_HIDE
 desc:Nulx (swamp monsters) and other tentacled horrors
-#(WATER_HIDE doesn't do anything yet)
+#(WATER_HIDE isn't finished yet)
 
 # Ogres are like small giants, or large orcs.  Mostly straightforward melee
 # fighters who come in packs, with occaisonal lone spellcasters.
@@ -413,7 +413,7 @@ name:vortex
 glyph:v
 pain:11
 flags:EMPTY_MIND | POWERFUL | NONLIVING | FORCE_SLEEP
-flags:RAND_50 | BASH_DOOR
+flags:RAND_50 | BASH_DOOR | FLY
 flags:NO_FEAR | NO_CONF | NO_SLEEP | NO_HOLD | IM_POIS
 desc:Vortex
 #CLEAR_WEB (a few should have PASS_WEB instead)

@@ -687,11 +687,41 @@ bool square_is_monster_walkable(struct chunk *c, struct loc grid)
 }
 
 /**
- * True if the square is passable by the player.
+ * True if the square is passable by the player (and most monsters).
  */
 bool square_ispassable(struct chunk *c, struct loc grid) {
 	assert(square_in_bounds(c, grid));
 	return feat_is_passable(square(c, grid)->feat);
+}
+
+/**
+ * True if the square is passable by a PASS_DOOR monster.
+ */
+bool square_ispassdoorable(struct chunk* c, struct loc grid) {
+	assert(square_in_bounds(c, grid));
+
+	/* Doors */
+	if (square_iscloseddoor(c, grid) || square_issecretdoor(c, grid)) return true;
+	/* Other stuff that PASS_DOOR monsters can pass that most monsters can't */
+	if (square_isrubble(c, grid)) return true;
+	if (square_isatree(c, grid) || square_has_statue(c, grid)) return true;
+
+	return square_ispassable(c, grid);
+}
+
+/**
+ * True if the square's terrain can be flown over by FLY monsters
+ */
+bool square_isflyable(struct chunk* c, struct loc grid) {
+	assert(square_in_bounds(c, grid));
+
+	/* this depends on the size of the FLY monster and is checked elsewhere */
+	if (square_isrubble(c, grid)) return true; 
+	/* Other terrain that can be flown over: trees, statues, chasms, lava */
+	if (square_isatree(c, grid) || square_has_statue(c, grid) || 
+		square_isachasm(c, grid) || square_isfiery(c, grid)) return true;
+
+	return square_ispassable(c, grid);
 }
 
 /**

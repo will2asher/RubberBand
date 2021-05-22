@@ -861,6 +861,11 @@ void run_step(int dir)
 	/* Move the player; running straight into a trap == trying to disarm */
 	move_player(run_cur_dir, dir && disarm ? true : false);
 
+	/* Some terrain slows movement */
+	if (square_slows_movement(cave, player->grid)) {
+		player->upkeep->energy_use += player->upkeep->energy_use / 2;
+	}
+
 	/* Decrease counter if it hasn't been cancelled */
 	/* occurs after movement so that using p->u->running as flag works */
 	if (player->upkeep->running) {

@@ -188,13 +188,22 @@ static bool monster_can_move(struct chunk *c, struct monster *mon,
 static bool monster_hates_grid(struct chunk *c, struct monster *mon,
 							   struct loc grid)
 {
-	/* monsters ignore slime puddles (for now at least -I may change that later) */
+	/* monsters ignore slime puddles (for now at least -I may give monsters a silme level later) */
 	if (square(c, grid)->feat == FEAT_SLIME_PUDDLE) return false;
 
-	/* monsters ignore open pits for now (until I implement monster size and the FLY flag) */
+	/* monsters ignore open pits for now (todo) */
 	if (square(c, grid)->feat == FEAT_OPIT) return false;
 
-	/* Only some creatures can handle damaging terrain (besides slime puddles) */
+	/* Flying monsters can avoid most damaging terrain */
+	if (rf_has(mon->race->flags, RF_FLY)) {
+		/* HURT_FIRE monsters won't even fly over lava */
+		if (square_isfiery(c, grid) && rf_has(mon->race->flags, RF_HURT_FIRE)) return true;
+
+		/* Otherwise flying monsters ignore most damaging terrain */
+		if (square_isflyable(c, grid)) return false;
+	}
+
+	/* Only some creatures can handle damaging terrain */
 	if (square_isdamaging(c, grid) &&
 		!rf_has(mon->race->flags, square_feat(c, grid)->resist_flag)) {
 		return true;
@@ -203,6 +212,7 @@ static bool monster_hates_grid(struct chunk *c, struct monster *mon,
 	/* (and cats hate water even though they aren't damaged by it) */
 	if (square_iswater(c, grid) && (rf_has(mon->race->flags, RF_HURT_WATER) ||
 		(mon->race->d_char == 'f'))) return true;
+
 	return false;
 }
 
@@ -583,10 +593,21 @@ static bool get_move_find_safety(struct chunk *c, struct monster *mon)
 			/* Skip illegal locations */
 			if (!square_in_bounds_fully(c, grid)) continue;
 
-			/* PASS_DOOR monsters can pass rubble as well */
-			if (rf_has(mon->race->flags, RF_PASS_DOOR) && square_isrubble(c, grid)) /*okay*/;
+			/* PASS_DOOR monsters can pass some other terrain as well */
+			if (rf_has(mon->race->flags, RF_PASS_DOOR) && square_ispassdoorable(c, grid)) /*okay*/;
+			/* WATER_HIDE monsters can swim */
+			else if (rf_has(mon->race->flags, RF_WATER_HIDE) && square_iswater(c, grid)) /*okay*/;
+			/* (There is limited space between the pile of rubble and the ceiling.) */
+			else if ((mon->race->msize > 3) && rf_has(mon->race->flags, RF_FLY) && 
+				square_isrubble(c, grid) && (!square_ispassable(c, grid)))
+				continue;
+			/* HURT_FIRE monsters won't fly over lava */
+			else if (rf_has(mon->race->flags, RF_FLY) && rf_has(mon->race->flags, RF_HURT_FIRE) &&
+				square_isfiery(c, grid)) continue;
+			/* FLY monsters can fly over some obsticles (including rubble for smaller flyers) */
+			else if (rf_has(mon->race->flags, RF_FLY) && square_isflyable(c, grid)) /*okay*/;
 
-			/* Skip locations in a wall */
+			/* Skip locations in a wall (or other non-passable terrain) */
 			else if (!square_ispassable(c, grid)) continue;
 
 			/* Ignore too-distant grids */
@@ -1170,12 +1191,33 @@ static bool monster_turn_can_move(struct chunk *c, struct monster *mon,
 		return false;
 	}
 
-	/* PASS_DOOR monsters can pass rubble as well */
-	if (rf_has(mon->race->flags, RF_PASS_DOOR) && square_isrubble(c, new)) return true;
-
 	/* Floor is open? */
-	if (square_ispassable(c, new)) {
+	if (square_ispassable(c, new)) return true;
+
+	/* PASS_DOOR monsters can pass some other terrain as well as doors (rubble, trees) */
+	if (rf_has(mon->race->flags, RF_PASS_DOOR) && square_ispassdoorable(c, new)) {
+		/* learn about the monster */
+		if (monster_is_visible(mon)) rf_on(lore->flags, RF_PASS_DOOR);
 		return true;
+	}
+
+	/* WATER_HIDE monsters can swim */
+	/* (It would be more appropriate to name the flag "SWIM", but I don't feel like changing it now) */
+	if (rf_has(mon->race->flags, RF_WATER_HIDE) && square_iswater(c, new)) {
+		/* learn about the swimming monster */
+		if (monster_is_visible(mon)) rf_on(lore->flags, RF_WATER_HIDE);
+		return true;
+	}
+
+	/* FLY monsters can bypass some otherwise unpassable terrain (incl. chasms, deep water) */
+	if (rf_has(mon->race->flags, RF_FLY) && square_isflyable(c, new)) {
+		if ((square_isrubble(c, new)) && (mon->race->msize > 3)) 
+			/* (monster is too big to fly through the limited space between the rubble and the ceiling) */;
+		else {
+			/* This flag should be obvious... */
+			if (monster_is_visible(mon)) rf_on(lore->flags, RF_FLY);
+			return true;
+		}
 	}
 
 	/* Permanent wall in the way */
@@ -1199,6 +1241,7 @@ static bool monster_turn_can_move(struct chunk *c, struct monster *mon,
 	}
 
 	/* Monster may be able to deal with walls and doors */
+	/* PASS_DOOR is handled above (seems like PASS_WALL should be too) */
 	if (rf_has(mon->race->flags, RF_PASS_WALL)) {
 		return true;
 	} else if (rf_has(mon->race->flags, RF_SMASH_WALL)) {
@@ -1220,29 +1263,21 @@ static bool monster_turn_can_move(struct chunk *c, struct monster *mon,
 		return true;
 	} else if (square_iscloseddoor(c, new) || square_issecretdoor(c, new)) {
 		/* Don't allow a confused move to open a door. */
-		bool can_open = rf_has(mon->race->flags, RF_OPEN_DOOR) &&
-			!confused;
+		bool can_open = rf_has(mon->race->flags, RF_OPEN_DOOR) && !confused;
 		/* During a confused move, a monster only bashes sometimes. */
 		bool can_bash = rf_has(mon->race->flags, RF_BASH_DOOR) &&
 			(!confused || one_in_(3));
 		bool will_bash = false;
-		/* Some monsters can pass through (or under) doors */
-		bool can_passdoor = rf_has(mon->race->flags, RF_PASS_DOOR);
 
 		/* Take a turn */
-		if (can_open || can_bash || can_passdoor) *did_something = true;
+		if (can_open || can_bash) *did_something = true;
 
 		/* Learn about door abilities */
 		if (!confused && monster_is_visible(mon)) {
 			rf_on(lore->flags, RF_OPEN_DOOR);
 			rf_on(lore->flags, RF_BASH_DOOR);
-			rf_on(lore->flags, RF_PASS_DOOR);
 		}
 
-		/* PASS_DOOR monsters have no reason to open or bash */
-		if (can_passdoor) {
-			return true; 
-		}		
 		/* If creature can open or bash doors, make a choice */
 		if (can_open) {
 			/* Sometimes bash anyway (impatient) */
@@ -1310,7 +1345,43 @@ static bool monster_turn_can_move(struct chunk *c, struct monster *mon,
 				square_open_door(c, new);
 			}
 		}
-	} else if (confused) {
+	}
+	/* confused (non-unique) monsters may fall into chasms or deep water */
+	else if ((confused) && (square_isachasm(c, new) || square_iswater(c, new))) {
+		int catchc = 26 + mon->race->level + mon->race->msize * 5;
+
+		/* PASS_WALL monsters, and climbing monsters have a better chance of not falling */
+		if (rf_has(mon->race->flags, RF_PASS_DOOR) || (mon->race->d_char == 'a') || 
+			(mon->race->d_char == 'c') || (mon->race->d_char == 'S'))
+			catchc += catchc / 2;
+		/* Certain semi-incorporeal monsters don't easily fall into chasms (but can still be defeated by water) */
+		else if (((mon->race->d_char == 'W') || rf_has(mon->race->flags, RF_PASS_WALL)) && 
+			square_isachasm(c, new)) catchc += catchc / 2;
+		else if (rf_has(mon->race->flags, RF_SMART)) catchc += catchc / 5;
+		/* Uniques never fall */
+		if (rf_has(mon->race->flags, RF_UNIQUE)) catchc = 101;
+
+		if (randint0(100) < catchc) {
+			/* catching itself when confused counts as doing something */
+			*did_something = true;
+			/* Uniques and High level monsters never fall (but most of them don't get confused either) */
+			if (catchc >= 100) msg("%s easily stops itself before falling.", m_name);
+			else msg("%s barely catches itself before falling.", m_name);
+			return false;
+		}
+		/*** Monster falls to its death (along with whatever loot it would've dropped) ***/
+		monster_display_confused_move_msg(mon, m_name, c, new);
+
+		/* Affect light? */
+		if (mon->race->light != 0) player->upkeep->update |= PU_UPDATE_VIEW;
+
+		/* Delete the monster */
+		delete_monster_idx(mon->midx);
+
+		/* Update monster list window */
+		player->upkeep->redraw |= PR_MONLIST;
+	}
+	else if (confused) {
 		*did_something = true;
 		monster_display_confused_move_msg(mon, m_name, c, new);
 		monster_slightly_stun_by_move(mon);
@@ -1594,20 +1665,45 @@ static void monster_turn(struct chunk *c, struct monster *mon)
 	 * Monsters which are tracking by sound or scent will not move if they
 	 * can't move in their chosen direction. */
 	for (i = 0; i < 5 && !did_something; i++) {
+		bool occupied = false;
 		/* Get the direction (or stagger) */
 		int d = (stagger != NO_STAGGER) ? ddd[randint0(8)] : side_dirs[dir][i];
 
 		/* Get the grid to step to or attack */
 		struct loc new = loc_sum(mon->grid, ddgrid[d]);
 
+		/* is the square occupied? */
+		if (square_isplayer(c, new) || square_isdecoyed(c, new) || square_monster(c, new)) 
+			occupied = true;
+
 		/* Tracking monsters have their best direction, don't change */
 		if ((i > 0) && stagger == NO_STAGGER && !square_isview(c, mon->grid) && tracking) {
 			break;
 		}
 
+		/* Some monsters never move */
+		/* (Do this before monster_turn_can_move() because that's when confused monsters can fall into chasms) */
+		if (rf_has(mon->race->flags, RF_NEVER_MOVE) && (!occupied)) {
+			/* Learn about lack of movement */
+			if (monster_is_visible(mon) && monster_is_in_view(mon))
+				rf_on(lore->flags, RF_NEVER_MOVE);
+			return;
+		}
+		/* Some monsters move slower than they cast/attack */
+		else if ((rf_has(mon->race->flags, RF_MOVE_SLOW)) && (!occupied) &&
+			(randint0(100) < 60)) {
+			/* Learn about slow movement */
+			if (monster_is_visible(mon) && monster_is_in_view(mon)) rf_on(lore->flags, RF_MOVE_SLOW);
+			return;
+		}
+
 		/* Check if we can move */
+		/* (If monsters is confused with deep water or a chasm in its path, this is where it can fall and die) */
 		if (!monster_turn_can_move(c, mon, m_name, new, stagger == CONFUSED_STAGGER, &did_something))
 			continue;
+
+		/* Make sure monster is still alive */
+		if (!mon->race) return;
 
 		/* Try to break the glyph if there is one.  This can happen multiple
 		 * times per turn because failure does not break the loop */
@@ -1658,23 +1754,6 @@ static void monster_turn(struct chunk *c, struct monster *mon)
 			did_something = true;
 			break;
 		}
-		else {
-			/* Some monsters never move */
-			if (rf_has(mon->race->flags, RF_NEVER_MOVE)) {
-				/* Learn about lack of movement */
-				if (monster_is_visible(mon))
-					rf_on(lore->flags, RF_NEVER_MOVE);
-
-				return;
-			}
-			/* Some monsters move slower than they cast/attack */
-			else if ((rf_has(mon->race->flags, RF_MOVE_SLOW)) && (randint0(100) < 60)) {
-					/* Learn about lack of movement */
-					if (monster_is_visible(mon))
-						rf_on(lore->flags, RF_MOVE_SLOW);
-					return;
-			}
-		}
 
 		/* A monster is in the way, try to push past/kill */
 		if (square_monster(c, new)) {
@@ -1683,6 +1762,20 @@ static void monster_turn(struct chunk *c, struct monster *mon)
 			/* Otherwise we can just move */
 			monster_swap(mon->grid, new);
 			did_something = true;
+
+			/* Some terrain slows movement */
+			if (square_slows_movement(c, new)) {
+				/* Swimming monsters aren't slowed by water */
+				if (rf_has(mon->race->flags, RF_WATER_HIDE) && square_iswater(c, new)) /* not slowed */;
+				/* PASS_WALL, PASS_DOOR, and Climber monsters aren't slowed by terrain */
+				else if (rf_has(mon->race->flags, RF_PASS_DOOR) || rf_has(mon->race->flags, RF_PASS_WALL) ||
+					(mon->race->d_char == 'a') || (mon->race->d_char == 'c') || (mon->race->d_char == 'S'))
+					/* not slowed */;
+				/* Neither are flying monsters */
+				else if (rf_has(mon->race->flags, RF_FLY)) /* not slowed */;
+				/* lose energy */
+				else mon->energy -= z_info->move_energy / 2;
+			}
 		}
 
 		/* Scan all objects in the grid, if we reached it */
@@ -1694,10 +1787,6 @@ static void monster_turn(struct chunk *c, struct monster *mon)
 	}
 
 	if (did_something) {
-		/* Learn about no lack of movement */
-		if (monster_is_visible(mon))
-			rf_on(lore->flags, RF_NEVER_MOVE);
-
 		/* Possible disturb */
 		if (monster_is_visible(mon) && monster_is_in_view(mon) && 
 			OPT(player, disturb_near))
@@ -1930,8 +2019,7 @@ void process_monsters(struct chunk *c, int minimum_energy)
 	bool regen = false;
 
 	/* Regenerate hitpoints and mana every 100 game turns */
-	if (turn % 100 == 0)
-		regen = true;
+	if (turn % 100 == 0) regen = true;
 
 	/* Process the monsters (backwards) */
 	for (i = cave_monster_max(c) - 1; i >= 1; i--) {
@@ -1959,8 +2047,7 @@ void process_monsters(struct chunk *c, int minimum_energy)
 		mflag_on(mon->mflag, MFLAG_HANDLED);
 
 		/* Handle monster regeneration if requested */
-		if (regen)
-			regen_monster(mon, 1);
+		if (regen) regen_monster(mon, 1);
 
 		/* Calculate the net speed */
 		mspeed = mon->mspeed;
@@ -1975,8 +2062,7 @@ void process_monsters(struct chunk *c, int minimum_energy)
 		mon->energy += turn_energy(mspeed);
 
 		/* End the turn of monsters without enough energy to move */
-		if (!moving)
-			continue;
+		if (!moving) continue;
 
 		/* Use up "some" energy */
 		mon->energy -= z_info->move_energy;

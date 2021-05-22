@@ -1139,12 +1139,34 @@ static enum parser_error parse_monster_speed(struct parser *p) {
 	return PARSE_ERROR_NONE;
 }
 
+/* Monster element (would make more sense as a string, but ints are easier for me) */
+/* 1=flesh, 2=earth, 3=fire, 4=water, 5=air, 6=acid, 7=slime, 8=nether, 9=poison,... */
+static enum parser_error parse_monster_elem(struct parser *p) {
+	struct monster_race *r = parser_priv(p);
+
+	if (!r)
+		return PARSE_ERROR_MISSING_RECORD_HEADER;
+	r->elem = parser_getint(p, "elem");
+	/* assume flesh */
+	if (!r->elem) r->elem = 1;
+	return PARSE_ERROR_NONE;
+}
+
 static enum parser_error parse_monster_hit_points(struct parser *p) {
 	struct monster_race *r = parser_priv(p);
 
 	if (!r)
 		return PARSE_ERROR_MISSING_RECORD_HEADER;
 	r->avg_hp = parser_getint(p, "hp");
+	return PARSE_ERROR_NONE;
+}
+
+static enum parser_error parse_monster_msize(struct parser *p) {
+	struct monster_race *r = parser_priv(p);
+
+	if (!r)
+		return PARSE_ERROR_MISSING_RECORD_HEADER;
+	r->msize = parser_getint(p, "size");
 	return PARSE_ERROR_NONE;
 }
 
@@ -1606,8 +1628,10 @@ struct parser *init_parse_monster(void) {
 	parser_reg(p, "base sym base", parse_monster_base);
 	parser_reg(p, "glyph char glyph", parse_monster_glyph);
 	parser_reg(p, "color sym color", parse_monster_color);
+	parser_reg(p, "element int elem", parse_monster_elem);
 	parser_reg(p, "speed int speed", parse_monster_speed);
 	parser_reg(p, "hit-points int hp", parse_monster_hit_points);
+	parser_reg(p, "size int size", parse_monster_msize);
 	parser_reg(p, "light int light", parse_monster_light);
 	parser_reg(p, "hearing int hearing", parse_monster_hearing);
 	parser_reg(p, "smell int smell", parse_monster_smell);

@@ -1352,19 +1352,18 @@ void do_cmd_walk(struct command *cmd)
 	
 	/* Verify walkability */
 	grid = loc_sum(player->grid, ddgrid[dir]);
-	if (!do_cmd_walk_test(grid))
-		return;
+	if (!do_cmd_walk_test(grid)) return;
 
-	/* Some terrain slows movement */
-	if (square_slows_movement(cave, player->grid)) {
-		int nspeed = energy_per_move(player);
-		player->upkeep->energy_use = nspeed * 5 / 4;
-	}
-
-	else player->upkeep->energy_use = energy_per_move(player);
+	/* Take a turn */
+	player->upkeep->energy_use = energy_per_move(player);
 
 	/* Attempt to disarm unless it's a trap and we're trapsafe */
 	move_player(dir, !(square_isdisarmabletrap(cave, grid) && trapsafe));
+
+	/* Some terrain slows movement */
+	if (square_slows_movement(cave, player->grid)) {
+		player->upkeep->energy_use += player->upkeep->energy_use / 2;
+	}
 }
 
 
@@ -1396,18 +1395,17 @@ void do_cmd_jump(struct command *cmd)
 
 	/* Verify walkability */
 	grid = loc_sum(player->grid, ddgrid[dir]);
-	if (!do_cmd_walk_test(grid))
-		return;
+	if (!do_cmd_walk_test(grid)) return;
+
+	/* Take a turn */
+	player->upkeep->energy_use = energy_per_move(player);
+
+	move_player(dir, false);
 
 	/* Some terrain slows movement */
 	if (square_slows_movement(cave, player->grid)) {
-		int nspeed = energy_per_move(player);
-		player->upkeep->energy_use = nspeed * 5 / 4;
+		player->upkeep->energy_use += player->upkeep->energy_use / 2;
 	}
-
-	else player->upkeep->energy_use = energy_per_move(player);
-
-	move_player(dir, false);
 }
 
 
