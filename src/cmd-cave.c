@@ -1020,13 +1020,14 @@ void do_cmd_steal(struct command *cmd)
 
 /**
  * Move player in the given direction.
+ * Returns true if the player actually moved normally (teleporting doesn't count.)
  *
  * This routine should only be called when energy has been expended.
  *
  * Note that this routine handles monsters in the destination grid,
  * and also handles attempting to move into walls/doors/rubble/etc.
  */
-void move_player(int dir, bool disarm)
+bool move_player(int dir, bool disarm)
 {
 	struct loc grid = loc_sum(player->grid, ddgrid[dir]);
 
@@ -1035,11 +1036,40 @@ void move_player(int dir, bool disarm)
 	bool trapsafe = player_is_trapsafe(player);
 	bool trap = square_isdisarmabletrap(cave, grid);
 	bool door = square_iscloseddoor(cave, grid);
+	bool moved = false;
+
+	/* Player is being held by a monster */
+	if ((player->timed[TMD_BHELD]) && (m_idx <= 0) && (square_ispassable(cave, grid))) {
+		/* mbheld better be set */
+		if (!player->mbheld) msgt(MSG_HITWALL, "BUG: Being held by no monster.");
+		else {
+			/* Get the monster that grabbed the player */
+			struct monster* mon = cave_monster(cave, player->mbheld);
+			int pullaway = 6 + 2 * (adj_dex_th[player->state.stat_ind[STAT_DEX]] + adj_str_td[player->state.stat_ind[STAT_STR]]);
+			char m_name[80];
+
+			/* Get the monster name (or "it") */
+			monster_desc(m_name, sizeof(m_name), mon, MDESC_TARG);
+
+			/* Try to pull away from the monster */
+			if (randint0(64 + mon->race->level * 3 / 4) < pullaway) {
+				msg("You pull away from %s!", m_name);
+				player_clear_timed(player, TMD_BHELD, false);
+			}
+			else {
+				msg("You try to pull away, but %s keeps its hold on you.", m_name);
+				/* Don't lose a full turn */
+				player->upkeep->energy_use = player->upkeep->energy_use * 3 / 4;
+				return moved;
+			}
+		}
+	}
+
 
 	/* Many things can happen on movement */
 	if (m_idx > 0) {
 		/* Attack monsters */
-		if (monster_is_mimicking(mon)) {
+		if (mflag_has(mon->mflag, MFLAG_CAMOUFLAGE)) {
 			become_aware(mon);
 
 			/* Mimic wakes up and becomes aware*/
@@ -1101,7 +1131,7 @@ void move_player(int dir, bool disarm)
 	} 
 	/* Nexus stones are special */
 	else if (square_has_nexus(cave, grid)) {
-		struct feature* feat = square_feat(cave, grid);
+		struct feature *feat = square_feat(cave, grid);
 
 		/* No need to confirm movement if you have RES_NEXUS */
 		if ((player->state.el_info[ELEM_NEXUS].res_level) || (get_check(feat->walk_msg))) {
@@ -1136,6 +1166,7 @@ void move_player(int dir, bool disarm)
 					msg("The nexus stone fails to trigger.");
 				/* Move player normally */
 				monster_swap(player->grid, grid);
+				moved = true;
 
 				/* Update view and search (I think this is done automatically when teleporting) */
 				update_view(cave, player);
@@ -1173,6 +1204,7 @@ void move_player(int dir, bool disarm)
 		if (step) {
 			/* Move player */
 			monster_swap(player->grid, grid);
+			moved = true;
 
 			/* Update view and search */
 			update_view(cave, player);
@@ -1191,7 +1223,7 @@ void move_player(int dir, bool disarm)
 		if (player->upkeep->running && !player->upkeep->running_firststep &&
 			old_dtrap && !new_dtrap) {
 			disturb(player);
-			return;
+			return moved;
 		}
 
 		/* Trap immune player learns that they are */
@@ -1201,12 +1233,13 @@ void move_player(int dir, bool disarm)
 
 		/* Move player */
 		monster_swap(player->grid, grid);
+		moved = true;
 
 		/* Handle store doors, or notice objects */
 		if (square_isshop(cave, grid)) {
 			if (player_is_shapechanged(player)) {
 				msg("There is a scream and the door slams shut!");
-				return;
+				return moved;
 			}
 			disturb(player);
 			event_signal(EVENT_ENTER_STORE);
@@ -1235,6 +1268,7 @@ void move_player(int dir, bool disarm)
 	}
 
 	player->upkeep->running_firststep = false;
+	return moved;
 }
 
 /**
@@ -1246,7 +1280,7 @@ static bool do_cmd_walk_test(struct loc grid)
 	struct monster *mon = cave_monster(cave, m_idx);
 
 	/* Allow attack on visible monsters if unafraid */
-	if (m_idx > 0 && monster_is_visible(mon) &&	!monster_is_mimicking(mon)) {
+	if (m_idx > 0 && monster_is_visible(mon) &&	!monster_is_camouflaged(mon)) {
 		/* Handle player fear */
 		if (player_of_has(player, OF_AFRAID)) {
 			/* Extract monster name (or "it") */
@@ -1358,11 +1392,12 @@ void do_cmd_walk(struct command *cmd)
 	player->upkeep->energy_use = energy_per_move(player);
 
 	/* Attempt to disarm unless it's a trap and we're trapsafe */
-	move_player(dir, !(square_isdisarmabletrap(cave, grid) && trapsafe));
+	if (move_player(dir, !(square_isdisarmabletrap(cave, grid) && trapsafe))) {
 
-	/* Some terrain slows movement */
-	if (square_slows_movement(cave, player->grid)) {
-		player->upkeep->energy_use += player->upkeep->energy_use / 2;
+		/* Some terrain slows movement */
+		if (square_slows_movement(cave, grid)) {
+			player->upkeep->energy_use += player->upkeep->energy_use / 2;
+		}
 	}
 }
 
@@ -1400,11 +1435,11 @@ void do_cmd_jump(struct command *cmd)
 	/* Take a turn */
 	player->upkeep->energy_use = energy_per_move(player);
 
-	move_player(dir, false);
-
-	/* Some terrain slows movement */
-	if (square_slows_movement(cave, player->grid)) {
-		player->upkeep->energy_use += player->upkeep->energy_use / 2;
+	if (move_player(dir, false)) {
+		/* Some terrain slows movement */
+		if (square_slows_movement(cave, grid)) {
+			player->upkeep->energy_use += player->upkeep->energy_use / 2;
+		}
 	}
 }
 

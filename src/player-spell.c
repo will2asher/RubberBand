@@ -449,9 +449,9 @@ s16b spell_chance(int spell_index)
 	if (player->timed[TMD_FRENZY]) chance += 18;
 
 	/* being held by a monster makes spells harder */
-	if (player->timed[TMD_BHELD]) chance += 18;
+	if (player->timed[TMD_BHELD]) chance += 20;
 
-	/* Confusion and Amnesia make spells very difficult (but still possible at least) */
+	/* Confusion and Amnesia make spells very difficult (but usually still possible at least) */
 	if ((player->timed[TMD_AMNESIA]) && (player->timed[TMD_CONFUSED])) {
 		chance = 60 + chance / 2 + randint1(chance/2 + 1);
 	}

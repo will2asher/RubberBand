@@ -394,14 +394,19 @@ struct monster {
 	byte pcmet;							/* The player has learned whether this individual is evil or not */
 	byte nonagr;						/* monster is non-agressive (not sure if this works atm) */
 	byte acharmed;						/* for Charm monsters effect (todo- maybe this should be a monster timed effect) */
-	/*byte grabbed;						/* Monster is holding the player */
+	byte grabbed;						/* Monster is holding the player */
+
+	byte mimicked_feat;					/* code for Terrain feature monster is mimicking */
+	/* mimicked_feat== 1 is granite, 2 is rubble, 3-4 are statues (sm/lg), 5 is a fountain, 7 is a tree */
+	/* "statued" is(or will be) used both for gargoyles (who mimic statues) and for monsters who disguise as other monsters */
+	/* So we should never have a monster who both mimics and disguises */
+	s16b statued;						/* code of statue description if monster is mimicking a statue (always zero for now) */
+										/* or ridx of race monster is disguised as */
 
 	bitflag mflag[MFLAG_SIZE];			/* Temporary monster flags */
 
 	struct object *mimicked_obj;		/* Object this monster is mimicking */
 	struct object *held_obj;			/* Object being held (if any) */
-
-/*	struct feature *mimicked_feat;		/* Terrain feature monster is mimicking */
 
 	byte attr;  						/* attr last used for drawing monster */
 

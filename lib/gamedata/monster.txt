@@ -1097,8 +1097,7 @@ sleepiness:0
 depth:2
 rarity:1
 experience:30
-blow:BITE:HURT:1d4
-#BHOLD
+blow:BITE:BHOLD:1d4
 flags:UNIQUE
 flags:RAND_25 | BASH_DOOR
 desc:A rather vicious dog belonging to Farmer Maggot.  It thinks you are
@@ -1189,8 +1188,7 @@ depth:2
 rarity:2
 experience:9
 blow:BITE:HURT:1d4
-blow:CRUSH:HURT:1d6
-#BHOLD
+blow:CRUSH:BHOLD:1d6
 flags:RAND_25 | BASH_DOOR
 desc:A large snake which tries to wrap itself around you.
 
@@ -3108,6 +3106,28 @@ blow:BITE:HURT:1d6
 flags:IM_COLD | ROAM
 desc:A large white figure covered in shaggy fur.
 
+name:goyley
+base:gargoyle
+color:G
+element:2
+speed:111
+hit-points:31
+size:2
+hearing:15
+armor-class:43
+sleepiness:25
+depth:9
+rarity:4
+experience:27
+blow:HIT:HURT:1d5
+blow:HIT:HURT:1d6
+flags:DROP_40 | TOWN_OR_DUN
+friends:18:1d4:same
+innate-freq:12
+spells:THROW
+desc:Gargoyles are stone-skinned winged creatures who like to disguise as statues.
+desc: Goyleys are smallest type of gargoyle, they like eating pigeons and small children.
+
 name:orc shaman
 base:orc
 color:r
@@ -4893,6 +4913,26 @@ desc:Imagine the torso of the cruelest barbarian on the body of a
 desc: vulture. Many think there's no such thing as male harpy.
 desc: Many who meet them don't survive the encounter. 
 
+name:groyle
+base:gargoyle
+color:U
+element:2
+speed:109
+hit-points:45
+size:3
+hearing:15
+armor-class:60
+sleepiness:25
+depth:13
+rarity:3
+experience:42
+blow:HIT:HURT:1d8
+blow:HIT:HURT:1d8
+flags:DROP_40 | TOWN_OR_DUN
+friends:18:1d4:same
+desc:Gargoyles are stone-skinned winged creatures related to trolls who like to
+desc: disguise as statues. This one is about the size of a man.
+
 name:Radbug of Cirith Ungol
 base:orc
 color:o
@@ -5921,9 +5961,9 @@ depth:16
 rarity:4
 experience:73
 blow:CRUSH:POISON:2d2
-blow:CRUSH:POISON:2d3
-blow:CRUSH:HURT:5d2
-#BHOLD
+blow:CRUSH:POISON:2d2
+blow:CRUSH:BHOLD:2d2
+blow:CRUSH:BHOLD:5d2
 flags:WEIRD_MIND | RUBBER | MOVE_SLOW | CLIGHT
 flags:NO_FEAR | NO_CONF | NO_SLOW | IM_POIS
 friends:72:1d6:Same
@@ -6215,8 +6255,7 @@ depth:17
 rarity:3
 experience:61
 blow:HIT:HURT:1d3
-blow:CRUSH:HURT:3d4
-#BHOLD
+blow:CRUSH:BHOLD:3d4
 blow:BITE:ACID:2d6
 flags:WEIRD_MIND | RAND_25 | ANIMAL | MOVE_SLOW
 desc:A nulx is a tentacled swamp monster with acid under its skin. This one is about 8 feet
@@ -6754,6 +6793,28 @@ blow:HIT:HURT:3d5
 flags:COLD_BLOOD | BASH_DOOR
 flags:HURT_ROCK | IM_COLD | IM_FIRE | IM_POIS
 desc:It is a massive animated statue.
+
+name:gargoyle
+base:gargoyle
+color:s
+element:2
+speed:110
+hit-points:78
+size:3
+hearing:15
+armor-class:75
+sleepiness:21
+depth:19
+rarity:2
+experience:73
+blow:HIT:HURT:3d5
+blow:HIT:HURT:3d5
+flags:DROP_60
+friends:20:1d4:same
+innate-freq:11
+spells:THROW
+desc:Gargoyles are stone-skinned winged creatures related to trolls who like to
+desc: disguise as statues. It's about seven feet tall carrying a stone axe.
 
 name:scroll mimic
 base:mimic
@@ -7859,10 +7920,9 @@ sleepiness:34
 depth:22
 rarity:5
 experience:301
-blow:CRUSH:HURT:2d4
+blow:CRUSH:BHOLD:2d4
 blow:CRUSH:PARALYZE:4d4
-blow:CRUSH:HURT:4d4
-#BHOLD 2x
+blow:CRUSH:BHOLD:4d4
 flags:WEIRD_MIND | BASH_DOOR | MOVE_SLOW
 flags:NO_FEAR | NO_STUN | CLIGHT
 friends:5:1d3:same
@@ -7932,9 +7992,8 @@ depth:24
 rarity:4
 experience:2436
 blow:TOUCH:PARALYZE:2d7
-blow:CRUSH:HURT:9d3
-blow:CRUSH:HURT:9d3
-#BHOLD
+blow:CRUSH:BHOLD:9d3
+blow:CRUSH:BHOLD:9d3
 flags:NEVER_MOVE | EVIL | MALE
 flags:WEIRD_MIND | UNIQUE | FORCE_SLEEP
 flags:IM_POIS | IM_ACID | IM_COLD | NO_FEAR | NO_CONF | NO_STUN
@@ -8175,7 +8234,7 @@ armor-class:60
 sleepiness:60
 depth:23
 rarity:1
-experience:215
+experience:188
 blow:HIT:HURT:1d6
 blow:HIT:HURT:1d6
 blow:BITE:HURT:3d4
@@ -8229,6 +8288,29 @@ flags-off:ANIMAL
 innate-freq:14
 spells:SPIT | BR_POIS
 desc:A green scaled humanoid with a highly venomous bite.
+
+name:fountain gargoyle
+base:gargoyle
+color:B
+element:4
+speed:110
+hit-points:120
+size:3
+hearing:15
+armor-class:82
+sleepiness:24
+depth:23
+rarity:4
+experience:154
+blow:HIT:HURT:4d5
+blow:HIT:HURT:4d5
+blow:SPIT:HURT:3d4
+flags:DROP_40 | IM_ACID
+innate-freq:8
+spells:SPIT
+desc:Gargoyles are stone-skinned winged creatures related to trolls who like to
+desc: disguise as statues or fountains. It's about seven feet tall and spouting
+desc: water from its mouth.
 
 name:Azog, King of the orcs of Moria
 base:orc
@@ -9171,9 +9253,8 @@ sleepiness:38
 depth:26
 rarity:1
 experience:218
-blow:CRUSH:HURT:6d3
-blow:CRUSH:HURT:6d3
-#BHOLD
+blow:CRUSH:BHOLD:6d3
+blow:CRUSH:BHOLD:6d3
 blow:BITE:HURT:3d6
 flags:ANIMAL | IM_COLD
 desc:It has feathers and fur and an owl's beak. It redefines the bear hug.
@@ -9524,9 +9605,8 @@ sleepiness:22
 depth:27
 rarity:3
 experience:154
-blow:CRUSH:HURT:6d4
-blow:CRUSH:HURT:6d5
-#BHOLD 2x
+blow:CRUSH:BHOLD:6d4
+blow:CRUSH:BHOLD:6d5
 flags:RAND_25 | BASH_DOOR
 desc: Big enough to wrap itself around a house, it will crush you in its coils.
 
@@ -9546,8 +9626,7 @@ sleepiness:9
 depth:27
 rarity:5
 experience:261
-blow:CLAW:HURT:3d3
-#BHOLD
+blow:CLAW:BHOLD:3d3
 blow:SPIT:BLIND:1d6
 #SBLIND
 blow:BITE:HURT:3d5
@@ -9981,8 +10060,7 @@ depth:28
 rarity:3
 experience:203
 blow:HIT:HURT:2d4
-blow:CRUSH:HURT:4d5
-#BHOLD
+blow:CRUSH:BHOLD:4d5
 blow:BITE:ACID:4d7
 flags:ANIMAL | RAND_25 | MOVE_SLOW
 desc:A nulx is a tentacled swamp monster with acid under its skin. This one is about 14 feet
@@ -10088,8 +10166,7 @@ experience:1000
 blow:CLAW:HURT:2d10
 blow:CLAW:HURT:2d10
 blow:BITE:HURT:4d8
-blow:CRUSH:HURT:3d6
-#BHOLD
+blow:CRUSH:BHOLD:3d6
 flags:UNIQUE | MALE | ANIMAL | SMART | SPIRIT
 flags:MOVE_BODY
 desc:Beorn in his form as a great black bear of the mountains, grown to
@@ -10282,24 +10359,25 @@ desc:An elf of the Land of the Seven Rivers, whose woodcraft was such that a
 desc: stranger might pass through their land from end to end and see none of
 desc: them.
 
-name:regenerating zombie
-base:zombie
-color:r
-speed:109
-hit-points:106
-size:3
-hearing:19
-armor-class:46
-sleepiness:26
-depth:29
-rarity:2
-experience:96
-blow:HIT:LOSE_CON:2d5
-blow:HIT:HURT:3d5
-flags:WEIRD_MIND | STUPID
-flags:NO_FEAR | REGENERATE
-#RETURNS
-desc:It is an animated corpse which keeps putting itself back together.
+#Uncomment once the RETURNS flag works
+#name:regenerating zombie
+#base:zombie
+#color:r
+#speed:109
+#hit-points:106
+#size:3
+#hearing:19
+#armor-class:46
+#sleepiness:26
+#depth:29
+#rarity:2
+#experience:96
+#blow:HIT:LOSE_CON:2d5
+#blow:HIT:HURT:3d5
+#flags:WEIRD_MIND | STUPID
+#flags:NO_FEAR | REGENERATE
+##RETURNS
+#desc:It is an animated corpse which keeps putting itself back together.
 
 name:young blue dragon
 base:dragon
@@ -10652,7 +10730,7 @@ blow:GAZE:CHARM
 blow:TOUCH:PARALYZE
 blow:HIT:HURT:3d9
 flags:ONLY_ITEM | DROP_2
-flags:FEMALE | SMART | FORCE_SLEEP | GOODMON | PASS_DOOR
+flags:FEMALE | SMART | FORCE_SLEEP | GOODMON | UNAWARE
 flags:NO_SLEEP | NO_CONF | IM_COLD | IM_WATER | HURT_FIRE
 innate-freq:7
 spell-freq:4
@@ -10887,6 +10965,28 @@ innate-freq:13
 spells:BOULDER
 desc:It's the animated corpse of a giant.
 
+name:margoyle
+base:gargoyle
+color:p
+element:2
+speed:113
+hit-points:185
+size:4
+hearing:15
+armor-class:85
+sleepiness:21
+depth:31
+rarity:2
+experience:415
+blow:HIT:HURT:6d5
+blow:HIT:HURT:6d5
+flags:DROP_60
+friends:20:1d4:same
+innate-freq:11
+spells:THROW | BOLT
+desc:Gargoyles are stone-skinned winged creatures related to trolls who like to
+desc: disguise as statues. It's about nine feet tall carrying a huge axe.
+
 name:waking dead
 base:zombie
 color:P
@@ -10953,28 +11053,29 @@ flags:NO_FEAR | IM_ELEC | IM_NETHER | ROAM
 desc:An evil magical cat with nine lives and claws like knives.
 
 #(Replaces the troll mummy)
-name:undying troll
-base:troll
-color:w
-speed:110
-hit-points:163
-size:4
-hearing:20
-smell:20
-armor-class:68
-sleepiness:70
-depth:31
-rarity:2
-experience:186
-blow:HIT:HURT:2d5
-blow:HIT:HURT:2d5
-blow:BITE:HURT:2d6
-flags:DROP_60 | IM_POIS | IM_COLD | NO_FEAR | ROAM
-flags:REGENERATE | HURT_ROCK | HURT_LIGHT
-#RETURNS
-desc:This troll looks like an average stone troll except that it is
-desc: covered with scars from the times it has been killed and has put
-desc: itself back together.
+#Uncomment once the RETURNS flag works
+#name:undying troll
+#base:troll
+#color:w
+#speed:110
+#hit-points:163
+#size:4
+#hearing:20
+#smell:20
+#armor-class:68
+#sleepiness:70
+#depth:31
+#rarity:2
+#experience:186
+#blow:HIT:HURT:2d5
+#blow:HIT:HURT:2d5
+#blow:BITE:HURT:2d6
+#flags:DROP_60 | IM_POIS | IM_COLD | NO_FEAR | ROAM
+#flags:REGENERATE | HURT_ROCK | HURT_LIGHT
+##RETURNS
+#desc:This troll looks like an average stone troll except that it is
+#desc: covered with scars from the times it has been killed and has put
+#desc: itself back together.
 
 name:golden naga
 base:naga
@@ -11121,8 +11222,7 @@ experience:302
 blow:SPIT:BLIND:1d6
 blow:BITE:ACID:2d12
 blow:BITE:POISON:2d12
-blow:CRUSH:HURT:4d4
-#BHOLD
+blow:CRUSH:BHOLD:4d4
 flags:RAND_25 | KILL_BODY
 spell-freq:8
 spells:HOLD | BLIND | CONF
@@ -11209,8 +11309,7 @@ rarity:4
 experience:403
 blow:CRUSH:HURT:5d4
 blow:CRUSH:HURT:5d4
-blow:CRUSH:HURT:6d4
-#BHOLD
+blow:CRUSH:BHOLD:6d4
 blow:BITE:ACID:4d7
 flags:ANIMAL | MOVE_SLOW
 spell-freq:15
@@ -11264,8 +11363,7 @@ depth:32
 rarity:4
 experience:251
 blow:BUTT:CONFUSE:4d4
-blow:CLAW:POISON:4d4
-#BHOLD
+blow:CLAW:BHOLD:4d4
 blow:CLAW:POISON:4d4
 blow:BITE:POISON:2d9
 flags:DROP_2 | IM_POIS | IM_COLD
@@ -12100,8 +12198,7 @@ depth:34
 rarity:5
 experience:476
 blow:WAIL:CHARM
-blow:CRUSH:HURT:7d4
-#BHOLD
+blow:CRUSH:BHOLD:7d4
 blow:BITE:POISON:4d7
 flags:EVIL | FEMALE | RUBBER | DROP_1 | WATER_HIDE
 flags:NO_SLEEP | NO_CONF | NO_FEAR | IM_ACID | IM_POIS | IM_WATER
@@ -12111,30 +12208,31 @@ spells:BR_INER | BO_POIS | BO_WATE | MIND_BLAST | FORGET | TELE_TO
 desc:A hideous and hungry water monster whose beautiful singing voice can
 desc: lure the toughest seaman to his death.
 
-name:bone soldier
-base:skeleton
-color:W
-speed:112
-hit-points:96
-size:3
-hearing:19
-armor-class:60
-sleepiness:6
-depth:34
-rarity:4
-experience:105
-blow:HIT:HURT:3d5
-blow:HIT:HURT:5d6
-blow:HIT:HURT:5d6
-flags:DROP_40 | OPEN_DOOR | BASH_DOOR
-flags:EMPTY_MIND | STUPID | NONLIVING
-#RETURNS
-flags-off:NO_CONF | NO_STUN
-innate-freq:11
-spells:THROW | ARROW
-friends:70:2d5:same
-desc:These undead soldiers never get tired, hungry or afraid. They are
-desc: unrelenting and do not like to stay dead.
+#Uncomment once the RETURNS flag works
+#name:bone soldier
+#base:skeleton
+#color:W
+#speed:112
+#hit-points:96
+#size:3
+#hearing:19
+#armor-class:60
+#sleepiness:6
+#depth:34
+#rarity:4
+#experience:105
+#blow:HIT:HURT:3d5
+#blow:HIT:HURT:5d6
+#blow:HIT:HURT:5d6
+#flags:DROP_40 | OPEN_DOOR | BASH_DOOR
+#flags:EMPTY_MIND | STUPID | NONLIVING
+##RETURNS
+#flags-off:NO_CONF | NO_STUN
+#innate-freq:11
+#spells:THROW | ARROW
+#friends:70:2d5:same
+#desc:These undead soldiers never get tired, hungry or afraid. They are
+#desc: unrelenting and do not like to stay dead.
 
 name:dynthe
 base:light fairy
@@ -12219,8 +12317,7 @@ rarity:7
 experience:76
 blow:CRUSH:POISON:3d3
 blow:CRUSH:POISON:3d3
-blow:CRUSH:HURT:6d2
-#BHOLD
+blow:CRUSH:BHOLD:6d2
 flags:RUBBER | WEIRD_MIND | MOVE_SLOW | CLIGHT
 flags:NO_FEAR | NO_CONF | IM_POIS | SMULTIPLY
 friends:34:1d4:same
@@ -12607,7 +12704,7 @@ spell-freq:11
 spells:THROW | DARKNESS | WOUND | BA_POIS
 friends:70:2d3:same
 desc:It is an animated corpse which can both eat your brain and rot your body.
-desc: It doesn't like to stay dead.
+#desc: It doesn't like to stay dead.
 
 ### Dungeon level 36 ###
 
@@ -12768,11 +12865,10 @@ sleepiness:10
 depth:36
 rarity:3
 experience:580
-blow:HIT:HURT:4d6
-blow:HIT:HURT:4d6
-#BHOLD
+blow:HIT:BHOLD:4d6
 blow:HIT:PARALYZE:15d1
 blow:HIT:PARALYZE:15d1
+blow:HIT:BHOLD:4d6
 flags:NO_STUN | MOVE_SLOW
 desc:A larger cousin of the lurker, this creature traps unsuspecting victims and
 desc: paralyzes them, to be slowly digested later.
@@ -13162,6 +13258,29 @@ flags:PASS_DOOR | SMULTIPLY | WATER_HIDE
 friends:22:1d2:same
 desc:A lump of rotting black flesh that slurrrrrrrps across the dungeon floor.
 
+name:river gargoyle
+base:gargoyle
+color:b
+element:4
+speed:111
+hit-points:244
+size:4
+hearing:15
+armor-class:84
+sleepiness:24
+depth:37
+rarity:4
+experience:584
+blow:HIT:HURT:4d8
+blow:HIT:HURT:4d8
+blow:SPIT:HURT:4d6
+flags:DROP_1 | IM_ACID | NO_FEAR | WATER_HIDE | FORCE_SLEEP
+innate-freq:8
+spells:SPIT | BO_WATE
+desc:Gargoyles are stone-skinned winged creatures related to trolls who like to
+desc: disguise as statues or fountains. It's about nine feet tall and spouting a
+desc: stream of water from its mouth.
+
 name:The Watcher in the Water
 base:nulx
 color:v
@@ -13178,8 +13297,7 @@ rarity:5
 experience:2091
 blow:HIT:HURT:7d4
 blow:CRUSH:HURT:4d7
-blow:CRUSH:HURT:4d8
-#BHOLD
+blow:CRUSH:BHOLD:4d8
 blow:BITE:ACID:5d9
 flags:UNIQUE | EVIL | DEMON | WEIRD_MIND | FORCE_SLEEP
 flags:DROP_2 | DROP_GOOD | NO_FEAR | MOVE_BODY | MOVE_SLOW
@@ -13532,8 +13650,7 @@ sleepiness:48
 depth:38
 rarity:6
 experience:2188
-blow:HIT:PARALYZE:3d8
-#BHOLD
+blow:HIT:BHOLD:3d8
 blow:GAZE:LOSE_INT:2d6
 blow:GAZE:EXP_20:2d8
 blow:GAZE:DRAIN_CHARGES:2d8
@@ -13598,6 +13715,28 @@ flags:RAND_50 | BASH_DOOR | ATTR_MULTI
 flags:HURT_LIGHT | IM_DISEN | NO_FEAR
 desc:It is a strange mass of squirming worms.  Magical energy crackles around
 desc: its disgusting form.
+
+name:margoyle shaman
+base:gargoyle
+color:r
+element:2
+speed:113
+hit-points:230
+size:4
+hearing:15
+armor-class:88
+sleepiness:21
+depth:39
+rarity:3
+experience:635
+blow:HIT:HURT:4d7
+blow:HIT:HURT:4d8
+flags:DROP_1 | DROP_20 | NO_FEAR | IM_ACID
+flags:SMART | S_EVIL2 | FORCE_SLEEP
+spell-freq:6
+spells:MISSILE | SLOW | WOUND | HEAL | BO_COLD | BO_ELEC | S_MONSTER
+desc:Gargoyles are stone-skinned winged creatures related to trolls who like to
+desc: disguise as statues. It's about nine feet tall wielding a staff and casting spells.
 
 name:southron archer
 base:knight
@@ -14206,28 +14345,30 @@ spells:BR_FEAR | WOUND | DARKNESS | HOLD | BO_COLD | TINVIS
 desc:A tangible but ghostly form, made of grey fog.  The air around it feels
 desc: deathly cold.
 
+#(normally generated as a terrain feature, very rare otherwise)
+# Has PASS_WALL only because it coincides with a wall when it is created.
 name:pillar mimic
-base:mimic
+base:wall monster
 glyph:#
 color:p
 element:2
-speed:118
-hit-points:1000
+speed:121
+hit-points:955
 size:5
-hearing:3
-armor-class:80
+hearing:4
+armor-class:85
 sleepiness:1
-depth:40
-rarity:0
-#(not generated as a monster even though it is a monster)
-# Has PASS_WALL only because it coincides with a wall when it is created.
-experience:800
-blow:CLAW:HURT:7d5
-blow:CLAWB:HURT:7d5
-flags:PASS_WALL | NONLIVING
-flags:IM_FIRE | IM_COLD | IM_POIS | NO_STUN | HURT_ROCK
-#BLOCK_LOS
-desc:It's identical to a normal pillar until razor claws shoot
+depth:35
+rarity:15
+experience:665
+blow:CLAW:HURT:5d7
+blow:CLAWB:HURT:5d7
+flags:PASS_WALL | NEVER_MOVE | UNAWARE | BLOCK_LOS
+flags:IM_FIRE | IM_COLD
+innate-freq:11
+spell-freq:18
+spells:ARROW | SLOW | DARKNESS | BO_ICE | TELE_TO
+desc:It's identical to a normal pillar or wall until razor claws shoot
 desc: out from an unseen opening.
 
 name:wendigo spirit
@@ -14549,34 +14690,35 @@ desc:Also known as the "sidhe" (pronounced "shee") in their native language and
 desc: called the 'gentry' by the locals in the places they haunt, they are
 desc: ancient dark fairy spirits with powerful magic.
 
-name:bone soldier captain
-base:skeleton
-color:z
-speed:116
-hit-points:356
-size:3
-hearing:19
-armor-class:110
-sleepiness:5
-depth:41
-rarity:4
-experience:1365
-blow:HIT:EXP_20:5d6
-blow:HIT:HURT:5d7
-blow:HIT:HURT:5d9
-#DISEASE
-flags:DROP_1 | OPEN_DOOR | BASH_DOOR
-flags:EMPTY_MIND | STUPID | NONLIVING | IM_ELEC
-#RETURNS
-innate-freq:9
-spell-freq:9
-spells:ARROW | BLINK | DARKNESS | BO_NETH | S_KIN | S_UNDEAD
-friends-base:35:1d1:skeleton
-friends-base:35:1d1:skeleton
-friends-base:35:1d1:skeleton
-friends-base:50:1d1:skeleton
-friends:100:2d6:bone soldier
-desc:The bone soldiers are led by an undead sorcerer.
+#Uncomment once the RETURNS flag works
+#name:bone soldier captain
+#base:skeleton
+#color:z
+#speed:116
+#hit-points:356
+#size:3
+#hearing:19
+#armor-class:110
+#sleepiness:5
+#depth:41
+#rarity:4
+#experience:1365
+#blow:HIT:EXP_20:5d6
+#blow:HIT:HURT:5d7
+#blow:HIT:HURT:5d9
+##DISEASE
+#flags:DROP_1 | OPEN_DOOR | BASH_DOOR
+#flags:EMPTY_MIND | STUPID | NONLIVING | IM_ELEC
+##RETURNS
+#innate-freq:9
+#spell-freq:9
+#spells:ARROW | BLINK | DARKNESS | BO_NETH | S_KIN | S_UNDEAD
+#friends-base:35:1d1:skeleton
+#friends-base:35:1d1:skeleton
+#friends-base:35:1d1:skeleton
+#friends-base:50:1d1:skeleton
+#friends:100:2d6:bone soldier
+#desc:The bone soldiers are led by an undead sorcerer.
 
 name:sphinx
 base:quadruped
@@ -14620,8 +14762,7 @@ depth:41
 rarity:2
 experience:1618
 blow:CRUSH:HURT:7d4
-blow:CRUSH:HURT:8d4
-#BHOLD
+blow:CRUSH:BHOLD:8d4
 blow:BITE:HURT:5d6
 blow:STING:POISON:4d7
 flags:EVIL | DROP_2 | OPEN_DOOR | BASH_DOOR | MOVE_BODY | FORCE_SLEEP
@@ -15341,9 +15482,8 @@ depth:44
 rarity:3
 experience:1680
 blow:HIT:HURT:4d8
-blow:CRUSH:HURT:5d8
-blow:CRUSH:HURT:5d8
-#BHOLD
+blow:CRUSH:BHOLD:5d8
+blow:CRUSH:BHOLD:5d8
 blow:BITE:ACID:7d9
 flags:ANIMAL | RAND_25 | MOVE_SLOW
 innate-freq:10
@@ -15368,8 +15508,7 @@ rarity:6
 experience:2643
 blow:SPORE:CHARM
 blow:BUTT:BLIND:8d4
-blow:CRUSH:HURT:3d10
-#BHOLD
+blow:CRUSH:BHOLD:3d10
 blow:TAIL:CONFUSE:3d9
 flags:BASH_DOOR | DROP_20 | FORCE_SLEEP | HURT_WATER
 flags:NO_SLEEP | NO_FEAR | NO_STUN | IM_ELEC | IM_ACID | IM_POIS
@@ -15752,7 +15891,7 @@ armor-class:84
 sleepiness:10
 depth:46
 rarity:1
-experience:1800
+experience:1910
 blow:HIT:HURT:3d6
 blow:HIT:HURT:3d6
 blow:BITE:EXP_80:4d6
@@ -15796,6 +15935,36 @@ friends:30:1d1:Sorcerer
 friends:30:1d1:Berserker
 desc:An evil priest, dressed all in black, in the service of the
 desc: Witch-King of Angmar.
+
+name:Ramvodo Yek, the Gargoyle King
+base:gargoyle
+color:V
+element:2
+speed:116
+hit-points:1295
+size:4
+hearing:18
+armor-class:88
+sleepiness:12
+depth:46
+rarity:3
+experience:7500
+blow:HIT:HURT:6d7
+blow:HIT:HURT:6d7
+blow:HIT:HURT:7d7
+flags:IM_ACID | IM_POIS | NO_FEAR | NO_SLEEP | FORCE_SLEEP
+flags:DROP_2 | EVIL | UNIQUE | SMART | MOVE_BODY
+flags-off:UNAWARE | S_EVIL1
+innate-freq:8
+spell-freq:7
+spells:BOLT | TRAPS | BO_PLAS | BO_ELEC | BA_COLD | MIND_BLAST | S_MONSTER
+friends:42:1d2:margoyle shaman
+friends:35:3d3:gargoyle
+friends:20:1d1:river gargoyle
+friends:100:1d1:margoyle shaman
+friends:100:4d2:margoyle
+desc:Ramvodo is a tyrant who crowned himself king of the
+desc: gargoyles by force.
 
 ### Dungeon level 47 ###
 
@@ -16019,8 +16188,7 @@ depth:48
 rarity:4
 experience:5930
 blow:CRUSH:POISON:6d7
-blow:CRUSH:HURT:6d6
-#BHOLD
+blow:CRUSH:BHOLD:6d6
 blow:BITE:ACID:4d10
 blow:STING:LOSE_STR:6d6
 flags:ANIMAL | POWERFUL | REGENERATE | FORCE_SLEEP
@@ -16055,6 +16223,61 @@ spell-freq:8
 spells:BR_FEAR | BLIND | WOUND | HOLD | BO_NETH
 desc:A figure that seems made of void, its strangely human shape is cloaked in
 desc: shadow.  It reaches out at you.
+
+name:Tek the Explorer
+base:gargoyle
+color:o
+element:2
+speed:118
+hit-points:1505
+size:4
+hearing:17
+armor-class:92
+sleepiness:11
+depth:48
+rarity:7
+experience:7900
+blow:HIT:HURT:7d8
+blow:HIT:HURT:7d8
+blow:HIT:HURT:8d7
+flags:IM_ACID | IM_POIS | NO_FEAR | NO_SLEEP | FORCE_SLEEP
+flags:DROP_1 | UNIQUE | SMART | REGENERATE
+flags-off:UNAWARE | S_EVIL1
+innate-freq:8
+spell-freq:12
+spells:THROW | BOULDER | BO_PLAS | BO_WATE | MIND_BLAST
+friends:95:1d1:Grel the Gardener
+desc:Tek and his friend Grel are the first gargoyles to dare leave
+desc: their unclean island and fly across the sea to explore unknown lands.
+
+name:Grel the Gardener
+base:gargoyle
+color:g
+element:2
+speed:118
+hit-points:1505
+size:4
+hearing:17
+armor-class:92
+sleepiness:11
+depth:48
+rarity:7
+experience:7900
+blow:PUNCH:HURT:10d5
+blow:PUNCH:HURT:10d5
+blow:HIT:HURT:7d8
+flags:IM_ACID | IM_POIS | NO_FEAR | NO_SLEEP | FORCE_SLEEP
+flags:DROP_1 | UNIQUE | SMART | REGENERATE
+flags-off:UNAWARE | S_EVIL1
+innate-freq:8
+spell-freq:12
+spells:THROW | BOULDER | BO_ICE | BO_WATE | S_MONSTER
+#S_TREE (instead of S_MONSTER)
+friends:95:1d1:Tek the Explorer
+desc:Grel flew across the sea with his friend Tek. He wasn't exactly a
+desc: gardener but he became famous for bringing back seeds from the
+desc: far-off lands and planting healthy trees on his island home
+desc: where all the native trees had been mutated by magic radiation.
 
 ### Dungeon level 49 ###
 
@@ -16552,9 +16775,8 @@ sleepiness:26
 depth:50
 rarity:4
 experience:5689
-blow:CRUSH:HURT:5d6
-blow:CRUSH:HURT:5d7
-#BHOLD
+blow:CRUSH:BHOLD:5d6
+blow:CRUSH:BHOLD:5d7
 blow:BITE:ACID:7d9
 blow:SPIT:BLIND:3d7
 #SBLIND
@@ -16997,8 +17219,7 @@ rarity:3
 experience:4309
 blow:GAZE:LOSE_INT:2d8
 #INSANITY
-blow:TOUCH:PARALYZE:3d9
-#BHOLD
+blow:TOUCH:BHOLD:4d7
 blow:CRAWL:SLIME:3d11
 blow:CRUSH:ACID:3d13
 flags:SPIRIT | WEIRD_MIND | FORCE_SLEEP | POWERFUL
@@ -17376,9 +17597,8 @@ sleepiness:31
 depth:56
 rarity:6
 experience:5403
-blow:CRUSH:HURT:3d12
-blow:CRUSH:HURT:3d12
-#BHOLD 2x
+blow:CRUSH:BHOLD:3d12
+blow:CRUSH:BHOLD:3d12
 blow:SPORE:POISON:3d12
 blow:SPORE:CHARM
 flags:NEVER_MOVE | FORCE_SLEEP | WEIRD_MIND
@@ -17906,7 +18126,7 @@ rarity:9
 experience:3800
 blow:BUTT:HURT:5d4
 blow:BUTT:HURT:5d4
-flags:FORCE_SLEEP | KILL_BODY | KILL_ITEM
+flags:FORCE_SLEEP | KILL_BODY | KILL_ITEM | UNAWARE
 flags:IM_NETHER | IM_FIRE | IM_COLD | IM_ELEC | IM_WATER | HURT_ROCK
 flags:REGENERATE | BLOCK_LOS | SMULTIPLY
 innate-freq:14
@@ -20641,7 +20861,7 @@ rarity:3
 experience:33600
 blow:GAZE:LOSE_WIS:8d8
 #INSANITY
-#blow:TOUCH:BHOLD:9d9
+blow:TOUCH:BHOLD:9d9
 blow:CRAWL:SLIME:11d11
 blow:CRUSH:ACID:13d13
 flags:SPIRIT | WEIRD_MIND | FORCE_SLEEP | POWERFUL
@@ -21475,8 +21695,7 @@ rarity:3
 experience:40000
 blow:HIT:SHATTER:11d10
 blow:HIT:SHATTER:11d10
-blow:CRUSH:HURT:11d10
-#BHOLD
+blow:CRUSH:BHOLD:11d10
 blow:BITE:ACID:11d12
 flags:BASH_DOOR | RAND_25 | REGENERATE | POWERFUL | FORCE_SLEEP
 flags:DROP_2 | DROP_GREAT | KILL_ITEM | KILL_BODY | PUDDLE
@@ -21565,8 +21784,7 @@ experience:50000
 blow:DROOL:BLIND:9d9
 #SBLIND
 blow:HIT:SHATTER:11d11
-blow:CRUSH:HURT:11d10
-#BHOLD
+blow:CRUSH:BHOLD:11d10
 blow:BITE:ACID:11d14
 flags:BASH_DOOR | RAND_50 | REGENERATE | POWERFUL | FORCE_SLEEP
 flags:DROP_2 | DROP_GOOD | KILL_ITEM | KILL_BODY | KILL_WALL

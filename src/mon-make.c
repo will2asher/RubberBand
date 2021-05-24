@@ -1024,8 +1024,7 @@ s16b place_monster(struct chunk *c, struct loc grid, struct monster *mon,
 	else new_mon->race->cur_num++;
 
 	/* Create the monster's drop, if any */
-	if (origin)
-		(void)mon_create_drop(c, new_mon, origin);
+	if (origin) (void)mon_create_drop(c, new_mon, origin);
 
 	/* Make mimics start mimicking */
 	if (origin && new_mon->race->mimic_kinds) {
@@ -1125,7 +1124,10 @@ static bool place_new_monster_one(struct chunk *c, struct loc grid,
 		/* monster is non-agressive */
 		mon->nonagr = 1;
 	}
-	else racesleep = race->sleep;
+	else {
+		racesleep = race->sleep;
+		mon->nonagr = 0;
+	}
 
 	/* Enforce sleeping if needed */
 	if (sleep && racesleep) {
@@ -1203,6 +1205,33 @@ static bool place_new_monster_one(struct chunk *c, struct loc grid,
 		mflag_on(mon->mflag, MFLAG_CAMOUFLAGE);
 	else
 		mflag_off(mon->mflag, MFLAG_CAMOUFLAGE);
+
+	/*if (rf_has(race->flags, RF_DISGUISE))		(I'll do the DISGUISE flag later) */
+	/* Not obviously a monster but doesn't mimic an object, so it must mimic something else */
+	/*else*/ if (rf_has(race->flags, RF_UNAWARE) && (!mon->race->mimic_kinds))
+	{
+		/* Wall monsters mimic granite */
+		if (mon->race->d_char == '#') mon->mimicked_feat = 1;
+		/* Rubble mimics mimic lava -just kidding, they mimic rubble */
+		if (mon->race->d_char == ':') mon->mimicked_feat = 2;
+		/* Dryads mimic trees */
+		if (mon->race->d_char == 'y') mon->mimicked_feat = 7;
+		/* Lurkers/trappers mimic the floor (without needing help here) */
+		/* Gargoyles mimic statues */
+		if (mon->race->d_char == 'x') {
+			if (mon->race->elem == 4) mon->mimicked_feat = 5; /* fountain (elem 4 is water) */
+			else if (mon->race->msize < 3) mon->mimicked_feat = 3; /* small statue */
+			else if (mon->race->msize == 3) mon->mimicked_feat = 3 + randint0(2); /* small or large */
+			else mon->mimicked_feat = 4; /* large statue */
+			mon->statued = randint1(20); /* placeholder for statue description (which I haven't done yet...) */
+		}
+		else mon->statued = 0; /* not mimicking a statue */
+	}
+	else {
+		/* Monster is not disguised */
+		mon->mimicked_feat = 0;
+		mon->statued = 0;
+	}
 
 	/* Set the color if necessary */
 	if (rf_has(race->flags, RF_ATTR_RAND))

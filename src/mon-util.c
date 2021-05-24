@@ -601,16 +601,33 @@ void monster_swap(struct loc grid1, struct loc grid2)
 		mon->grid = grid2;
 		update_mon(mon, cave, true);
 
+		/* Check if the monster had a hold on the player. It (probably) doesn't anymore. */
+		if ((mon->grabbed) && (mon->cdis > 1)) player_clear_timed(player, TMD_BHELD, false);
+
 		/* Affect light? */
 		if (mon->race->light != 0)
 			player->upkeep->update |= PU_UPDATE_VIEW;
 
 		/* Redraw monster list */
 		player->upkeep->redraw |= (PR_MONLIST);
-	} else if (m1 < 0) {
+	} 
+	else if (m1 < 0) {
 		/* Player */
 		player->grid = grid2;
 		player_leaving(pgrid, player->grid);
+
+		/* Check if a monster had a hold on the player. It (probably) doesn't anymore. */
+		if (player->timed[TMD_BHELD]) {
+			/* mbheld better be set */
+			if (!player->mbheld) player_clear_timed(player, TMD_BHELD, false);
+			else {
+				/* Get the monster that grabbed the player */
+				struct monster* mon = cave_monster(cave, player->mbheld);
+				/* Update it early to check new distance */
+				update_mon(mon, cave, true);
+				if (mon->cdis > 1) player_clear_timed(player, TMD_BHELD, false);
+			}
+		}
 
 		/* Update the trap detection status */
 		player->upkeep->redraw |= (PR_DTRAP);
@@ -650,6 +667,9 @@ void monster_swap(struct loc grid1, struct loc grid2)
 		mon->grid = grid1;
 		update_mon(mon, cave, true);
 
+		/* Check if the monster had a hold on the player. It (probably) doesn't anymore. */
+		if ((mon->grabbed) && (mon->cdis > 1)) player_clear_timed(player, TMD_BHELD, false);
+
 		/* Affect light? */
 		if (mon->race->light != 0)
 			player->upkeep->update |= PU_UPDATE_VIEW;
@@ -660,6 +680,20 @@ void monster_swap(struct loc grid1, struct loc grid2)
 		/* Player */
 		player->grid = grid1;
 		player_leaving(pgrid, player->grid);
+
+		/* Check if a monster had a hold on the player. It (probably) doesn't anymore. */
+		if (player->timed[TMD_BHELD]) {
+			/* mbheld better be set */
+			if (!player->mbheld) player_clear_timed(player, TMD_BHELD, false);
+			else {
+				/* Get the monster that grabbed the player */
+				struct monster* mon = cave_monster(cave, player->mbheld);
+
+				/* Update it early to check new distance */
+				update_mon(mon, cave, true);
+				if (mon->cdis > 1) player_clear_timed(player, TMD_BHELD, false);
+			}
+		}
 
 		/* Update the trap detection status */
 		player->upkeep->redraw |= (PR_DTRAP);
@@ -765,6 +799,11 @@ void become_aware(struct monster *mon)
 			 */
 			square_delete_object(cave, obj->grid, obj, false, false);
 		}
+		/* else monster was mimicking something other than an object */
+		else if (mon->mimicked_feat == 1) msg("The wall was really a monster!");
+		else if (mon->mimicked_feat == 2) msg("The pile of rubble was really a monster!");
+		else if (mon->mimicked_feat == 7) msg("The tree was really a monster!");
+		else if ((mon->mimicked_feat >= 3) && (mon->mimicked_feat <= 5)) msg("The statue was really a monster!");
 
 		/* Update monster and item lists */
 		player->upkeep->update |= (PU_UPDATE_VIEW | PU_MONSTERS);
@@ -1169,6 +1208,17 @@ static bool monster_scared_by_damage(struct monster *mon, int dam)
 		/* ...or (usually) when hit for half its current hit points */
 		bool big_hit = (dam >= mon->hp) && (randint0(100) < 80);
 
+		/* A monster that has a hold of the player is less likely to become scared */
+		if (mon->grabbed) {
+			/* reroll low_hp (unless it's really low) */
+			if ((low_hp) && (percentage > 3)) low_hp = randint1(9) >= percentage;
+			/* reroll big_hit */
+			if (big_hit) big_hit = (dam >= mon->hp * 6 / 5) && (randint0(100) < 75);
+
+			/* If it does become scared it lets go of the player */
+			if (low_hp || big_hit) player_clear_timed(player, TMD_BHELD, false);
+		}
+
 		if (low_hp || big_hit) {
 			int time = randint1(10);
 			if ((dam >= mon->hp) && (percentage > 7)) {
@@ -1222,6 +1272,9 @@ bool mon_take_nonplayer_hit(int dam, struct monster *t_mon,
 	if (t_mon->hp < 0) {
 		/* Death message */
 		add_monster_message(t_mon, die_msg, false);
+
+		/* Check if the dead monster had a hold on the player. It doesn't anymore. */
+		if (t_mon->grabbed) player_clear_timed(player, TMD_BHELD, false);
 
 		/* Generate treasure, etc */
 		monster_death(t_mon, false);
@@ -1284,6 +1337,9 @@ bool mon_take_hit(struct monster *mon, int dam, bool *fear, const char *note)
 	/* Hurt it */
 	mon->hp -= dam;
 	if (mon->hp < 0) {
+		/* Check if the dead monster had a hold on the player. It doesn't anymore. */
+		if (mon->grabbed) player_clear_timed(player, TMD_BHELD, false);
+
 		/* Deal with arena monsters */
 		if (player->upkeep->arena_level) {
 			player->upkeep->generate_level = true;

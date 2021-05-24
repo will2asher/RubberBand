@@ -426,8 +426,7 @@ bool make_ranged_attack(struct monster *mon)
 	monster_desc(m_name, sizeof(m_name), mon, MDESC_STANDARD);
 
 	/* If we see a hidden monster try to cast a spell, become aware of it */
-	if (monster_is_camouflaged(mon))
-		become_aware(mon);
+	if (monster_is_camouflaged(mon)) become_aware(mon);
 
 	/* Check for spell failure (innate attacks never fail) */
 	failrate = monster_spell_failrate(mon);
@@ -602,6 +601,9 @@ bool make_attack_normal(struct monster *mon, struct player *p)
 
 		/* Handle "leaving" */
 		if (p->is_dead || p->upkeep->generate_level) break;
+
+		/* A monster that is already holding the player is much more likely to hit */
+		if (player->mbheld == mon->midx) accuracy += 20;
 
 		/* Monster hits player */
 		assert(effect);

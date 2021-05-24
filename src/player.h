@@ -174,6 +174,7 @@ struct player_race {
 
 	int r_mhp;		/**< Hit-dice modifier */
 	int r_exp;		/**< Experience factor */
+	/* TODO? size */
 
 	int b_age;		/**< Base age */
 	int m_age;		/**< Mod age */
@@ -219,6 +220,7 @@ struct player_shape {
 	int to_a;				/**< Plusses to AC */
 	int to_h;				/**< Plusses to hit */
 	int to_d;				/**< Plusses to damage */
+	/* TODO? size */
 
 	int skills[SKILL_MAX];  /**< Skills */
 	bitflag flags[OF_SIZE];		/**< Shape (object) flags */
@@ -551,6 +553,7 @@ struct player {
 
 	s16b p_luck;				/* Luck */
 	s16b slimed;				/* slime level */
+	s16b mbheld;				/* m_idx of monster that has grabbed the player */
 
 	byte unignoring;			/* Unignoring */
 

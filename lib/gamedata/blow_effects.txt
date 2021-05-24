@@ -269,15 +269,15 @@ lash-type:INERTIA
 #for monsters that grab you 
 #Being grabbed makes you unable to move, but you can still attack and cast, etc
 #(free action only gives partial resistance)
-#name:BHOLD
-#power:20
-#eval:40
-#desc:grab
-#lore-color-base:Light Red
+name:BHOLD
+power:20
+eval:40
+desc:grab
+lore-color-base:Light Red
 #lore-color-resist:Light Green
 #effect-type:flag
 #resist:FREE_ACT
-#lash-type:INERTIA
+lash-type:INERTIA
 
 #turns you to stone (free action is only partial resistance)
 #name:PETRIFY

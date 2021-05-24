@@ -171,8 +171,7 @@ void monster_list_collect(monster_list_t *list)
 			}
 		}
 
-		if (entry == NULL)
-			continue;
+		if (entry == NULL) continue;
 
 		/* Always collect the latest monster attribute so that flicker
 		 * animation works. If this is 0, it needs to be replaced by 

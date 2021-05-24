@@ -298,6 +298,11 @@ static bool rd_monster(struct chunk *c, struct monster *mon)
 	rd_byte(&mon->pcmet);
 	rd_byte(&mon->nonagr);
 	rd_byte(&mon->acharmed);
+	rd_byte(&mon->grabbed);
+
+	/* these two for monsters that mimic terrain features */
+	rd_byte(&mon->mimicked_feat);
+	rd_s16b(&mon->statued);
 
 	rd_byte(&tmp8u);
 
@@ -803,9 +808,12 @@ int rd_player(void)
 		my_strcpy(player->died_from, "(alive and well)",
 				  sizeof(player->died_from));
 
-	/* More info */
+	/* new stuff for RubberBand */
 	rd_s16b(&player->p_luck);
 	rd_s16b(&player->slimed);	
+	rd_s16b(&player->mbheld);
+
+	/* More info */
 	strip_bytes(7);
 	rd_byte(&player->unignoring);
 	rd_s16b(&player->deep_descent);

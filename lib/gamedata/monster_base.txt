@@ -446,7 +446,13 @@ flags:IM_POIS | NO_FEAR | NO_CONF | NO_SLEEP
 desc:Xorn or other elemental monster
 #NONLIVING (most but not all)
 
-#glyph:x is the only unused letter glyph (will probably be gargoyles later)
+#Gargoyles are ugly flying stone-skinned creatures of various sizes that mimic statues or fountains.
+name:gargoyle
+glyph:x
+pain:1
+flags:SPIRIT | TROLL | S_EVIL1 | IM_WATER | HURT_ROCK | UNAWARE
+flags:FLY | OPEN_DOOR | BASH_DOOR | CLEAR_WEB
+desc:Gargoyle
 
 # Light Fairies
 name:light fairy

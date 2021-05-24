@@ -625,6 +625,12 @@ bool alloc_object(struct chunk *c, int set, int typ, int depth, byte origin)
 		if (!randint0(8 - depth/15)) square_set_feat(c, grid, FEAT_DEAD_TREE);
 		else square_set_feat(c, grid, FEAT_TREE);
 	}
+	case TYP_STATU: {
+		int sdie = randint0(100);
+		if (sdie < 39) square_set_feat(c, grid, FEAT_STATUE);
+		else if (sdie < 78) square_set_feat(c, grid, FEAT_SM_STATUE);
+		else make_fountain(c, grid);
+	}
 	case TYP_TRAP: place_trap(c, grid, -1, depth); break;
     case TYP_GOLD: place_gold(c, grid, depth, origin); break;
     case TYP_OBJECT: place_object(c, grid, depth, false, false, origin, 0);

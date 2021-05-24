@@ -25,6 +25,7 @@
 #include "mon-timed.h"
 #include "mon-util.h"
 #include "player-calcs.h"
+#include "player-timed.h"
 
 /**
  * The different ways increases can stack - see mon_inc_timed()
@@ -200,6 +201,9 @@ static bool mon_set_timed(struct monster *mon,
 			}
 		}
 	}
+	/* Monster lets go of the player if it falls asleep */
+	if ((mon->grabbed) && (effect_type == MON_TMD_SLEEP))
+		player_clear_timed(player, TMD_BHELD, false);
 
 	/* Print a message if there is one, if the effect allows for it, and if
 	 * either the monster is visible, or we're trying to ID something */

@@ -654,9 +654,10 @@ struct chunk *classic_gen(struct player *p, int min_height, int min_width) {
     alloc_objects(c, SET_BOTH, TYP_GOLD, Rand_normal(z_info->both_gold_av, 3),
 				  c->depth, ORIGIN_FLOOR);
 
-	/* And occationally some trees or rubble in rooms */
+	/* And occationally some trees, rubble, or statues in rooms */
 	if (randint0(100) < 17 - c->depth / 5) alloc_objects(c, SET_ROOM, TYP_TREE, 3 + randint1(9), c->depth, 0);
 	else if (randint0(100) < 11 + c->depth / 5) alloc_objects(c, SET_ROOM, TYP_RUBBLE, 2 + randint1(8), c->depth, 0);
+	if (randint0(100) < 12) alloc_objects(c, SET_ROOM, TYP_STATU, randint0(9), c->depth, 0);
 
     return c;
 }

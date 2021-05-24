@@ -21,6 +21,7 @@
 #include "cmd-core.h"
 #include "game-input.h"
 #include "mon-desc.h"
+#include "mon-lore.h"
 #include "mon-util.h"
 #include "monster.h"
 #include "obj-ignore.h"
@@ -55,11 +56,16 @@ static struct target old_target;
 void look_mon_desc(char *buf, size_t max, int m_idx)
 {
 	struct monster *mon = cave_monster(cave, m_idx);
+	const struct monster_lore *lore = get_lore(mon->race);
+	bitflag known_flags[RF_SIZE];
 
 	bool living = true;
 	bool knowev = false;
 
 	if (!mon) return;
+
+	/* Get the known monster flags */
+	monster_flags_known(mon->race, lore, known_flags);
 
 	/* Determine if the monster is "living" (vs "undead") */
 	if (monster_is_destroyed(mon)) living = false;
@@ -93,16 +99,25 @@ void look_mon_desc(char *buf, size_t max, int m_idx)
 	if (mon->m_timed[MON_TMD_STUN]) my_strcat(buf, ", stunned", max);
 	if (mon->m_timed[MON_TMD_SLOW]) my_strcat(buf, ", slowed", max);
 	if (mon->m_timed[MON_TMD_FAST]) my_strcat(buf, ", hasted", max);
+	if (mon->grabbed) my_strcat(buf, ", has a hold on you", max);
+
 	/* If the individual is evil, but the race isn't always evil, tell the player about the individual */
 	if (mon->pcmet || OPT(player, cheat_hear)) knowev = true;
-	if ((knowev) && (mon->isevil) && (!rf_has(mon->race->flags, RF_EVIL))) 
-		my_strcat(buf, " (evil)", max);
+	if (rf_has(known_flags, RF_EVIL)) my_strcat(buf, ", (always evil)", max);
+	else if ((knowev) && (mon->isevil) && (!rf_has(mon->race->flags, RF_EVIL))) 
+		my_strcat(buf, " (evil (but its race isn't always evil))", max);
 	/* Same if the individual is not evil, if the race is sometimes evil */
 	else if ((knowev) && (rf_has(mon->race->flags, RF_S_EVIL1) || rf_has(mon->race->flags, RF_S_EVIL2)))
-		my_strcat(buf, " (not evil)", max);
+		my_strcat(buf, " (not evil (its race is sometimes evil))", max);
+
 	/* Should I tell the player if a monster is non-agressive without cheat_hear? */
 	if ((OPT(player, cheat_hear)) && (mon->nonagr)) my_strcat(buf, " (non-agressive for now)", max);
-	if ((OPT(player, cheat_hear)) && (!mon->pcmet)) my_strcat(buf, " (not met)", max);
+	if ((OPT(player, cheat_hear)) && (!mon->pcmet) && 
+		(rf_has(mon->race->flags, RF_S_EVIL1) || rf_has(mon->race->flags, RF_S_EVIL2))) 
+		my_strcat(buf, " (unknown if its evil)", max);
+	/* #If testing */
+	if ((OPT(player, cheat_hear)) && (mon->race->msize > 3)) my_strcat(buf, " (big)", max);
+	/* #end if*/
 }
 
 
@@ -350,6 +365,8 @@ bool target_accept(int y, int x)
 		if (monster_is_obvious(mon)) {
 			return true;
 		}
+		/* Monster is mimicking an interesting terrain feature  (==1 means granite which isn't interesting) */
+		if (mon->mimicked_feat > 1) return true;
 	}
 
 	/* Traps */

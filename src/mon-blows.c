@@ -596,6 +596,8 @@ static void melee_effect_handler_HUNGER(melee_effect_handler_context_t* context)
 	/* Take damage */
 	(void)monster_damage_target(context, true);
 
+	if (!context->p) return;
+
 	/* Don't starve the player all at once. */
 	if ((amount >= player->timed[TMD_FOOD]) && (player->timed[TMD_FOOD] >= PY_FOOD_WEAK)) {
 		player_set_timed(context->p, TMD_FOOD, PY_FOOD_WEAK, true);
@@ -917,13 +919,16 @@ static void melee_effect_handler_CONFUSE(melee_effect_handler_context_t *context
  */
 static void melee_effect_handler_FRENZY(melee_effect_handler_context_t* context)
 {
-	int mindur = 3;
+	int mindur = 4;
 	int savet = player->state.skills[SKILL_SAVE];
-	if ((context->rlev / 8 > 3) && (context->rlev / 8 < 9)) mindur = context->rlev / 8;
-	else if (context->rlev / 8 > 3) mindur = 9;
+	if ((context->rlev / 6 > 4) && (context->rlev / 6 < 10)) mindur = context->rlev / 6;
+	else if (context->rlev / 6 > 4) mindur = 10;
 
 	/* Take damage */
 	if (monster_damage_target(context, true)) return;
+
+	/* The rest of this only applies to the player */
+	if (!context->p) return;
 
 	/* partial resist */
 	if (player->timed[TMD_CLEAR_MIND]) savet = savet * 3 / 2;
@@ -954,6 +959,9 @@ static void melee_effect_handler_CHARM(melee_effect_handler_context_t* context)
 	/* Take damage */
 	if (monster_damage_target(context, true)) return;
 
+	/* The rest of this only applies to the player */
+	if (!context->p) return;
+
 	/* partial resists */
 	if (player->timed[TMD_CLEAR_MIND]) savet = savet * 3 / 2;
 	else if ((player->timed[TMD_SHERO]) || (player->timed[TMD_BLOODLUST])) savet = savet * 6 / 5;
@@ -967,10 +975,65 @@ static void melee_effect_handler_CHARM(melee_effect_handler_context_t* context)
 	}
 	/* Increase CHARMED */
 	else {
-		if (player_inc_timed(context->p, TMD_CHARMED, 3 + randint1(context->rlev),
+		if (player_inc_timed(context->p, TMD_CHARMED, 2 + context->rlev/8 + randint1(context->rlev),
 			true, false))
 			context->obvious = true;
 	}
+
+	/* Learn about the player (?) */
+	/*update_smart_learn(context->mon, context->p, of_flag, 0, -1);*/
+}
+
+/**
+ * Melee effect handler: BHOLD.
+ */
+static void melee_effect_handler_BHOLD(melee_effect_handler_context_t* context)
+{
+	/* DEX-based save */
+	int savet = player->state.skills[SKILL_SAVE]/2 + adj_dex_th[player->state.stat_ind[STAT_DEX]] * 2;
+
+	/* Most of this only applies to the player */
+	if (!context->p) {
+		monster_damage_target(context, true);
+		return;
+	}
+
+	/* partial resist */
+	if (player_of_has(player, OF_FREE_ACT)) savet = savet * 5 / 4;
+	/* Already being held by this monster */
+	if (player->mbheld == context->mon->midx) savet = savet * 4 / 5;
+	/* Drunk players don't aren't good at evasion */
+	if (player->timed[TMD_SDRUNK]) savet = savet / 2;
+
+	/* Attempt a saving throw */
+	if ((!context->p->timed[TMD_PARALYZED]) && (randint0(100 + context->damage) < savet)) {
+		msg("You avoid being grabbed.");
+
+		/* reduce damage */
+		context->damage = context->damage * 4 / 5;
+	}
+	/* Increase BHELD (if not being held by another monster already) */
+	else if ((!player->mbheld) || (player->mbheld == context->mon->midx)) {
+		if (player_inc_timed(context->p, TMD_BHELD, 1 + context->rlev / 8 + randint1(1 + context->rlev / 4),
+			true, false)) {
+			context->obvious = true;
+
+			if (!player->mbheld) {
+				/* Mark the monster as having grabbed the player */
+				context->mon->grabbed = 1;
+				/* Remember which monster is holding you */
+				player->mbheld = context->mon->midx;
+			}
+			else if (player->mbheld == context->mon->midx) {
+				/* Do extra damage if the monster is already grabbing you */
+				context->damage = context->damage * 6 / 5;
+			}
+
+		}
+	}
+
+	/* Take damage */
+	if (monster_damage_target(context, true)) return;
 
 	/* Learn about the player (?) */
 	/*update_smart_learn(context->mon, context->p, of_flag, 0, -1);*/
@@ -983,6 +1046,9 @@ static void melee_effect_handler_UNLUCKY(melee_effect_handler_context_t* context
 {
 	/* Take damage */
 	if (monster_damage_target(context, true)) return;
+
+	/* The rest of this only applies to the player */
+	if (!context->p) return;
 
 	/* already as unlucky as you can be */
 	if (player->p_luck <= -5) {
@@ -1009,10 +1075,21 @@ static void melee_effect_handler_UNLUCKY(melee_effect_handler_context_t* context
 static void melee_effect_handler_SLIME(melee_effect_handler_context_t* context)
 {
 	int savechance = player->state.skills[SKILL_SAVE] / 2;
+
+	/* Most of this only applies to the player */
+	if (!context->p) { 
+		monster_damage_target(context, true);
+		context->obvious = true;
+		return;
+	}
+
 	/* DEX and CON affect saving throw for slime */
 	savechance += adj_dex_th[player->state.stat_ind[STAT_DEX]];
 	savechance += adj_con_fix[player->state.stat_ind[STAT_CON]] * 4 / 3;
 	if (context->damage < 1) context->damage = 1;
+
+	/* Drunk players don't aren't good at evasion */
+	if (player->timed[TMD_SDRUNK]) savechance -= savechance / 3;
 
 	/* Attempt a saving throw */
 	if (randint0(98 + context->rlev) < savechance) {
@@ -1040,7 +1117,7 @@ static void melee_effect_handler_SLIME(melee_effect_handler_context_t* context)
 		/* occational warning message (depending on HP warning setting) */
 		else if ((player->opts.hitpoint_warn > 0) && (player->slimed >= 40 - player->opts.hitpoint_warn) && 
 			(randint0(300 - (player->opts.hitpoint_warn * 20)) < player->slimed * 2))
-			msg("Your body can't survive much more sliming.");
+			msg("Your body can't survive much more slime.");
 	}
 
 	/* Take damage */
@@ -1259,6 +1336,7 @@ melee_effect_handler_f melee_handler_for_blow_effect(const char *name)
 		{ "CONFUSE", melee_effect_handler_CONFUSE },
 		{ "FRENZY", melee_effect_handler_FRENZY },
 		{ "CHARM", melee_effect_handler_CHARM },
+		{ "BHOLD", melee_effect_handler_BHOLD },
 		{ "UNLUCKY", melee_effect_handler_UNLUCKY },
 		{ "SLIME", melee_effect_handler_SLIME },
 		{ "TERRIFY", melee_effect_handler_TERRIFY },

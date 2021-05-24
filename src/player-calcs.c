@@ -2192,12 +2192,12 @@ void calc_bonuses(struct player *p, struct player_state *state, bool known_only,
 	}
 	/* held by a monster (stops you from moving, but not from casting or attacking) */
 	if (p->timed[TMD_BHELD]) {
-		state->to_a -= (6 + bluck);
-		state->to_h -= 4;
+		state->to_a -= (5 + bluck);
+		state->to_h -= 5;
 		state->skills[SKILL_STEALTH] -= 2;
-		state->skills[SKILL_DEVICE] = state->skills[SKILL_DEVICE] * 94 / 100;
-		state->skills[SKILL_DISARM_PHYS] = state->skills[SKILL_DISARM_PHYS] * 75 / 100;
-		state->skills[SKILL_DISARM_MAGIC] = state->skills[SKILL_DISARM_MAGIC] * 75 / 100;
+		state->skills[SKILL_DEVICE] = state->skills[SKILL_DEVICE] * 9 / 10;
+		state->skills[SKILL_DISARM_PHYS] = state->skills[SKILL_DISARM_PHYS] * 7 / 10;
+		state->skills[SKILL_DISARM_MAGIC] = state->skills[SKILL_DISARM_MAGIC] * 7 / 10;
 		/* (Also hurts spell fail rate) */
 	}
 	/* Primary effect is involuntary blinking, but has minor side effects */

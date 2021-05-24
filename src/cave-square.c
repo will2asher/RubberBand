@@ -165,6 +165,14 @@ bool feat_is_damaging(int feat)
 }
 
 /**
+ * True if the feature is a statue (or fountain).
+ */
+bool feat_is_statue(int feat)
+{
+	return tf_has(f_info[feat].flags, TF_STATUE);
+}
+
+/**
  * True if the feature slows movement. (and should be passable)
  */
 bool feat_slows_movement(int feat)
@@ -1270,6 +1278,12 @@ void square_set_feat(struct chunk *c, struct loc grid, int feat)
 	if (feat_is_bright(feat)) {
 		sqinfo_on(square(c, grid)->info, SQUARE_GLOW);
 	}
+
+#if 0
+	/* Assign random statue descriptions (I don't know how I'm gonna do this...) */
+	if (feat_is_statue(feat)) {
+	}
+#endif
 
 	/* Make the new terrain feel at home */
 	if (character_dungeon) {

@@ -289,14 +289,13 @@ static ui_event target_recall_loop_object(struct object *obj, int y, int x,
  * recall info and the health bar info to track that monster.
  *
  * This function correctly handles multiple objects per grid, and objects
- * and terrain features in the same grid, though the latter never happens.
+ * and terrain features in the same grid.
  *
  * This function must handle blindness/hallucination.
  */
 static ui_event target_set_interactive_aux(int y, int x, int mode)
 {
 	struct object *obj = NULL;
-
 	const char *s1, *s2, *s3;
 
 	bool boring;
@@ -304,13 +303,12 @@ static ui_event target_set_interactive_aux(int y, int x, int mode)
 	int floor_max = z_info->floor_size;
 	struct object **floor_list = mem_zalloc(floor_max * sizeof(*floor_list));
 	int floor_num;
+	int mimicfeat;
 
 	ui_event press;
 
 	char out_val[TARGET_OUT_VAL_SIZE];
-
 	char coords[20];
-
 	const char *name;
 
 	/* Describe the square location */
@@ -318,6 +316,7 @@ static ui_event target_set_interactive_aux(int y, int x, int mode)
 
 	/* Repeat forever */
 	while (1) {
+		mimicfeat = 0;
 		/* Make the default event to focus on the player */
 		press.type = EVT_KBRD;
 		press.key.code = 'p';
@@ -520,6 +519,8 @@ static ui_event target_set_interactive_aux(int y, int x, int mode)
 				/* Use a preposition */
 				s2 = "on ";
 			}
+			/* Monster mimicking a terrain feature */
+			else if (mon->mimicked_feat) mimicfeat = mon->mimicked_feat;
 		}
 
 		/* A trap */
@@ -574,8 +575,7 @@ static ui_event target_set_interactive_aux(int y, int x, int mode)
 		}
 	
 		/* Double break */
-		if (square_isvisibletrap(cave, loc(x, y)))
-			break;
+		if (square_isvisibletrap(cave, loc(x, y))) break;
 	
 		/* Scan all sensed objects in the grid */
 		floor_num = scan_distant_floor(floor_list, floor_max, loc(x, y));
@@ -680,8 +680,24 @@ static ui_event target_set_interactive_aux(int y, int x, int mode)
 
 		name = square_apparent_name(cave, player, loc(x, y));
 
+		/* Monster mimicking a terrain feature */
+		if (mimicfeat == 1) name = "granite wall";	/* (not interesting) */
+		if (mimicfeat == 2) name = "pile of passable rubble";
+		if (mimicfeat == 7) name = "tree";
+
+		/* TODO: statue descriptions here */
+#if statuesdesc /* (later) */
+		if ((mimicfeat >= 3) || (mimicfeat <= 5) || square_has_statue(cave, loc(x, y))) {
+
+		}
+#else
+		if (mimicfeat == 3) name = "small statue";
+		if (mimicfeat == 4) name = "statue";
+		if (mimicfeat == 5) name = "fountain";
+#endif
+
 		/* Terrain feature if needed */
-		if (boring || square_isinteresting(cave, loc(x, y))) {
+		if (boring || square_isinteresting(cave, loc(x, y)) || (mimicfeat > 1)) {
 			/* Hack -- handle unknown grids */
 
 			/* Pick a preposition if needed */
@@ -696,7 +712,8 @@ static ui_event target_set_interactive_aux(int y, int x, int mode)
 						"%s%s%s%s, %s (%d:%d, noise=%d, scent=%d).", s1, s2, s3,
 						name, coords, y, x, (int)cave->noise.grids[y][x],
 						(int)cave->scent.grids[y][x]);
-			} else {
+			} 
+			else {
 				strnfmt(out_val, sizeof(out_val),
 						"%s%s%s%s, %s.", s1, s2, s3, name, coords);
 			}

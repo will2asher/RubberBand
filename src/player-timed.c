@@ -504,6 +504,18 @@ bool player_set_timed(struct player *p, int idx, int v, bool notify)
 		player_inc_timed(p, TMD_SLOW, 100 - p->p_luck * 2, true, false);
 	}
 
+	/* And the grabbed effect */
+	if (idx == TMD_BHELD && v == 0) {
+		if (!player->mbheld) msgt(MSG_HITWALL, "BUG: Player was held by no monster.");
+		else {
+			/* Get the monster that grabbed the player */
+			struct monster* mon = cave_monster(cave, player->mbheld);
+			/* Monster no longer has a hold on the player */
+			mon->grabbed = 0;
+			player->mbheld = 0;
+		}
+	}
+
 	if (notify) {
 		/* Disturb */
 		disturb(p);

@@ -226,6 +226,11 @@ static void wr_monster(const struct monster *mon)
 	wr_byte(mon->pcmet);
 	wr_byte(mon->nonagr);
 	wr_byte(mon->acharmed);
+	wr_byte(mon->grabbed);
+
+	/* these two for monsters that mimic terrain features */
+	wr_byte(mon->mimicked_feat);
+	wr_s16b(mon->statued);
 
 	wr_byte(MON_TMD_MAX);
 
@@ -489,9 +494,12 @@ void wr_player(void)
 	wr_s16b(player->max_depth);
 	wr_s16b(player->recall_depth);
 
-	/* More info */
+	/* new for Rubberband */
 	wr_s16b(player->p_luck);	/* luck */
 	wr_s16b(player->slimed);	/* slime */
+	wr_s16b(player->mbheld);	/* Monster that has the player grabbed if any */
+
+	/* More info */
 	wr_s16b(0);	/* oops */
 	wr_s16b(0);	/* oops */
 	wr_s16b(0);	/* oops */

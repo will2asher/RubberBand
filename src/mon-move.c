@@ -1608,8 +1608,19 @@ static void monster_turn(struct chunk *c, struct monster *mon)
 	monster_desc(m_name, sizeof(m_name), mon, MDESC_CAPITAL | MDESC_IND_HID);
 
 	/* camouflaged monsters usually prefer to stay camouflaged */
-	if (monster_is_camouflaged(mon) && monster_is_visible(mon) && monster_is_in_view(mon) &&
-		(randint0(100) < 75)) return;
+	if (monster_is_camouflaged(mon) && monster_is_visible(mon) && monster_is_in_view(mon)) {
+		int skipc = 75;
+		/* Dryads more likely to start casting/attacking when you're close */
+		if ((mon->mimicked_feat == 7) && (mon->cdis < 6)) skipc = 25;
+		/* Gargoyles attack when you're really close */
+		else if ((mon->mimicked_feat >= 3) && (mon->mimicked_feat <= 5)) {
+			if (mon->cdis < 4) skipc = mon->cdis * 4 + 4;
+			/* Except the later ones who have spells and better ranged attacks */
+			if ((mon->race->level > 34) && (mon->cdis < 9)) skipc = mon->cdis * 3 + 3;
+		}
+		else if (mon->mimicked_feat && (mon->cdis < 2)) skipc = 11;
+		if (randint0(100) < skipc) return;
+	}
 
 	/* If we're in a web, deal with that */
 	if (square_iswebbed(c, mon->grid)) {
@@ -1680,6 +1691,9 @@ static void monster_turn(struct chunk *c, struct monster *mon)
 		if ((i > 0) && stagger == NO_STAGGER && !square_isview(c, mon->grid) && tracking) {
 			break;
 		}
+
+		/* If the monster has a hold on the player, it doesn't want to move */
+		if ((mon->grabbed) && (!occupied)) return;
 
 		/* Some monsters never move */
 		/* (Do this before monster_turn_can_move() because that's when confused monsters can fall into chasms) */
