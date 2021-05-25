@@ -261,6 +261,7 @@ struct chunk *hard_centre_gen(struct player *p, int min_height, int min_width);
 struct chunk *lair_gen(struct player *p, int min_height, int min_width);
 struct chunk *gauntlet_gen(struct player *p, int min_height, int min_width);
 struct chunk *arena_gen(struct player *p, int min_height, int min_width);
+bool possible_doorway(struct chunk* c, struct loc grid, bool roomok);
 
 /* gen-chunk.c */
 struct chunk *chunk_write(struct chunk *c);

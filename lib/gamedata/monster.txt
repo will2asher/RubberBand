@@ -10683,7 +10683,7 @@ friends:20:1d3:kobold zombie
 friends:3:1d2:living ghoul
 friends:20:1d3:orc zombie
 friends:20:1d3:human zombie
-friends:16:1d1:regenerating zombie
+#friends:16:1d1:regenerating zombie
 friends:30:1d3:troll zombie
 friends:35:1d3:human mummy
 friends:35:1d3:orc mummy
@@ -10806,7 +10806,7 @@ flags:MOVE_BODY | TAKE_ITEM
 flags:HURT_ROCK | HURT_LIGHT | IM_COLD
 innate-freq:7
 spells:BOULDER
-friends:3:1d1:undying troll
+#friends:3:1d1:undying troll
 friends:10:2d3:troll scavenger
 friends:10:2d3:snow troll
 friends:22:2d3:stone troll
@@ -10838,7 +10838,7 @@ flags:MOVE_BODY | TAKE_ITEM
 flags:HURT_ROCK | HURT_LIGHT | IM_COLD
 innate-freq:7
 spells:BOULDER
-friends:3:1d1:undying troll
+#friends:3:1d1:undying troll
 friends:10:2d3:troll scavenger
 friends:10:2d3:snow troll
 friends:22:2d3:stone troll
@@ -10870,7 +10870,7 @@ flags:MOVE_BODY | TAKE_ITEM
 flags:HURT_ROCK | HURT_LIGHT | IM_COLD
 innate-freq:7
 spells:BOULDER
-friends:3:1d1:undying troll
+#friends:3:1d1:undying troll
 friends:10:2d3:troll scavenger
 friends:10:2d3:snow troll
 friends:22:2d3:stone troll
@@ -11680,7 +11680,7 @@ blow:BITE:HURT:1d8
 flags:MALE | REGENERATE
 flags:HURT_LIGHT | DROP_20
 friends:10:1d4:snow troll
-friends:9:1d3:undying troll
+#friends:9:1d3:undying troll
 friends:30:1d5:stone troll
 friends:30:1d5:troll scavenger
 friends:98:3d3:Same
@@ -13392,7 +13392,7 @@ spells:SHRIEK | BR_DARK | BR_FEAR | MIND_BLAST
 spells:BLIND | WOUND | DRAIN_MANA | FORGET | HASTE
 spells:BA_COLD | BA_POIS | BO_NETH | S_UNDEAD | CURSE_PC
 friends-base:22:1d1:skeleton:servant
-friends:22:2d3:regenerating zombie
+#friends:22:2d3:regenerating zombie
 friends:100:2d3:orc mummy:servant
 friends:100:2d3:human mummy:servant
 desc:A powerful ruler who refused the summons of Mandos on death, preferring
@@ -14307,7 +14307,7 @@ flags:DROP_1 | MOVE_BODY | TAKE_ITEM
 friends:35:2d2:snow troll:servant
 friends:45:2d3:forest troll:servant
 friends:35:2d3:troll scavenger:servant
-friends:35:1d3:undying troll:servant
+#friends:35:1d3:undying troll:servant
 friends:35:1d2:troll shaman:servant
 friends:35:1d2:troll blackguard:servant
 friends:50:2d3:stone troll:servant
@@ -15107,7 +15107,7 @@ flags:DROP_3 | DROP_GOOD | ONLY_ITEM
 flags:IM_COLD | MOVE_BODY | TAKE_ITEM
 innate-freq:7
 spells:BOULDER
-friends:35:1d4:undying troll:servant
+#friends:35:1d4:undying troll:servant
 friends:55:2d3:troll scavenger:servant
 friends:55:2d3:cave troll:servant
 friends:40:2d3:hill troll:servant
@@ -20199,8 +20199,8 @@ innate-freq:10
 spell-freq:3
 spells:BR_FEAR | HOLD | TELE_TO | BLINK | BRAIN_SMASH | WOUND
 spells:BO_NETH | BO_ICE | BA_DARK | S_UNDEAD | S_MONSTERS | S_HI_UNDEAD
-friends:100:1d2:bone soldier captain
-friends:100:2d5:bone soldier:bodyguard
+#friends:100:1d2:bone soldier captain
+#friends:100:2d5:bone soldier:bodyguard
 desc:This is the king of the oath-breaking Men of the White Mountains, who swore
 desc: allegiance to Isildur in the War of the Last Alliance. For breaking his oath, he
 desc: and his people were cursed to walk the Paths of the Dead until they find a

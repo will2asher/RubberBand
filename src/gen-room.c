@@ -453,7 +453,6 @@ extern bool generate_starburst_room(struct chunk *c, int y1, int x1, int y2,
 		(void) generate_starburst_room(c, y1, x1, tmp_ay, tmp_ax, light, feat,
 									   false);
 
-
 		/* Get top_right borders of the second room. */
 		tmp_by = y1;
 		tmp_bx = x1;
@@ -465,7 +464,6 @@ extern bool generate_starburst_room(struct chunk *c, int y1, int x1, int y2,
 		/* Make the second room. */
 		(void) generate_starburst_room(c, tmp_by, tmp_bx, y2, x2, light, feat,
 									   false);
-
 
 		/* If floor, extend a "corridor" between room centers, to ensure 
 		 * that the rooms are connected together. */
@@ -509,7 +507,6 @@ extern bool generate_starburst_room(struct chunk *c, int y1, int x1, int y2,
 			dist_conv = 10 * height / 44;
 	} else
 		dist_conv = 10;
-
 
 	/* Make a cloverleaf room sometimes. */
 	if ((special_ok) && (height > 10) && (randint0(20) == 0)) {
@@ -965,6 +962,7 @@ static bool build_room_template(struct chunk *c, struct loc centre, int ymax,
 	int dx, dy, rnddoors, doorpos;
 	const char *t;
 	bool rndwalls, light;
+	bool inroom;
 
 	assert(c);
 
@@ -987,6 +985,7 @@ static bool build_room_template(struct chunk *c, struct loc centre, int ymax,
 	/* Place dungeon features and objects */
 	for (t = data, dy = 0; dy < ymax && *t; dy++) {
 		for (dx = 0; dx < xmax && *t; dx++, t++) {
+			inroom = true;
 			/* Extract the location */
 			struct loc grid = loc(centre.x - (xmax / 2) + dx,
 								  centre.y - (ymax / 2) + dy);
@@ -1002,7 +1001,11 @@ static bool build_room_template(struct chunk *c, struct loc centre, int ymax,
 
 			/* Analyze the grid */
 			switch (*t) {
-			case '%': set_marked_granite(c, grid, SQUARE_WALL_SPEC); break;
+			case '%': {
+				set_marked_granite(c, grid, SQUARE_WALL_SPEC); 
+				/* not part of the room */
+				inroom = false;
+				break; }
 			case '#': set_marked_granite(c, grid, SQUARE_WALL_SOLID); break;
 			case '+': place_closed_door(c, grid); break;
 			case '^': if (one_in_(3)) place_trap(c, grid, -1, c->depth); break;
@@ -1064,7 +1067,6 @@ static bool build_room_template(struct chunk *c, struct loc centre, int ymax,
 								  1 + randint0(2));
 
 				break;
-
 			}
 			case '[': {
 				
@@ -1092,7 +1094,7 @@ static bool build_room_template(struct chunk *c, struct loc centre, int ymax,
 			}
 
 			/* Part of a room */
-			sqinfo_on(square(c, grid)->info, SQUARE_ROOM);
+			if (inroom) sqinfo_on(square(c, grid)->info, SQUARE_ROOM);
 			if (light)
 				sqinfo_on(square(c, grid)->info, SQUARE_GLOW);
 		}
@@ -1308,8 +1310,10 @@ bool build_vault(struct chunk *c, struct loc centre, struct vault *v)
 			}
 
 			/* Part of a vault */
-			sqinfo_on(square(c, grid)->info, SQUARE_ROOM);
-			if (icky) sqinfo_on(square(c, grid)->info, SQUARE_VAULT);
+			if (icky) {
+				sqinfo_on(square(c, grid)->info, SQUARE_ROOM);
+				sqinfo_on(square(c, grid)->info, SQUARE_VAULT);
+			}
 		}
 	}
 

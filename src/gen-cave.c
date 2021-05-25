@@ -215,7 +215,6 @@ static void build_tunnel(struct chunk *c, struct loc grid1, struct loc grid2)
 			tmp_grid = loc_sum(grid1, offset);
 		}
 
-
 		/* Avoid the edge of the dungeon */
 		if (square_isperm(c, tmp_grid)) continue;
 
@@ -250,8 +249,8 @@ static void build_tunnel(struct chunk *c, struct loc grid1, struct loc grid2)
 					continue;
 			}
 			else {
-				if ((square_is_granite_with_flag(c, grid, SQUARE_WALL_OUTER)) ||
-					(square_is_granite_with_flag(c, grid, SQUARE_WALL_SPEC))) {
+				if (square_is_granite_with_flag(c, grid, SQUARE_WALL_OUTER) ||
+					square_is_granite_with_flag(c, grid, SQUARE_WALL_SPEC)) {
 					int spacey = 0;
 
 					/* count non-wall spaces */
@@ -278,7 +277,8 @@ static void build_tunnel(struct chunk *c, struct loc grid1, struct loc grid2)
 			/* Forbid re-entry near this piercing */
 			for (grid.y = grid1.y - 1; grid.y <= grid1.y + 1; grid.y++) {
 				for (grid.x = grid1.x - 1; grid.x <= grid1.x + 1; grid.x++) {
-					if (square_is_granite_with_flag(c, grid, SQUARE_WALL_OUTER))
+					if (square_is_granite_with_flag(c, grid, SQUARE_WALL_OUTER) ||
+						square_is_granite_with_flag(c, grid, SQUARE_WALL_SPEC))
 						set_marked_granite(c, grid, SQUARE_WALL_SOLID);
 				}
 			}
@@ -362,7 +362,7 @@ static void build_tunnel(struct chunk *c, struct loc grid1, struct loc grid2)
  *
  * TODO: count stairs, open doors, closed doors?
  */
-static int next_to_corr(struct chunk *c, struct loc grid)
+static int next_to_corr(struct chunk *c, struct loc grid, bool roomok)
 {
     int i, k = 0;
     assert(square_in_bounds(c, grid));
@@ -372,8 +372,8 @@ static int next_to_corr(struct chunk *c, struct loc grid)
 		/* Extract the location */
 		struct loc grid1 = loc_sum(grid, ddgrid_ddd[i]);
 
-		/* Count only floors which aren't part of rooms */
-		if (square_isfloor(c, grid1) && !square_isroom(c, grid1)) k++;
+		/* Count only floors which aren't part of rooms (unless rooms are allowed) */
+		if (square_isfloor(c, grid1) && (roomok || !square_isroom(c, grid1))) k++;
     }
 
     /* Return the number of corridors */
@@ -389,10 +389,10 @@ static int next_to_corr(struct chunk *c, struct loc grid)
  * To have a doorway, a space must be adjacent to at least two corridors and be
  * between two walls.
  */
-static bool possible_doorway(struct chunk *c, struct loc grid)
+bool possible_doorway(struct chunk *c, struct loc grid, bool roomok)
 {
    assert(square_in_bounds(c, grid));
-    if (next_to_corr(c, grid) < 2)
+    if (next_to_corr(c, grid, roomok) < 2)
 		return false;
     else if (square_isstrongwall(c, next_grid(grid, DIR_N)) &&
 			 square_isstrongwall(c, next_grid(grid, DIR_S)))
@@ -420,9 +420,9 @@ static void try_door(struct chunk *c, struct loc grid)
     if (square_isplayertrap(c, grid)) return;
     if (square_isdoor(c, grid)) return;
 
-    if (randint0(100) < dun->profile->tun.jct && possible_doorway(c, grid))
+    if (randint0(100) < dun->profile->tun.jct && possible_doorway(c, grid, false))
 		place_random_door(c, grid);
-    else if (randint0(500) < dun->profile->tun.jct && possible_doorway(c, grid))
+    else if (randint0(500) < dun->profile->tun.jct && possible_doorway(c, grid, false))
 		place_trap(c, grid, -1, c->depth);
 }
 
@@ -1847,8 +1847,9 @@ static void town_gen_layout(struct chunk *c, struct player *p)
 			}
 		}
 
-		/* And some trees */
+		/* Add some trees and a statue or two */
 		alloc_objects(c, SET_BOTH, TYP_TREE, 3 + randint1(11), 0, 0);
+		alloc_objects(c, SET_BOTH, TYP_STATU, randint1(5), 0, 0);
 
 		success = true;
 	}

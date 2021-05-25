@@ -649,7 +649,12 @@ bool square_isarrivable(struct chunk *c, struct loc grid) {
 	if (square_iswebbed(c, grid)) return false;
 	if (square_isfloor(c, grid)) return true;
 	if (square_isstairs(c, grid)) return true;
-	// maybe allow open doors or suchlike?
+	/* maybe allow open doors or suchlike? -yes */
+	if (square_isopendoor(c, grid) || square_isbrokendoor(c, grid)) return true;
+	if (square_isrubble(c, grid) && square_ispassable(c, grid)) return true;
+	/* Allow some of the new terrain (shallow water, nexus stones) */
+	if (square_iswater(c, grid) && square_ispassable(c, grid)) return true;
+	if (square_has_nexus(c, grid)) return true;
 	return false;
 }
 
@@ -669,7 +674,7 @@ bool square_isdiggable(struct chunk *c, struct loc grid) {
 	/* can't chop down a tree while it's on fire */
 	if (square_isfiery(c, grid)) return false;
 
-	return (square_ismineral(c, grid) ||
+	return (square_ismineral(c, grid) || square_has_statue(c, grid) ||
 			square_issecretdoor(c, grid) || square_isatree(c, grid) ||
 			square_isrubble(c, grid));
 }

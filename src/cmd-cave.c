@@ -532,6 +532,7 @@ static bool do_cmd_tunnel_aux(struct loc grid)
 	bool rubble = square_isrubble(cave, grid);
 	bool digtree = square_isatree(cave, grid);
 	bool small = square_ispassable(cave, grid);
+	bool statue = square_has_statue(cave, grid);
 	int weapon_slot = slot_by_name(player, "weapon");
 	struct object *current_weapon = slot_object(player, weapon_slot);
 	struct object *best_digger = NULL;
@@ -598,6 +599,9 @@ static bool do_cmd_tunnel_aux(struct loc grid)
 		} else if (digtree) {
 			/* live tree (turns into dead tree) */
 			msg("You finish chopping down the tree.");
+		}
+		else if (statue) {
+			msg("You have finished destroying the statue. (you vandal)");
 		} else {
 			msg("You have finished the tunnel.");
 		}

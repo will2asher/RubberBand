@@ -612,8 +612,13 @@ bool alloc_object(struct chunk *c, int set, int typ, int depth, byte origin)
 		/* If we are ok with a corridor and we're in one, we're done */
 		if (set & SET_CORR && !square_isroom(c, grid)) break;
 
-		/* If we are ok with a room and we're in one, we're done */
-		if (set & SET_ROOM && square_isroom(c, grid)) break;
+		/* If we are ok with a room and we're in one, we're done (unless...) */
+		if (set & SET_ROOM) {
+			/* Between two walls is not a good place for a tree or statue */
+			if (((typ == TYP_STATU) || (typ == TYP_TREE)) && possible_doorway(c, grid, true)) continue;
+
+			if (square_isroom(c, grid)) break;
+		}
     }
 
     if (tries == 2000) return false;
