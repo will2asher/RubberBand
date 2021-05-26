@@ -1,7 +1,7 @@
 # File: room_template.txt
 
 
-# This file is used to initialize the "room template" information 
+# This file is used to initialize the "room template" information
 # for the Angband game.
 
 # Do not modify this file unless you know exactly what you are doing,
@@ -21,12 +21,25 @@
 # flags:flag | ...
 # D:lines giving full layout of room using symbols below
 
-# Type and rating are not currently used.
-# Where doors is set to n, the generator will pick a number between 
-# 1 and n and place doors at squares marked with that number.  
-# Squares marked with other numbers will be generated as walls.  If 
-# the 1 to n range encompasses numbers not included in the D lines, 
-# there is a chance that no doors will be generated.
+# The value set on 'type' lines should be one.  You could use another
+# value as a way of disabling a template without commenting it out or
+# deleting it.  Making the 'type' lines more useful than that will
+# require changes to the source code:  the hard-coding of one is in
+# src/gen-room.c's build_template() and other changes, presumably in
+# src/generate.c to allow passing of the desired type through the
+# dungeon profiles, would be needed.
+#
+# The value set on the 'rating' line allows for selection of a subset
+# of the room templates by a dungeon profile in dungeon_profile.txt.
+# The current profiles use values of 1, 2, or 3 for the rating.
+#
+# Where doors is set to n, the generator will pick a number between
+# 1 and n and place secret doors at squares marked with that number.
+# Squares marked with other numbers will be generated as walls.  If
+# n is greater than 6 or the 1 to n range encompasses numbers not
+# included in the D lines, there is a chance that no doors will be
+# generated.
+
 # tval is used to make sure that the items in the room corresponding
 # to '[' are only of the given type.
 
@@ -36,16 +49,18 @@
 
 #    % - outside of the room, where corridors may be connected
 #    # - granite
-#    ^ - trap
+#    ^ - trap (generated 25% of the time)
 #    + - fixed position door (always generated)
-#    1,2,3,4,5,6 - potential positions for random doors
+#    1,2,3,4,5,6 - potential positions for random secret doors; will be
+#        walls if not a secret door
 #    x - optional wall (generated 50% of the time)
-#    ( - optional door (generated if optional walls are generated)
-#    ) - optional door (generated if optional walls are NOT generated, 
+#    ( - optional secret door (generated if optional walls are generated)
+#    ) - optional secret door (generated if optional walls are NOT generated,
 #        otherwise rock)
-#    8 - a treasure or stairs, with guardian monsters
+#    8 - a treasure (80%) or stairs (20%) and will always be treasure if
+#        using persistent levels, with guardian monsters
 #    9 - place some monsters and treasures nearby
-#	[ - a treasure of the specified tval
+#    [ - a treasure of the specified tval
 
 # 'flags' lines are optional and list the flags, from src/list-room-flags.h,
 # that should be applied to the room.  As many flags: lines may be used as
@@ -6565,7 +6580,7 @@ columns:19
 doors:1
 tval:0
 D:    #%%%%%%%%%#    
-D:#%%%#.........#%%%#
+D:#%%##.........##%%#
 D:%...###.....###...%
 D:%....####.####....%
 D:%.....###(###.....%
@@ -6573,7 +6588,7 @@ D:%......+9x9+......%
 D:%.....###(###.....%
 D:%....####.####....%
 D:%...###.....###...%
-D:#%%%#.........#%%%#
+D:#%%##.........##%%#
 D:    #%%%%%%%%%#    
 
 name:Trapezium
@@ -9523,645 +9538,3 @@ D:##..##.....##..###..###...##..##
 D: ##..#######..## ##..######..## 
 D:  ##.........##   ##........##  
 D:   ##%%%%%%%##     ##########   
-
-name:the Q
-type:1
-rating:3
-rows:12
-columns:14
-doors:1
-tval:0
-D:  %%%%%%%%%%  
-D: %%........%% 
-D:%%..........%%
-D:%....####....%
-D:%...##..##...%
-D:%...#.8..#...%
-D:%...##...#...%
-D:%....####^...%
-D:%%..........%%
-D: %%........#% 
-D:  %%%%%%%%..% 
-D:         %%%% 
-
-name:Pacman
-type:1
-rating:3
-rows:16
-columns:16
-doors:2
-tval:0
-D:  %%%%%%%%%%%   
-D:%%%.........%%  
-D:%............%% 
-D:%%.....###....% 
-D: %%....#.#....% 
-D:  %%...^.#....%%
-D:   %%..........%
-D:    %..........%
-D:    %..........%
-D:   %%..........%
-D:  %%..........%%
-D: %%..........%% 
-D:%%...........%  
-D:%...........%%  
-D:%%%........%%   
-D:  %%%%%%%%%%    
-
-name:Beware the Gazebo
-type:1
-rating:3
-rows:11
-columns:16
-doors:3
-tval:0
-D:  %%%%%%%%%%%  
-D: %%.........%% 
-D:%%...........%%
-D:%....##2##....%
-D:%%..##...##...%
-D: %..1..8.^+...%
-D:%%..##...##...%
-D:%....##3##....%
-D:%%...........%%
-D: %%.........%% 
-D:  %%%%%%%%%%%  
-
-name:Box in the Middle
-type:1
-rating:3
-rows:11
-columns:16
-doors:1
-tval:0
-D: %%%%%%%##%%%%%%
-D:%%......x#.....%
-D:%.......^(.....%
-D:%.....####.....%
-D:%.....#..#.....%
-D:%#(x###.9###x(#%
-D:%.....#..#.....%
-D:%.....####.....%
-D:%.....(^.......%
-D:%.....#x......%%
-D:%%%%%%##%%%%%%% 
-
-name:Marble
-type:1
-rating:3
-rows:13
-columns:17
-doors:1
-tval:0
-D:     %%%%%%%     
-D:     %.....%     
-D:  %%%%.....%%%%  
-D:  %.....#.....%  
-D:%%%..#.....#..%%%
-D:%...............%
-D:%...#...8...#...%
-D:%...............%
-D:%%%..#.....#..%%%
-D:  %.....#.....%  
-D:  %%%%.....%%%%  
-D:     %.....%     
-D:     %%%%%%%     
-
-name:pit & pillars
-type:1
-rating:3
-rows:11
-columns:19
-doors:1
-tval:chest
-D:##%#%#%%%%%%%#%#%%%
-D:%#.#^#.......x.#.#%
-D:%.#.#.........#.#.%
-D:%#.#.x.........#.#%
-D:##+###..###...#.#.%
-D:%....####[#....#.#%
-D:%....#....#...#.#.%
-D:%....#x...+....#.#%
-D:%....#....#.....#.%
-D:%%%%.#x...#x...#.#%
-D:   %%#%%%%%%%%%#%%%
-
-name:pockets
-type:1
-rating:3
-rows:13
-columns:21
-doors:1
-tval:0
-D:         %%%##%%%%   
-D:        %%..2#...%%% 
-D:       %%...#......%%
-D:      %%...##.......%
-D:      %...1#........%
-D:    %######.......%%%
-D:  %%%...........%%%  
-D:%%%...........%%%    
-D:%......###..%%%      
-D:%.....#1.##2#        
-D:%%....#.....%%       
-D: %%%..##.....%       
-D:   %%%##%%%%%%       
-
-name:lazy naming
-type:1
-rating:1
-rows:14
-columns:16
-doors:3
-tval:0
-D:     %%%#%%%    
-D:%%%%%%..#..%    
-D:%.X.....#(##%%%%
-D:%..............%
-D:%..............%
-D:%%%.........*%%%
-D:  %..#+##2#..%  
-D:  ####.##^####%%
-D:%%%.....#...x#.%
-D:%......##...xx.%
-D:%.....##.....x(%
-D:%....x1........%
-D:%....##........%
-D:%%%%%%#%%%%%%%%%
-
-name:split room
-type:1
-rating:1
-rows:9
-columns:19
-doors:2
-tval:0
-D:%%%%%%%     %%%%%%%
-D:%.....%%%%%%%.....%
-D:%.................%
-D:%........x........%
-D:%..x#(#######(#x.x%
-D:%.................%
-D:%.x...............%
-D:%.....%%%%%%%.....%
-D:%%%%%%%     %%%%%%%
-
-name:some kind of clown I guess
-type:1
-rating:1
-rows:11
-columns:19
-doors:2
-tval:0
-D:   %%%%%%%%%%%%%   
-D:   %...........%   
-D:   %.....8.....%   
-D:   %%%%.....%%%%   
-D:      %.....%      
-D:%%%%%%#.....#%%%%%%
-D:%.....#xx(xx#.....%
-D:%.........^.......%
-D:%.................%
-D:%%%%%.........%%%%%
-D:    %%%%%%%%%%%    
-
-name:three small rooms
-type:1
-rating:1
-rows:7
-columns:24
-doors:3
-tval:chest
-D:%%%%%%%%%%%##%%%%#%%%%%%
-D:%.........##.....+.....%
-D:%........##x.....#.....%
-D:%.......##[).....#.....%
-D:%.....x########31##2#1#%
-D:%......+...^..........% 
-D:%%%%%%%%%%%%%%%%%%%%%%% 
-
-name:Smiley rooms
-type:1
-rating:1
-rows:15
-columns:12
-doors:3
-tval:gold
-D: ##%%%%%##  
-D:%%1.....+%% 
-D:%.#.....#^%%
-D:%.##.8.##..%
-D:%%.#####.x.%
-D: %.......###
-D:%####+####.%
-D:%........x.%
-D:%..........%
-D:#+#3###2#+##
-D:%[#...#.#..%
-D:###.....#^x%
-D: %......x.x%
-D: %.........%
-D: %%%%%%%%%%%
-
-name:lazy naming 2
-type:1
-rating:1
-rows:11
-columns:19
-doors:1
-tval:mushroom
-D:  %%%%%%%%%#%%     
-D:  %........+.%     
-D:  %.#+######+#%%%%%
-D:  #^#......#......%
-D:  %.#....[.#####x.%
-D:%%#+########......%
-D:%............#+###%
-D:%.x.........(#...#%
-D:%..........x#.....%
-D:%...........#.....%
-D:%%%%%%%%%%%%%%%%%%%
-
-name:lazy naming 3
-type:1
-rating:1
-rows:12
-columns:18
-doors:2
-tval:0
-D: %%%%#%%          
-D: %.x.1.%          
-D: %x..2.%    %%%%% 
-D: %..##.%   %%.x.%%
-D:%%x..#.%%% %.x.x.%
-D:%....xx..%%%x...%%
-D:%.....x###.....x% 
-D:##......^....xx)% 
-D:%.x.....##%%#x..%%
-D:%......%%   %.x..%
-D:%%%..%%%    %%..%%
-D:  %%%%       %%%% 
-
-name:postconfuddlermenialmentalism
-type:1
-rating:1
-rows:13
-columns:19
-doors:2
-tval:0
-D:      %%%#%%%#%%#%%
-D:%%%%%#%..3...x..x.%
-D:%...#2...#..#.....%
-D:%..x.#xx.#..#...x%%
-D:%....###1##2#....% 
-D:%....3...#..#....% 
-D:##1###...+..+...%% 
-D:%....#...#..##..%  
-D:%..x.3...#..x#3##%%
-D:%....###+#####.x..%
-D:%......#^#x.......%
-D:%%.....2..)#....%%%
-D: %%%%%%#%%%#%%%%%  
-
-name:Infinity
-type:1
-rating:1
-rows:9
-columns:31
-doors:3
-tval:0
-D:    %%%%%%%%%%   %%%%%%%%%%    
-D:  %%..........%%%..........%%  
-D: %...#########...#####3###...% 
-D:%..###.......##2##.......###..%
-D:%..1.....x......^....x.....1..%
-D:%..###.......##2##.......###..%
-D: %...###3#####...#########...% 
-D:  %%..........%%%..........%%  
-D:    %%%%%%%%%%   %%%%%%%%%%    
-
-name:hallways 2
-type:1
-rating:1
-rows:14
-columns:17
-doors:2
-tval:chest
-D:%%%%%%%%%%% %%%%%
-D:%.........%%%...%
-D:%.x####2#...2...%
-D:%...1...#+###.x.%
-D:%%..#..##...1...%
-D: %..####..###...%
-D:%%..#.^..##.#...%
-D:%...1.##1#x.#...%
-D:%..####.....#...%
-D:%..#[#......#...%
-D:%..###x.....2...%
-D:%..x.+......#x..%
-D:%..).#....%%#%%%%
-D:%%%#%#%%%%%      
-
-name:Courtyard Rooms (from Sil)
-type:1
-rating:1
-rows:11
-columns:23
-doors:2
-tval:0
-D:%%%%%#%#%%%%%%%#%%%%%%%
-D:%....).#.......2......%
-D:%....#.#.......#......%
-D:%....#x##2####1#......%
-D:####+#.........#......%
-D:%....^....x....######1#
-D:#2####............#...%
-D:%....1...####1##..+...%
-D:%....#...#.....#..#...%
-D:%....#...2.....#..#...%
-D:%%%%%%%%%#%%%%%#%%%%%%%
-
-name:Courtyard Rooms 4 (from Sil)
-type:1
-rating:1
-rows:12
-columns:20
-doors:2
-tval:0
-D:             #%%%%%%
-D:%%%%%%#%%%#%%#.....%
-D:%....x#...#..2.....%
-D:%.....#...#..#.....%
-D:%.....1...#1##_#####
-D:##2####............%
-D: %...+.........###1#
-D: %...######1##.#...%
-D: %...#...#...#.2.x.%
-D: %...+..x#...#.#...%
-D: %%%%#%#.2...#%%%%%%
-D:       %%%%%%%      
-
-name:Hallway Rooms (from Sil)
-type:1
-rating:1
-rows:10
-columns:23
-doors:2
-tval:0
-D:%%%%%%%%%%%%%%%%#%%%%%%
-D:%...............#.....%
-D:%.###1###.#####.1.....%
-D:%.#.....#.#...#.#.....%
-D:%.2.....#.1...#(####2##
-D:%.#######^#.9.2.......%
-D:%.#.....2.#...#.......%
-D:%.#.x...#.#####.......%
-D:%.1.....#.............%
-D:%%#%%%%%#%%%%%%%%%%%%%%
-
-name:Diamond Centre (from Sil)
-type:1
-rating:1
-rows:9
-columns:13
-doors:1
-tval:0
-D:  #%%%%%%%#  
-D: %#.......#% 
-D:%%....#....%%
-D:%....#.#....%
-D:%...#.x.#...%
-D:%....#.#....%
-D:%%....#....%%
-D: %#.......#% 
-D:  #%%%%%%%#  
-
-name:vertical key-ish
-type:1
-rating:1
-rows:14
-columns:13
-doors:2
-tval:0
-D:    %%%%%    
-D:  %%.....%%  
-D: %.........% 
-D:%.....x.....%
-D:%...........%
-D: %.........% 
-D:  %%.....%%  
-D:    %#12#    
-D:     %..%    
-D:     %..##%  
-D:    #%..x.%% 
-D:   %#x..xx.% 
-D:   %.(...(#% 
-D:   %%#%%%##  
-
-name:Keep (from Sil)
-type:1
-rating:1
-rows:9
-columns:19
-doors:2
-tval:hard armor
-D:%%%%%%%%%%%%%%%%%%%
-D:%.................%
-D:%.................%
-D:%......x...x......%
-D:%...#####1#####...%
-D:%...#[.......##...%
-D:%...#........^2...%
-D:%...#.[......##...%
-D:%%%%#%%%%%%%%%#%%%%
-
-name:Pillared Hall (based on one from Sil)
-type:1
-rating:1
-rows:9
-columns:15
-doors:1
-tval:0
-D:#%%%%%%%%%%%%%#
-D:%.............%
-D:%..x.x.x.x.x..%
-D:#.#.#.#.#.#.#.#
-D:%....x...x....%
-D:#.#.#.#.#.#.#.#
-D:%..x.x.x.x.x..%
-D:%.............%
-D:#%%%%%%%%%%%%%#      
-
-name:Beware the Gazebo 2
-type:1
-rating:1
-rows:11
-columns:14
-doors:1
-tval:0
-D:%%%%%%%%%%%%  
-D:%......#.x.%% 
-D:%.......#.x.%%
-D:%##2##...#.x.%
-D:##...##...#.x%
-D:%8....+..#.x.%
-D:##...##...#.x%
-D:%##1##...#.x.%
-D:%.......#.x.%%
-D:%......#.x.%% 
-D:%%%%%%%%%%%%  
-
-name:Hallways 3
-type:1
-rating:1
-rows:13
-columns:15
-doors:2
-tval:chest
-D:%%%#%#%%%%%%%%%
-D:%..#.1........%
-D:%.x#.#........%
-D:%x.#.#.####+###
-D:%..#.#.#[#..^.%
-D:%..+.#.#x####.%
-D:%..#.#2#....#.%
-D:%..#...#....+.%
-D:%..#(x.#....#.#
-D:%..#.#.#..x.#.#
-D:%%##.#.####+###
-D:  %..#........%
-D:  %%%#%%%%%%%%%
-
-name:Titan
-type:1
-rating:1
-rows:13
-columns:17
-doors:2
-tval:chest
-D:     %%%%%%%     
-D:     %..x..%     
-D:%%%%%%.....%%%%%%
-D:%..##.#...#.##..%
-D:%...####.####...%
-D:%......#+#......%
-D:%..x.........x..%
-D:%%...##...##...%%
-D: %####.....####% 
-D: %#....%%%....#% 
-D:%%....%% %%....%%
-D:%....%%   %%....%
-D:%%%%%%     %%%%%%
-
-name:Squat Titan
-type:1
-rating:1
-rows:11
-columns:19
-doors:2
-tval:chest
-D:     %%%%%%%%#%%%  
-D:%%%%%%......###.%% 
-D:%..##.#....xx.#..%%
-D:%...####..#####...%
-D:%....x.......x....%
-D:%............^....%
-D:##.#.##.....##.#.##
-D:%#.###.......###.#%
-D:%.##....%%%....##.%
-D:%....x.%% %%.x....%
-D:%%%%%%%%   %%%%%%%%
-
-name:connected rooms
-type:1
-rating:1
-rows:14
-columns:19
-doors:2
-tval:chest
-D:%%%%%%%%%%%%%%%%%%%
-D:%...#......#......%
-D:%...##.....#......%
-D:%....##....1......%
-D:%....^1#..:#......%
-D:%......##:.#..:...%
-D:%.......#..#......%
-D:%##2..###+##......%
-D:%..####....#####2#%
-D:%.....#.......:...%
-D:%.....#...........%
-D:%.....#...........%
-D:%.....1...........%
-D:%%%%%%%%%%%%%%%%%%%
-
-name:zig
-type:1
-rating:1
-rows:9
-columns:12
-doors:2
-tval:chest
-D:   %%%%%%%%%
-D: %%:....:..%
-D:%%........%%
-D:%..x....### 
-D:#####.....% 
-D:%x..##^...% 
-D:%:.......%% 
-D:%%%.....%%  
-D:  %%%%%%%   
-
-name:the E
-type:1
-rating:1
-rows:11
-columns:13
-doors:1
-tval:chest
-D:  %%%%%%%%%%%
-D: %%.......^.%
-D:%%........#%%
-D:%........##  
-D:%.........#%%
-D:%.........+8%
-D:%.........#%%
-D:%...:....##  
-D:%%........#%%
-D: %%.......^.%
-D:  %%%%%%%%%%%
-
-name:candleabra
-type:1
-rating:1
-rows:11
-columns:16
-doors:2
-tval:potion
-D:%%%%  %%%%  %%%%
-D:%..%  %.9%  %..%
-D:%..%  %..%  %..%
-D:%..%%%#12#%%%..%
-D:%..............%
-D:%%............%%
-D: ###........%%% 
-D: %[##......#%   
-D: %..1#...^##%%  
-D: %...2....+.[%  
-D: %%%%#%%%%#%%%  
-
-#    % - outside of the room, where corridors may be connected
-#    # - granite
-#    ^ - trap
-#    + - fixed position door (always generated)
-#    1,2,3,4,5,6 - potential positions for random doors
-#    x - optional wall (generated 50% of the time)
-#    ( - optional door (generated if optional walls are generated)
-#    ) - optional door (generated if optional walls are NOT generated, 
-#        otherwise rock)
-#    8 - a treasure or stairs, with guardian monsters
-#    9 - place some monsters and treasures nearby
-#	[ - a treasure of the specified tval
-
-# Use this to measure columns      
-#          1         2         3   
-# 123456789012345678901234567890123
