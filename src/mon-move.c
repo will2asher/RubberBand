@@ -188,31 +188,11 @@ static bool monster_can_move(struct chunk *c, struct monster *mon,
 static bool monster_hates_grid(struct chunk *c, struct monster *mon,
 							   struct loc grid)
 {
-	/* monsters ignore slime puddles (for now at least -I may give monsters a silme level later) */
-	if (square(c, grid)->feat == FEAT_SLIME_PUDDLE) return false;
-
-	/* monsters ignore open pits for now (todo) */
-	if (square(c, grid)->feat == FEAT_OPIT) return false;
-
-	/* Flying monsters can avoid most damaging terrain */
-	if (rf_has(mon->race->flags, RF_FLY)) {
-		/* HURT_FIRE monsters won't even fly over lava */
-		if (square_isfiery(c, grid) && rf_has(mon->race->flags, RF_HURT_FIRE)) return true;
-
-		/* Otherwise flying monsters ignore most damaging terrain */
-		if (square_isflyable(c, grid)) return false;
-	}
-
 	/* Only some creatures can handle damaging terrain */
 	if (square_isdamaging(c, grid) &&
 		!rf_has(mon->race->flags, square_feat(c, grid)->resist_flag)) {
 		return true;
 	}
-	/* Water can damage some monsters too */
-	/* (and cats hate water even though they aren't damaged by it) */
-	if (square_iswater(c, grid) && (rf_has(mon->race->flags, RF_HURT_WATER) ||
-		(mon->race->d_char == 'f'))) return true;
-
 	return false;
 }
 
@@ -292,10 +272,6 @@ static void get_move_find_range(struct monster *mon)
 		/* Spellcasters that don't strike never like to get too close */
 		if (rf_has(mon->race->flags, RF_NEVER_BLOW))
 			mon->min_range += 3;
-
-		/* KEEP_DIST monsters don't like to get close (but don't double up with NEVER_BLOW) */
-		else if (rf_has(mon->race->flags, RF_KEEP_DIST))
-			mon->min_range += 3;
 	}
 
 	/* Maximum range to flee to */
@@ -310,12 +286,9 @@ static void get_move_find_range(struct monster *mon)
 	mon->best_range = mon->min_range;
 
 	/* Archers are quite happy at a good distance */
-	/* (but KEEP_DIST monsters have already had min_range increased so don't increase it as much) */
 	if (monster_loves_archery(mon)) {
-		if (mon->best_range >= 3) mon->best_range += 2;
-		else mon->best_range += 3;
+		mon->best_range += 3;
 	}
-	else if (rf_has(mon->race->flags, RF_KEEP_DIST)) mon->best_range += 1;
 
 	/* Breathers like point blank range */
 	if (mon->race->freq_innate > 24) {
@@ -361,15 +334,19 @@ static bool get_move_bodyguard(struct chunk *c, struct monster *mon)
 		int char_dist = distance(grid, player->grid);
 
 		/* Bounds check */
-		if (!square_in_bounds(c, grid)) continue;
+		if (!square_in_bounds(c, grid)) {
+			continue;
+		}
 
 		/* There's a monster blocking that we can't deal with */
-		if (!monster_can_kill(c, mon, grid) && !monster_can_move(c, mon, grid)) {
+		if (!monster_can_kill(c, mon, grid) && !monster_can_move(c, mon, grid)){
 			continue;
 		}
 
 		/* There's damaging terrain */
-		if (monster_hates_grid(c, mon, grid)) continue;
+		if (monster_hates_grid(c, mon, grid)) {
+			continue;
+		}
 
 		/* Closer to the leader is always better */
 		if (new_dist < dist) {
@@ -415,8 +392,8 @@ static bool get_move_bodyguard(struct chunk *c, struct monster *mon)
 static bool get_move_advance(struct chunk *c, struct monster *mon, bool *track)
 {
 	int i;
-	struct loc decoy = cave_find_decoy(c);
-	struct loc target = loc_is_zero(decoy) ? player->grid : decoy;
+	struct loc target = monster_is_decoyed(mon) ? cave_find_decoy(c) :
+		player->grid;
 
 	int base_hearing = mon->race->hearing
 		- player->state.skills[SKILL_STEALTH] / 3;
@@ -456,7 +433,9 @@ static bool get_move_advance(struct chunk *c, struct monster *mon, bool *track)
 			int heard_noise = base_hearing - c->noise.grids[grid.y][grid.x];
 
 			/* Bounds check */
-			if (!square_in_bounds(c, grid)) continue;
+			if (!square_in_bounds(c, grid)) {
+				continue;
+			}
 
 			/* Must be some noise */
 			if (c->noise.grids[grid.y][grid.x] == 0) {
@@ -470,7 +449,9 @@ static bool get_move_advance(struct chunk *c, struct monster *mon, bool *track)
 			}
 
 			/* There's damaging terrain */
-			if (monster_hates_grid(c, mon, grid)) continue;
+			if (monster_hates_grid(c, mon, grid)) {
+				continue;
+			}
 
 			/* If it's better than the current noise, choose this direction */
 			if (heard_noise > current_noise) {
@@ -585,24 +566,8 @@ static bool get_move_find_safety(struct chunk *c, struct monster *mon)
 			/* Skip illegal locations */
 			if (!square_in_bounds_fully(c, grid)) continue;
 
-			/* PASS_DOOR monsters can pass some other terrain as well */
-			if (rf_has(mon->race->flags, RF_PASS_DOOR) && square_ispassdoorable(c, grid)) /*okay*/;
-			/* WATER_HIDE monsters can swim */
-			else if (rf_has(mon->race->flags, RF_WATER_HIDE) && square_iswater(c, grid)) /*okay*/;
-			/* Very large monsters can break through rubble */
-			else if ((mon->race->msize >= 5) && square_isrubble(c, grid)) /*okay*/;
-			/* (There is limited space between the pile of rubble and the ceiling.) */
-			else if ((mon->race->msize > 3) && rf_has(mon->race->flags, RF_FLY) && 
-				square_isrubble(c, grid) && (!square_ispassable(c, grid)))
-				continue;
-			/* HURT_FIRE monsters won't fly over lava */
-			else if (rf_has(mon->race->flags, RF_FLY) && rf_has(mon->race->flags, RF_HURT_FIRE) &&
-				square_isfiery(c, grid)) continue;
-			/* FLY monsters can fly over some obsticles (including rubble for smaller flyers) */
-			else if (rf_has(mon->race->flags, RF_FLY) && square_isflyable(c, grid)) /*okay*/;
-
-			/* Skip locations in a wall (or other non-passable terrain) */
-			else if (!square_ispassable(c, grid)) continue;
+			/* Skip locations in a wall */
+			if (!square_ispassable(c, grid)) continue;
 
 			/* Ignore too-distant grids */
 			if (c->noise.grids[grid.y][grid.x] >
@@ -870,8 +835,8 @@ static int get_move_choose_direction(struct loc offset)
  */
 static bool get_move(struct chunk *c, struct monster *mon, int *dir, bool *good)
 {
-	struct loc decoy = cave_find_decoy(c);
-	struct loc target = loc_is_zero(decoy) ? player->grid : decoy;
+	struct loc target = monster_is_decoyed(mon) ? cave_find_decoy(c) :
+		player->grid;
 	bool group_ai = rf_has(mon->race->flags, RF_GROUP_AI);
 
 	/* Offset to current position to move toward */
@@ -884,25 +849,6 @@ static bool get_move(struct chunk *c, struct monster *mon, int *dir, bool *good)
 
 	/* Calculate range */
 	get_move_find_range(mon);
-
-	/* Monster doesn't want to be any closer to the PC */
-	if ((monster_can_see_player(c, mon)) && (mon->cdis <= mon->min_range)) {
-		int badluck = 0;
-		if (player->p_luck < 0) badluck = ABS(player->p_luck);
-
-		/* If monster is closer to the PC than it wants to be, sometimes move away */
-		if ((mon->cdis < mon->min_range - 1) && (randint0(100) < 50 + (mon->min_range - mon->cdis) * 5)) {
-			/* Move away from the player (copied from "just leg it away from the player") */
-			grid = loc_diff(loc(0, 0), grid);
-		}
-		/* Occationally get another chance for a ranged attack */
-		else if ((mon->cdis > 1) && (monster_loves_archery(mon) || rf_has(mon->race->flags, RF_KEEP_DIST)) && 
-			one_in_(11 - badluck*2)) {
-			make_ranged_attack(mon);
-		}
-
-		return false;
-	}
 
 	/* Assume we're heading towards the player */
 	if (get_move_advance(c, mon, good)) {
@@ -1069,7 +1015,7 @@ bool multiply_monster(struct chunk *c, const struct monster *mon)
  */
 static bool monster_turn_multiply(struct chunk *c, struct monster *mon)
 {
-	int k = 0, y, x, j;
+	int k = 0, y, x;
 
 	struct monster_lore *lore = get_lore(mon->race);
 
@@ -1084,18 +1030,14 @@ static bool monster_turn_multiply(struct chunk *c, struct monster *mon)
 		for (x = mon->grid.x - 1; x <= mon->grid.x + 1; x++)
 			if (square(c, loc(x, y))->mon > 0) k++;
 
-	j = z_info->repro_monster_rate;
-	/* some monsters breed slower than others */
-	if (rf_on(lore->flags, RF_SMULTIPLY)) j = j * 3;
-
 	/* Multiply slower in crowded areas */
-	if ((k < 4) && (k == 0 || one_in_(k * j))) {
+	if ((k < 4) && (k == 0 || one_in_(k * z_info->repro_monster_rate))) {
 		/* Successful breeding attempt, learn about that now */
-		if (monster_is_visible(mon)) rf_on(lore->flags, RF_MULTIPLY);
-		if (monster_is_visible(mon)) rf_on(lore->flags, RF_SMULTIPLY);
+		if (monster_is_visible(mon))
+			rf_on(lore->flags, RF_MULTIPLY);
 
 		/* Leave now if not a breeder */
-		if (!rf_has(mon->race->flags, RF_MULTIPLY) && !rf_has(mon->race->flags, RF_SMULTIPLY))
+		if (!rf_has(mon->race->flags, RF_MULTIPLY))
 			return false;
 
 		/* Try to multiply */
@@ -1205,47 +1147,8 @@ static bool monster_turn_can_move(struct chunk *c, struct monster *mon,
 	}
 
 	/* Floor is open? */
-	if (square_ispassable(c, new)) return true;
-
-	/* PASS_DOOR monsters can pass some other terrain as well as doors (rubble, trees) */
-	if (rf_has(mon->race->flags, RF_PASS_DOOR) && square_ispassdoorable(c, new)) {
-		/* learn about the monster */
-		if (monster_is_visible(mon)) rf_on(lore->flags, RF_PASS_DOOR);
+	if (square_ispassable(c, new)) {
 		return true;
-	}
-
-	/* WATER_HIDE monsters can swim */
-	/* (It would be more appropriate to name the flag "SWIM", but I don't feel like changing it now) */
-	if (rf_has(mon->race->flags, RF_WATER_HIDE) && square_iswater(c, new)) {
-		/* learn about the swimming monster */
-		if (monster_is_visible(mon)) rf_on(lore->flags, RF_WATER_HIDE);
-		return true;
-	}
-
-	/* Very large monsters break through rubble */
-	if (square_isrubble(c, new) && (mon->race->msize >= 5)) {
-		/* (but sometimes it takes a couple turns) */
-		if ((mon->race->msize >= 6) || ((mon->race->msize == 5) && (randint0(100) > 65))) {
-			/* Remove the rubble */
-			square_destroy_wall(c, new);
-
-			/* Note changes to viewable region */
-			if (square_isview(c, new))
-				player->upkeep->update |= (PU_UPDATE_VIEW | PU_MONSTERS);
-
-			return true;
-		}
-	}
-
-	/* FLY monsters can bypass some otherwise unpassable terrain (incl. chasms, deep water) */
-	if (rf_has(mon->race->flags, RF_FLY) && square_isflyable(c, new)) {
-		if ((square_isrubble(c, new)) && (mon->race->msize > 3)) 
-			/* (monster is too big to fly through the limited space between the rubble and the ceiling) */;
-		else {
-			/* This flag should be obvious... */
-			if (monster_is_visible(mon)) rf_on(lore->flags, RF_FLY);
-			return true;
-		}
 	}
 
 	/* Permanent wall in the way */
@@ -1269,7 +1172,6 @@ static bool monster_turn_can_move(struct chunk *c, struct monster *mon,
 	}
 
 	/* Monster may be able to deal with walls and doors */
-	/* PASS_DOOR is handled above (seems like PASS_WALL should be too) */
 	if (rf_has(mon->race->flags, RF_PASS_WALL)) {
 		return true;
 	} else if (rf_has(mon->race->flags, RF_SMASH_WALL)) {
@@ -1291,7 +1193,8 @@ static bool monster_turn_can_move(struct chunk *c, struct monster *mon,
 		return true;
 	} else if (square_iscloseddoor(c, new) || square_issecretdoor(c, new)) {
 		/* Don't allow a confused move to open a door. */
-		bool can_open = rf_has(mon->race->flags, RF_OPEN_DOOR) && !confused;
+		bool can_open = rf_has(mon->race->flags, RF_OPEN_DOOR) &&
+			!confused;
 		/* During a confused move, a monster only bashes sometimes. */
 		bool can_bash = rf_has(mon->race->flags, RF_BASH_DOOR) &&
 			(!confused || one_in_(3));
@@ -1373,43 +1276,7 @@ static bool monster_turn_can_move(struct chunk *c, struct monster *mon,
 				square_open_door(c, new);
 			}
 		}
-	}
-	/* confused (non-unique) monsters may fall into chasms or deep water */
-	else if ((confused) && (square_isachasm(c, new) || square_iswater(c, new))) {
-		int catchc = 26 + mon->race->level + mon->race->msize * 5;
-
-		/* PASS_WALL monsters, and climbing monsters have a better chance of not falling */
-		if (rf_has(mon->race->flags, RF_PASS_DOOR) || (mon->race->d_char == 'a') || 
-			(mon->race->d_char == 'c') || (mon->race->d_char == 'S'))
-			catchc += catchc / 2;
-		/* Certain semi-incorporeal monsters don't easily fall into chasms (but can still be defeated by water) */
-		else if (((mon->race->d_char == 'W') || rf_has(mon->race->flags, RF_PASS_WALL)) && 
-			square_isachasm(c, new)) catchc += catchc / 2;
-		else if (rf_has(mon->race->flags, RF_SMART)) catchc += catchc / 5;
-		/* Uniques never fall */
-		if (rf_has(mon->race->flags, RF_UNIQUE)) catchc = 101;
-
-		if (randint0(100) < catchc) {
-			/* catching itself when confused counts as doing something */
-			*did_something = true;
-			/* Uniques and High level monsters never fall (but most of them don't get confused either) */
-			if (catchc >= 100) msg("%s easily stops itself before falling.", m_name);
-			else msg("%s barely catches itself before falling.", m_name);
-			return false;
-		}
-		/*** Monster falls to its death (along with whatever loot it would've dropped) ***/
-		monster_display_confused_move_msg(mon, m_name, c, new);
-
-		/* Affect light? */
-		if (mon->race->light != 0) player->upkeep->update |= PU_UPDATE_VIEW;
-
-		/* Delete the monster */
-		delete_monster_idx(mon->midx);
-
-		/* Update monster list window */
-		player->upkeep->redraw |= PR_MONLIST;
-	}
-	else if (confused) {
+	} else if (confused) {
 		*did_something = true;
 		monster_display_confused_move_msg(mon, m_name, c, new);
 		monster_slightly_stun_by_move(mon);
@@ -1484,7 +1351,8 @@ static bool monster_turn_try_push(struct chunk *c, struct monster *mon,
 				n_name);
 
 		/* Monster ate another monster */
-		if (kill_ok) delete_monster(new);
+		if (kill_ok)
+			delete_monster(new);
 
 		monster_swap(mon->grid, new);
 		return true;
@@ -1635,21 +1503,6 @@ static void monster_turn(struct chunk *c, struct monster *mon)
 	/* Get the monster name */
 	monster_desc(m_name, sizeof(m_name), mon, MDESC_CAPITAL | MDESC_IND_HID);
 
-	/* camouflaged monsters usually prefer to stay camouflaged */
-	if (monster_is_camouflaged(mon) && monster_is_visible(mon) && monster_is_in_view(mon)) {
-		int skipc = 75;
-		/* Dryads more likely to start casting/attacking when you're close */
-		if ((mon->mimicked_feat == 7) && (mon->cdis < 6)) skipc = 25;
-		/* Gargoyles attack when you're really close */
-		else if ((mon->mimicked_feat >= 3) && (mon->mimicked_feat <= 5)) {
-			if (mon->cdis < 4) skipc = mon->cdis * 4 + 4;
-			/* Except the later ones who have spells and better ranged attacks */
-			if ((mon->race->level > 34) && (mon->cdis < 9)) skipc = mon->cdis * 3 + 3;
-		}
-		else if (mon->mimicked_feat && (mon->cdis < 2)) skipc = 11;
-		if (randint0(100) < skipc) return;
-	}
-
 	/* If we're in a web, deal with that */
 	if (square_iswebbed(c, mon->grid)) {
 		/* Learn web behaviour */
@@ -1667,7 +1520,7 @@ static void monster_turn(struct chunk *c, struct monster *mon)
 			}
 
 			/* Now several possibilities */
-			if (rf_has(mon->race->flags, RF_PASS_WALL) || rf_has(mon->race->flags, RF_PASS_DOOR)) {
+			if (rf_has(mon->race->flags, RF_PASS_WALL)) {
 				/* Insubstantial monsters go right through */
 			} else if (monster_passes_walls(mon)) {
 				/* If you can destroy a wall, you can destroy a web */
@@ -1687,7 +1540,8 @@ static void monster_turn(struct chunk *c, struct monster *mon)
 	monster_group_rouse(c, mon);
 
 	/* Try to multiply - this can use up a turn */
-	if (monster_turn_multiply(c, mon)) return;
+	if (monster_turn_multiply(c, mon))
+		return;
 
 	/* Attempt a ranged attack */
 	if (make_ranged_attack(mon)) return;
@@ -1704,48 +1558,20 @@ static void monster_turn(struct chunk *c, struct monster *mon)
 	 * Monsters which are tracking by sound or scent will not move if they
 	 * can't move in their chosen direction. */
 	for (i = 0; i < 5 && !did_something; i++) {
-		bool occupied = false;
 		/* Get the direction (or stagger) */
 		int d = (stagger != NO_STAGGER) ? ddd[randint0(8)] : side_dirs[dir][i];
 
 		/* Get the grid to step to or attack */
 		struct loc new = loc_sum(mon->grid, ddgrid[d]);
 
-		/* is the square occupied? */
-		if (square_isplayer(c, new) || square_isdecoyed(c, new) || square_monster(c, new)) 
-			occupied = true;
-
 		/* Tracking monsters have their best direction, don't change */
 		if ((i > 0) && stagger == NO_STAGGER && !square_isview(c, mon->grid) && tracking) {
 			break;
 		}
 
-		/* If the monster has a hold on the player, it doesn't want to move */
-		if ((mon->grabbed) && (!occupied)) return;
-
-		/* Some monsters never move */
-		/* (Do this before monster_turn_can_move() because that's when confused monsters can fall into chasms) */
-		if (rf_has(mon->race->flags, RF_NEVER_MOVE) && (!occupied)) {
-			/* Learn about lack of movement */
-			if (monster_is_visible(mon) && monster_is_in_view(mon))
-				rf_on(lore->flags, RF_NEVER_MOVE);
-			return;
-		}
-		/* Some monsters move slower than they cast/attack */
-		else if ((rf_has(mon->race->flags, RF_MOVE_SLOW)) && (!occupied) &&
-			(randint0(100) < 60)) {
-			/* Learn about slow movement */
-			if (monster_is_visible(mon) && monster_is_in_view(mon)) rf_on(lore->flags, RF_MOVE_SLOW);
-			return;
-		}
-
 		/* Check if we can move */
-		/* (If monsters is confused with deep water or a chasm in its path, this is where it can fall and die) */
 		if (!monster_turn_can_move(c, mon, m_name, new, stagger == CONFUSED_STAGGER, &did_something))
 			continue;
-
-		/* Make sure monster is still alive */
-		if (!mon->race) return;
 
 		/* Try to break the glyph if there is one.  This can happen multiple
 		 * times per turn because failure does not break the loop */
@@ -1759,7 +1585,8 @@ static void monster_turn(struct chunk *c, struct monster *mon)
 				rf_on(lore->flags, RF_NEVER_BLOW);
 
 			/* Some monsters never attack */
-			if (rf_has(mon->race->flags, RF_NEVER_BLOW)) continue;
+			if (rf_has(mon->race->flags, RF_NEVER_BLOW))
+				continue;
 
 			/* Wait a minute... */
 			square_destroy_decoy(c, new);
@@ -1774,27 +1601,23 @@ static void monster_turn(struct chunk *c, struct monster *mon)
 				rf_on(lore->flags, RF_NEVER_BLOW);
 
 			/* Some monsters never attack */
-			if (rf_has(mon->race->flags, RF_NEVER_BLOW)) continue;
-
-			/* Player charms animals 
-			 * (todo: this should really be a one-time effect on each individual animal) */
-			if ((player->timed[TMD_ACHARM]) && (rf_has(mon->race->flags, RF_ANIMAL))) {
-				int nicechance = 30 + player->p_luck;
-				/* evil animals aren't as nice. Creatures of light are nicer than most. */
-				if (rf_has(mon->race->flags, RF_EVIL)) nicechance = nicechance / 2;
-				else if (rf_has(mon->race->flags, RF_CLIGHT)) nicechance += 10;
-				/* Monster decides not to attack because it likes you */
-				if (randint0(100) < nicechance) {
-					msg("%s rubs against your leg affectionately.", m_name);
-					continue;
-				}
-			}
+			if (rf_has(mon->race->flags, RF_NEVER_BLOW))
+				continue;
 
 			/* Otherwise, attack the player */
 			make_attack_normal(mon, player);
 
 			did_something = true;
 			break;
+		} else {
+			/* Some monsters never move */
+			if (rf_has(mon->race->flags, RF_NEVER_MOVE)) {
+				/* Learn about lack of movement */
+				if (monster_is_visible(mon))
+					rf_on(lore->flags, RF_NEVER_MOVE);
+
+				return;
+			}
 		}
 
 		/* A monster is in the way, try to push past/kill */
@@ -1804,20 +1627,6 @@ static void monster_turn(struct chunk *c, struct monster *mon)
 			/* Otherwise we can just move */
 			monster_swap(mon->grid, new);
 			did_something = true;
-
-			/* Some terrain slows movement */
-			if (square_slows_movement(c, new)) {
-				/* Swimming monsters aren't slowed by water */
-				if (rf_has(mon->race->flags, RF_WATER_HIDE) && square_iswater(c, new)) /* not slowed */;
-				/* PASS_WALL, PASS_DOOR, and Climber monsters aren't slowed by terrain */
-				else if (rf_has(mon->race->flags, RF_PASS_DOOR) || rf_has(mon->race->flags, RF_PASS_WALL) ||
-					(mon->race->d_char == 'a') || (mon->race->d_char == 'c') || (mon->race->d_char == 'S'))
-					/* not slowed */;
-				/* Neither are flying monsters */
-				else if (rf_has(mon->race->flags, RF_FLY)) /* not slowed */;
-				/* lose energy */
-				else mon->energy -= z_info->move_energy / 2;
-			}
 		}
 
 		/* Scan all objects in the grid, if we reached it */
@@ -1829,6 +1638,10 @@ static void monster_turn(struct chunk *c, struct monster *mon)
 	}
 
 	if (did_something) {
+		/* Learn about no lack of movement */
+		if (monster_is_visible(mon))
+			rf_on(lore->flags, RF_NEVER_MOVE);
+
 		/* Possible disturb */
 		if (monster_is_visible(mon) && monster_is_in_view(mon) && 
 			OPT(player, disturb_near))
@@ -1843,7 +1656,7 @@ static void monster_turn(struct chunk *c, struct monster *mon)
 	}
 
 	/* If we see an unaware monster do something, become aware of it */
-	if (did_something && monster_is_camouflaged(mon) && monster_is_visible(mon) && monster_is_in_view(mon))
+	if (did_something && monster_is_camouflaged(mon))
 		become_aware(mon);
 }
 
@@ -1898,9 +1711,6 @@ static void monster_reduce_sleep(struct chunk *c, struct monster *mon)
 	int player_noise = 1 << (30 - stealth);
 	int notice = randint0(1024);
 	struct monster_lore *lore = get_lore(mon->race);
-
-	/* Certain monsters wake especially easily */
-	if (mon->race->sleep == 1) notice = 500 + randint0(524);
 
 	/* Aggravation */
 	if (player_of_has(player, OF_AGGRAVATE)) {
@@ -1960,8 +1770,8 @@ static bool process_monster_timed(struct chunk *c, struct monster *mon)
 		monster_reduce_sleep(c, mon);
 		return true;
 	} else {
-		/* Awake, active monsters may become aware (unless they're non-agressive) */
-		if (one_in_(10) && mflag_has(mon->mflag, MFLAG_ACTIVE) && !mon->nonagr) {
+		/* Awake, active monsters may become aware */
+		if (one_in_(10) && mflag_has(mon->mflag, MFLAG_ACTIVE)) {
 			mflag_on(mon->mflag, MFLAG_AWARE);
 		}
 	}
@@ -2061,7 +1871,8 @@ void process_monsters(struct chunk *c, int minimum_energy)
 	bool regen = false;
 
 	/* Regenerate hitpoints and mana every 100 game turns */
-	if (turn % 100 == 0) regen = true;
+	if (turn % 100 == 0)
+		regen = true;
 
 	/* Process the monsters (backwards) */
 	for (i = cave_monster_max(c) - 1; i >= 1; i--) {
@@ -2089,7 +1900,8 @@ void process_monsters(struct chunk *c, int minimum_energy)
 		mflag_on(mon->mflag, MFLAG_HANDLED);
 
 		/* Handle monster regeneration if requested */
-		if (regen) regen_monster(mon, 1);
+		if (regen)
+			regen_monster(mon, 1);
 
 		/* Calculate the net speed */
 		mspeed = mon->mspeed;
@@ -2104,7 +1916,8 @@ void process_monsters(struct chunk *c, int minimum_energy)
 		mon->energy += turn_energy(mspeed);
 
 		/* End the turn of monsters without enough energy to move */
-		if (!moving) continue;
+		if (!moving)
+			continue;
 
 		/* Use up "some" energy */
 		mon->energy -= z_info->move_energy;
