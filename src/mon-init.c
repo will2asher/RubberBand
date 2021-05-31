@@ -72,7 +72,7 @@ static const char *obj_flags[] =
 /**
  * Return the index of a flag from its name.
  */
-int flag_index_by_name(const char *name)
+static int flag_index_by_name(const char *name)
 {
 	size_t i;
 	for (i = 0; i < N_ELEMENTS(obj_flags); i++) {
@@ -194,7 +194,7 @@ static enum parser_error parse_meth_desc(struct parser *p) {
 	return PARSE_ERROR_NONE;
 }
 
-struct parser *init_parse_meth(void) {
+static struct parser *init_parse_meth(void) {
 	struct parser *p = parser_new();
 	parser_setpriv(p, NULL);
 	parser_reg(p, "name str name", parse_meth_name);
@@ -409,7 +409,7 @@ static enum parser_error parse_eff_lash_type(struct parser *p) {
 	return PARSE_ERROR_NONE;
 }
 
-struct parser *init_parse_eff(void) {
+static struct parser *init_parse_eff(void) {
 	struct parser *p = parser_new();
 	parser_setpriv(p, NULL);
 	parser_reg(p, "name str name", parse_eff_name);
@@ -888,7 +888,7 @@ static enum parser_error parse_mon_spell_save_message(struct parser *p) {
 	return PARSE_ERROR_NONE;
 }
 
-struct parser *init_parse_mon_spell(void) {
+static struct parser *init_parse_mon_spell(void) {
 	struct parser *p = parser_new();
 	parser_setpriv(p, NULL);
 	parser_reg(p, "name str name", parse_mon_spell_name);
@@ -2411,7 +2411,7 @@ static enum parser_error parse_lore_mimic(struct parser *p) {
 	return PARSE_ERROR_NONE;
 }
 
-struct parser *init_parse_lore(void) {
+static struct parser *init_parse_lore(void) {
 	struct parser *p = parser_new();
 	parser_setpriv(p, NULL);
 
