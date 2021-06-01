@@ -31,6 +31,7 @@ enum
 	TYP_TRAP,	/*!< Trap */
     TYP_TREE,	/*!< Tree */
     TYP_STATU,	/*!< Statue */
+    TYP_NEXUSST, /*!< Nexus stone */
     TYP_GOLD,	/*!< Gold */
 	TYP_OBJECT,	/*!< Object */
 	TYP_GOOD,	/*!< Good object */

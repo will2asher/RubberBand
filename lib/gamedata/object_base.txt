@@ -21,7 +21,7 @@ graphics:slate
 flags:HATES_ACID | HATES_FIRE
 
 name:shot:Shot~
-graphics:light umber
+graphics:slate
 break:25
 # max-stack:40
 flags:SHOW_DICE

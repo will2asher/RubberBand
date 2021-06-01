@@ -1222,7 +1222,7 @@ bool build_vault(struct chunk *c, struct loc centre, struct vault *v)
 				/* Trap. (with chance of trap monster instead */
 			case '^': {
 				if (one_in_(25)) { /* trap monster */
-					/* "?" symbols allows trap monsters, mimics, creeping coins, lurkers, and wall monsters */
+					/* "?" symbols allows trap monsters, mimics, creeping coins, and lurkers */
 					if (!sp_vault_monster(c, '?', v->typ, grid)) place_trap(c, grid, -1, c->depth);
 				}
 				else if (one_in_(3)) place_trap(c, grid, -1, c->depth);
@@ -1346,8 +1346,7 @@ bool build_vault(struct chunk *c, struct loc centre, struct vault *v)
 											   ORIGIN_DROP_VAULT);
 					}
 					else if (one_in_(2)) {
-						place_object(c, grid, c->depth,
-							one_in_(8) ? true : false, false,
+						place_object(c, grid, c->depth + 1, one_in_(8) ? true : false, false,
 							ORIGIN_VAULT, 0);
 					} 
 					else if (one_in_(25)) { /* trap monster */

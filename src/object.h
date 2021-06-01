@@ -176,7 +176,7 @@ extern struct object_base *kb_info;
 /**
  * Information about object kinds, including player knowledge.
  *
- * TODO: split out the user-changeable bits into a separate struct so this
+ * V: split out the user-changeable bits into a separate struct so this
  * one can be read-only.
  */
 struct object_kind {

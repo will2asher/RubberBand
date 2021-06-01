@@ -126,7 +126,7 @@ bool feat_is_passable(int feat)
 }
 
 /**
- * True if any projectable can pass through the feature.
+ * True if any projectile can pass through the feature.
  */
 bool feat_is_projectable(int feat)
 {

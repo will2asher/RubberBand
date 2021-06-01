@@ -352,11 +352,18 @@ static int project_player_handler_NEXUS(project_player_handler_context_t *contex
 		return 0;
 	}
 
-	/* Stat swap */
-	if (randint0(100) < player->state.skills[SKILL_SAVE]) {
+	/* side effects of nexus */
+	if (randint0(98 + context->dam / 25) < player->state.skills[SKILL_SAVE]) {
 		msg("You avoid the effect!");
 	} else {
-		player_inc_timed(player, TMD_SCRAMBLE, randint0(20) + 20, true, true);
+		int die = randint0(80 - player->p_luck * 3);
+		/* Stat swap or PHAZED or both */
+		if (die < 30) player_inc_timed(player, TMD_SCRAMBLE, randint0(21) + 20, true, true);
+		else if (die < 60) player_inc_timed(player, TMD_PHAZED, randint0(22 + context->dam / 20) + 21, true, true);
+		else {
+			player_inc_timed(player, TMD_SCRAMBLE, randint0(20) + 16, true, true);
+			player_inc_timed(player, TMD_PHAZED, randint0(22) + 20, true, true);
+		}
 	}
 
 	if (one_in_(3) && mon) { /* Teleport to */

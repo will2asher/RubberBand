@@ -3971,7 +3971,7 @@ alloc:10:11 to 39
 pile:25:2
 power:0
 effect:RANDOM
-dice:8
+dice:9
 effect:TIMED_INC:SCRAMBLE
 dice:20+1d20
 effect:SHAPECHANGE:bat
@@ -3981,10 +3981,12 @@ effect:TIMED_INC:STONESKIN
 dice:20+1d20
 effect:TIMED_INC:SHERO
 dice:22+1d22
+effect:TIMED_INC:PHAZED
+dice:21+1d23
 effect:HEAL_HP
-dice:55
+dice:43+2d8
 effect:BREATH:ACID:0:20
-dice:55
+dice:61
 effect:NOURISH:INC_BY
 dice:1
 

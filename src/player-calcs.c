@@ -1960,10 +1960,6 @@ void calc_bonuses(struct player *p, struct player_state *state, bool known_only,
 	/* Calculate light */
 	calc_light(p, state, update);
 
-	/* You don't stand out as much if you don't have a light (but you also might fumble around in the dark...) */
-	/* I'll add this back when I add darkvision */
-	/*if (!state->cur_light) state->skills[SKILL_STEALTH] += 1;*/
-
 	/* Unlight - needs change if anything but resist is introduced for dark */
 	if (player_has(p, PF_UNLIGHT) && character_dungeon) {
 		state->el_info[ELEM_DARK].res_level = 1;
@@ -2008,11 +2004,11 @@ void calc_bonuses(struct player *p, struct player_state *state, bool known_only,
 		/* Two timed effects that actually lower stats */
 		if ((p->timed[TMD_DISEASE]) && ((i == STAT_STR) || (i == STAT_CON))) {
 			ind -= 3;
-			if (ind < 0) ind = 0;
+			if (ind < 1) ind = 1;
 		}
 		if ((p->timed[TMD_INSANE]) && ((i == STAT_INT) || (i == STAT_WIS))) {
 			ind -= 3;
-			if (ind < 0) ind = 0;
+			if (ind < 1) ind = 1;
 		}
 
 		assert((0 <= ind) && (ind < STAT_RANGE));
@@ -2132,6 +2128,9 @@ void calc_bonuses(struct player *p, struct player_state *state, bool known_only,
 		state->to_h += 10;
 		state->skills[SKILL_DEVICE] = state->skills[SKILL_DEVICE] * 105 / 100;
 	}
+	/* You don't stand out as much if you don't have a light (as long as you can see to not fumble around) */
+	if (p->timed[TMD_DARKVIS] && !state->cur_light) state->skills[SKILL_STEALTH] += 1;
+
 	if (p->timed[TMD_SHIELD]) {
 		state->to_a += 50;
 	}
@@ -2365,6 +2364,10 @@ void calc_bonuses(struct player *p, struct player_state *state, bool known_only,
 			state->ammo_mult += extra_might;
 			if (player_has(p, PF_FAST_SHOT) && (state->ammo_tval == TV_ARROW)) {
 				state->num_shots += p->lev / 3;
+			}
+			/* Ranger bonus applies to slings and crossbows too, just less so */
+			else if (player_has(p, PF_FAST_SHOT) && (p->lev >= 3)) {
+				state->num_shots += 1 + p->lev / 6;
 			}
 		}
 

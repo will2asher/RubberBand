@@ -509,7 +509,7 @@ bool player_set_timed(struct player *p, int idx, int v, bool notify)
 		if (!player->mbheld) msgt(MSG_HITWALL, "BUG: Player was held by no monster.");
 		else {
 			/* Get the monster that grabbed the player */
-			struct monster* mon = cave_monster(cave, player->mbheld);
+			struct monster *mon = cave_monster(cave, player->mbheld);
 			/* Monster no longer has a hold on the player */
 			mon->grabbed = 0;
 			player->mbheld = 0;

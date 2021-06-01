@@ -114,8 +114,12 @@ static int chance_of_missile_hit(const struct player *p,
 				+ bonus * BTH_PLUS_ADJ;
 		}
 	} else {
+		bool sling = false;
+		if (kf_has(launcher->kind->kind_flags, KF_SHOOTS_SHOTS)) sling = true;
 		bonus += p->state.to_h + launcher->to_h;
-		chance = p->state.skills[SKILL_TO_HIT_BOW] + bonus * BTH_PLUS_ADJ;
+		/* Slings use throwing skill */
+		if (sling) chance = p->state.skills[SKILL_TO_HIT_THROW] + bonus * BTH_PLUS_ADJ;
+		else chance = p->state.skills[SKILL_TO_HIT_BOW] + bonus * BTH_PLUS_ADJ;
 	}
 
 	return chance - distance(p->grid, grid);
@@ -1095,10 +1099,8 @@ static void ranged_helper(struct player *p,	struct object *obj, int dir,
 		struct monster *mon = NULL;
 		bool see = square_isseen(cave, path_g[i]);
 
-		/* Stop before hitting walls */
-		if (!(square_ispassable(cave, path_g[i])) &&
-			!(square_isprojectable(cave, path_g[i])))
-			break;
+		/* Stop before hitting walls (why did this check passable? -we don't want to make firing over deep water impossible) */
+		if (!square_isprojectable(cave, path_g[i])) break;
 
 		/* Advance */
 		grid = path_g[i];

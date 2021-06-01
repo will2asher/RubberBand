@@ -296,6 +296,20 @@ static void decrease_timeouts(void)
                 decr = 0;
                 break;
             }
+			/* PHAZED effect */
+			case TMD_PHAZED:
+			{
+				int zdie = 9 - player ->timed[TMD_PHAZED] / 5;
+				if (zdie < 3) zdie = 3;
+				if (one_in_(zdie)) {
+					if (player->timed[TMD_PHAZED] < 9)
+						effect_simple(EF_TELEPORT, source_player(), "7", 0, 0, 0, 0, 0, NULL);
+					else if (player->timed[TMD_PHAZED] < 15)
+						effect_simple(EF_TELEPORT, source_player(), "9", 0, 0, 0, 0, 0, NULL);
+					else effect_simple(EF_TELEPORT, source_player(), "11", 0, 0, 0, 0, 0, NULL);
+				}
+				break;
+			}
 
 			case TMD_CUT:
 			{

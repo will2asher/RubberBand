@@ -390,7 +390,6 @@ mon-base:mimic
 mon-base:trap monster
 mon-base:creeping coins
 mon-base:lurker
-mon-base:wall monster
 
 # New chosen monster types, not necessarily for pits and not used yet
 

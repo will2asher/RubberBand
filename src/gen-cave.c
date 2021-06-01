@@ -658,6 +658,8 @@ struct chunk *classic_gen(struct player *p, int min_height, int min_width) {
 	if (randint0(100) < 17 - c->depth / 5) alloc_objects(c, SET_ROOM, TYP_TREE, 3 + randint1(9), c->depth, 0);
 	else if (randint0(100) < 11 + c->depth / 5) alloc_objects(c, SET_ROOM, TYP_RUBBLE, 2 + randint1(8), c->depth, 0);
 	if (randint0(100) < 12) alloc_objects(c, SET_ROOM, TYP_STATU, randint0(9), c->depth, 0);
+	/* rare nexus stones */
+	if (one_in_(300)) alloc_objects(c, SET_ROOM, TYP_NEXUSST, randint1(2), c->depth, 0);
 
     return c;
 }
@@ -1441,6 +1443,9 @@ struct chunk *cavern_gen(struct player *p, int min_height, int min_width) {
 	alloc_objects(c, SET_BOTH, TYP_GOOD, randint0(k / 4), c->depth,
 				  ORIGIN_CAVERN);
 
+	/* rare nexus stones */
+	if (one_in_(400)) alloc_objects(c, SET_ROOM, TYP_NEXUSST, randint1(2), c->depth, 0);
+
 	return c;
 }
 
@@ -1849,7 +1854,7 @@ static void town_gen_layout(struct chunk *c, struct player *p)
 
 		/* Add some trees and a statue or two */
 		alloc_objects(c, SET_BOTH, TYP_TREE, 3 + randint1(11), 0, 0);
-		alloc_objects(c, SET_BOTH, TYP_STATU, randint1(5), 0, 0);
+		alloc_objects(c, SET_BOTH, TYP_STATU, randint0(5), 0, 0);
 
 		success = true;
 	}
@@ -2202,6 +2207,9 @@ struct chunk *modified_gen(struct player *p, int min_height, int min_width) {
 	/* And occationally some trees or rubble in rooms */
 	if (randint0(100) < 17 - c->depth / 5) alloc_objects(c, SET_ROOM, TYP_TREE, 3 + randint1(9), c->depth, 0);
 	else if (randint0(100) < 11 + c->depth / 5) alloc_objects(c, SET_ROOM, TYP_RUBBLE, 2 + randint1(8), c->depth, 0);
+	if (randint0(100) < 12) alloc_objects(c, SET_ROOM, TYP_STATU, randint0(9), c->depth, 0);
+	/* rare nexus stones */
+	if (one_in_(300)) alloc_objects(c, SET_ROOM, TYP_NEXUSST, randint1(2), c->depth, 0);
 
     return c;
 }
@@ -2425,6 +2433,10 @@ struct chunk *moria_gen(struct player *p, int min_height, int min_width) {
 				  c->depth, ORIGIN_FLOOR);
     alloc_objects(c, SET_BOTH, TYP_GOLD, Rand_normal(z_info->both_gold_av, 3),
 				  c->depth, ORIGIN_FLOOR);
+
+	if (randint0(100) < 6) alloc_objects(c, SET_ROOM, TYP_STATU, randint0(3), c->depth, 0);
+	/* rare nexus stones */
+	if (one_in_(400)) alloc_objects(c, SET_ROOM, TYP_NEXUSST, randint1(2), c->depth, 0);
 
     return c;
 }
@@ -2662,6 +2674,8 @@ struct chunk *hard_centre_gen(struct player *p, int min_height, int min_width)
 				  ORIGIN_CAVERN);
 	alloc_objects(c, SET_BOTH, TYP_GOOD, randint0(k / 4), c->depth,
 				  ORIGIN_CAVERN);
+
+	if (randint0(100) < 10) alloc_objects(c, SET_ROOM, TYP_STATU, randint0(6), c->depth, 0);
 
 	return c;
 }

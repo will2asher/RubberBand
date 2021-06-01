@@ -227,6 +227,9 @@ struct monster_race *get_mon_num(int level)
 	if (level > 0 && one_in_(z_info->ood_monster_chance))
 		level += MIN(level / 4 + 2, z_info->ood_monster_amount);
 
+	/* Occasionally produce a TOWN_OR_DUN dungeon monster in the town */
+	if ((!level) && (player->lev > 5) && (randint0(100) < 26)) level += 1 + randint1(player->lev + 1);
+
 	total = 0L;
 
 	/* Process probabilities */
@@ -241,17 +244,20 @@ struct monster_race *get_mon_num(int level)
 		race = &r_info[table[i].index];
 
 		/* Some monsters can appear in the town or dungeon */
-		if (rf_has(race->flags, RF_TOWN_OR_DUN) && (race->level == 0)) {
+		if (rf_has(race->flags, RF_TOWN_OR_DUN) && (table[i].level == 0)) {
 		    /* but they're less common in the dungeon if native to the town */
-		    if ((level > 0) && (randint0(level*2/3 + 6) > 4)) continue;
+		    if ((player->depth > 0) && (randint0(level*2/3 + 6) > 4)) continue;
         }
 		/* No town monsters in dungeon (normally) */
 		else if ((level > 0) && (table[i].level <= 0)) continue;
 
 		/* and Dungeon-native TOWN_OR_DUN monsters are less common in town (depending on player level) */
-		if (rf_has(race->flags, RF_TOWN_OR_DUN) && (race->level > 0) && (level == 0)) {
-			if (randint0(player->lev + 2) < race->level) continue;
+		if (rf_has(race->flags, RF_TOWN_OR_DUN) && (table[i].level > 0) && (!player->depth)) {
+			if (randint0(player->lev + 2) < table[i].level) continue;
 		}
+		/* No dungeon monsters in town (normally) */
+		else if ((!rf_has(race->flags, RF_TOWN_OR_DUN)) && (table[i].level > 0) && (!player->depth))
+			continue;
 
 		/* No seasonal monsters outside of Christmas */
 		if (rf_has(race->flags, RF_SEASONAL) &&
@@ -266,14 +272,6 @@ struct monster_race *get_mon_num(int level)
 		if (rf_has(race->flags, RF_FORCE_DEPTH) && race->level > player->depth)
 			continue;
 
-		/* Option to use vanilla-ish monsters or not */
-		/* most VISH monsters are only much rarer if VISH is turned off, but not 'y' or 'i' monsters */
-		/* Since multiple monster bases with the same glyph doesn't work, I'll probably cut out the option. */
-		if (rf_has(race->flags, RF_VISH) && (!OPT(player, birth_vish)) && (race->d_char == 'y' || race->d_char == 'i'))
-			continue;
-		/* No RUBBER monsters if VISH is turned on */
-		if (rf_has(race->flags, RF_RUBBER) && (OPT(player, birth_vish)))
-			continue;
 		/* Option to use silly monsters */
 		if (rf_has(race->flags, RF_SILLY) && (!OPT(player, birth_sillymon)))
 			continue;

@@ -2282,7 +2282,7 @@ bool effect_handler_DETECT_LIVING_MONSTERS(effect_handler_context_t *context)
 {
 	bool monsters;
 	/* downside of first sight and second thoughts (more likely to work than other monster detection spells) */
-	if ((randint1(10) > 6 + player->p_luck * 2) && (player->timed[TMD_2NDTHOT])) {
+	if ((player->timed[TMD_2NDTHOT]) && (randint1(10) > 6 + player->p_luck * 2)) {
 		msg("Your first sight blocks the effect!");
 		return false;
 	}

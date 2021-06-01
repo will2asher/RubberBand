@@ -419,8 +419,15 @@ static void melee_effect_timed(melee_effect_handler_context_t *context,
 							   int type, int amount, int of_flag, bool save,
 							   const char *save_msg)
 {
+	int ldiff = 0;
 	/* Take damage */
 	if (monster_damage_target(context, false)) return;
+
+	/* difference between monster level and player level has an effect on saving throw difficulty */
+	if (!context->t_mon) ldiff = context->mon->race->level - player->lev;  /* (can be negative) */
+	/* ...up to a certain amount. */
+	if (ldiff > 42) ldiff = 42;
+	if (ldiff < -42) ldiff = -42;
 
 	/* Handle status */
 	if (context->t_mon) {
@@ -453,7 +460,7 @@ static void melee_effect_timed(melee_effect_handler_context_t *context,
 			mon_inc_timed(context->t_mon, mon_tmd_effect, amount, 0);
 			context->obvious = true;
 		}
-	} else if (save && randint0(100) < context->p->state.skills[SKILL_SAVE]) {
+	} else if (save && randint0(100 + ldiff/2) < context->p->state.skills[SKILL_SAVE]) {
 		/* Attempt a saving throw if desired. */
 		if (save_msg != NULL) {
 			msg("%s", save_msg);
@@ -920,6 +927,7 @@ static void melee_effect_handler_CONFUSE(melee_effect_handler_context_t *context
 static void melee_effect_handler_FRENZY(melee_effect_handler_context_t* context)
 {
 	int mindur = 4;
+	int ldiff = 0;
 	int savet = player->state.skills[SKILL_SAVE];
 	if ((context->rlev / 6 > 4) && (context->rlev / 6 < 10)) mindur = context->rlev / 6;
 	else if (context->rlev / 6 > 4) mindur = 10;
@@ -930,12 +938,18 @@ static void melee_effect_handler_FRENZY(melee_effect_handler_context_t* context)
 	/* The rest of this only applies to the player */
 	if (!context->p) return;
 
+	/* difference between monster level and player level has an effect on saving throw difficulty */
+	if (!context->t_mon) ldiff = context->mon->race->level - player->lev;  /* (can be negative) */
+	/* ...up to a certain amount. */
+	if (ldiff > 42) ldiff = 42;
+	if (ldiff < -42) ldiff = -42;
+
 	/* partial resist */
 	if (player->timed[TMD_CLEAR_MIND]) savet = savet * 3 / 2;
 	else if (player_of_has(player, OF_PROT_CONF)) savet = savet * 11 / 10;
 
 	/* Attempt a saving throw */
-	if (randint0(100 + context->rlev) < savet) {
+	if (randint0(100 + ldiff/2) < savet) {
 		msg("You resist the effects.");
 	}
 	/* Increase FRENZY */
@@ -955,12 +969,19 @@ static void melee_effect_handler_FRENZY(melee_effect_handler_context_t* context)
 static void melee_effect_handler_CHARM(melee_effect_handler_context_t* context)
 {
 	int savet = player->state.skills[SKILL_SAVE];
+	int ldiff = 0;
 
 	/* Take damage */
 	if (monster_damage_target(context, true)) return;
 
 	/* The rest of this only applies to the player */
 	if (!context->p) return;
+
+	/* difference between monster level and player level has an effect on saving throw difficulty */
+	if (!context->t_mon) ldiff = context->mon->race->level - player->lev;  /* (can be negative) */
+	/* ...up to a certain amount. */
+	if (ldiff > 42) ldiff = 42;
+	if (ldiff < -42) ldiff = -42;
 
 	/* partial resists */
 	if (player->timed[TMD_CLEAR_MIND]) savet = savet * 3 / 2;
@@ -970,7 +991,7 @@ static void melee_effect_handler_CHARM(melee_effect_handler_context_t* context)
 	if (player->timed[TMD_AMNESIA]) savet = savet * 4 / 5;
 
 	/* Attempt a saving throw */
-	if (randint0(100 + context->rlev) < savet) {
+	if (randint0(100 + ldiff/2) < savet) {
 		msg("You resist the effects.");
 	}
 	/* Increase CHARMED */
@@ -1006,7 +1027,7 @@ static void melee_effect_handler_BHOLD(melee_effect_handler_context_t* context)
 	if (player->timed[TMD_SDRUNK]) savet = savet / 2;
 
 	/* Attempt a saving throw */
-	if ((!context->p->timed[TMD_PARALYZED]) && (randint0(100 + context->damage) < savet)) {
+	if ((!context->p->timed[TMD_PARALYZED]) && (randint0(99 + context->damage) < savet)) {
 		msg("You avoid being grabbed.");
 
 		/* reduce damage */
@@ -1044,11 +1065,19 @@ static void melee_effect_handler_BHOLD(melee_effect_handler_context_t* context)
  */
 static void melee_effect_handler_UNLUCKY(melee_effect_handler_context_t* context)
 {
+	int ldiff = 0;
+
 	/* Take damage */
 	if (monster_damage_target(context, true)) return;
 
 	/* The rest of this only applies to the player */
 	if (!context->p) return;
+
+	/* difference between monster level and player level has an effect on saving throw difficulty */
+	if (!context->t_mon) ldiff = context->mon->race->level - player->lev;  /* (can be negative) */
+	/* ...up to a certain amount. */
+	if (ldiff > 42) ldiff = 42;
+	if (ldiff < -42) ldiff = -42;
 
 	/* already as unlucky as you can be */
 	if (player->p_luck <= -5) {
@@ -1056,7 +1085,7 @@ static void melee_effect_handler_UNLUCKY(melee_effect_handler_context_t* context
 		return;
 	}
 	/* Attempt a saving throw */
-	if (randint0(99 + context->rlev) < player->state.skills[SKILL_SAVE]) {
+	if (randint0(99 + ldiff/2) < player->state.skills[SKILL_SAVE]) {
 		msg("You resist the effects.");
 	}
 	else {

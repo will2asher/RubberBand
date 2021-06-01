@@ -576,6 +576,52 @@ flags:RAND_25 | OPEN_DOOR | BASH_DOOR | TAKE_ITEM
 desc:He had retired from battle and wants to live the rest
 desc: of his days in peace. If he fights, he'll fight relunctantly.
 
+name:Scroll of Aquirement
+base:mimic
+glyph:?
+color:Z
+element:10
+speed:104
+hit-points:51
+size:1
+hearing:11
+armor-class:5
+sleepiness:131
+depth:0
+rarity:11
+experience:3
+flags:NEVER_BLOW | HURT_FIRE | NONLIVING
+#flags:SILLY?
+flags-off:NO_CONF
+spell-freq:15
+spells:S_MONSTER
+mimic:scroll:Acquirement
+desc:A valuble thing to find in the town.  wait.. did it just move on its own?
+
+name:Potion of Experience
+base:mimic
+glyph:!
+color:Z
+element:14
+speed:106
+hit-points:36
+size:1
+hearing:12
+armor-class:6
+sleepiness:126
+depth:0
+rarity:12
+experience:4
+blow:SPIT:HALLU:1d1
+flags:IM_POIS | HURT_COLD | NONLIVING | RAND_25
+flags-off:NEVER_MOVE | NO_CONF
+#flags:SILLY?
+innate-freq:12
+spell-freq:14
+spells:SPIT | FORGET
+mimic:potion:experience
+desc:A valuble thing to find in the town.  wait.. did it just move on its own?
+
 name:Harry Goatleaf
 base:person
 color:o
@@ -708,6 +754,7 @@ rarity:1
 experience:1
 blow:BITE:HURT:1d2
 flags:MULTIPLY | RAND_50
+flags-off:CLEAR_WEB
 desc:It is about three feet long with large teeth.
 
 name:rat snake
@@ -1527,6 +1574,7 @@ innate-freq:3
 spell-freq:11
 spells:ARROW | HASTE
 drop-base:nature book:3:1:1
+drop-base:arrow:4:2:10
 friends-base:20:1d3:person
 friends-base:35:1d3:person
 friends-base:80:1d3:person
@@ -1678,6 +1726,7 @@ innate-freq:2
 spells:ARROW
 friends-base:30:1d2:kobold
 friends-base:65:1d2:kobold
+drop-base:arrow:3:2:9
 desc:It is an ugly dog-headed humanoid wielding a bow.
 
 name:giant centipede
@@ -1738,7 +1787,7 @@ name:giant brown rat
 base:rodent
 color:u
 speed:112
-hit-points:14
+hit-points:12
 size:2
 hearing:15
 smell:15
@@ -1746,9 +1795,9 @@ armor-class:26
 sleepiness:23
 depth:4
 rarity:2
-experience:16
-blow:BITE:HURT:2d4
-flags:BASH_DOOR | SMULTIPLY | ROAM
+experience:14
+blow:BITE:HURT:1d4
+flags:SMULTIPLY | ROAM
 #(multiplies slowly)
 desc:It's a rodent of unusual size.
 
@@ -2925,6 +2974,7 @@ blow:HIT:HURT:2d4
 blow:HIT:HURT:2d4
 flags:MALE | S_EVIL2
 flags:DROP_1 | TAKE_ITEM
+drop-base:shot:3:2:11
 innate-freq:8
 spells:SHOT | WHIP
 desc:An uncultured brute with a club, a sling and a whip.
@@ -2983,7 +3033,7 @@ size:1
 light:1
 hearing:20
 smell:6
-armor-class:33
+armor-class:36
 sleepiness:19
 depth:8
 rarity:3
@@ -3006,7 +3056,7 @@ hit-points:14
 size:1
 light:2
 hearing:23
-armor-class:42
+armor-class:47
 sleepiness:21
 depth:8
 rarity:4
@@ -3085,6 +3135,29 @@ experience:3
 blow:BITE:HURT:1d2
 flags:RAND_50 | MULTIPLY
 desc:A fast-breeding, annoying pest.
+
+name:terrified goblin runt
+base:dark fairy
+color:i
+element:13
+speed:111
+hit-points:29
+size:2
+hearing:18
+smell:14
+armor-class:39
+sleepiness:11
+depth:9
+rarity:6
+experience:26
+flags:NEVER_BLOW | TAKE_ITEM | DROP_40 | FRIGHTENED
+flags:REGENERATE | S_EVIL1 | ROAM
+innate-freq:9
+spells:SHRIEK
+friends:12:2d2:goblin
+friends:20:1d4:goblin runt
+desc:It is a lesser type of dark fairy in a constant state of extreme terror.
+desc: Its ugly head and hands seem oversized compared to its small body.
 
 name:yeti
 plural:yeti
@@ -3263,6 +3336,7 @@ experience:30
 blow:HIT:HURT:1d5
 blow:HIT:HURT:1d6
 flags:MALE | DROP_60 | KEEP_DIST
+drop-base:arrow:10:4:18
 innate-freq:3
 spells:ARROW
 friends:20:1d3:ruffian
@@ -3868,6 +3942,7 @@ experience:35
 blow:HIT:HURT:1d7
 blow:HIT:HURT:2d4
 flags:DROP_20 | KEEP_DIST
+drop-base:arrow:2:2:9
 innate-freq:5
 spells:ARROW
 friends:46:2d4:snaga
@@ -4091,6 +4166,7 @@ flags:REGENERATE | S_EVIL2 | NO_HOLD
 innate-freq:7
 spell-freq:13
 spells:THROW | WHIP | SCARE 
+friends:3:1d2:terrified goblin runt
 friends:45:1d4:goblin runt
 friends:45:2d3:Same
 desc:It is a lesser type of dark fairy, unrelated to orcs.
@@ -4440,6 +4516,7 @@ blow:HIT:HURT:3d5
 flags:MALE | S_EVIL1 | DROP_1 
 innate-freq:10
 spells:BOLT
+drop-base:bolt:3:2:11
 friends:35:1d2:Illusionist
 friends:35:1d2:Priest
 friends:35:1d3:archer
@@ -4564,6 +4641,27 @@ friends:4:1d3:sprite
 friends:4:1d3:clear sprite
 friends:7:1d2:Same
 desc:It flies around so fast, you can barely see it except for the light it gives off.
+
+name:cute fluffy bunny
+base:rodent
+color:U
+speed:111
+hit-points:24
+size:1
+hearing:14
+smell:18
+armor-class:58
+sleepiness:24
+depth:12
+rarity:11
+experience:24
+blow:GAZE:CHARM
+blow:TOUCH:CHARM
+flags:SILLY | SMULTIPLY
+flags-off:CLEAR_WEB
+spell-freq:22
+spells:TINVIS | SLOW
+desc:A cute fluffy white furball, why would you want to hurt it?
 
 name:zhang
 base:reptile
@@ -5868,6 +5966,7 @@ spell-freq:11
 spells:THROW | WHIP | SHOT
 spells:CURSE_PC | SCARE | DARKNESS 
 friends:2:1d3:hobgoblin
+friends:3:1d2:terrified goblin runt
 friends:16:1d2:goblin runt
 friends:40:1d5:goblin
 friends:55:1d8:Same
@@ -6302,7 +6401,7 @@ blow:HIT:HURT:1d9
 blow:TOUCH:CHARM
 flags:MALE | SMART | FORCE_SLEEP | KEEP_DIST
 flags:TAKE_ITEM | NO_SLEEP | NO_CONF
-flags:ONLY_ITEM | DROP_60 | ROAM | GOODMON
+flags:ONLY_ITEM | DROP_60 | ROAM | BR_STRONG | GOODMON
 innate-freq:12
 spell-freq:5
 spells:BR_LIGHT | BLINK | HEAL | SLOW | S_ANIMAL | S_KIN | HEAL_KIN
@@ -6669,6 +6768,7 @@ innate-freq:6
 spell-freq:11
 spells:THROW | WHIP | SHOT | SCARE | WOUND 
 friends:9:1d3:city goblin
+friends:3:1d2:terrified goblin runt
 friends:12:1d3:goblin runt
 friends:40:1d5:goblin
 friends:73:1d5:Same
@@ -7133,6 +7233,9 @@ spell-freq:5
 spells:WHIP | SHOT | THROW
 spells:CONF | DARKNESS | TRAPS | SCARE | BO_POIS | WOUND | TINVIS | CURSE_PC
 # | S_ILLUSION
+friends:3:1d1:terrified goblin runt
+friends:30:2d3:goblin
+friends:34:2d3:city goblin
 desc:Dominick is a partilarly cruel and sadistic goblin in his goblin city.
 desc:  Among his favorite things to do is tickle people with burning coals.
 
@@ -7413,6 +7516,7 @@ spells:ARROW | BLINK | HASTE
 spells:BO_COLD | S_ANIMAL
 drop-base:nature book:5:1:1
 drop-base:nature book:5:1:1
+drop-base:arrow:5:2:12
 friends:40:1d1:Easterling champion
 friends:40:1d1:rogue
 friends:40:1d2:Illusionist
@@ -8147,6 +8251,7 @@ blow:HIT:HURT:2d8
 blow:HIT:EAT_GOLD:4d4
 blow:HIT:EAT_ITEM:4d4
 flags:MALE | S_EVIL2 | ROAM | DROP_2 | TAKE_ITEM
+drop-base:shot:5:3:12
 innate-freq:4
 spells:SHOT
 friends:40:1d1:Ranger
@@ -9331,6 +9436,7 @@ blow:HIT:HURT:3d5
 blow:HIT:POISON:4d4
 flags:MALE | S_EVIL2 | SMART | INVISIBLE | KEEP_DIST
 flags:TAKE_ITEM | DROP_60 | DROP_20 | SCALE
+drop-base:arrow:5:4:12
 innate-freq:3
 spell-freq:6
 spells:ARROW | BO_POIS | BLINK | TPORT
@@ -10349,6 +10455,7 @@ blow:HIT:HURT:2d7
 flags:MALE | SMART | BASH_DOOR | FORCE_SLEEP
 flags:DROP_1 | ONLY_ITEM | KEEP_DIST
 flags:IM_POIS | NO_CONF | NO_SLEEP | NO_HOLD
+drop-base:arrow:7:5:15
 innate-freq:3
 spell-freq:14
 spells:ARROW | CONF | HEAL | BLINK
@@ -11783,6 +11890,8 @@ spell-freq:4
 spells:TELE_TO | DRAIN_MANA | WOUND | FORGET | CURSE_PC
 spells:WHIP | BR_DARK | BR_FEAR | BO_POIS | BO_ICE | MIND_BLAST
 # | S_NIGHTMARE | S_ILLUSION
+friends:3:1d1:terrified goblin runt
+friends:30:3d3:city goblin
 desc:The goblin hag is an expert with magic and poisons, and her
 desc: enticing charms make you forget she's hiding a knife behind her back.
 
@@ -13025,6 +13134,39 @@ friends:100:2d5:Easterling champion:bodyguard
 desc:A mighty warrior from the east, Lorgan hates everything that he cannot
 desc: control.
 
+name:The White Witch
+base:humanoid
+color:w
+speed:112
+hit-points:919
+size:3
+hearing:22
+armor-class:84
+sleepiness:14
+depth:36
+rarity:5
+experience:1203
+blow:HIT:COLD:6d5
+blow:HIT:COLD:6d5
+blow:HIT:PARALYZE
+blow:GAZE:CHARM
+flags:UNIQUE | EVIL | FEMALE | GIANT | SMART | SCALE | FORCE_SLEEP
+flags:NO_SLEEP | NO_CONF | NO_FEAR | IM_COLD | IM_ACID
+flags:BASH_DOOR | DROP_2 | DROP_GOOD | ONLY_ITEM
+spell-freq:4
+spells:HOLD | SCARE | BO_COLD | BO_ICEE | BA_COLD | WOUND
+spells:S_MONSTER | S_DEMON
+friends:12:1d2:furie
+friends:20:3d2:cold hound
+friends:22:1d5:frost giant
+friends:30:1d2:quasit
+friends:75:1d2:wolf chieftain
+friends:85:2d2:werewolf
+friends:100:3d3:white wolf
+desc:She cast a spell causing everlasting winter (but never Christmas).
+desc: She appears to be a tall and pale human, but she hasn't an ounce of
+desc: human blood in her. She is suspected to be part giant and part hag.
+
 ### Dungeon level 37 ###
 
 name:ice elemental
@@ -13754,6 +13896,7 @@ blow:HIT:POISON:3d7
 blow:HIT:POISON:4d5
 flags:MALE | EVIL | OPEN_DOOR | KEEP_DIST
 flags:DROP_1 | NO_CONF | NO_SLEEP
+drop-base:arrow:6:5:18
 innate-freq:2
 spells:ARROW
 friends:16:1d3:same

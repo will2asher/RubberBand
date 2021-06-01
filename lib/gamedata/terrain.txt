@@ -437,6 +437,14 @@ confused-msg:slips into deep water and drowns
 desc:Deep water. It looks black in the dim light of the dungeon.
 desc: (In real life, this would look the same as shallow water. Lucky for you, this isn't real life.)
 
+#todo: SLIP terrain flag
+#name:ice
+#graphics:/:Z
+#priority:7
+#flags:INTERESTING | LOS | PROJECT | PASSABLE | OBJECT | SLOWS | SLIP
+##resist-flag:IM_COLD
+#desc:Slippery ice covers the floor here.
+
 #todo: randomize statue descriptions and maybe fountain descriptions as well.
 name:statue
 graphics:::z
@@ -481,10 +489,10 @@ desc: shot or thrown through its space.
 #Maybe this should be a visible trap instead of a terrain feature? -nah, I already have it done as a terrain
 #effect done for the player, but not for monsters yet.
 name:nexus stone
-graphics:::V
+graphics:::v
 priority:12
 flags:LOS | PROJECT | PASSABLE | EASY | INTERESTING | NEXUS_ST
-walk-msg:Stepping on this stone will make you teleport randomly (unless you have nexus resistance or teleport control). Really step onto it?
+walk-msg:Stepping on this stone will make you teleport randomly. Really step onto it?
 run-msg:There's a nexus stone in your path.  Step onto it? 
 resist-flag:IM_NEXUS
 desc:Nexus stone. Stepping on it will make you teleport randomly and may have other side effects

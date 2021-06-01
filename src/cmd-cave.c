@@ -573,13 +573,13 @@ static bool do_cmd_tunnel_aux(struct loc grid)
 
 	/* Success */
 	if (okay && twall(grid)) {
-		/* Rubble is a special case - could be handled more generally NRM */
+		/* Rubble is a special case */
 		if (rubble) {
 			/* Message */
 			msg("You have removed the rubble.");
 
-			/* Place an object (except in town) */
-			if ((randint0(100) < 10) && player->depth) {
+			/* Place an object (except in town) (TODO: This should happen when the rubble is placed) */
+			if ((randint0(100) < 6) && player->depth) {
 				/* Create a simple object */
 				place_object(cave, grid, player->depth, false, false,
 							 ORIGIN_RUBBLE, 0);
@@ -602,6 +602,18 @@ static bool do_cmd_tunnel_aux(struct loc grid)
 		}
 		else if (statue) {
 			msg("You have finished destroying the statue. (you vandal)");
+
+			/* Small chance of an object inside it (except in town) (This should happen when the statue is placed) */
+			if ((randint0(100) < 4) && player->depth) {
+				/* Create a simple object */
+				place_object(cave, grid, player->depth, false, false,
+					ORIGIN_RUBBLE, 0);
+
+				/* Observe the new object */
+				if (!ignore_item_ok(square_object(cave, grid)) &&
+					square_isseen(cave, grid))
+					msg("You have found something!");
+			}
 		} else {
 			msg("You have finished the tunnel.");
 		}
@@ -1048,7 +1060,7 @@ bool move_player(int dir, bool disarm)
 		if (!player->mbheld) msgt(MSG_HITWALL, "BUG: Being held by no monster.");
 		else {
 			/* Get the monster that grabbed the player */
-			struct monster* mon = cave_monster(cave, player->mbheld);
+			struct monster *mon = cave_monster(cave, player->mbheld);
 			int pullaway = 6 + 2 * (adj_dex_th[player->state.stat_ind[STAT_DEX]] + adj_str_td[player->state.stat_ind[STAT_STR]]);
 			char m_name[80];
 

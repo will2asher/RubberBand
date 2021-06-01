@@ -622,7 +622,7 @@ void monster_swap(struct loc grid1, struct loc grid2)
 			if (!player->mbheld) player_clear_timed(player, TMD_BHELD, false);
 			else {
 				/* Get the monster that grabbed the player */
-				struct monster* mon = cave_monster(cave, player->mbheld);
+				struct monster *mon = cave_monster(cave, player->mbheld);
 				/* Update it early to check new distance */
 				update_mon(mon, cave, true);
 				if (mon->cdis > 1) player_clear_timed(player, TMD_BHELD, false);
@@ -687,7 +687,7 @@ void monster_swap(struct loc grid1, struct loc grid2)
 			if (!player->mbheld) player_clear_timed(player, TMD_BHELD, false);
 			else {
 				/* Get the monster that grabbed the player */
-				struct monster* mon = cave_monster(cave, player->mbheld);
+				struct monster *mon = cave_monster(cave, player->mbheld);
 
 				/* Update it early to check new distance */
 				update_mon(mon, cave, true);
@@ -804,6 +804,7 @@ void become_aware(struct monster *mon)
 		else if (mon->mimicked_feat == 2) msg("The pile of rubble was really a monster!");
 		else if (mon->mimicked_feat == 7) msg("The tree was really a monster!");
 		else if ((mon->mimicked_feat >= 3) && (mon->mimicked_feat <= 5)) msg("The statue was really a monster!");
+		mon->mimicked_feat = 0;
 
 		/* Update monster and item lists */
 		player->upkeep->update |= (PU_UPDATE_VIEW | PU_MONSTERS);

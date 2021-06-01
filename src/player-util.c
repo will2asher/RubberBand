@@ -213,9 +213,10 @@ void take_hit(struct player* p, int dam, const char* kb_str)
 			player_clear_timed(p, TMD_POISONED, false);
 			player_clear_timed(p, TMD_STUN, false);
 			player_clear_timed(p, TMD_CUT, false);
+			player_clear_timed(p, TMD_BHELD, false);
 
-			/* Protect player for the rest of the current monster's attacks with 1-turn of Invulnerability */
-			(void)player_inc_timed(player, TMD_INVULN, 1, false, false);
+			/* Protect player until his next turn (probably) with 2 turns of Invulnerability */
+			(void)player_inc_timed(player, TMD_INVULN, 2, false, false);
 		}
 		else if ((p->wizard || OPT(p, cheat_live)) && !get_check("Die? ")) {
 			event_signal(EVENT_CHEAT_DEATH);
