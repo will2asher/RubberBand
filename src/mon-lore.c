@@ -142,7 +142,6 @@ static int spell_color(struct player *p, const struct monster_race *race,
 			case ELEM_FORCE:
 			case ELEM_ICE:
 			case ELEM_PLASMA:
-			case ELEM_SLIME:
 			case ELEM_WATER:
 				if (!of_has(p->known_state.flags, OF_PROT_STUN)) {
 					return level->lore_attr;
@@ -492,11 +491,12 @@ bool lore_is_fully_known(const struct monster_race *race)
  * about the treasure (even when the monster is killed for the first
  * time, such as uniques, and the treasure has not been examined yet).
  *
- * This "indirect" method is used to prevent the player from learning
+ * This "indirect" method was used to prevent the player from learning
  * exactly how much treasure a monster can drop from observing only
  * a single example of a drop.  This method actually observes how much
  * gold and items are dropped, and remembers that information to be
- * described later by the monster recall code.
+ * described later by the monster recall code.  It gives the player a chance
+ * to learn if a monster drops only objects or only gold.
  */
 void lore_treasure(struct monster *mon, int num_item, int num_gold)
 {
@@ -506,18 +506,29 @@ void lore_treasure(struct monster *mon, int num_item, int num_gold)
 	assert(num_gold >= 0);
 
 	/* Note the number of things dropped */
-	if (num_item > lore->drop_item)
+	if (num_item > lore->drop_item) {
 		lore->drop_item = num_item;
-	if (num_gold > lore->drop_gold)
+	}
+	if (num_gold > lore->drop_gold) {
 		lore->drop_gold = num_gold;
+	}
 
 	/* Learn about drop quality */
 	rf_on(lore->flags, RF_DROP_GOOD);
 	rf_on(lore->flags, RF_DROP_GREAT);
 
+	/* Have a chance to learn ONLY_ITEM and ONLY_GOLD */
+	if (num_item && (lore->drop_gold == 0) && one_in_(4)) {
+		rf_on(lore->flags, RF_ONLY_ITEM);
+	}
+	if (num_gold && (lore->drop_item == 0) && one_in_(4)) {
+		rf_on(lore->flags, RF_ONLY_GOLD);
+	}
+
 	/* Update monster recall window */
-	if (player->upkeep->monster_race == mon->race)
+	if (player->upkeep->monster_race == mon->race) {
 		player->upkeep->redraw |= (PR_MONSTER);
+	}
 }
 
 /**
@@ -592,12 +603,11 @@ static const char *lore_describe_speed(byte speed)
 		byte threshold;
 		const char *description;
 	} lore_speed_description[] = {
-		{131,	"incredibly quickly"},
-		{121,	"very quickly"},
-		{116,	"quickly"},
-		{111,	"fairly quickly"},
+		{130,	"incredibly quickly"},
+		{120,	"very quickly"},
+		{115,	"quickly"},
+		{110,	"fairly quickly"},
 		{109,	"normal speed"}, /* 110 is normal speed */
-		{105,	"somewhat slowly"},
 		{99,	"slowly"},
 		{89,	"very slowly"},
 		{0,		"incredibly slowly"},
@@ -978,7 +988,6 @@ void lore_append_movement(textblock *tb, const struct monster_race *race,
 	/* Describe location */
 	if (race->level == 0) {
 		textblock_append(tb, " lives in the town");
-		if (rf_has(race->flags, RF_TOWN_OR_DUN)) textblock_append(tb, ", but may also appear in the dungeon,");
 	} else {
 		byte colour = (race->level > player->max_depth) ? COLOUR_RED :
 			COLOUR_L_BLUE;
@@ -1027,13 +1036,6 @@ void lore_append_movement(textblock *tb, const struct monster_race *race,
 		textblock_append(tb, ", but ");
 		textblock_append_c(tb, COLOUR_L_GREEN,
 						   "does not deign to chase intruders");
-	}
-
-	/* The speed description also describes "attack speed" */
-	else if (rf_has(known_flags, RF_MOVE_SLOW)) {
-		textblock_append(tb, ", but ");
-		textblock_append_c(tb, COLOUR_L_GREEN,
-			"moves slower than it attacks/casts");
 	}
 
 	/* End this sentence */
@@ -1120,7 +1122,7 @@ void lore_append_exp(textblock *tb, const struct monster_race *race,
 	const char *ordinal, *article;
 	char buf[20] = "";
 	long exp_integer, exp_fraction;
-	s16b level, rlvl = 1;
+	s16b level;
 
 	/* Check legality and that this is a placeable monster */
 	assert(tb && race && lore);
@@ -1134,16 +1136,12 @@ void lore_append_exp(textblock *tb, const struct monster_race *race,
 
 	textblock_append(tb, " this creature");
 
-	/* A few town monsters give XP now, so we need to make the math work */
-	if (race->level < 1) rlvl = 1;
-	else rlvl = race->level;
-
 	/* calculate the integer exp part */
-	exp_integer = (long)race->mexp * rlvl / player->lev;
+	exp_integer = (long)race->mexp * race->level / player->lev;
 
 	/* calculate the fractional exp part scaled by 100, must use long
 	 * arithmetic to avoid overflow */
-	exp_fraction = ((((long)race->mexp * rlvl % player->lev) *
+	exp_fraction = ((((long)race->mexp * race->level % player->lev) *
 					 (long)1000 / player->lev + 5) / 10);
 
 	/* Calculate textual representation */
@@ -1169,12 +1167,8 @@ void lore_append_exp(textblock *tb, const struct monster_race *race,
 	if ((level == 8) || (level == 11) || (level == 18)) article = "an";
 
 	/* Mention the dependance on the player's level */
-	textblock_append(tb, " for %s %u%s level character", article,
+	textblock_append(tb, " for %s %u%s level character.  ", article,
 					 level, ordinal);
-	if (rf_has(race->flags, RF_TOWN_OR_DUN)) {
-		textblock_append(tb, " (which is halved when you're in the town)");
-	}
-	textblock_append(tb, ".  ");
 }
 
 /**
@@ -1325,9 +1319,6 @@ void lore_append_abilities(textblock *tb, const struct monster_race *race,
 	if (rf_has(known_flags, RF_MULTIPLY))
 		textblock_append_c(tb, COLOUR_ORANGE, "%s breeds explosively.  ",
 						   initial_pronoun);
-	if (rf_has(known_flags, RF_SMULTIPLY))
-		textblock_append_c(tb, COLOUR_ORANGE, "%s breeds.  ",
-			initial_pronoun);
 	if (rf_has(known_flags, RF_REGENERATE))
 		textblock_append(tb, "%s regenerates quickly.  ", initial_pronoun);
 
