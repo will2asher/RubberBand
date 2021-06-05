@@ -91,12 +91,14 @@
 # for non-unique monsters.
 
 # 'element' monster's (primary) element:
-# 1 = flesh, 2 = earth/rock, 3 = fire, 4 = water, 5 = air, 
-# 6 = acid, 7 = slime, 8 = nether, 9 = wood/vegetation, 10 = other
+# 1 = flesh / bone (including undead flesh), 2 = earth/rock, 3 = fire, 4 = water, 
+# 5 = air / nexus, 6 = acid, 7 = slime, 8 = nether, 9 = poison, 10 = wood/vegetation,
+# 11 = frost, 12 = metal / other / multi-hued, 13 = dark (incl. demons),
+# 14 = glass / shards, 15 = lightning / static, 16 = sound / force, 17 = light.
 # If not specified, it assumes the monster is made of flesh (1).
 # This decides the monster's lash and PUDDLE if any.
 # (flesh monsters use a MISSILE lash)
-# (This can replace the HURT_ROCK flag)
+# (This could replace the HURT_ROCK flag -but doesn't yet)
 
 # 'speed' is for speed; 110 is normal speed.
 

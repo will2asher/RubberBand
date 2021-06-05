@@ -1277,6 +1277,23 @@ bool mon_take_nonplayer_hit(int dam, struct monster *t_mon,
 		/* Check if the dead monster had a hold on the player. It doesn't anymore. */
 		if (t_mon->grabbed) player_clear_timed(player, TMD_BHELD, false);
 
+		/* some monsters affect terrain (maybe I should go only by the PUDDLE flag) */
+		if (((mon->race->d_char == 'E') || (mon->race->d_char == 'X') || (mon->race->d_char == 'j') ||
+			rf_has(mon->race->flags, RF_PUDDLE)) && (mon->race->msize > 4) && (one_in_(3))) {
+			/* rock-based elementals leave rubble */
+			if (mon->race->elem == 2) square_set_feat(cave, mon->grid, FEAT_PASS_RUBBLE);
+			/* fire-based elementals leave lava */
+			if (mon->race->elem == 3) square_set_feat(cave, mon->grid, FEAT_LAVA);
+			/* water-based elementals leave water */
+			if (mon->race->elem == 4) square_set_feat(cave, mon->grid, FEAT_WATER);
+			/* air-based (whirlwinds aren't ready yet) */
+			/* if (mon->race->elem == 5) square_set_feat(cave, mon->grid, FEAT_WHIRLWIND); */
+			/* acid-based */
+			if (mon->race->elem == 6) square_set_feat(cave, mon->grid, FEAT_ACID_PUDDLE);
+			/* slime-based */
+			if (mon->race->elem == 7) square_set_feat(cave, mon->grid, FEAT_SLIME_PUDDLE);
+		}
+
 		/* Generate treasure, etc */
 		monster_death(t_mon, false);
 
@@ -1347,6 +1364,22 @@ bool mon_take_hit(struct monster *mon, int dam, bool *fear, const char *note)
 			player->upkeep->health_who = mon;
 			(*fear) = false;
 			return true;
+		}
+		/* some monsters affect terrain (maybe I should go only by the PUDDLE flag) */
+		if (((mon->race->d_char == 'E') || (mon->race->d_char == 'X') || (mon->race->d_char == 'j') ||
+			rf_has(mon->race->flags, RF_PUDDLE)) && (mon->race->msize > 4) && (one_in_(3))) {
+			/* rock-based elementals leave rubble */
+			if (mon->race->elem == 2) square_set_feat(cave, mon->grid, FEAT_PASS_RUBBLE);
+			/* fire-based elementals leave lava */
+			if (mon->race->elem == 3) square_set_feat(cave, mon->grid, FEAT_LAVA);
+			/* water-based elementals leave water */
+			if (mon->race->elem == 4) square_set_feat(cave, mon->grid, FEAT_WATER);
+			/* air-based (whirlwinds aren't ready yet) */
+			/* if (mon->race->elem == 5) square_set_feat(cave, mon->grid, FEAT_WHIRLWIND); */
+			/* acid-based */
+			if (mon->race->elem == 6) square_set_feat(cave, mon->grid, FEAT_ACID_PUDDLE);
+			/* slime-based */
+			if (mon->race->elem == 7) square_set_feat(cave, mon->grid, FEAT_SLIME_PUDDLE);
 		}
 
 		/* It is dead now */
