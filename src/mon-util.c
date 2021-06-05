@@ -1279,20 +1279,20 @@ bool mon_take_nonplayer_hit(int dam, struct monster *t_mon,
 
 		/* some monsters affect terrain (maybe I should go only by the PUDDLE flag) */
 		/* (mon->race->msize is never bigger than 7, and only one monster is size 7) */
-		if (((mon->race->d_char == 'E') || (mon->race->d_char == 'X') || (mon->race->d_char == 'j') ||
-			rf_has(mon->race->flags, RF_PUDDLE)) && (mon->race->msize > 4) && (one_in_(8 - mon->race->msize))) {
+		if (((t_mon->race->d_char == 'E') || (t_mon->race->d_char == 'X') || (t_mon->race->d_char == 'j') ||
+			rf_has(t_mon->race->flags, RF_PUDDLE)) && (t_mon->race->msize > 4) && (one_in_(8 - t_mon->race->msize))) {
 			/* rock-based elementals leave rubble */
-			if (mon->race->elem == 2) square_set_feat(cave, mon->grid, FEAT_PASS_RUBBLE);
+			if (t_mon->race->elem == 2) square_set_feat(cave, t_mon->grid, FEAT_PASS_RUBBLE);
 			/* fire-based elementals leave lava */
-			if (mon->race->elem == 3) square_set_feat(cave, mon->grid, FEAT_LAVA);
+			if (t_mon->race->elem == 3) square_set_feat(cave, t_mon->grid, FEAT_LAVA);
 			/* water-based elementals leave water */
-			if (mon->race->elem == 4) square_set_feat(cave, mon->grid, FEAT_WATER);
+			if (t_mon->race->elem == 4) square_set_feat(cave, t_mon->grid, FEAT_WATER);
 			/* air-based (whirlwinds aren't ready yet) */
-			/* if (mon->race->elem == 5) square_set_feat(cave, mon->grid, FEAT_WHIRLWIND); */
+			/* if (t_mon->race->elem == 5) square_set_feat(cave, t_mon->grid, FEAT_WHIRLWIND); */
 			/* acid-based */
-			if (mon->race->elem == 6) square_set_feat(cave, mon->grid, FEAT_ACID_PUDDLE);
+			if (t_mon->race->elem == 6) square_set_feat(cave, t_mon->grid, FEAT_ACID_PUDDLE);
 			/* slime-based */
-			if (mon->race->elem == 7) square_set_feat(cave, mon->grid, FEAT_SLIME_PUDDLE);
+			if (t_mon->race->elem == 7) square_set_feat(cave, t_mon->grid, FEAT_SLIME_PUDDLE);
 		}
 
 		/* Generate treasure, etc */
