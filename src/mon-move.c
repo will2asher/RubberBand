@@ -361,19 +361,15 @@ static bool get_move_bodyguard(struct chunk *c, struct monster *mon)
 		int char_dist = distance(grid, player->grid);
 
 		/* Bounds check */
-		if (!square_in_bounds(c, grid)) {
-			continue;
-		}
+		if (!square_in_bounds(c, grid)) continue;
 
 		/* There's a monster blocking that we can't deal with */
-		if (!monster_can_kill(c, mon, grid) && !monster_can_move(c, mon, grid)){
+		if (!monster_can_kill(c, mon, grid) && !monster_can_move(c, mon, grid)) {
 			continue;
 		}
 
 		/* There's damaging terrain */
-		if (monster_hates_grid(c, mon, grid)) {
-			continue;
-		}
+		if (monster_hates_grid(c, mon, grid)) continue;
 
 		/* Closer to the leader is always better */
 		if (new_dist < dist) {
@@ -460,9 +456,7 @@ static bool get_move_advance(struct chunk *c, struct monster *mon, bool *track)
 			int heard_noise = base_hearing - c->noise.grids[grid.y][grid.x];
 
 			/* Bounds check */
-			if (!square_in_bounds(c, grid)) {
-				continue;
-			}
+			if (!square_in_bounds(c, grid)) continue;
 
 			/* Must be some noise */
 			if (c->noise.grids[grid.y][grid.x] == 0) {
@@ -476,9 +470,7 @@ static bool get_move_advance(struct chunk *c, struct monster *mon, bool *track)
 			}
 
 			/* There's damaging terrain */
-			if (monster_hates_grid(c, mon, grid)) {
-				continue;
-			}
+			if (monster_hates_grid(c, mon, grid)) continue;
 
 			/* If it's better than the current noise, choose this direction */
 			if (heard_noise > current_noise) {
@@ -597,6 +589,8 @@ static bool get_move_find_safety(struct chunk *c, struct monster *mon)
 			if (rf_has(mon->race->flags, RF_PASS_DOOR) && square_ispassdoorable(c, grid)) /*okay*/;
 			/* WATER_HIDE monsters can swim */
 			else if (rf_has(mon->race->flags, RF_WATER_HIDE) && square_iswater(c, grid)) /*okay*/;
+			/* Very large monsters can break through rubble */
+			else if ((mon->race->msize >= 5) && square_isrubble(c, grid)) /*okay*/;
 			/* (There is limited space between the pile of rubble and the ceiling.) */
 			else if ((mon->race->msize > 3) && rf_has(mon->race->flags, RF_FLY) && 
 				square_isrubble(c, grid) && (!square_ispassable(c, grid)))
@@ -1207,6 +1201,21 @@ static bool monster_turn_can_move(struct chunk *c, struct monster *mon,
 		/* learn about the swimming monster */
 		if (monster_is_visible(mon)) rf_on(lore->flags, RF_WATER_HIDE);
 		return true;
+	}
+
+	/* Very large monsters break through rubble */
+	if (square_isrubble(c, new) && (mon->race->msize >= 5)) {
+		/* (but sometimes it takes a couple turns) */
+		if ((mon->race->msize >= 6) || ((mon->race->msize == 5) && (randint0(100) > 65))) {
+			/* Remove the rubble */
+			square_destroy_wall(c, new);
+
+			/* Note changes to viewable region */
+			if (square_isview(c, new))
+				player->upkeep->update |= (PU_UPDATE_VIEW | PU_MONSTERS);
+
+			return true;
+		}
 	}
 
 	/* FLY monsters can bypass some otherwise unpassable terrain (incl. chasms, deep water) */

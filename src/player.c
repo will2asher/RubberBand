@@ -240,6 +240,7 @@ static void adjust_level(struct player *p, bool verbose)
 		if (p->lev > p->max_lev)
 			p->max_lev = p->lev;
 
+		/* (verbose is currently always true) */
 		if (verbose) {
 			/* Log level updates */
 			strnfmt(buf, sizeof(buf), "Reached level %d", p->lev);
@@ -254,6 +255,22 @@ static void adjust_level(struct player *p, bool verbose)
 		effect_simple(EF_RESTORE_STAT, source_none(), "0", STAT_WIS, 0, 0, 0, 0, NULL);
 		effect_simple(EF_RESTORE_STAT, source_none(), "0", STAT_DEX, 0, 0, 0, 0, NULL);
 		effect_simple(EF_RESTORE_STAT, source_none(), "0", STAT_CON, 0, 0, 0, 0, NULL);
+
+		/* Do some minor healing / curing on level gain 
+		 * (only the first time you reach a level and only if you aren't very unlucky) */
+		if ((p->max_lev == p->lev) && (p->p_luck > -2)) {
+			if (p->p_luck > 1) effect_simple(EF_HEAL_HP, source_player(), "4", 0, 0, 0, 0, 0, 0);
+			else effect_simple(EF_HEAL_HP, source_player(), "2", 0, 0, 0, 0, 0, 0);
+			effect_simple(EF_HEAL_SLIME, source_player(), "1", 0, 0, 0, 0, 0, 0);
+			effect_simple(EF_TIMED_DEC, source_player(), "2", TMD_CUT, 0, 0, 0, 0, 0);
+			effect_simple(EF_TIMED_DEC, source_player(), "2", TMD_STUN, 0, 0, 0, 0, 0);
+			effect_simple(EF_TIMED_DEC, source_player(), "2", TMD_INSANE, 0, 0, 0, 0, 0);
+			effect_simple(EF_TIMED_DEC, source_player(), "2", TMD_DISEASE, 0, 0, 0, 0, 0);
+		}
+		/* Very bad luck may fade on level gain  (p->p_luck <= -2) */
+		else if (p->max_lev == p->lev) { 
+			if ((p->p_luck < -3) || (randint0(9) < ABS(p->p_luck))) p->p_luck++;
+		}
 	}
 
 	while ((p->max_lev < PY_MAX_LEVEL) &&

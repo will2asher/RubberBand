@@ -3337,7 +3337,7 @@ D:%%%....::4......``.}}}}}8#1@44444...94@@44..%%
 D:  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  
 
 # (Or Volcano Chasm re-themed:  '{' is deep water, '/' is shallow water)
-# This is really a big lesser vault, but I didn't want to call it a greater vault.
+# This is really a big lesser vault. (I didn't want to call it a greater vault.)
 name:Wide River
 type:Interesting room
 rating:10
@@ -3378,6 +3378,43 @@ D:%%618##:1641*@@444}}}}````}}3}4#49@@@..%%
 D: %%444#4449*3*@@@@@}}}}``@@@@@@@@@@91.%%   
 D:  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%    
 
+name:Chasm room (vertical)
+type:Interesting room
+rating:1
+rows:10
+columns:24
+min-depth:16
+max-depth:0
+D:  %%%%%%}}}}%%%%%%%%%%  
+D:%%%.....}}}}}........%%%
+D:%........}}}}}}........%
+D:%........}}}}}}........%
+D:%........}}}}}}........%
+D:%.........}}}}}........%
+D:%.........}}}}}}.......%
+D:%.........}}}}}}......%%
+D:%%%....:1..}}}}}.....%% 
+D:  %%%%%%%%%%}}}}%%%%%%  
+
+name:Chasm room (horizontal)
+type:Interesting room
+rating:1
+rows:12
+columns:17
+min-depth:16
+max-depth:0
+D:  %%%%%%%%%%%%%  
+D:%%%...........%% 
+D:%..............%%
+D:%..........:....%
+D:}}}}}}}}}..1....%
+D:}}}}}}}}}}}}}}}}}
+D:}}}}}}}}}}}}}}}}}
+D:%.......}}}}}}}}}
+D:%...............%
+D:%%..............%
+D: %%...........%%%
+D:  %%%%%%%%%%%%%  
 
 ### New Lesser Vaults -- maximum size 22x22 ###
 

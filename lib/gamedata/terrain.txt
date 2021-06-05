@@ -445,6 +445,14 @@ desc: (In real life, this would look the same as shallow water. Lucky for you, t
 ##resist-flag:IM_COLD
 #desc:Slippery ice covers the floor here.
 
+#mud puddle not generated yet
+name:mud puddle
+graphics:.:m
+priority:9
+flags:INTERESTING | LOS | PROJECT | PASSABLE | EASY | FLOOR | OBJECT | TRAP | SLOWS
+#resist-flag:IM_WATER
+desc:A puddle of mud.
+
 #todo: randomize statue descriptions and maybe fountain descriptions as well.
 name:statue
 graphics:::z

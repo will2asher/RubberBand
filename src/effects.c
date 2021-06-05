@@ -1372,7 +1372,7 @@ bool effect_handler_SLIME_CHANCE(effect_handler_context_t* context)
 }
 
 /* Heal slime */
-bool effect_handler_HEAL_SLIME(effect_handler_context_t* context)
+bool effect_handler_HEAL_SLIME(effect_handler_context_t *context)
 {
 	int amount = effect_calculate_value(context, false);
 	bool anyslime = false;

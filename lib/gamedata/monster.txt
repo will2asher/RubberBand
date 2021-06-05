@@ -3188,7 +3188,8 @@ hit-points:31
 size:2
 hearing:15
 armor-class:43
-sleepiness:25
+sleepiness:125
+#sleepiness:25 (temp for testing)
 depth:9
 rarity:4
 experience:27
@@ -3539,7 +3540,7 @@ desc: scales a pale gold.
 name:The Boar of Everholt
 base:quadruped
 color:t
-speed:119
+speed:118
 hit-points:134
 size:3
 hearing:20
@@ -5020,7 +5021,8 @@ hit-points:45
 size:3
 hearing:15
 armor-class:60
-sleepiness:25
+sleepiness:125
+#sleepiness:25 tmp
 depth:13
 rarity:3
 experience:42
@@ -6903,7 +6905,8 @@ hit-points:78
 size:3
 hearing:15
 armor-class:75
-sleepiness:21
+sleepiness:141
+#sleepiness:21 tmp
 depth:19
 rarity:2
 experience:73
@@ -13154,9 +13157,9 @@ flags:UNIQUE | EVIL | FEMALE | GIANT | SMART | SCALE | FORCE_SLEEP
 flags:NO_SLEEP | NO_CONF | NO_FEAR | IM_COLD | IM_ACID
 flags:BASH_DOOR | DROP_2 | DROP_GOOD | ONLY_ITEM
 spell-freq:4
-spells:HOLD | SCARE | BO_COLD | BO_ICEE | BA_COLD | WOUND
+spells:HOLD | SCARE | BO_COLD | BO_ICE | BA_COLD | WOUND
 spells:S_MONSTER | S_DEMON
-friends:12:1d2:furie
+friends:12:1d2:fury
 friends:20:3d2:cold hound
 friends:22:1d5:frost giant
 friends:30:1d2:quasit
