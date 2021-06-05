@@ -1278,8 +1278,9 @@ bool mon_take_nonplayer_hit(int dam, struct monster *t_mon,
 		if (t_mon->grabbed) player_clear_timed(player, TMD_BHELD, false);
 
 		/* some monsters affect terrain (maybe I should go only by the PUDDLE flag) */
+		/* (mon->race->msize is never bigger than 7, and only one monster is size 7) */
 		if (((mon->race->d_char == 'E') || (mon->race->d_char == 'X') || (mon->race->d_char == 'j') ||
-			rf_has(mon->race->flags, RF_PUDDLE)) && (mon->race->msize > 4) && (one_in_(3))) {
+			rf_has(mon->race->flags, RF_PUDDLE)) && (mon->race->msize > 4) && (one_in_(8 - mon->race->msize))) {
 			/* rock-based elementals leave rubble */
 			if (mon->race->elem == 2) square_set_feat(cave, mon->grid, FEAT_PASS_RUBBLE);
 			/* fire-based elementals leave lava */
@@ -1366,8 +1367,9 @@ bool mon_take_hit(struct monster *mon, int dam, bool *fear, const char *note)
 			return true;
 		}
 		/* some monsters affect terrain (maybe I should go only by the PUDDLE flag) */
+		/* (mon->race->msize is never bigger than 7, and only one monster is size 7) */
 		if (((mon->race->d_char == 'E') || (mon->race->d_char == 'X') || (mon->race->d_char == 'j') ||
-			rf_has(mon->race->flags, RF_PUDDLE)) && (mon->race->msize > 4) && (one_in_(3))) {
+			rf_has(mon->race->flags, RF_PUDDLE)) && (mon->race->msize >= 4) && (one_in_(8 - mon->race->msize))) {
 			/* rock-based elementals leave rubble */
 			if (mon->race->elem == 2) square_set_feat(cave, mon->grid, FEAT_PASS_RUBBLE);
 			/* fire-based elementals leave lava */
