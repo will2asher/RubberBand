@@ -720,7 +720,7 @@ depth:1
 rarity:1
 experience:1
 blow:CRAWL:HURT:1d2
-flags:RAND_25
+flags:RAND_25 | WATER_HIDE
 desc:It is as big as a wolf. "Ribbit"
 
 name:centipede
@@ -4754,6 +4754,7 @@ spells:BR_POIS
 desc:Bright colors warn of its poison.  This frog is drooling acid and spotted with
 desc: lots of bright clashing colors, it must be really poisonous.
 
+#(nulx monster base has WATER_HIDE)
 name:small nulx
 plural:small nulx
 base:nulx
@@ -4771,7 +4772,7 @@ experience:39
 blow:HIT:HURT:1d3
 blow:HIT:HURT:1d4
 blow:BITE:HURT:2d4
-flags:WEIRD_MIND | RAND_25 | ANIMAL | MOVE_SLOW | WATER_HIDE
+flags:WEIRD_MIND | RAND_25 | ANIMAL | MOVE_SLOW
 desc:A nulx is a tentacled swamp monster with acid under its skin. This one is about 5 feet
 desc: long (not including tentacles).
 
@@ -13449,7 +13450,6 @@ blow:CRUSH:BHOLD:4d8
 blow:BITE:ACID:5d9
 flags:UNIQUE | EVIL | DEMON | WEIRD_MIND | FORCE_SLEEP
 flags:DROP_2 | DROP_GOOD | NO_FEAR | MOVE_BODY | MOVE_SLOW
-flags:WATER_HIDE
 innate-freq:12
 spell-freq:9
 spells:SHRIEK | TELE_TO | TELE_AWAY | BO_ACID | BO_WATE
@@ -17374,6 +17374,7 @@ blow:CRUSH:ACID:3d13
 flags:SPIRIT | WEIRD_MIND | FORCE_SLEEP | POWERFUL
 flags:DROP_1 | DROP_40 | ONLY_ITEM | MOVE_BODY
 flags:IM_ELEC | IM_POIS | NO_CONF | NO_SLEEP | NO_FEAR
+#flags-off:WATER_HIDE?
 spell-freq:9
 spells:MIND_BLAST | BO_POIS
 #INSANITY

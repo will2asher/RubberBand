@@ -29,8 +29,10 @@ enum
 {
 	TYP_RUBBLE,	/*!< Rubble */
 	TYP_TRAP,	/*!< Trap */
+    TYP_WATER,	/*!< Water */
     TYP_TREE,	/*!< Tree */
     TYP_STATU,	/*!< Statue */
+    TYP_LAVA,	/*!< Lava */
     TYP_NEXUSST, /*!< Nexus stone */
     TYP_GOLD,	/*!< Gold */
 	TYP_OBJECT,	/*!< Object */

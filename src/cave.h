@@ -429,7 +429,7 @@ int square_num_walls_diagonal(struct chunk *c, struct loc grid);
 
 /* Feature placers */
 void square_set_feat(struct chunk *c, struct loc grid, int feat);
-void make_fountain(struct chunk *c, struct loc grid);
+void make_fountain(struct chunk *c, struct loc grid, int mode);
 void square_set_mon(struct chunk *c, struct loc grid, int midx);
 void square_set_obj(struct chunk *c, struct loc grid, struct object *obj);
 void square_set_trap(struct chunk *c, struct loc grid, struct trap *trap);

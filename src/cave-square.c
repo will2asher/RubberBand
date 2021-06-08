@@ -1307,22 +1307,60 @@ void square_set_feat(struct chunk *c, struct loc grid, int feat)
 }
 
 /**
- * Make a fountain.
+ * Make a fountain (mode 1), pool of water (2), or lava (3).
  *
  * Use square_set_feat() to make the fountain itself, then flood adjacent floor grids with (shallow) water.
  */
-void make_fountain(struct chunk *c, struct loc grid)
+void make_fountain(struct chunk *c, struct loc grid, int mode)
 {
 	int d;
-	square_set_feat(c, grid, FEAT_FOUNTAIN);
+	struct loc grid2;
+	bool wide = false;
+	int widec = 12;
+	int flood = FEAT_WATER;
+
+	/* Place fountain, water, or lava */
+	if (mode == 1) square_set_feat(c, grid, FEAT_FOUNTAIN);
+	else if (mode == 2) square_set_feat(c, grid, FEAT_WATER);
+	/* mode 3 is lava pool */
+	else { 
+		square_set_feat(c, grid, FEAT_LAVA); 
+		flood = FEAT_LAVA;
+		widec = 10;
+	}
 
 	/* Flood adjacent grids */
 	for (d = 0; d < 8; d++) {
 		/* Extract the location (copied from next_to_corr() ) */
 		struct loc grid1 = loc_sum(grid, ddgrid_ddd[d]);
 
-		if (square_isfloor(c, grid1)) square_set_feat(c, grid1, FEAT_WATER);
-		else if (square(c, grid1)->feat == FEAT_OPIT) square_set_feat(c, grid1, FEAT_WATER);
+		if (square_can_puddle(c, grid1)) square_set_feat(c, grid1, flood);
+
+		/* if we're not making a fountain, sometimes make the pool a little wider or longer */
+		if ((mode > 1) && (d < 5) && (randint0(100) < widec)) {
+			wide = true;
+			grid2 = grid1;
+		}
+	}
+
+	/* if we're not making a fountain, sometimes make the pool a little wider or longer */
+	while (wide) {
+		wide = false;
+		struct loc grid3;
+		/* Flood adjacent grids again */
+		for (d = 0; d < 8; d++) {
+			/* Extract the location (based on grid2 this time) */
+			struct loc grid1 = loc_sum(grid2, ddgrid_ddd[d]);
+
+			if (square_can_puddle(c, grid1)) square_set_feat(c, grid1, flood);
+
+			/* sometimes extend the pool a little more */
+			if ((d < 5) && (randint0(100) < widec/3)) {
+				wide = true;
+				grid3 = grid1;
+			}
+		}
+		if (wide) grid2 = grid3;
 	}
 }
 

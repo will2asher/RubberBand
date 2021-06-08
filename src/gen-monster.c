@@ -293,11 +293,21 @@ void get_vault_monsters(struct chunk *c, char racial_symbol[], char *vault_type,
 		else
 			depth = player->depth;
 
-		/* Prepare allocation table */
-		get_mon_num_prep(mon_select);
+		/* (Allow mushrooms as well as jellies because you can't specify mushroom patch in vault.txt) */
+		if (base_d_char == "j") {
+			mon_restrict("Jelly", depth, true);
+		}
+		/* Requires WATER_HIDE flag (which all 'N'ulx have, but also other monsters) */
+		else if (base_d_char == "N") {
+			mon_restrict("Water monster", depth, true);
+		}
+		else {
+			/* Prepare allocation table */
+			get_mon_num_prep(mon_select);
 
-		/* Build the monster probability table. */
-		if (!get_mon_num(depth)) continue;
+			/* Build the monster probability table. */
+			if (!get_mon_num(depth)) continue;
+		}
 
 		/* Place the monsters */
 		for (t = data, y = y1; y <= y2; y++) {
@@ -311,8 +321,14 @@ void get_vault_monsters(struct chunk *c, char racial_symbol[], char *vault_type,
 		}
     }
 
-    /* Clear any current monster restrictions. */
-	get_mon_num_prep(NULL);
+	/* Clear monster restrictions. */
+	if ((base_d_char == "j") || (base_d_char == "N")) {
+		(void)mon_restrict(NULL, c->depth, false);
+	}
+	else {
+		/* Clear any current monster restrictions. */
+		get_mon_num_prep(NULL);
+	}
 }
 
 /**

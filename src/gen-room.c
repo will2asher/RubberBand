@@ -1192,20 +1192,6 @@ bool build_vault(struct chunk *c, struct loc centre, struct vault *v)
 			case '#': set_marked_granite(c, grid, SQUARE_WALL_INNER); break;
 				/* Permanent wall */
 			case '@': square_set_feat(c, grid, FEAT_PERM); break;
-				/* Tree (or tree monster) (excluded from other letters later) */
-			case 'l': {
-				int tmdie = 15;
-				/* (less likely to place a tree monster at shallow depths) */
-				if (player->depth < 14) tmdie = 40 + (15 - player->depth) * 2;
-				else if (player->depth < 25) tmdie += (25 - player->depth) * 2;
-				if (one_in_(tmdie)) { 
-					/* Place a tree if it fails to find a tree monster (shouldn't happen, but just in case) */
-					if (!sp_vault_monster(c, 'l', v->typ, grid)) square_set_feat(c, grid, FEAT_TREE);
-				}
-				else if (one_in_(6 - player->depth/29)) square_set_feat(c, grid, FEAT_DEAD_TREE);
-				else square_set_feat(c, grid, FEAT_TREE); 
-				break; 
-			}
 				/* Gold seam */
 			case '*': {
 				square_set_feat(c, grid, one_in_(2) ? FEAT_MAGMA_K :
@@ -1258,13 +1244,15 @@ bool build_vault(struct chunk *c, struct loc centre, struct vault *v)
 			}
 				/* Lava */
 			case '`': square_set_feat(c, grid, FEAT_LAVA); break;
+				/* water monster in water (monster is placed later) */
+			case 'N':
 				/* Water */
 			case '/': square_set_feat(c, grid, FEAT_WATER); break;
 			case '{': square_set_feat(c, grid, FEAT_WATER_DEEP); break;
 				/* Chasm */
 			case '}': square_set_feat(c, grid, FEAT_CHASM); break;
 				/* Fountain */
-			case ';': make_fountain(c, grid); break;
+			case ';': make_fountain(c, grid, 1); break;
 				/* random special feature */
 			case ')': {
 				int featdie = randint0(100);
@@ -1297,14 +1285,28 @@ bool build_vault(struct chunk *c, struct loc centre, struct vault *v)
 				/* small chance of lava (3%) */
 				else if (featdie < 45) { square_set_feat(c, grid, FEAT_LAVA); break; }
 				/* Fountain (15%) */
-				else if (featdie < 60) { make_fountain(c, grid); break; }
+				else if (featdie < 60) { make_fountain(c, grid, 1); break; }
 				/* small chance of mimic or trap monster (3%) */
 				else if (featdie < 45) { square_set_feat(c, grid, FEAT_LAVA); break; }
-				/* else fall through to random statue (40% for now) */
+				/* else fall through to random statue (40%) */
 			}
 			case '[': { /* random statue */
 				if (one_in_(2)) square_set_feat(c, grid, FEAT_STATUE); 
 				else square_set_feat(c, grid, FEAT_SM_STATUE);
+				break;
+			}
+				/* Tree (or tree monster) */
+			case 'l': {
+				int tmdie = 15;
+				/* (less likely to place a tree monster at shallow depths) */
+				if (player->depth < 14) tmdie = 40 + (15 - player->depth) * 2;
+				else if (player->depth < 25) tmdie += (25 - player->depth) * 2;
+				if (one_in_(tmdie)) {
+					/* Place a tree if it fails to find a tree monster (shouldn't happen, but just in case) */
+					if (!sp_vault_monster(c, 'l', v->typ, grid)) square_set_feat(c, grid, FEAT_TREE);
+				}
+				else if (one_in_(6 - player->depth / 29)) square_set_feat(c, grid, FEAT_DEAD_TREE);
+				else square_set_feat(c, grid, FEAT_TREE);
 				break;
 			}
 			}
@@ -1326,7 +1328,7 @@ bool build_vault(struct chunk *c, struct loc centre, struct vault *v)
 			if (*t == ' ') continue;
 
 			/* alphabetic characters signify monster races. */
-			/* (tree monsters ('l') are handled separately, also see 'j' above) */
+			/* (tree monsters ('l') are handled separately above) */
 			if ((isalpha(*t)) && (*t != 'l')) {
 				/* If the symbol is not yet stored, ... */
 				if (!strchr(racial_symbol, *t)) {
@@ -1469,7 +1471,6 @@ bool build_vault(struct chunk *c, struct loc centre, struct vault *v)
 	}
 
 	/* Place specified monsters */
-	/* Todo: chance to substitute 'j'elly for ',' mushrooom patch (because you can't specify mushroom patch in vault.txt) */
 	get_vault_monsters(c, racial_symbol, v->typ, data, y1, y2, x1, x2);
 
 	return true;
@@ -1773,13 +1774,13 @@ bool build_simple(struct chunk *c, struct loc centre, int rating)
 	draw_rectangle(c, y1-1, x1-1, y2+1, x2+1, FEAT_GRANITE, SQUARE_WALL_OUTER);
 	fill_rectangle(c, y1, x1, y2, x2, FEAT_FLOOR, SQUARE_NONE);
 
-	if (one_in_(20)) {
+	if (one_in_(21)) {
 		/* Sometimes make a pillar room */
 		for (y = y1; y <= y2; y += 2)
 			for (x = x1; x <= x2; x += 2)
 				set_marked_granite(c, loc(x, y), SQUARE_WALL_INNER);
-
-	} else if (one_in_(50)) {
+	} 
+	else if (one_in_(49)) {
 		/* Sometimes make a ragged-edge room */
 		for (y = y1 + 2; y <= y2 - 2; y += 2) {
 			set_marked_granite(c, loc(x1, y), SQUARE_WALL_INNER);

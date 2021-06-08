@@ -635,9 +635,12 @@ bool alloc_object(struct chunk *c, int set, int typ, int depth, byte origin)
 		int sdie = randint0(100);
 		if (sdie < 40) square_set_feat(c, grid, FEAT_STATUE);
 		else if (sdie < 80) square_set_feat(c, grid, FEAT_SM_STATUE);
-		else make_fountain(c, grid);
+		else make_fountain(c, grid, 1);
 		break;
 	}
+	  /* make_fountain mode 2 is puddle of water, mode 3 is puddle of lava */
+	case TYP_WATER: make_fountain(c, grid, 2); break;
+	case TYP_LAVA: make_fountain(c, grid, 3); break;
 	case TYP_TRAP: place_trap(c, grid, -1, depth); break;
 	case TYP_NEXUSST: square_set_feat(c, grid, FEAT_NEXUS_STONE); break;
 	case TYP_GOLD: place_gold(c, grid, depth, origin); break;

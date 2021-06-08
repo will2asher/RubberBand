@@ -1198,11 +1198,22 @@ static bool place_new_monster_one(struct chunk *c, struct loc grid,
 	/* Affect light? */
 	if (mon->race->light != 0) player->upkeep->update |= PU_UPDATE_VIEW;
 
+	/* Sometimes make a puddle around water monsters (only when placed at level generation and not in a vault) */
+	if ((!character_dungeon) && (!square_isvault(c, grid)) && rf_has(race->flags, RF_WATER_HIDE) && 
+		(randint0(100) < 45)) {
+		make_fountain(c, grid, 2);
+	}
+
 	/* Is this obviously a monster? (Mimics etc. aren't) */
-	if (rf_has(race->flags, RF_UNAWARE))
-		mflag_on(mon->mflag, MFLAG_CAMOUFLAGE);
-	else
-		mflag_off(mon->mflag, MFLAG_CAMOUFLAGE);
+	if (rf_has(race->flags, RF_UNAWARE)) mflag_on(mon->mflag, MFLAG_CAMOUFLAGE);
+	/* WATER_HIDE monsters can hide in water (if they're not too big) */
+	else if (rf_has(race->flags, RF_WATER_HIDE) && square_iswater(c, grid)) {
+		/* deep water isn't passable except by water monsters */
+		/* (monsters are never placed in deep water yet, but that'll probably change...) */
+		if ((race->msize <= 3) || (!square_ispassable(c, grid)))
+			mflag_on(mon->mflag, MFLAG_CAMOUFLAGE);
+	}
+	else mflag_off(mon->mflag, MFLAG_CAMOUFLAGE);
 
 	/*if (rf_has(race->flags, RF_DISGUISE))		(I'll do the DISGUISE flag later) */
 	/* Not obviously a monster but doesn't mimic an object, so it must mimic something else */

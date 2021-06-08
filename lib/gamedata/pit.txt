@@ -381,15 +381,22 @@ spell-ban:S_UNDEAD
 spell-ban:S_KIN
 flags-ban:MULTIPLY
 
-# extrememly rare as a nest, used mainly for chosing a themed monster for vaults. (Do not change its name)
+# These two are extrememly rare as nests, used mainly for chosing a themed monster for vaults.
+# (Do not change their names)
 name:Mimic or trap monster
 room:2
-alloc:15:32
+alloc:15:31
 obj-rarity:1
 mon-base:mimic
 mon-base:trap monster
 mon-base:creeping coins
 mon-base:lurker
+
+name:Water monster
+room:2
+alloc:12:26
+obj-rarity:1
+flags-req:WATER_HIDE
 
 # New chosen monster types, not necessarily for pits and not used yet
 
