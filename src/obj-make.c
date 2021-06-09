@@ -1130,9 +1130,24 @@ struct object_kind *get_obj_num(int level, bool good, int tval)
 	int item;
 
 	/* Occasional level boost */
-	if ((level > 0) && one_in_(z_info->great_obj))
-		/* What a bizarre calculation */
-		level = 1 + (level * z_info->max_obj_depth / randint1(z_info->max_obj_depth));
+	if ((level > 0) && one_in_(z_info->great_obj)) {
+		/* Boost the old weird way */
+		if (randint0(100) < 60) {
+			/* What a bizarre calculation (max_obj_depth was 100, now 110) */
+			level = 1 + (level * z_info->max_obj_depth / randint1(z_info->max_obj_depth));
+		}
+		/* BOOST THIS WAY (to be sung in Steven Tyler's voice) */
+		else {
+			/* somewhat simpler (and doesn't max out unless you're already deep) */
+			if (player->p_luck > 0) level += damroll(2, randint1(7 + player->p_luck * 5 + player->lev / 5));
+			else level += damroll(2, randint1(8 + player->lev / 5));
+
+			if (one_in_(11)) {
+				if (player->p_luck > 0) level += randint1(15 + player->p_luck * 10 + player->lev / 4);
+				else level += randint1(16 + player->lev / 4);
+			}
+		}
+	}
 
 	/* Paranoia */
 	level = MIN(level, z_info->max_obj_depth);
@@ -1180,11 +1195,9 @@ struct object *make_object(struct chunk *c, int lev, bool good, bool great,
 
 	/* Treasure maps make objects more likely to be "good". (The one_in_number may need tweaking)
 	 * (only while we're generating a level -not for monster drops) */
-#if 0
-	if ((player->timed[TMD_TREASMAP] > 0) && (!character_dungeon) && (one_in_(10))) {
+	if ((player->timed[TMD_TREASMAP]) && (!character_dungeon) && (one_in_(10))) {
 		good = true;
 	}
-#endif
 
 	/* Try to make a special artifact */
 	if (one_in_(good ? 10 : 1000)) {

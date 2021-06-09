@@ -1449,6 +1449,11 @@ struct chunk *cavern_gen(struct player *p, int min_height, int min_width) {
 	alloc_objects(c, SET_BOTH, TYP_GOOD, randint0(k / 4), c->depth,
 				  ORIGIN_CAVERN);
 
+	/* occational pools of lava (only deep) */
+	if ((c->depth > 65) && (randint0(100) < c->depth / 9)) alloc_objects(c, SET_ROOM, TYP_LAVA, randint0(6), c->depth, 0);
+	/* occational pools of water (unless it's really deep) */
+	else if ((c->depth < 85) && (randint0(100) < 8)) alloc_objects(c, SET_ROOM, TYP_WATER, randint0(6), c->depth, 0);
+
 	/* rare nexus stones */
 	if (one_in_(400)) alloc_objects(c, SET_ROOM, TYP_NEXUSST, randint1(2), c->depth, 0);
 
