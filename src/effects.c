@@ -3079,6 +3079,9 @@ bool effect_handler_TELEPORT(effect_handler_context_t *context)
 	/* No teleporting in arena levels */
 	if (player->upkeep->arena_level) return true;
 
+	/* teleport distance is halved in the town */
+	if (!player->depth) dis = dis / 2;
+
 	/* Establish the coordinates to teleport from, if we don't know already */
 	if (!loc_is_zero(start)) {
 		/* We're good */

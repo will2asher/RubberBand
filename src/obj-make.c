@@ -1132,7 +1132,7 @@ struct object_kind *get_obj_num(int level, bool good, int tval)
 	/* Occasional level boost */
 	if ((level > 0) && one_in_(z_info->great_obj)) {
 		/* Boost the old weird way */
-		if (randint0(100) < 60) {
+		if (randint0(100) < 50) {
 			/* What a bizarre calculation (max_obj_depth was 100, now 110) */
 			level = 1 + (level * z_info->max_obj_depth / randint1(z_info->max_obj_depth));
 		}

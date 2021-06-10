@@ -375,6 +375,9 @@ bool make_ranged_attack(struct monster *mon)
 	bool seen = (player->timed[TMD_BLIND] == 0) && monster_is_visible(mon);
 	bool innate = false;
 
+	/* Short spell range in town */
+	if ((!player->depth) && (mon->cdis > 9 + player->lev/10)) return false;
+
 	/* Check for cast this turn, non-innate and then innate */
 	if (!monster_can_cast(mon, false)) {
 		if (!monster_can_cast(mon, true)) {
