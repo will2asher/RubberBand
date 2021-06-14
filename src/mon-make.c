@@ -112,10 +112,6 @@ static void init_race_allocs(void) {
 			/* Extract the base probability */
 			p = (100 / race->rarity);
 
-			/* most VISH monsters are only much rarer if VISH is turned off */
-			if (rf_has(race->flags, RF_VISH) && (!OPT(player, birth_vish)))
-				p = (100 / (race->rarity + 4));
-
 			/* Multiply by depth factor (experimental) */
 			p *= (1 + lev / 10);
 

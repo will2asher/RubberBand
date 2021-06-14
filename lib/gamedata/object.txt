@@ -857,7 +857,7 @@ type:sword
 graphics:|:W
 level:5
 weight:40
-cost:70
+cost:78
 alloc:20:5 to 110
 attack:1d6:0:0
 armor:0:0
@@ -868,7 +868,7 @@ type:sword
 graphics:|:W
 level:5
 weight:80
-cost:90
+cost:74
 alloc:20:5 to 110
 attack:1d7:0:0
 armor:0:0
@@ -879,7 +879,7 @@ type:sword
 graphics:|:W
 level:5
 weight:110
-cost:120
+cost:115
 alloc:20:5 to 110
 attack:1d8:0:0
 armor:0:0
@@ -925,7 +925,7 @@ type:sword
 graphics:|:W
 level:10
 weight:150
-cost:285
+cost:280
 alloc:20:9 to 110
 attack:2d5:0:0
 armor:0:0

@@ -9829,6 +9829,25 @@ D:%%........#%%
 D: %%.......^.%
 D:  %%%%%%%%%%%
 
+name:candleabra
+type:1
+rating:1
+rows:11
+columns:16
+doors:2
+tval:potion
+D:%%%%  %%%%  %%%%
+D:%..%  %.9%  %..%
+D:%..%  %..%  %..%
+D:%..%%%#12#%%%..%
+D:%..............%
+D:%%............%%
+D: ###........%%% 
+D: %[##......#%   
+D: %..1#...^##%%  
+D: %...2....+.[%  
+D: %%%%#%%%%#%%%  
+
 #    % - outside of the room, where corridors may be connected
 #    # - granite
 #    ^ - trap

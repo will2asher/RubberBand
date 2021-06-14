@@ -87,8 +87,9 @@ OP(birth_feelings,        "Show level feelings",
 BIRTH, true)
 OP(birth_no_selling,      "Increase gold drops but disable selling",
 BIRTH, true)
-OP(birth_vish,            "Use vanilla-ish flavored monsters (removes fairies in favor of yeeks and icky things)",
-BIRTH, false)
+OP(birth_start_kit,		  "Have your character start with a kit of useful equipment", BIRTH, true)
+/* OP(birth_vish,            "Use vanilla-ish flavored monsters (removes fairies in favor of yeeks and icky things)",
+BIRTH, false) Decided it's not worth doing because having different monster bases use the same letter symbol causes unwanted weirdness. */
 OP(birth_sillymon,        "Include silly monsters",
 BIRTH, false)
 OP(birth_ai_learn,        "Monsters learn from their mistakes",

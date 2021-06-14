@@ -71,8 +71,7 @@ e  Floating Eye               E  Elemental
 f  Feline (Cat)               F  Fly or Bee
 g  Golem                      G  Ghost
 h  Humanoid                   H  Hybrid
-i  Dark Fairy or Icky-Thing (depending on VISH option)
-I  Insect
+i  Dark Fairy				  I  Insect
 j  Jelly or Slime             J  Snake
 k  Kobold                     K  Knight or other higher-level humanoid
 l  Tree/Ent                   L  Lich
@@ -87,8 +86,7 @@ t  Townsperson                T  Troll
 u  Minor Demon                U  Major Demon
 v  Vortex                     V  Vampire or Ghoul
 w  Worm or Worm Mass          W  Wight/Wraith
-x  -                          X  Xorn or other elemental monster
-y  Light Fairy or Yeek (depending on VISH option)
-Y  Yeti or Ape
+x  Gargoyle                   X  Xorn or other elemental monster
+y  Light Fairy or Yeek		  Y  Yeti or Ape
 z  Zombie/Mummy               Z  Zephyr Hound
 
