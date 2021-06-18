@@ -1037,7 +1037,7 @@ static void melee_effect_handler_SICKEN(melee_effect_handler_context_t* context)
 	}
 	/* Increase DISEASE */
 	else {
-		if (player_inc_timed(context->p, TMD_DISEASE, 30 + context->rlev / 3 + randint1(1 + context->rlev),
+		if (player_inc_timed(context->p, TMD_DISEASE, 35 + context->rlev / 2 + randint1(20 + context->rlev/2),
 			true, false))
 			context->obvious = true;
 	}
@@ -1081,7 +1081,7 @@ static void melee_effect_handler_INSANE(melee_effect_handler_context_t* context)
 	}
 	/* Increase INSANE */
 	else {
-		if (player_inc_timed(context->p, TMD_INSANE, 30 + context->rlev / 3 + randint1(1 + context->rlev),
+		if (player_inc_timed(context->p, TMD_INSANE, 35 + context->rlev / 2 + randint1(20 + context->rlev/2),
 			true, false))
 			context->obvious = true;
 	}

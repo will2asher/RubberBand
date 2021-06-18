@@ -896,7 +896,7 @@ message-save:You retain your presence of mind.
 name:INSANITY
 hit:100
 effect:TIMED_INC:INSANE
-dice:$B+6d5
+dice:$B+9d5
 expr:B:SPELL_POWER:* 2
 lore:drive you insane
 lore-color-base:Orange
@@ -908,7 +908,7 @@ message-save:You retain your sanity.
 name:DISEASE
 hit:100
 effect:TIMED_INC:DISEASE
-dice:$B+6d5
+dice:$B+9d5
 expr:B:SPELL_POWER:* 2
 lore:confuse
 lore-color-base:Orange
