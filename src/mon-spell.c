@@ -299,19 +299,38 @@ void do_mon_spell(int index, struct monster *mon, bool seen)
 
 	if (hits) {
 		struct monster_spell_level *level = spell->level;
+		int savet = player->state.skills[SKILL_SAVE];
 
 		/* Get the right level of save message */
 		while (level->next && mon->race->spell_power >= level->next->power) {
 			level = level->next;
 		}
 
+		/* partial resists/vulnerabilities for certain spells: INSANITY */
+		if (spell->index == RSF_INSANITY) {
+			if (player->timed[TMD_CLEAR_MIND] || player->timed[TMD_2NDTHOT] || player->timed[TMD_TSIGHT] ||
+				player_of_has(player, OF_PROT_CONF)) savet = savet * 6 / 5;
+			if (player->timed[TMD_AMNESIA] || player->timed[TMD_CONFUSED] || player->timed[TMD_FRENZY] ||
+				player->timed[TMD_SDRUNK] || player->timed[TMD_LYCANT])
+				savet = savet * 4 / 5;
+		}
+		/* partial resists for certain spells: DISEASE */
+		if (spell->index == RSF_DISEASE) {
+			if (player->timed[TMD_HEAL]) savet = savet * 4 / 3;
+			else if (player->state.el_info[ELEM_POIS].res_level) savet = savet * (5 + player->state.el_info[ELEM_POIS].res_level) / 5;
+			else if (player->timed[TMD_STONESKIN]) savet = savet * 6 / 5;
+		}
+
 		/* Try a saving throw if available */
 		if (level->save_message && (target_mon <= 0) &&
-				randint0(100) < player->state.skills[SKILL_SAVE]) {
+				randint0(88 + mon->race->level/4) < savet) {
 			msg("%s", level->save_message);
 			spell_check_for_fail_rune(spell);
 		} else {
-			effect_do(spell->effect, source_monster(mon->midx), NULL, &ident, true, 0, 0, 0, NULL);
+			/* Hacky: set beam arg to let the LASH handler know this is a gaze attack to tweak a couple things */
+			if (spell->index == RSF_RGAZE) 
+				effect_do(spell->effect, source_monster(mon->midx), NULL, &ident, true, 0, 1, 0, NULL);
+			else effect_do(spell->effect, source_monster(mon->midx), NULL, &ident, true, 0, 0, 0, NULL);
 		}
 	}
 

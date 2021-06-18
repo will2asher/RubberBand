@@ -155,7 +155,7 @@ static void remove_bad_spells(struct monster *mon, bitflag f[RSF_SIZE])
 {
 	bitflag f2[RSF_SIZE];
 	int tdist;
-	int throwr = 0;
+	int trange = 0;
 
 	monster_get_target_dist_grid(mon, cave, &tdist, NULL);
 
@@ -186,14 +186,19 @@ static void remove_bad_spells(struct monster *mon, bitflag f[RSF_SIZE])
 	if (tdist > 2) rsf_off(f2, RSF_WHIP);
 	if (tdist > 3) rsf_off(f2, RSF_SPIT);
 
+	/* Gaze range is 3 for most monsters but may depend on spell power */
+	trange = 3;
+	if (mon->race->spell_power < 11) trange = 2;
+	if (tdist > MAX(trange, mon->race->spell_power/12)) rsf_off(f2, RSF_RGAZE);
+
 	/* THROW and BOULDER range depends on spell power */
-	if ((mon->race->spell_power / 8) > 5) throwr = 9;
-	else throwr = (mon->race->spell_power / 8) + 3;
-	if (tdist > throwr) {
+	if ((mon->race->spell_power / 8) > 5) trange = 9;
+	else trange = (mon->race->spell_power / 8) + 3;
+	if (tdist > trange) {
 		rsf_off(f2, RSF_THROW);
 		/* bigger maximum range for Boulders because the giants who throw them are really strong  */
-		throwr = (mon->race->spell_power / 8) + 3;
-		if (tdist > throwr) rsf_off(f2, RSF_BOULDER);
+		trange = (mon->race->spell_power / 8) + 3;
+		if (tdist > trange) rsf_off(f2, RSF_BOULDER);
 	}
 
 	/* Update acquired knowledge */

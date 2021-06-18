@@ -1006,6 +1006,91 @@ static void melee_effect_handler_CHARM(melee_effect_handler_context_t* context)
 }
 
 /**
+ * Melee effect handler: SICKEN. (DISEASE)
+ */
+static void melee_effect_handler_SICKEN(melee_effect_handler_context_t* context)
+{
+	int savet = player->state.skills[SKILL_SAVE];
+	int ldiff = 0;
+
+	/* Take damage */
+	if (monster_damage_target(context, true)) return;
+
+	/* The rest of this only applies to the player (for now. TODO: effect for monsters) */
+	if (!context->p) return;
+
+	/* difference between monster level and player level has an effect on saving throw difficulty */
+	if (!context->t_mon) ldiff = context->mon->race->level - player->lev;  /* (can be negative) */
+	/* ...up to a certain amount. */
+	if (ldiff > 42) ldiff = 42;
+	if (ldiff < -42) ldiff = -42;
+
+	/* partial resists */
+	if (player->timed[TMD_HEAL]) savet = savet * 3 / 2;
+	else if ((player->timed[TMD_STONESKIN]) || (player->state.el_info[ELEM_POIS].res_level)) savet = savet * 6 / 5;
+	/* Poison makes you more vulnerable to disease */
+	if (player->timed[TMD_POISONED] || player->timed[TMD_PCCURSED]) savet = savet * 4 / 5;
+
+	/* Attempt a saving throw */
+	if (randint0(100 + ldiff / 2) < savet) {
+		msg("You resist the effects.");
+	}
+	/* Increase DISEASE */
+	else {
+		if (player_inc_timed(context->p, TMD_DISEASE, 30 + context->rlev / 3 + randint1(1 + context->rlev),
+			true, false))
+			context->obvious = true;
+	}
+
+	/* Learn about the player (?) */
+	/*update_smart_learn(context->mon, context->p, of_flag, 0, -1);*/
+}
+
+/**
+ * Melee effect handler: INSANE. (INSANITY)
+ */
+static void melee_effect_handler_INSANE(melee_effect_handler_context_t* context)
+{
+	int savet = player->state.skills[SKILL_SAVE];
+	int ldiff = 0;
+
+	/* Take damage */
+	if (monster_damage_target(context, true)) return;
+
+	/* The rest of this only applies to the player (for now. TODO: effect for monsters) */
+	if (!context->p) return;
+
+	/* difference between monster level and player level has an effect on saving throw difficulty */
+	if (!context->t_mon) ldiff = context->mon->race->level - player->lev;  /* (can be negative) */
+	/* ...up to a certain amount. */
+	if (ldiff > 42) ldiff = 42;
+	if (ldiff < -42) ldiff = -42;
+
+	/* partial resists */
+	if (player->timed[TMD_CLEAR_MIND]) savet = savet * 3 / 2;
+	else if ((player->timed[TMD_2NDTHOT]) || (player_of_has(player, OF_PROT_CONF))) savet = savet * 6 / 5;
+	else if (player->timed[TMD_TSIGHT]) savet = savet * 11 / 10;
+	/* Sevenral things make you more vulnerable to insanity */
+	if (player->timed[TMD_AMNESIA] || player->timed[TMD_CONFUSED] || player->timed[TMD_FRENZY] || 
+		player->timed[TMD_SDRUNK] || player->timed[TMD_LYCANT])
+		savet = savet * 4 / 5;
+
+	/* Attempt a saving throw */
+	if (randint0(100 + ldiff / 2) < savet) {
+		msg("You resist the effects.");
+	}
+	/* Increase INSANE */
+	else {
+		if (player_inc_timed(context->p, TMD_INSANE, 30 + context->rlev / 3 + randint1(1 + context->rlev),
+			true, false))
+			context->obvious = true;
+	}
+
+	/* Learn about the player (?) */
+	/*update_smart_learn(context->mon, context->p, of_flag, 0, -1);*/
+}
+
+/**
  * Melee effect handler: BHOLD.
  */
 static void melee_effect_handler_BHOLD(melee_effect_handler_context_t* context)
@@ -1351,6 +1436,8 @@ melee_effect_handler_f melee_handler_for_blow_effect(const char *name)
 		{ "HURT", melee_effect_handler_HURT },
 		{ "POISON", melee_effect_handler_POISON },
 		{ "HUNGER", melee_effect_handler_HUNGER },
+		{ "SICKEN", melee_effect_handler_SICKEN },
+		{ "INSANE", melee_effect_handler_INSANE },
 		{ "DISENCHANT", melee_effect_handler_DISENCHANT },
 		{ "DRAIN_CHARGES", melee_effect_handler_DRAIN_CHARGES },
 		{ "EAT_GOLD", melee_effect_handler_EAT_GOLD },

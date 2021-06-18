@@ -55,6 +55,16 @@ message-vis:{name} lashes at you with a whip{oftype}.
 message-miss:{name} lashes at you with a whip but misses.
 message-invis:You hear a crack.
 
+#(Ranged gaze)
+name:RGAZE
+hit:86
+effect:LASH:MISSILE:3
+lore:gaze at you from a distance
+lore-color-base:Orange
+message-vis:{name} gazes at you.
+message-miss:{name} gazes, but you avert your eyes quickly.
+#message-invis: (an invisible monster shouldn't be able to do a gaze attack...)
+
 #(There's no space between spits and {type} on purpose)
 name:SPIT
 hit:80
@@ -72,8 +82,7 @@ dice:$Dd4
 expr:D:SPELL_POWER:/ 8 + 1
 lore:throw things at you
 lore-color-base:Orange
-#I'd like to change the message based on the monster base. hmmm. I guess I'll just call them rocks.
-#message-vis:{name} throws a piece of fruit at you. (for trees)
+#message-vis:{name} throws a piece of fruit at you. (in the code for trees)
 message-vis:{name} throws a rock at {target}.
 message-miss:{name} throws a rock but misses.
 message-invis:You hear something fly through the air.
@@ -883,6 +892,30 @@ lore-color-resist:Light Green
 message-vis:{name} conjures up weird things.
 message-invis:Something messes with your mind.
 message-save:You retain your presence of mind.
+
+name:INSANITY
+hit:100
+effect:TIMED_INC:INSANE
+dice:$B+6d5
+expr:B:SPELL_POWER:* 2
+lore:drive you insane
+lore-color-base:Orange
+lore-color-resist:Light Green
+message-vis:{name} conjures up crazy things.
+message-invis:Something messes with your mind.
+message-save:You retain your sanity.
+
+name:DISEASE
+hit:100
+effect:TIMED_INC:DISEASE
+dice:$B+6d5
+expr:B:SPELL_POWER:* 2
+lore:confuse
+lore-color-base:Orange
+lore-color-resist:Light Green
+message-vis:{name} curses your body.
+message-invis:Something mumbles.
+message-save:You retain your health.
 
 #kind of milder effects, but a longer duration than most timed effects
 name:CURSE_PC

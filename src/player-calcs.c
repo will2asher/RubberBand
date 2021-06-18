@@ -2003,10 +2003,16 @@ void calc_bonuses(struct player *p, struct player_state *state, bool known_only,
 
 		/* Two timed effects that actually lower stats */
 		if ((p->timed[TMD_DISEASE]) && ((i == STAT_STR) || (i == STAT_CON))) {
-			ind -= 3;
+			if ((i == STAT_STR) && (ind <= 18) && (p->p_luck > 0)) ind -= 2;
+			else if ((ind <= 18) || (p->p_luck > 2)) ind -= 3;
+			else if (p->p_luck < -1) ind -= (3 + (ABS(p->p_luck) + 1) / 2);
+			else if (i == STAT_CON) ind -= 4;
+			else ind -= 3;
 			if (ind < 1) ind = 1;
 		}
 		if ((p->timed[TMD_INSANE]) && ((i == STAT_INT) || (i == STAT_WIS))) {
+			if (p->p_luck < 0) ind -= (3 + (ABS(p->p_luck) + 1) / 2);
+			else ind -= 3;
 			ind -= 3;
 			if (ind < 1) ind = 1;
 		}

@@ -45,14 +45,24 @@ resist:POIS
 lash-type:POIS
 
 #temporarily reduces CON and STR, rPOIS is partial resist
-#name:DISEASE
-#power:18
-#eval:10
-#desc:give you a disease
-#lore-color-base:Orange
+name:SICKEN
+power:18
+eval:10
+desc:give you a disease
+lore-color-base:Orange
 #lore-color-resist:Light Green
-#resist:POIS
-#lash-type:POIS
+#resist:POIS (hard-coded because it's only partial resist)
+lash-type:POIS
+
+#temporarily reduces INT and WIS, pCONF is partial resist
+name:INSANE
+power:18
+eval:10
+desc:drive you insane
+lore-color-base:Orange
+#lore-color-resist:Light Green
+#resist:PROT_CONF (hard-coded because it's only partial resist)
+lash-type:CHAOS
 
 name:HUNGER
 power:20
@@ -205,17 +215,6 @@ lash-type:CHAOS
 #resist:PROT_CONF
 #lash-type:CHAOS
 
-#temporarily reduces INT and WIS, pCONF is partial resist
-#name:INSANITY
-#power:20
-#eval:20
-#desc:drive you insane
-#lore-color-base:Orange
-#lore-color-resist:Light Green
-#effect-type:flag
-#resist:PROT_CONF
-#lash-type:CHAOS
-
 #Put you in a reckless frenzy (+speed, penalty to to-hit, ac, and spellcasting fail rate)
 name:FRENZY
 power:20
@@ -233,7 +232,7 @@ desc:make you unlucky
 lore-color-base:Orange
 lore-color-resist:Light Green
 effect-type:flag
-lash-type:CHAOS
+lash-type:NETHER
 
 name:TERRIFY
 power:0
@@ -411,4 +410,4 @@ power:0
 eval:10
 desc:inflict Black Breath
 lore-color-base:Light Red
-lash-type:TIME
+lash-type:NETHER

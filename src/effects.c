@@ -4361,7 +4361,7 @@ bool effect_handler_SHORT_BEAM(effect_handler_context_t *context)
 }
 
 /**
- * Crack a whip, or spit at the player; actually just a finite length beam
+ * Crack a whip (or spit or gaze) at the player; actually just a finite length beam
  * Affect grids, objects, and monsters
  * context->radius is length of beam
  */
@@ -4369,6 +4369,7 @@ bool effect_handler_LASH(effect_handler_context_t *context)
 {
 	int dam = effect_calculate_value(context, false);
 	int rad = context->radius;
+	bool gazelash = false;
 
 	int flg = PROJECT_GRID | PROJECT_ITEM | PROJECT_KILL | PROJECT_ARC;
 	int type;
@@ -4378,6 +4379,9 @@ bool effect_handler_LASH(effect_handler_context_t *context)
 	/* Diameter of source is the same as the radius, so the effect is
 	 * essentially full strength for its entire length. */
 	int diameter_of_source = rad;
+
+	/* (hacky) Gaze attacks are a little different from other LASHes */
+	if (context->beam) gazelash = true;
 
 	/* Monsters only */
 	if (context->origin.what == SRC_MONSTER) {
@@ -4414,6 +4418,8 @@ bool effect_handler_LASH(effect_handler_context_t *context)
 			dam += randcalc(dice, mon->race->level, RANDOMISE) / (i ? 2 : 1.2);
 			if (!mon->race->blow[i].next) break;
 		}
+		/* ranged gaze attacks are meant for status/timed effects, not primarily for damage */
+		if (gazelash) dam = dam * 3 / 4;
 
 		/* No damaging blows */
 		if (!dam) return false;
