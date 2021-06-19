@@ -9,7 +9,8 @@
 
 # name: tval:name
 # graphics: default attr for inventory display
-# break: breakage chance when thrown (This should be different based on whether it hits something or not)
+# break: breakage chance when thrown
+# max-stack: maximum number that can appear in a stack
 # flags: default flags
 
 default:break-chance:10
@@ -21,8 +22,8 @@ graphics:slate
 flags:HATES_ACID | HATES_FIRE
 
 name:shot:Shot~
-graphics:slate
-break:25
+graphics:light umber
+break:0
 # max-stack:40
 flags:SHOW_DICE
 
@@ -35,7 +36,7 @@ flags:SHOW_DICE
 
 name:bolt:Bolt~
 graphics:light umber
-break:25
+break:20
 # max-stack:40
 flags:HATES_ACID
 flags:SHOW_DICE
@@ -132,7 +133,6 @@ name:staff:Staff~
 graphics:light umber
 # max-stack:5
 flags:HATES_ACID | HATES_FIRE | EASY_KNOW
-flags:SHOW_DICE
 
 name:wand:Wand~
 graphics:green
@@ -165,13 +165,13 @@ flags:EASY_KNOW
 
 name:food:Food
 graphics:light umber
-break:40
+break:100
 # max-stack:10
 flags:EASY_KNOW
 
 name:mushroom:Mushroom~
 graphics:light umber
-break:50
+break:100
 # max-stack:10
 flags:EASY_KNOW
 
