@@ -1301,7 +1301,7 @@ bool mon_take_nonplayer_hit(int dam, struct monster *t_mon,
 		/* Delete the monster */
 		delete_monster_idx(t_mon->midx);
 		return true;
-	} else if (!monster_is_mimicking(t_mon)) {
+	} else if ((!monster_is_mimicking(t_mon)) && ((monster_is_in_view(t_mon)) || (t_mon->cdis <= 6))) {
 		/* Give detailed messages if visible */
 		if (hurt_msg != MON_MSG_NONE) {
 			add_monster_message(t_mon, hurt_msg, false);

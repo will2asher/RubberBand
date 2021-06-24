@@ -1054,7 +1054,7 @@ s16b place_monster(struct chunk *c, struct loc grid, struct monster *mon,
 static bool place_new_monster_one(struct chunk *c, struct loc grid,
 								  struct monster_race *race, bool sleep,
 								  struct monster_group_info group_info,
-								  byte origin)
+								  byte origin, bool newraceok)
 {
 	int i;
 	struct monster *mon;
@@ -1070,9 +1070,12 @@ static bool place_new_monster_one(struct chunk *c, struct loc grid,
 	/* Not where the player already is */
 	if (loc_eq(player->grid, grid)) return false;
 
-	/* Prevent monsters from being placed where they cannot walk, but allow
-	 * other feature types */
-	if (!square_is_monster_walkable(c, grid)) return false;
+	/* Allow water monsters to be placed in deep water (which isn't "walkable") */
+	if (square_iswater(c, grid) && (rf_has(mon->race->flags, RF_WATER_HIDE) || rf_has(mon->race->flags, RF_WATER_ONLY))) 
+		/*okay*/;
+
+	/* Prevent monsters from being placed where they cannot walk, but allow other feature types. */
+	else if (!square_is_monster_walkable(c, grid)) return false;
 
 	/* No creation on glyphs */
 	if (square_iswarded(c, grid) || square_isdecoyed(c, grid)) return false;
@@ -1084,6 +1087,21 @@ static bool place_new_monster_one(struct chunk *c, struct loc grid,
 	/* Depth monsters may NOT be created out of depth */
 	if (rf_has(race->flags, RF_FORCE_DEPTH) && player->depth < race->level)
 		return false;
+
+	/* Don't create HURT_WATER monsters in water */
+	if (square_iswater(c, grid) && (rf_has(mon->race->flags, RF_HURT_WATER))) {
+		/* If the water is shallow and not in a vault, maybe just remove it */
+		if ((!square_isvault(c, grid)) && square_is_monster_walkable(c, grid) && (randint0(10) < 6))
+			square_set_feat(c, grid, FEAT_FLOOR);
+
+		/* if this monster is a member of a group, then fail */
+		/* if (group_info.index) return false; /* It appears there is always a group index even if it's a single monster, hmmm */
+		/* sometimes just fail */
+		else if (one_in_(5)) return false;
+
+		/* otherwise pick a new monster race and try again */
+		else return pick_and_place_monster(c, grid, race->level, sleep, false, origin);
+	}
 
 	/* Add to level feeling, note uniques for cheaters */
 	c->mon_rating += race->level * race->level;
@@ -1208,10 +1226,12 @@ static bool place_new_monster_one(struct chunk *c, struct loc grid,
 		/* (monsters are never placed in deep water yet, but that'll probably change...) */
 		if ((race->msize <= 3) || (!square_ispassable(c, grid)))
 			mflag_on(mon->mflag, MFLAG_CAMOUFLAGE);
+		else mflag_off(mon->mflag, MFLAG_CAMOUFLAGE);
 	}
 	else mflag_off(mon->mflag, MFLAG_CAMOUFLAGE);
 
 	/*if (rf_has(race->flags, RF_DISGUISE))		(I'll do the DISGUISE flag later) */
+
 	/* Not obviously a monster but doesn't mimic an object, so it must mimic something else */
 	/*else*/ if (rf_has(race->flags, RF_UNAWARE) && (!mon->race->mimic_kinds))
 	{
@@ -1299,7 +1319,7 @@ static bool place_new_monster_group(struct chunk *c, struct loc grid,
 			if (!square_isempty(c, try)) continue;
 
 			/* Attempt to place another monster */
-			if (place_new_monster_one(c, try, race, sleep, group_info, origin)){
+			if (place_new_monster_one(c, try, race, sleep, group_info, origin, false)) {
 				/* Add it to the "hack" set */
 				loc_list[loc_num] = try;
 				loc_num++;
@@ -1390,7 +1410,7 @@ bool place_friends(struct chunk *c, struct loc grid, struct monster_race *race,
 
 			/* Place the monsters */
 			bool success = place_new_monster_one(c, new, friends_race, sleep,
-												 group_info, origin);
+												 group_info, origin, false);
 			if (total > 1)
 				success = place_new_monster_group(c, new, friends_race, sleep,
 												  group_info, total, origin);
@@ -1422,6 +1442,7 @@ bool place_new_monster(struct chunk *c, struct loc grid,
 	struct monster_friends *friends;
 	struct monster_friends_base *friends_base;
 	int total;
+	struct monster *monb;
 
 	assert(c);
 	assert(race);
@@ -1433,9 +1454,13 @@ bool place_new_monster(struct chunk *c, struct loc grid,
 	}
 
 	/* Place one monster, or fail */
-	if (!place_new_monster_one(c, grid, race, sleep, group_info, origin)) {
+	if (!place_new_monster_one(c, grid, race, sleep, group_info, origin, true))
 		return (false);
-	}
+
+	/* make sure we made the monster we expected to make... If not, don't make a group */
+	/* (If it tries to make a HURT_WATER monster on a water grid, it may choose a new monster race) */
+	monb = square_monster(cave, grid);
+	if (monb->race != race) return (true);
 
 	/* We're done unless the group flag is set */
 	if (!group_ok) return (true);
