@@ -53,11 +53,12 @@
  *    be used to indicate field-of-view, such as through the 
  *    OPT(player, view_bright_light) option.
  *  - g->lighting is set to indicate the lighting level for the grid:
- *    LIGHTING_DARK for unlit grids, LIGHTING_LIT for inherently light
- *    grids (lit rooms, etc), LIGHTING_TORCH for grids lit by the player's
- *    light source, and LIGHTING_LOS for grids in the player's line of sight.
- *    Note that lighting is always LIGHTING_LIT for known "interesting" grids
- *    like walls.
+ *    LIGHTING_LIT by default, LIGHTING_DARK for unlit but seen grids within the
+ *    detection radius of a player with the UNLIGHT ability and a light source
+ *    with an intensity of one or less, LIGHTING_TORCH for seen and lit grids
+ *    within the radius of the player's light source when the view_yellow_light
+ *    option is on, and LIGHTING_LOS for seen and lit grids that don't qualify
+ *    for LIGHTING_TORCH.
  *  - g->is_player is true if the player is on the given grid.
  *  - g->hallucinate is true if the player is hallucinating something "strange"
  *    for this grid - this should pick a random monster to show if the m_idx
@@ -71,7 +72,7 @@
  * shown even when the player can't "see" it.  This leads to things like
  * doors out of the player's view still change from closed to open and so on.
  *
- * TOVDO:
+ * TODO:
  * Hallucination is currently disabled (it was a display-level hack before,
  * and we need it to be a knowledge-level hack).  The idea is that objects
  * may turn into different objects, monsters into different monsters, and
@@ -91,8 +92,6 @@ void map_info(struct loc grid, struct grid_data *g)
 	g->lighting = LIGHTING_LIT;
 	g->unseen_object = false;
 	g->unseen_money = false;
-	g->is_player = (square(cave, grid)->mon < 0) ? true : false;
-	g->m_idx = (g->is_player) ? 0 : square(cave, grid)->mon;
 
 	/* Use real feature (remove later) */
 	g->f_idx = square(cave, grid)->feat;
@@ -100,34 +99,24 @@ void map_info(struct loc grid, struct grid_data *g)
 		g->f_idx = lookup_feat(f_info[g->f_idx].mimic);
 
 	g->in_view = (square_isseen(cave, grid)) ? true : false;
+	g->is_player = (square(cave, grid)->mon < 0) ? true : false;
+	g->m_idx = (g->is_player) ? 0 : square(cave, grid)->mon;
 	g->hallucinate = player->timed[TMD_IMAGE] ? true : false;
 
 	if (g->in_view) {
-		g->lighting = LIGHTING_LOS;
+		bool lit = square_islit(cave, grid);
 
-		/* Darkness or torchlight */
-		if (!square_isglow(cave, grid)) {
-			if ((player_has(player, PF_UNLIGHT) || (player->timed[TMD_DARKVIS])) && !square_islit(cave, grid)) {
-				g->lighting = LIGHTING_DARK;
-			} else if (OPT(player, view_yellow_light)) {
-				g->lighting = LIGHTING_TORCH;
+		if (sqinfo_has(square(cave, grid)->info, SQUARE_CLOSE_PLAYER)) {
+			if (player_has(player, PF_UNLIGHT) &&
+					player->state.cur_light <= 1) {
+				g->lighting = (lit) ?
+					LIGHTING_LOS : LIGHTING_DARK;
+			} else if (lit) {
+				g->lighting = (OPT(player, view_yellow_light)) ?
+					LIGHTING_TORCH : LIGHTING_LOS;
 			}
-		} else if (square_iswall(cave, grid)) {
-			/* Lit walls only show as lit if we are looking from the room
-			 * that's lighting them */
-			if (!square_islitwall(cave, grid)) {
-				if (square_islit(cave, grid)) {
-					if (OPT(player, view_yellow_light)) {
-						g->lighting = LIGHTING_TORCH;
-					} else if ((player_has(player, PF_UNLIGHT)) || (player->timed[TMD_DARKVIS])) {
-						g->lighting = LIGHTING_DARK;
-					} else {
-						g->lighting = LIGHTING_LOS;
-					}
-				} else {
-					g->lighting = LIGHTING_LIT;
-				}
-			}
+		} else if (lit) {
+			g->lighting = LIGHTING_LOS;
 		}
 
 		/* Remember seen feature */
@@ -142,19 +131,6 @@ void map_info(struct loc grid, struct grid_data *g)
 	g->f_idx = square(player->cave, grid)->feat;
 	if (f_info[g->f_idx].mimic)
 		g->f_idx = lookup_feat(f_info[g->f_idx].mimic);
-
-	/* Check for monsters disguised as terrain features */
-	if ((g->m_idx > 0) && square_isseen(cave, grid)) {
-		struct monster* mon = cave_monster(cave, g->m_idx);
-		if (mon->mimicked_feat) {
-			if (mon->mimicked_feat == 1) g->f_idx = lookup_feat("granite wall");
-			if (mon->mimicked_feat == 2) g->f_idx = lookup_feat("pile of passable rubble");
-			if (mon->mimicked_feat == 3) g->f_idx = lookup_feat("small statue");
-			if (mon->mimicked_feat == 4) g->f_idx = lookup_feat("statue");
-			if (mon->mimicked_feat == 5) g->f_idx = lookup_feat("fountain");
-			if (mon->mimicked_feat == 7) g->f_idx = lookup_feat("tree");
-		}
-	}
 
 	/* There is a known trap in this square */
 	if (square_trap(player->cave, grid) && square_isknown(cave, grid)) {
@@ -196,7 +172,7 @@ void map_info(struct loc grid, struct grid_data *g)
 	if (g->m_idx > 0) {
 		/* If the monster isn't "visible", make sure we don't list it.*/
 		struct monster *mon = cave_monster(cave, g->m_idx);
-		if ((!monster_is_visible(mon)) || (mon->mimicked_feat)) g->m_idx = 0;
+		if (!monster_is_visible(mon)) g->m_idx = 0;
 	}
 
 	/* Rare random hallucination on non-outer walls */
@@ -261,7 +237,8 @@ void square_note_spot(struct chunk *c, struct loc grid)
 	}
 	square_memorize_traps(c, grid);
 
-	if (square_isknown(c, grid)) return;
+	if (square_isknown(c, grid))
+		return;
 
 	/* Memorize this grid */
 	square_memorize(c, grid);
