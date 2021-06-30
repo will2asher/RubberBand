@@ -1070,8 +1070,8 @@ static bool place_new_monster_one(struct chunk *c, struct loc grid,
 	/* Not where the player already is */
 	if (loc_eq(player->grid, grid)) return false;
 
-	/* Allow water monsters to be placed in deep water (which isn't "walkable") */
-	if (square_iswater(c, grid) && (rf_has(mon->race->flags, RF_WATER_HIDE) || rf_has(mon->race->flags, RF_WATER_ONLY))) 
+	/* Allow water monsters to be placed in deep water (which isn't "walkable") (doesn't apply yet) */
+	if (square_iswater(c, grid) && (rf_has(race->flags, RF_WATER_HIDE) || rf_has(race->flags, RF_WATER_ONLY))) 
 		/*okay*/;
 
 	/* Prevent monsters from being placed where they cannot walk, but allow other feature types. */
@@ -1089,7 +1089,7 @@ static bool place_new_monster_one(struct chunk *c, struct loc grid,
 		return false;
 
 	/* Don't create HURT_WATER monsters in water */
-	if (square_iswater(c, grid) && (rf_has(mon->race->flags, RF_HURT_WATER))) {
+	if (square_iswater(c, grid) && (rf_has(race->flags, RF_HURT_WATER))) {
 		/* If the water is shallow and not in a vault, maybe just remove it */
 		if ((!square_isvault(c, grid)) && square_is_monster_walkable(c, grid) && (randint0(10) < 6))
 			square_set_feat(c, grid, FEAT_FLOOR);
@@ -1459,7 +1459,7 @@ bool place_new_monster(struct chunk *c, struct loc grid,
 
 	/* make sure we made the monster we expected to make... If not, don't make a group */
 	/* (If it tries to make a HURT_WATER monster on a water grid, it may choose a new monster race) */
-	monb = square_monster(cave, grid);
+	monb = square_monster(c, grid);
 	if (monb->race != race) return (true);
 
 	/* We're done unless the group flag is set */

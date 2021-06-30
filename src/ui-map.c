@@ -165,7 +165,7 @@ static void grid_get_attr(struct grid_data *g, int *a)
  * used for the player attr/char, "object zero" being used for the "pile"
  * attr/char, and "feature zero" being used for the "darkness" attr/char.
  *
- * TODO:
+ * TOVDO:
  * The transformations for tile colors, or brightness for the 16x16
  * tiles should be handled differently.  One possibility would be to
  * extend feature_type with attr/char definitions for the different states.

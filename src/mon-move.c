@@ -885,6 +885,25 @@ static bool get_move(struct chunk *c, struct monster *mon, int *dir, bool *good)
 	/* Calculate range */
 	get_move_find_range(mon);
 
+	/* Monster doesn't want to be any closer to the PC */
+	if ((monster_can_see_player(c, mon)) && (mon->cdis <= mon->min_range)) {
+		int badluck = 0;
+		if (player->p_luck < 0) badluck = ABS(player->p_luck);
+
+		/* If monster is closer to the PC than it wants to be, sometimes move away */
+		if ((mon->cdis < mon->min_range - 1) && (randint0(100) < 50 + (mon->min_range - mon->cdis) * 5)) {
+			/* Move away from the player (copied from "just leg it away from the player") */
+			grid = loc_diff(loc(0, 0), grid);
+		}
+		/* Occationally get another chance for a ranged attack */
+		else if ((mon->cdis > 1) && (monster_loves_archery(mon) || rf_has(mon->race->flags, RF_KEEP_DIST)) && 
+			one_in_(11 - badluck*2)) {
+			make_ranged_attack(mon);
+		}
+
+		return false;
+	}
+
 	/* Assume we're heading towards the player */
 	if (get_move_advance(c, mon, good)) {
 		/* We have a good move, use it */

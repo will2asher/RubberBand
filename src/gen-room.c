@@ -962,7 +962,6 @@ static bool build_room_template(struct chunk *c, struct loc centre, int ymax,
 	int dx, dy, rnddoors, doorpos;
 	const char *t;
 	bool rndwalls, light;
-	bool inroom;
 
 	assert(c);
 
@@ -985,7 +984,6 @@ static bool build_room_template(struct chunk *c, struct loc centre, int ymax,
 	/* Place dungeon features and objects */
 	for (t = data, dy = 0; dy < ymax && *t; dy++) {
 		for (dx = 0; dx < xmax && *t; dx++, t++) {
-			inroom = true;
 			/* Extract the location */
 			struct loc grid = loc(centre.x - (xmax / 2) + dx,
 								  centre.y - (ymax / 2) + dy);
@@ -1003,8 +1001,6 @@ static bool build_room_template(struct chunk *c, struct loc centre, int ymax,
 			switch (*t) {
 			case '%': {
 				set_marked_granite(c, grid, SQUARE_WALL_SPEC); 
-				/* not part of the room */
-				inroom = false;
 				break; }
 			case '#': set_marked_granite(c, grid, SQUARE_WALL_SOLID); break;
 			case '+': place_closed_door(c, grid); break;
@@ -1094,7 +1090,7 @@ static bool build_room_template(struct chunk *c, struct loc centre, int ymax,
 			}
 
 			/* Part of a room */
-			if (inroom) sqinfo_on(square(c, grid)->info, SQUARE_ROOM);
+			sqinfo_on(square(c, grid)->info, SQUARE_ROOM);
 			if (light)
 				sqinfo_on(square(c, grid)->info, SQUARE_GLOW);
 		}

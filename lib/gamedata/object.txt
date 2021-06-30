@@ -1364,7 +1364,7 @@ desc: the blood it will spill.
 
 name:& Lucerne Hammer~
 type:polearm
-graphics:/:B
+graphics:/:s
 level:10
 weight:120
 cost:376
@@ -4952,7 +4952,7 @@ type:rod
 graphics:-:d
 level:5
 weight:15
-cost:1000
+cost:950
 alloc:30:8 to 75
 power:6
 effect:DETECT_GOLD
@@ -4966,7 +4966,7 @@ type:rod
 graphics:-:d
 level:30
 weight:15
-cost:3050
+cost:4250
 alloc:30:50 to 110
 attack:1d1:0:0
 armor:0:0

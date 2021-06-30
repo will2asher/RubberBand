@@ -103,7 +103,7 @@ void look_mon_desc(char *buf, size_t max, int m_idx)
 
 	/* If the individual is evil, but the race isn't always evil, tell the player about the individual */
 	if (mon->pcmet || OPT(player, cheat_hear)) knowev = true;
-	if (rf_has(known_flags, RF_EVIL)) my_strcat(buf, ", (always evil)", max);
+	if (OPT(player, cheat_hear) && (rf_has(known_flags, RF_EVIL))) my_strcat(buf, ", (always evil)", max);
 	else if ((knowev) && (mon->isevil) && (!rf_has(mon->race->flags, RF_EVIL))) 
 		my_strcat(buf, " (evil (but its race isn't always evil))", max);
 	/* Same if the individual is not evil, if the race is sometimes evil */

@@ -2227,6 +2227,7 @@ static bool detect_monsters(int y_dist, int x_dist, monster_predicate pred)
 		if (x < x1 || y < y1 || x > x2 || y > y2) continue;
 
 		/* Detect all appropriate, obvious monsters */
+		/* Why are gargoyles being detected while they're disguised as statues? (camouflaged) */
 		if (pred(mon) && !monster_is_camouflaged(mon)) {
 			/* Detect the monster */
 			mflag_on(mon->mflag, MFLAG_MARK);

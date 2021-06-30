@@ -71,7 +71,7 @@
  * shown even when the player can't "see" it.  This leads to things like
  * doors out of the player's view still change from closed to open and so on.
  *
- * TODO:
+ * TOVDO:
  * Hallucination is currently disabled (it was a display-level hack before,
  * and we need it to be a knowledge-level hack).  The idea is that objects
  * may turn into different objects, monsters into different monsters, and
@@ -144,7 +144,7 @@ void map_info(struct loc grid, struct grid_data *g)
 		g->f_idx = lookup_feat(f_info[g->f_idx].mimic);
 
 	/* Check for monsters disguised as terrain features */
-	if (g->m_idx > 0) {
+	if ((g->m_idx > 0) && square_isseen(cave, grid)) {
 		struct monster* mon = cave_monster(cave, g->m_idx);
 		if (mon->mimicked_feat) {
 			if (mon->mimicked_feat == 1) g->f_idx = lookup_feat("granite wall");
