@@ -186,10 +186,14 @@ static void remove_bad_spells(struct monster *mon, bitflag f[RSF_SIZE])
 	if (tdist > 2) rsf_off(f2, RSF_WHIP);
 	if (tdist > 3) rsf_off(f2, RSF_SPIT);
 
-	/* Gaze range is 3 for most monsters but may depend on spell power */
-	trange = 3;
-	if (mon->race->spell_power < 11) trange = 2;
-	if (tdist > MAX(trange, mon->race->spell_power/12)) rsf_off(f2, RSF_RGAZE);
+	/* Can't use gaze attack if the PC can't see you */
+	if (!monster_is_visible(mon)) rsf_off(f2, RSF_RGAZE);
+	else {
+		/* Gaze range is 3 for most monsters but may depend on spell power */
+		trange = 3;
+		if (mon->race->spell_power < 11) trange = 2;
+		if (tdist > MAX(trange, mon->race->spell_power / 12)) rsf_off(f2, RSF_RGAZE);
+	}
 
 	/* THROW and BOULDER range depends on spell power */
 	if ((mon->race->spell_power / 8) > 5) trange = 9;

@@ -63,7 +63,8 @@ lore:gaze at you from a distance
 lore-color-base:Orange
 message-vis:{name} gazes at you.
 message-miss:{name} gazes, but you avert your eyes quickly.
-#message-invis: (an invisible monster shouldn't be able to do a gaze attack...)
+message-invis:You feel something's eyes on you. 
+#(TODO: invisible monsters shouldn't be able to gaze)
 
 #(There's no space between spits and {type} on purpose)
 name:SPIT
