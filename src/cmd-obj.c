@@ -334,8 +334,8 @@ void do_cmd_wield(struct command *cmd)
 		if (weapon) {
 			if ((obj->tval == TV_SWORD) && (weapon->weight >= 170) || (weapon->weight / 10 + 3 > player->state.stat_ind[STAT_STR]))
 				offhandok = false;
-			/* max 15.5lbs or (STR - 4) for non-swords (a battle axe is 15.5lbs) */
-			else if ((weapon->weight >= 155) || (weapon->weight / 10 + 4 > player->state.stat_ind[STAT_STR]))
+			/* max 14.5lbs or (STR - 4) for non-swords (a battle axe is 14.5lbs) */
+			else if ((weapon->weight >= 145) || (weapon->weight / 10 + 4 > player->state.stat_ind[STAT_STR]))
 				offhandok = false;
 		}
 

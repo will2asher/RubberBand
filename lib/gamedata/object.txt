@@ -867,7 +867,7 @@ name:& Short Sword~
 type:sword
 graphics:|:W
 level:5
-weight:80
+weight:70
 cost:74
 alloc:20:5 to 110
 attack:1d7:0:0
@@ -878,8 +878,8 @@ name:& Cutlass~
 type:sword
 graphics:|:W
 level:5
-weight:110
-cost:115
+weight:90
+cost:120
 alloc:20:5 to 110
 attack:1d8:0:0
 armor:0:0
@@ -912,7 +912,7 @@ name:& Long Sword~
 type:sword
 graphics:|:W
 level:10
-weight:130
+weight:120
 cost:300
 alloc:20:10 to 110
 attack:2d5:0:0
@@ -924,7 +924,7 @@ name:& Broad Sword~
 type:sword
 graphics:|:W
 level:10
-weight:150
+weight:140
 cost:280
 alloc:20:9 to 110
 attack:2d5:0:0
@@ -959,7 +959,7 @@ name:& Zweihander~
 type:sword
 graphics:|:W
 level:30
-weight:200
+weight:180
 cost:700
 alloc:20:30 to 110
 attack:3d6:0:0
@@ -970,7 +970,7 @@ name:& Executioner's Sword~
 type:sword
 graphics:|:r
 level:40
-weight:260
+weight:250
 cost:850
 alloc:19:40 to 110
 attack:4d5:0:0
@@ -984,7 +984,7 @@ level:70
 weight:180
 cost:4000
 alloc:10:70 to 110
-attack:6d5:0:0
+attack:5d6:0:0
 armor:0:0
 values:RES_CHAOS[1]
 desc:This inconstant weapon revels in disorder, hacking and slashing your foes
@@ -1025,8 +1025,7 @@ cost:396
 alloc:20:14 to 110
 attack:2d6:0:0
 armor:0:0
-desc:A sturdy wooden pole connected by a chain to a ball of steel, which often
-desc: has projecting spikes.
+desc:A sturdy wooden pole connected to spiked metal ball.
 
 name:& Flail~
 type:hafted
@@ -1044,7 +1043,7 @@ name:& Two-Handed Great Flail~
 type:hafted
 graphics:\:y
 level:45
-weight:280
+weight:270
 cost:590
 alloc:19:45 to 110
 attack:3d6:0:0
@@ -1059,7 +1058,7 @@ name:& Mace~
 type:hafted
 graphics:\:D
 level:5
-weight:120
+weight:110
 cost:130
 alloc:20:5 to 110
 attack:2d4:0:0
@@ -1082,7 +1081,7 @@ name:& Walking Staff~
 type:hafted
 graphics:\:U
 level:1
-weight:45
+weight:42
 cost:12
 alloc:17:1 to 58
 attack:1d4:0:0
@@ -1102,6 +1101,7 @@ armor:1:0
 desc:Six feet of oak which can be wielded in both hands to give a drubbing or
 desc: block one.
 
+#Maybe throwing weapons like this should have a flag which makes them less effective in melee.
 name:& Throwing Hammer~
 type:hafted
 graphics:\:D
@@ -1151,7 +1151,7 @@ name:& Mace~ of Disruption
 type:hafted
 graphics:\:v
 level:80
-weight:400
+weight:380
 cost:4300
 alloc:10:80 to 110
 attack:5d8:0:0
@@ -1193,7 +1193,7 @@ name:& Awl-Pike~
 type:polearm
 graphics:/:s
 level:10
-weight:160
+weight:150
 cost:320
 alloc:19:10 to 110
 attack:1d8:0:0
@@ -1265,12 +1265,12 @@ attack:2d6:0:0
 armor:0:0
 desc:A narrow axe head opposed by a crow's beak for penetrating armour.
 
-#was "Broad axe". 155 is the maximum a non-sword can weigh and still wield an off-hand weapon at the same time.
+#was "Broad axe". 145 is the maximum a non-sword can weigh and still wield an off-hand weapon at the same time.
 name:& Battle Axe~
 type:polearm
 graphics:/:s
 level:15
-weight:155
+weight:145
 cost:314
 alloc:18:14 to 110
 attack:2d6:0:0
@@ -1287,7 +1287,7 @@ cost:334
 alloc:20:15 to 110
 attack:2d8:0:0
 armor:0:0
-desc:A double-bladed axe.  Very popular among Dwarves.
+desc:A large double-bladed axe.  Very popular among Dwarves.
 
 name:& Lochaber Axe~
 type:polearm
@@ -1343,7 +1343,7 @@ name:& Lance~
 type:polearm
 graphics:/:s
 level:10
-weight:300
+weight:290
 cost:230
 alloc:18:10 to 110
 attack:2d8:0:0
@@ -1415,7 +1415,7 @@ name:& Light Crossbow~
 type:bow
 graphics:}:s
 level:15
-weight:100
+weight:80
 cost:140
 alloc:20:14 to 110
 flags:SHOOTS_BOLTS
@@ -1427,7 +1427,7 @@ name:& Heavy Crossbow~
 type:bow
 graphics:}:s
 level:30
-weight:200
+weight:160
 cost:300
 alloc:20:30 to 110
 flags:SHOOTS_BOLTS
@@ -1584,7 +1584,7 @@ name:& Mattock~
 type:digger
 graphics:\:D
 level:45
-weight:250
+weight:240
 cost:700
 alloc:20:45 to 110
 attack:1d9:0:0
@@ -1638,7 +1638,7 @@ name:& Pair~ of Steel Shod Boots
 type:boots
 graphics:]:s
 level:20
-weight:60
+weight:50
 cost:50
 alloc:20:20 to 110
 attack:1d1:0:0
@@ -1651,7 +1651,7 @@ name:& Pair~ of Mithril Shod Boots
 type:boots
 graphics:]:B
 level:60
-weight:40
+weight:30
 cost:500
 alloc:20:60 to 110
 attack:1d1:0:0
@@ -1701,7 +1701,7 @@ name:& Iron Helm~
 type:helm
 graphics:]:s
 level:20
-weight:50
+weight:45
 cost:75
 alloc:20:20 to 110
 attack:1d3:0:0
@@ -1725,7 +1725,7 @@ name:& Pointy Wizard Hat~
 type:crown
 graphics:]:p
 level:30
-weight:20
+weight:14
 cost:94
 alloc:4:24 to 104
 attack:0d0:0:0
@@ -1736,7 +1736,7 @@ name:& Leafy Crown~
 type:crown
 graphics:]:G
 level:37
-weight:2
+weight:3
 cost:400
 alloc:4:35 to 110
 attack:0d0:0:0
@@ -1772,7 +1772,7 @@ name:& Jewel Encrusted Crown~
 type:crown
 graphics:]:v
 level:50
-weight:40
+weight:36
 cost:1500
 alloc:10:50 to 110
 attack:1d1:0:0
