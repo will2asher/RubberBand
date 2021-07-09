@@ -858,12 +858,9 @@ struct effect_object_property *effect_summarize_properties(
 {
 	int unsummarized = 0;
 	struct effect_object_property *summaries = NULL;
-	bool have_set_value = false;
-	int value_set_max = 0;
+	dice_t *remembered_dice = NULL;
 
 	for (; ef; ef = ef->next) {
-		int value_max = (ef->dice) ?
-			dice_evaluate(ef->dice, 0, MAXIMISE, NULL) : 0;
 		int value_this;
 
 		switch (ef->index) {
@@ -883,8 +880,7 @@ struct effect_object_property *effect_summarize_properties(
 			 * Remember the value.  Does nothing that should be
 			 * remembered in the summaries or unsummarized count.
 			 */
-			have_set_value = true;
-			value_set_max = value_max;
+			remembered_dice = ef->dice;
 			break;
 
 		case EF_CLEAR_VALUE:
@@ -892,7 +888,7 @@ struct effect_object_property *effect_summarize_properties(
 			 * Forget the value.  Does nothing that should be
 			 * remembered in the summaries or unsummarized count.
 			 */
-			have_set_value = false;
+			remembered_dice = NULL;
 			break;
 
 		case EF_CURE:
@@ -903,8 +899,10 @@ struct effect_object_property *effect_summarize_properties(
 			break;
 
 		case EF_TIMED_SET:
-			value_this = (have_set_value) ?
-				value_set_max : value_max;
+			value_this = (remembered_dice) ?
+				dice_evaluate(remembered_dice, 0, MAXIMISE, NULL) :
+				((ef->dice) ?
+				dice_evaluate(ef->dice, 0, MAXIMISE, NULL) : 0);
 			if (value_this <= 0 && ef->subtype >= 0 &&
 					ef->subtype < TMD_MAX) {
 				/* It's equivalent to a cure. */
@@ -916,8 +914,10 @@ struct effect_object_property *effect_summarize_properties(
 
 		case EF_TIMED_INC:
 		case EF_TIMED_INC_NO_RES:
-			value_this = (have_set_value) ?
-				value_set_max : value_max;
+			value_this = (remembered_dice) ?
+				dice_evaluate(remembered_dice, 0, MAXIMISE, NULL) :
+				((ef->dice) ?
+				dice_evaluate(ef->dice, 0, MAXIMISE, NULL) : 0);
 			if (value_this > 0 && ef->subtype >= 0 &&
 					ef->subtype < TMD_MAX) {
 				bool summarized = false;
@@ -987,8 +987,10 @@ struct effect_object_property *effect_summarize_properties(
 			break;
 
 		case EF_TIMED_DEC:
-			value_this = (have_set_value) ?
-				value_set_max : value_max;
+			value_this = (remembered_dice) ?
+				dice_evaluate(remembered_dice, 0, MAXIMISE, NULL) :
+				((ef->dice) ?
+				dice_evaluate(ef->dice, 0, MAXIMISE, NULL) : 0);
 			/* If it decreases the duration, it's a partial cure. */
 			if (value_this > 0) {
 				summarize_cure(ef->subtype, &summaries,
