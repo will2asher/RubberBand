@@ -16522,9 +16522,9 @@ flags:ONLY_ITEM | DROP_1 | DROP_20 | RAND_25 | PASS_WEB
 flags:NO_FEAR | NO_SLEEP | IM_NETHER | IM_DISEN | REGENERATE | FLY
 flags:IM_ELEC | IM_POIS | IM_ACID
 flags:PASS_DOOR | HURT_WATER | BR_STRONG | COLD_BLOOD
-innate-freq:5
+innate-freq:6
 spell-freq:4
-spells:RGAZE | SHRIEK | BR_AMNS | BR_INER | BR_TIME | DRAIN_MANA | INSANITY
+spells:RGAZE | SHRIEK | BR_AMNS | BR_INER | DRAIN_MANA | INSANITY
 spells:BLIND | MIND_BLAST | BRAIN_SMASH | TINVIS | BLINK | S_KIN
 #S_ILLUSION
 friends:16:1d1:rastlig
@@ -19911,7 +19911,7 @@ flags:IM_ELEC | IM_ACID | IM_POIS | FLY
 #BR_STRONG
 innate-freq:8
 spell-freq:4
-spells:BR_AMNS | BR_TIME | BR_CHAO | BR_NEXU | BRAIN_SMASH
+spells:BR_AMNS | BR_TIME | BR_CHAO | BR_INER | BRAIN_SMASH
 spells:S_KIN | BLINK | BLIND
 #S_ILLUSION | ILLUSION_CLONE | S_EXTRA | INSANITY
 friends-base:22:1d2:mushroom
@@ -20273,7 +20273,7 @@ blow:BITE:HURT:3d12
 flags:INVISIBLE | PASS_WALL | FORCE_SLEEP
 flags:NO_CONF | NO_SLEEP | NO_HOLD | IM_NETHER | IM_SLIME
 innate-freq:5
-spells:BR_NETH | BR_DISE | BR_TIME
+spells:BR_NETH | BR_DISE | BR_CHAO
 friends:92:2d6:Same
 desc:Bodies of death, receptacles of all foulness, they emerge like smoke from
 desc: the angles of time, ravenous and snarling and unsatisfied.
@@ -21377,7 +21377,7 @@ size:5
 hearing:50
 armor-class:51
 sleepiness:0
-depth:95
+depth:94
 rarity:3
 experience:17000
 blow:ENGULF:EXP_80:5d7
@@ -21386,7 +21386,7 @@ blow:ENGULF:DISENCHANT:5d7
 blow:ENGULF:LOSE_ALL:5d7
 flags:KILL_WALL | IM_DISEN | ATTR_MULTI
 innate-freq:3
-spells:BR_CHAO | BR_DISE | BR_TIME | BR_AMNS
+spells:BR_CHAO | BR_DISE | BR_AMNS
 desc:Howling through the disintegrating dungeon, this whirlpool of Unmagic rips
 desc: the enchantments from everything it touches.
 

@@ -1108,7 +1108,7 @@ static void melee_effect_handler_BHOLD(melee_effect_handler_context_t* context)
 	if (player_of_has(player, OF_FREE_ACT)) savet = savet * 5 / 4;
 	/* Already being held by this monster */
 	if (player->mbheld == context->mon->midx) savet = savet * 4 / 5;
-	/* Drunk players don't aren't good at evasion */
+	/* Drunk players aren't good at evasion */
 	if (player->timed[TMD_SDRUNK]) savet = savet / 2;
 
 	/* Attempt a saving throw */

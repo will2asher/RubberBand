@@ -3463,7 +3463,7 @@ graphics:!:d
 level:15
 weight:4
 cost:800
-alloc:64:30 to 110
+alloc:65:30 to 110
 pile:25:2
 power:12
 effect:HEAL_HP
