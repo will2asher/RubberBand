@@ -416,7 +416,7 @@ desc:A small pool of glowing acid.
 
 #todo: WATER_HIDE effect
 name:water
-graphics:/:B
+graphics:.:B
 priority:7
 flags:INTERESTING | LOS | PROJECT | PASSABLE | OBJECT | TORCH | NO_SCENT | SLOWS | WATER
 desc:Water shallow enough to wade through easily, but deep enough to conceal smaller water-dwelling monsters.
@@ -425,7 +425,7 @@ desc: (In real life, you'd have no way of telling how deep it was. Lucky for you
 #There's currently no way to enter deep water, but I'll probably change that at some point.
 #(May remove the permanent flag at some point in the future)
 name:deep water
-graphics:/:b
+graphics:.:b
 priority:11
 flags:LOS | PROJECT | NO_FLOW | NO_SCENT | PERMANENT | TORCH | WATER
 walk-msg:You can't swim.  Really step in the deep water? 
@@ -439,7 +439,7 @@ desc: (In real life, this would look the same as shallow water. Lucky for you, t
 
 #todo: SLIP terrain flag
 #name:ice
-#graphics:/:Z
+#graphics:.:Z
 #priority:7
 #flags:INTERESTING | LOS | PROJECT | PASSABLE | OBJECT | SLOWS | SLIP
 ##resist-flag:IM_COLD
@@ -521,7 +521,7 @@ desc:A chasm. As far as you can tell, it may be bottomless.
 
 # Later: use this as an alternate border for the town. (same as deep water in most ways)
 #name:sea
-#graphics:/:b
+#graphics:.:b
 #priority:11
 #flags:LOS | PROJECT | NO_FLOW | NO_SCENT | PERMANENT | WATER
 #walk-msg:You can't swim.  Really step in the deep water? 

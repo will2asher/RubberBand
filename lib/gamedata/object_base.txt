@@ -22,7 +22,7 @@ flags:HATES_ACID | HATES_FIRE
 
 name:shot:Shot~
 graphics:slate
-break:25
+break:20
 # max-stack:40
 flags:SHOW_DICE
 
@@ -68,6 +68,20 @@ graphics:white
 # max-stack:1
 flags:HATES_ACID
 flags:SHOW_DICE
+
+#(They're meant to be thrown, so they don't break as easily when thrown)
+name:throwing weapon:Throwing weapon~
+graphics:white
+break:6
+# max-stack:1
+flags:HATES_ACID
+flags:SHOW_MULT
+
+name:bone:Bone weapon~
+graphics:white
+break:30
+# max-stack:1
+flags:SHOW_MULT
 
 name:boots:Boot~
 graphics:light umber

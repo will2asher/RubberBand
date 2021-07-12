@@ -320,6 +320,9 @@ void do_cmd_wield(struct command *cmd)
 		else if ((obj->weight <= 65) && (obj->weight / 10 <= player->state.stat_use[STAT_STR] / 4))
 			offhandok = true;
 
+		/* No wielding throwing weapons in the off-hand */
+		if (obj->tval == TV_THROWW) offhandok = false;
+
 		/* Check if target weapon is light enough to wield in shield slot */
 		/* (magic staffs can never be weilded in the off hand) */
 		if (offhandok) {

@@ -1,7 +1,6 @@
 /**
  * \file list-tvals.h
  * \brief List of object base types
- * RB: I will need to re-add the skeleton tval at some point.
  */
 /* string		name 			min randarts */
 TV(NULL,		"none",			0)
@@ -14,6 +13,8 @@ TV(DIGGING,		"digger",		0)
 TV(HAFTED,		"hafted",		5)
 TV(POLEARM,		"polearm",		5)
 TV(SWORD,		"sword",		5)
+TV(THROWW,		"throwing weapon", 1)
+TV(BONE,		"bone",			1)
 TV(BOOTS,		"boots",		4)
 TV(GLOVES,		"gloves",		4)
 TV(HELM,		"helm",			3)
