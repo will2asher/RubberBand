@@ -9825,6 +9825,28 @@ flags:TROLL | EMPTY_MIND | STUPID | REGENERATE
 drop:bone:Troll Skull:2:1:1
 desc:It is an animated troll corpse. If a troll could get stupider, it has.
 
+name:large nulx
+plural:large nulxes
+base:nulx
+color:U
+element:6
+speed:114
+hit-points:364
+size:5
+hearing:10
+smell:10
+armor-class:44
+sleepiness:42
+depth:27
+rarity:3
+experience:203
+blow:HIT:HURT:2d4
+blow:CRUSH:BHOLD:4d5
+blow:BITE:ACID:4d7
+flags:ANIMAL | MOVE_SLOW
+desc:A nulx is a tentacled swamp monster with acid under its skin. This one is about 14 feet
+desc: long (not including tentacles).
+
 name:giant python
 base:snake
 color:b
@@ -10284,28 +10306,6 @@ flags:NO_CONF | NO_SLEEP | MULTIPLY | PASS_DOOR | WATER_HIDE
 desc:Have you heard of puddings made for a tasty dessert, but enchanted to walk off
 desc: the dinner table and frighten the guests?
 
-name:large nulx
-plural:large nulxes
-base:nulx
-color:U
-element:6
-speed:114
-hit-points:364
-size:5
-hearing:10
-smell:10
-armor-class:43
-sleepiness:42
-depth:28
-rarity:3
-experience:203
-blow:HIT:HURT:2d4
-blow:CRUSH:BHOLD:4d5
-blow:BITE:ACID:4d7
-flags:ANIMAL | RAND_25 | MOVE_SLOW
-desc:A nulx is a tentacled swamp monster with acid under its skin. This one is about 14 feet
-desc: long (not including tentacles).
-
 name:ghost
 base:ghost
 color:s
@@ -10621,6 +10621,28 @@ desc: them.
 #flags:NO_FEAR | REGENERATE
 ##RETURNS
 #desc:It is an animated corpse which keeps putting itself back together.
+
+name:gibbering mouther
+base:nulx
+color:y
+element:7
+speed:116
+hit-points:283
+size:4
+hearing:10
+armor-class:51
+sleepiness:42
+depth:29
+rarity:4
+experience:334
+blow:GAZE:CONFUSE:3d4
+blow:BITE:SLIME:3d6
+flags:NO_FEAR | NO_CONF | STUPID | MOVE_SLOW
+innate-freq:5
+spell-freq:9
+spells:GAZE | CONF | INSANITY
+desc:A strange blob covered in eyes and mouths, constantly jabbering
+desc: nonsense. Its words don't have meaning, but they do have magic behind them.
 
 name:young blue dragon
 base:dragon

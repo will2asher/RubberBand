@@ -375,7 +375,7 @@ confused-msg:burns itself in a fire
 resist-flag:IM_FIRE
 
 #usually only created by earthquakes or disarming a pit trap
-#putting in a pile of rubble (or maybe a bunch of other objects) can turn it into normal floor.
+#Todo: putting in a pile of rubble (or maybe a bunch of other objects) should turn it into normal floor.
 #Chance of damage isn't high and it doesn't do much damage even when it does damage.
 name:open pit
 graphics:^:D
@@ -390,7 +390,7 @@ die-msg:a pit
 desc:Disarming a pit often just keeps the pit from being hidden.
 desc: You can walk through its grid around it, but you still have a chance of
 desc: falling in for a small amount of damage (depending on dexterity).
-desc: You can drop a pile of rubble here to make it into normal floor.
+#desc: You can drop a pile of rubble here to make it into normal floor.
 
 #Doesn't do actual hp damage, but may cause sliming.
 name:puddle of slime
@@ -427,7 +427,7 @@ desc: (In real life, you'd have no way of telling how deep it was. Lucky for you
 name:deep water
 graphics:.:b
 priority:11
-flags:LOS | PROJECT | NO_FLOW | NO_SCENT | PERMANENT | TORCH | WATER
+flags:LOS | PROJECT | NO_SCENT | PERMANENT | TORCH | WATER
 walk-msg:You can't swim.  Really step in the deep water? 
 run-msg:Deep water blocks your path.  Step into it? 
 hurt-msg:You sink in the water!
