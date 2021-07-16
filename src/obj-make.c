@@ -965,9 +965,9 @@ int apply_magic(struct object *obj, int lev, bool allow_artifacts, bool good,
 	/* egos and bonuses on staffs should be rare */
 	if ((obj->tval == TV_STAFF) && (!one_in_(4))) power = 0;
 	/* skulls don't get combat bonuses */
-	if ((obj->tval == TV_BONE) && (obj->kind->d_char == "~")) power = 0;
+	if ((obj->tval == TV_BONE) && (obj->kind->d_char == '~')) power = 0;
 	/* egos & bonuses less common on bones & broken bottles */
-	else if ((obj->tval == TV_BONE) && (one_in_(4))) power = 0;
+	else if ((obj->tval == TV_BONE) && (one_in_(3))) power = 0;
 
 	/* Roll for artifact creation */
 	if (allow_artifacts) {
@@ -985,6 +985,11 @@ int apply_magic(struct object *obj, int lev, bool allow_artifacts, bool good,
 		/* Roll for artifacts if allowed */
 		for (i = 0; i < rolls; i++)
 			if (make_artifact(obj)) return 3;
+	}
+
+	/* Grenades (almost) always get their FIRE_2 brand if nothing else */
+	if (tval_is_fuel(obj) && obj->kind->level > 4) {
+		if (power || (randint0(100) < 89)) power = 2;
 	}
 
 	/* Try to make an ego item */

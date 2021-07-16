@@ -117,7 +117,7 @@ min-values:LIGHT[1]
 
 name:(Everburning)
 info:2500:10
-alloc:100:1 to 32
+alloc:95:1 to 32
 item:light:Lantern
 flags:NO_FUEL
 flags-off:TAKES_FUEL
@@ -492,7 +492,7 @@ slay:GIANT_3
 
 name:of *Slay Dragon*
 info:8000:24
-alloc:30:10 to 60
+alloc:30:10 to 65
 type:sword
 type:polearm
 type:staff
@@ -506,7 +506,7 @@ slay:DRAGON_5
 
 name:of Morgul
 info:1:0
-alloc:10:10 to 80
+alloc:10:10 to 88
 type:sword
 type:polearm
 type:hafted
@@ -556,7 +556,7 @@ min-values:MIGHT[1] | SHOTS[2]
 
 name:of Extra Might
 info:10000:20
-alloc:20:15 to 100
+alloc:20:15 to 110
 combat:d5:d10:0:0
 type:bow
 values:MIGHT[1]
@@ -564,7 +564,7 @@ min-values:MIGHT[0]
 
 name:of Extra Shots
 info:10000:20
-alloc:10:15 to 100
+alloc:10:15 to 110
 combat:d10:d5:0:0
 type:bow
 values:SHOTS[2d3]
@@ -581,7 +581,7 @@ min-values:DEX[2] | SHOTS[2] | MIGHT[1]
 
 name:of the Nazgûl
 info:0:0
-alloc:10:10 to 80
+alloc:10:10 to 88
 combat:d10:d10:0:0
 type:bow
 flags:DRAIN_EXP | SEE_INVIS
@@ -601,7 +601,7 @@ slay:ANIMAL_2
 
 name:of Slay Evil
 info:20:10
-alloc:10:10 to 100
+alloc:10:10 to 110
 type:shot
 type:arrow
 type:bolt
@@ -633,19 +633,19 @@ slay:DEMON_3
 
 name:of Acid
 info:50:10
-alloc:5:10 to 100
+alloc:5:10 to 110
 type:shot
 type:arrow
 type:bolt
 type:bone
 type:throwing weapon
-item:flask:Hand Grenade
+type:flask
 flags:IGNORE_ACID
 brand:ACID_3
 
 name:of Lightning
 info:45:10
-alloc:5:10 to 100
+alloc:5:10 to 110
 type:shot
 type:arrow
 type:bolt
@@ -705,18 +705,18 @@ brand:POIS_3
 
 name:of Flame
 info:35:10
-alloc:10:10 to 100
+alloc:10:10 to 110
 type:shot
 type:arrow
 type:bolt
 type:throwing weapon
-item:flask:Hand Grenade
+type:flask
 flags:IGNORE_FIRE
 brand:FIRE_3
 
 name:of Frost
 info:30:10
-alloc:10:10 to 100
+alloc:10:10 to 110
 type:shot
 type:arrow
 type:bolt
@@ -734,7 +734,15 @@ type:arrow
 type:bolt
 type:bone
 type:throwing weapon
-item:flask:Hand Grenade
+desc:Ammunition of Wounding often has unusually high to-hit and to-dam values.
+
+#separate Wounding ego for grenades, so it can keep its basic FIRE_2 brand
+name:of Wounding
+info:20:5
+alloc:15:15 to 127
+combat:3+d5:3+d5:0:0
+type:flask
+brand:FIRE_2
 desc:Ammunition of Wounding often has unusually high to-hit and to-dam values.
 
 name:of Backbiting
@@ -747,6 +755,13 @@ type:arrow
 type:bolt
 type:bone
 type:throwing weapon
+
+#(default hand grenade ego because object.txt doesn't handle brands)
+name:(active)
+info:10:1
+alloc:450:1 to 127
+type:flask
+brand:FIRE_2
 
 ### Digging Tools
 

@@ -879,7 +879,7 @@ int object_value_real(const struct object *obj, int qty)
 
 		/* Rescale for expendables */
 		if ((tval_is_light(obj) && of_has(obj->flags, OF_BURNS_OUT)
-			 && !obj->ego) || tval_is_ammo(obj)) {
+			 && !obj->ego) || tval_is_ammo(obj) || tval_is_fuel(obj)) {
 			value = value / AMMO_RESCALER;
 		}
 

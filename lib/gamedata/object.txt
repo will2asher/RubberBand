@@ -192,12 +192,11 @@ attack:1d4:0:0
 armor:0:0
 pval:7500
 flags:EXPLODE | THROWING
+flags:HATES_SOUND | HATES_SHARD | HATES_ICE | HATES_FORCE
 desc:It can be used to fuel a lantern with 7500 turns of light, up to
 desc: a maximum of 15000 turns of light.
 desc:  When thrown, it is considered lit, so it does more than nominal
 desc: damage (which occurs even against creatures resistant to fire).
-
-### Grenades ###
 
 name:& Hand Grenade~
 type:flask
@@ -205,11 +204,12 @@ graphics:!:R
 level:13
 weight:21
 cost:45
-alloc:8:13 to 110
+alloc:9:13 to 110
 pile:70:1d5
 attack:2d4:0:0
 armor:0:0
-flags:EXPLODE | THROWING
+flags:EXPLODE | THROWING | SHOW_DICE
+#brand:FIRE_2 (this file doesn't include brands...)
 desc:When thrown at an enemy, it explodes in a burst of fire and shrapnel.
 
 ##### Food #####

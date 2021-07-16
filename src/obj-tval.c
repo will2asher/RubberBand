@@ -228,7 +228,7 @@ bool tval_is_weapon(const struct object *obj)
 			return true;
 		case TV_FLASK:
 			/* grenades */
-			if (obj->kind->level > 5) return true;
+			if (obj->kind->level > 4) return true;
 		default:
 			return false;
 	}
@@ -297,7 +297,7 @@ bool tval_has_variable_power(const struct object *obj)
 			return true;
 		case TV_FLASK:
 			/* grenades */
-			if (obj->kind->level > 5) return true;
+			if (obj->kind->level > 4) return true;
 		default:
 			return false;
 	}

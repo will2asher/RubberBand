@@ -10640,7 +10640,7 @@ blow:BITE:SLIME:3d6
 flags:NO_FEAR | NO_CONF | STUPID | MOVE_SLOW
 innate-freq:5
 spell-freq:9
-spells:GAZE | CONF | INSANITY
+spells:RGAZE | CONF | INSANITY
 desc:A strange blob covered in eyes and mouths, constantly jabbering
 desc: nonsense. Its words don't have meaning, but they do have magic behind them.
 

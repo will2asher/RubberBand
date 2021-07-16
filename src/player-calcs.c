@@ -1641,10 +1641,10 @@ int calc_blows(struct player *p, struct object *obj,
 	/* Enforce a minimum "weight" (tenth pounds) */
 	div = (weight < min_weight) ? min_weight : weight;
 
-	/* Throwing weapons aren't as effective in melee */
-	if (tval_is_thrower(obj)) div = div * 3;
-	/* Bones are cumbersome as weapons */
-	if (obj->tval == TV_BONE) div = div * 2;
+	if (obj) { /* (to prevent NULL pointer error when there's no obj) */
+		/* Throwing weapons aren't as effective in melee and Bones are cumbersome as weapons */
+		if (tval_is_thrower(obj) || (obj->tval == TV_BONE)) div = div * 3;
+	}
 
 	/* Get the strength vs weight */
 	str_index = adj_str_blow[state->stat_ind[STAT_STR]] *
