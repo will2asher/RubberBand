@@ -63,7 +63,7 @@ int slot_by_name(struct player *p, const char *name)
 /**
  * Gets a slot of the given type, preferentially empty unless full is true
  */
-static int slot_by_type(struct player *p, int type, bool full)
+int slot_by_type(struct player *p, int type, bool full)
 {
 	int i, fallback = p->body.count;
 
@@ -141,7 +141,7 @@ bool object_is_carried(struct player *p, const struct object *obj)
 /**
  * Check if an object is in the quiver
  */
-bool object_is_in_quiver(struct player *p, const struct object *obj)
+static bool object_is_in_quiver(struct player *p, const struct object *obj)
 {
 	int i;
 
@@ -591,11 +591,6 @@ int inven_carry_num(const struct object *obj)
 	int n_free_slot = z_info->pack_size - pack_slots_used(player);
 	int num_to_quiver, num_left, i;
 
-	/* Treasure can always be picked up. */
-	if (tval_is_money(obj) && lookup_kind(obj->tval, obj->sval)) {
-		return obj->number;
-	}
-
 	/* Absorb as many as we can in the quiver. */
 	quiver_absorb_num(obj, &n_free_slot, &num_to_quiver);
 
@@ -720,7 +715,10 @@ void inven_carry(struct player *p, struct object *obj, bool absorb,
 			if (player_has(player, PF_KNOW_MUSHROOM) && tval_is_mushroom(obj)) {
 				object_flavor_aware(obj);
 				msg("Mushrooms for breakfast!");
-			} else if (player_has(player, PF_KNOW_ZAPPER) && tval_is_zapper(obj))
+			}
+			else if (player_has(player, PF_KNOW_ZAPPER) && tval_is_zapper(obj))
+				object_flavor_aware(obj);
+			else if (player_has(player, PF_KNOW_POTIONS) && tval_is_potion(obj))
 				object_flavor_aware(obj);
 		}
 	}
@@ -764,7 +762,7 @@ void inven_wield(struct object *obj, int slot)
 		if (obj->number > 1) {
 			wielded = gear_object_for_use(obj, 1, false, &dummy);
 
-			/* It's still carried; keep its weight in the total. */
+			/* It's still carried; keep it's weight in the total. */
 			assert(wielded->number == 1);
 			player->upkeep->total_weight += wielded->weight;
 
@@ -1010,7 +1008,6 @@ void combine_pack(void)
 {
 	struct object *obj1, *obj2, *prev;
 	bool display_message = false;
-	bool disable_repeat = false;
 
 	/* Combine the pack (backwards) */
 	obj1 = gear_last_item();
@@ -1030,7 +1027,6 @@ void combine_pack(void)
 			/* Can we drop "obj1" onto "obj2"? */
 			if (object_similar(obj2, obj1, stack_mode2)) {
 				display_message = true;
-				disable_repeat = true;
 				object_absorb(obj2->known, obj1->known);
 				obj1->known = NULL;
 				object_absorb(obj2, obj1);
@@ -1046,18 +1042,17 @@ void combine_pack(void)
 
 				if (inven_can_stack_partial(obj2, obj1,
 						stack_mode2 | stack_mode1)) {
-					int oldn2 = obj2->number;
-					int oldn1 = obj1->number;
-
+					/*
+					 * Setting this to true spams the
+					 * combine message.
+					 */
+					display_message = false;
 					object_absorb_partial(obj2->known,
 						obj1->known, stack_mode2,
 						stack_mode1);
 					object_absorb_partial(obj2, obj1,
 						stack_mode2, stack_mode1);
-					if (obj2->number != oldn2 ||
-							obj1->number != oldn1) {
-						display_message = true;
-					}
+
 					/*
 					 * Ensure numbers align (should not be
 					 * necessary, but safer)
@@ -1082,11 +1077,8 @@ void combine_pack(void)
 	if (display_message) {
 		msg("You combine some items in your pack.");
 
-		/*
-		 * Stop "repeat last command" from working if a stack was
-		 * completely combined with another.
-		 */
-		if (disable_repeat) cmd_disable_repeat();
+		/* Stop "repeat last command" from working. */
+		cmd_disable_repeat();
 	}
 }
 
@@ -1174,26 +1166,9 @@ int preferred_quiver_slot(const struct object *obj)
 	if (obj->note && (tval_is_ammo(obj) ||
 			of_has(obj->flags, OF_THROWING))) {
 		const char *s = strchr(quark_str(obj->note), '@');
-		char fire_key, throw_key;
 
-		/*
-		 * Would be nice to use cmd_lookup_key() for this, but that is
-		 * part of the ui layer (declared in ui-game.h).  Instead,
-		 * hardwire the keys for the fire and throw commands.
-		 */
-		if (OPT(player, rogue_like_commands)) {
-			fire_key = 't';
-		} else {
-			fire_key = 'f';
-		}
-		throw_key = 'v';
-		while (1) {
-			if (!s) break;
-			if (s[1] == fire_key || s[1] == throw_key) {
-				desired_slot = s[2] - '0';
-				break;
-			}
-			s = strchr(s + 1, '@');
+		if (s && (s[1] == 'f' || s[1] == 'v')) {
+			desired_slot = s[2] - '0';
 		}
 	}
 
