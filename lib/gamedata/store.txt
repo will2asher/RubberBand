@@ -47,6 +47,7 @@ buy:cloak
 buy:shot
 buy:bolt
 buy:arrow
+buy:bone
 
 # Armoury
 store:2:Armoury
@@ -121,6 +122,7 @@ normal:bow:Sling
 normal:bow:Short Bow
 normal:bow:Long Bow
 normal:bow:Light Crossbow
+normal:throwing weapon:Javelin
 buy:shot
 buy:bolt
 buy:arrow
@@ -129,6 +131,7 @@ buy:digger
 buy:sword
 buy:polearm
 buy:hafted
+buy:throwing weapon
 
 
 # Bookseller
@@ -178,6 +181,7 @@ normal:potion:Cure Serious Wounds
 normal:potion:Cure Critical Wounds
 buy:scroll
 buy:potion
+buy:bone
 
 # Magic-user's
 store:6:Magic Shop

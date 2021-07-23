@@ -197,10 +197,25 @@ attack:1d4:0:0
 armor:0:0
 pval:7500
 flags:EXPLODE | THROWING
+flags:HATES_SOUND | HATES_SHARD | HATES_ICE | HATES_FORCE
 desc:It can be used to fuel a lantern with 7500 turns of light, up to
 desc: a maximum of 15000 turns of light.
 desc:  When thrown, it is considered lit, so it does more than nominal
 desc: damage (which occurs even against creatures resistant to fire).
+
+name:& Hand Grenade~
+type:flask
+graphics:!:R
+level:13
+weight:21
+cost:45
+alloc:9:13 to 110
+pile:70:1d5
+attack:2d4:0:0
+armor:0:0
+flags:EXPLODE | THROWING | SHOW_DICE
+#brand:FIRE_2 (this file doesn't include brands...)
+desc:When thrown at an enemy, it explodes in a burst of fire and shrapnel.
 
 ##### Food #####
 
@@ -1106,19 +1121,6 @@ armor:1:0
 desc:Six feet of oak which can be wielded in both hands to give a drubbing or
 desc: block one.
 
-#Maybe throwing weapons like this should have a flag which makes them less effective in melee.
-name:& Throwing Hammer~
-type:hafted
-graphics:\:D
-level:30
-weight:55
-cost:250
-alloc:10:25 to 110
-attack:2d4:0:0
-armor:0:0
-flags:THROWING
-desc:A short-handled iron hammer that can strike hard when thrown.
-
 name:& War Hammer~
 type:hafted
 graphics:\:D
@@ -1181,19 +1183,6 @@ flags:THROWING
 desc:The basic polearm, with a double-edged knife mounted on a light shaft.
 desc:  This weapon can be thrown effectively.
 
-name:& Javelin~
-type:polearm
-graphics:/:s
-level:15
-weight:30
-cost:95
-alloc:7:14 to 110
-pile:12:1d4
-attack:1d5:0:0
-armor:0:0
-flags:THROWING
-desc:A short spear balanced for throwing.
-
 name:& Awl-Pike~
 type:polearm
 graphics:/:s
@@ -1245,19 +1234,6 @@ desc: infantry formations.
 
 
 ### Axes ###
-
-name:& Throwing Axe~
-type:polearm
-graphics:/:s
-level:22
-weight:40
-cost:150
-alloc:10:20 to 110
-attack:2d3:0:0
-armor:0:0
-flags:THROWING
-desc:A short-handled hatchet, balanced for throwing.  A classic skirmisher's
-desc: weapon.
 
 name:& Beaked Axe~
 type:polearm
@@ -1377,6 +1353,75 @@ alloc:20:10 to 110
 attack:2d5:0:0
 armor:0:0
 desc:A long pole with a three- or four-pronged head balanced by a long spike.
+
+### Throwing Weapons ###
+# (not as effective in melee)
+
+name:& Shuriken~
+type:throwing weapon
+graphics:/:s
+level:10
+weight:8
+cost:150
+alloc:6:13 to 110
+pile:40:2d3
+attack:1d3:0:0
+armor:0:0
+flags:THROWING
+desc:A very small rotating bladed throwing weapon.
+
+name:& Javelin~
+type:throwing weapon
+graphics:/:s
+level:11
+weight:30
+cost:95
+alloc:8:12 to 110
+pile:12:1d4
+attack:1d5:0:0
+armor:0:0
+flags:THROWING
+desc:A short spear balanced for throwing.
+
+name:& Throwing Axe~
+type:throwing weapon
+graphics:/:s
+level:20
+weight:40
+cost:150
+alloc:10:15 to 110
+pile:5:1d3
+attack:2d3:0:0
+armor:0:0
+flags:THROWING
+desc:A short-handled hatchet, balanced for throwing.  A classic skirmisher's
+desc: weapon.
+
+name:& Throwing Hammer~
+type:throwing weapon
+graphics:\:D
+level:24
+weight:54
+cost:250
+alloc:9:22 to 110
+pile:5:1d3
+attack:2d4:0:0
+armor:0:0
+flags:THROWING
+desc:A short-handled iron hammer that can strike hard when thrown.
+
+#uncomment when RETURNING is coded
+#name:& Boomerang~
+#type:throwing weapon
+#graphics:\:D
+#level:31
+#weight:38
+#cost:250
+#alloc:6:31 to 110
+#attack:2d5:0:0
+#armor:0:0
+#flags:THROWING | RETURNING
+#desc:A rotating bladed throwing weapon meant to return to the owner's hand when thrown.
 
 
 ##### Bows, Crossbows, Slings #####
@@ -5664,6 +5709,242 @@ time:50
 desc:A suit with scales of every color, surrounded in a nimbus of perfectly
 desc: untrammelled yet inextricably intermingled and utterly mastered powers
 desc: elemental and ethereal.
+
+#### Bone Weapons ####
+
+#(Skulls are prevented from getting combat bonuses identified by d_char == "~" in obj-make.c)
+name:& Human Skull~
+type:bone
+graphics:~:s
+level:1
+weight:18
+cost:0
+alloc:1:3 to 68
+attack:1d1:0:0
+armor:0:0
+#desc:
+
+name:& Orc Skull~
+type:bone
+graphics:~:s
+level:8
+weight:20
+cost:0
+alloc:1:8 to 56
+attack:1d1:0:0
+armor:0:0
+#desc:
+
+name:& Dwarf Skull~
+type:bone
+graphics:~:s
+level:9
+weight:20
+cost:0
+alloc:1:8 to 58
+attack:1d2:0:0
+armor:0:0
+#desc:
+
+name:& Troll Skull~
+type:bone
+graphics:~:s
+level:15
+weight:30
+cost:5
+alloc:1:15 to 70
+attack:1d2:0:0
+armor:0:0
+#desc:
+
+name:& broken bottle~
+type:bone
+graphics:!:s
+level:1
+weight:3
+cost:0
+alloc:1:1 to 34
+attack:1d2:0:0
+armor:0:0
+#desc:
+
+#Add drops in monster.txt
+name:& Lizard tooth~
+type:bone
+graphics:/:s
+level:9
+weight:23
+cost:11
+alloc:2:9 to 74
+attack:1d3:0:0
+armor:0:0
+flags:THROWING
+desc:It can be used as a dagger in a pinch.
+
+name:& Manticore spike~
+type:bone
+graphics:/:s
+level:30
+weight:22
+cost:11
+alloc:1:30 to 63
+attack:2d4:0:0
+armor:0:0
+flags:THROWING
+desc:It can be used as a dagger in a pinch.
+
+name:& Spider Fang~
+type:bone
+graphics:/:s
+level:13
+weight:23
+cost:43
+alloc:3:9 to 64
+attack:1d3:0:0
+armor:0:0
+brand:POIS_3
+desc:It can be used as a venomous dagger.
+
+name:& Basilisk Fang~
+type:bone
+graphics:/:g
+level:29
+weight:23
+cost:150
+alloc:1:29 to 76
+attack:2d3:0:0
+armor:0:0
+brand:POIS_3
+desc:It can be used as a venomous dagger.
+
+name:& Young Red Dragon Tooth~
+type:bone
+graphics:/:r
+level:12
+weight:26
+cost:65
+alloc:2:11 to 44
+attack:1d3:0:0
+armor:0:0
+brand:FIRE_3
+desc:It can be used as a branded dagger.
+
+name:& Young White Dragon Tooth~
+type:bone
+graphics:/:W
+level:12
+weight:26
+cost:65
+alloc:1:11 to 44
+attack:1d3:0:0
+armor:0:0
+brand:COLD_3
+desc:It can be used as a branded dagger.
+
+name:& Young Black Dragon Tooth~
+type:bone
+graphics:/:o
+level:12
+weight:26
+cost:65
+alloc:1:11 to 44
+attack:1d3:0:0
+armor:0:0
+brand:ACID_3
+desc:It can be used as a branded dagger.
+
+name:& Young Blue Dragon Tooth~
+type:bone
+graphics:/:b
+level:12
+weight:26
+cost:65
+alloc:1:11 to 44
+attack:1d3:0:0
+armor:0:0
+brand:ELEC_3
+desc:It can be used as a branded dagger.
+
+name:& Blue Dragon Tooth~
+type:bone
+graphics:/:b
+level:49
+weight:36
+cost:150
+alloc:1:39 to 84
+attack:2d3:0:0
+armor:0:0
+brand:ELEC_3
+desc:It can be used as a branded dagger.
+
+name:& Red Dragon Tooth~
+type:bone
+graphics:/:r
+level:49
+weight:36
+cost:150
+alloc:2:39 to 84
+attack:2d3:0:0
+armor:0:0
+brand:FIRE_3
+desc:It can be used as a branded dagger.
+
+name:& Black Dragon Tooth~
+type:bone
+graphics:/:o
+level:49
+weight:36
+cost:150
+alloc:1:39 to 84
+attack:2d3:0:0
+armor:0:0
+brand:ACID_3
+desc:It can be used as a branded dagger.
+
+name:& White Dragon Tooth~
+type:bone
+graphics:/:W
+level:49
+weight:36
+cost:150
+alloc:1:39 to 84
+attack:2d3:0:0
+armor:0:0
+brand:COLD_3
+desc:It can be used as a branded dagger.
+
+name:& Boar tusk~
+type:bone
+graphics:/:s
+level:4
+weight:50
+cost:11
+alloc:1:2 to 37
+attack:1d4:0:0
+armor:0:0
+desc:Can be used as a clumsy spear.
+
+name:& Mumak tusk~
+type:bone
+graphics:/:s
+level:35
+weight:90
+cost:74
+alloc:2:34 to 74
+attack:1d7:0:0
+armor:0:0
+desc:Can be used as a large clumsy spear.
+
+name:& Mastodon tusk~
+type:bone
+graphics:/:W
+level:47
+weight:230
+cost:110
+alloc:1:47 to 88
+attack:1d14:0:0
+armor:0:0
+desc:Can be used as a giant clumsy spear.
 
 
 ##### Gold/gems #####

@@ -151,6 +151,17 @@ bool tval_is_ammo(const struct object *obj)
 	}
 }
 
+/* Not for every thrown weapon. These weapons are not as effective in melee. */
+bool tval_is_thrower(const struct object* obj)
+{
+	if (!obj) return false;
+	if (obj->tval == TV_THROWW) return true;
+	/* grenades */
+	if ((obj->tval == TV_FLASK) && (obj->kind->level > 5)) return true;
+
+	return false;
+}
+
 bool tval_is_sharp_missile(const struct object *obj)
 {
 	switch (obj->tval) {
@@ -207,12 +218,17 @@ bool tval_is_weapon(const struct object *obj)
 		case TV_HAFTED:
 		case TV_POLEARM:
 		case TV_DIGGING:
+		case TV_THROWW:
+		case TV_BONE:
 		case TV_STAFF:
 		case TV_BOW:
 		case TV_BOLT:
 		case TV_ARROW:
 		case TV_SHOT:
 			return true;
+		case TV_FLASK:
+			/* grenades */
+			if (obj->kind->level > 4) return true;
 		default:
 			return false;
 	}
@@ -244,6 +260,8 @@ bool tval_is_melee_weapon(const struct object *obj)
 		case TV_POLEARM:
 		case TV_DIGGING:
 		case TV_STAFF:
+		case TV_THROWW:
+		case TV_BONE:
 			return true;
 		default:
 			return false;
@@ -261,6 +279,8 @@ bool tval_has_variable_power(const struct object *obj)
 		case TV_HAFTED:
 		case TV_POLEARM:
 		case TV_SWORD:
+		case TV_THROWW:
+		case TV_BONE:
 		case TV_BOOTS:
 		case TV_GLOVES:
 		case TV_HELM:
@@ -275,6 +295,9 @@ bool tval_has_variable_power(const struct object *obj)
 		case TV_AMULET:
 		case TV_RING:
 			return true;
+		case TV_FLASK:
+			/* grenades */
+			if (obj->kind->level > 4) return true;
 		default:
 			return false;
 	}
@@ -289,6 +312,8 @@ bool tval_is_wearable(const struct object *obj)
 		case TV_POLEARM:
 		case TV_STAFF:
 		case TV_SWORD:
+		case TV_THROWW:
+		case TV_BONE:
 		case TV_BOOTS:
 		case TV_GLOVES:
 		case TV_HELM:

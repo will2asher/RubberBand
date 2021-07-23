@@ -194,7 +194,7 @@ static int damage_dice_power(const struct object *obj)
 	int dice = 0;
 
 	/* Add damage from dice for any wieldable weapon or ammo */
-	if (tval_is_melee_weapon(obj) || tval_is_ammo(obj)) {
+	if (tval_is_melee_weapon(obj) || tval_is_ammo(obj) || tval_is_thrower(obj)) {
 		dice = ((obj->dd * (obj->ds + 1) * DAMAGE_POWER) / 4);
 		log_obj(format("Add %d power for damage dice, ", dice));
 	} else if (wield_slot(obj) != slot_by_name(player, "shooting")) {
@@ -879,7 +879,7 @@ int object_value_real(const struct object *obj, int qty)
 
 		/* Rescale for expendables */
 		if ((tval_is_light(obj) && of_has(obj->flags, OF_BURNS_OUT)
-			 && !obj->ego) || tval_is_ammo(obj)) {
+			 && !obj->ego) || tval_is_ammo(obj) || tval_is_fuel(obj)) {
 			value = value / AMMO_RESCALER;
 		}
 

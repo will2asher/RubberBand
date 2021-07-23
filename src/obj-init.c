@@ -1010,6 +1010,8 @@ static enum parser_error parse_curse_combat(struct parser *p) {
 	curse->obj->to_h = parser_getint(p, "to-h");
 	curse->obj->to_d = parser_getint(p, "to-d");
 	curse->obj->to_a = parser_getint(p, "to-a");
+	curse->obj->weight = parser_getint(p, "weight");
+
 	return PARSE_ERROR_NONE;
 }
 
@@ -1238,7 +1240,7 @@ static struct parser *init_parse_curse(void) {
 	parser_setpriv(p, NULL);
 	parser_reg(p, "name str name", parse_curse_name);
 	parser_reg(p, "type sym tval", parse_curse_type);
-	parser_reg(p, "combat int to-h int to-d int to-a", parse_curse_combat);
+	parser_reg(p, "combat int to-h int to-d int to-a int weight", parse_curse_combat);
 	parser_reg(p, "effect sym eff ?sym type ?int radius ?int other", parse_curse_effect);
 	parser_reg(p, "effect-yx int y int x", parse_curse_effect_yx);
 	parser_reg(p, "dice str dice", parse_curse_dice);

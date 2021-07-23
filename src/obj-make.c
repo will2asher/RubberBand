@@ -774,7 +774,7 @@ static void apply_magic_weapon(struct object *obj, int level, int power)
 		obj->to_h += m_bonus(10, level);
 		obj->to_d += m_bonus(10, level);
 
-		if (tval_is_melee_weapon(obj)) {
+		if (tval_is_melee_weapon(obj) || tval_is_thrower(obj)) {
 			/* Super-charge the damage dice */
 			while ((obj->dd * obj->ds > 0) && one_in_(4 * obj->dd * obj->ds)) {
 				/* More dice or sides means more likely to get still more */
@@ -964,6 +964,10 @@ int apply_magic(struct object *obj, int lev, bool allow_artifacts, bool good,
 	}
 	/* egos and bonuses on staffs should be rare */
 	if ((obj->tval == TV_STAFF) && (!one_in_(4))) power = 0;
+	/* skulls don't get combat bonuses */
+	if ((obj->tval == TV_BONE) && (obj->kind->d_char == '~')) power = 0;
+	/* egos & bonuses less common on bones & broken bottles */
+	else if ((obj->tval == TV_BONE) && (one_in_(3))) power = 0;
 
 	/* Roll for artifact creation */
 	if (allow_artifacts) {
@@ -983,11 +987,16 @@ int apply_magic(struct object *obj, int lev, bool allow_artifacts, bool good,
 			if (make_artifact(obj)) return 3;
 	}
 
+	/* Grenades (almost) always get their FIRE_2 brand if nothing else */
+	if (tval_is_fuel(obj) && obj->kind->level > 4) {
+		if (power || (randint0(100) < 89)) power = 2;
+	}
+
 	/* Try to make an ego item */
 	if (power == 2) make_ego_item(obj, lev);
 
 	/* Give it a chance to be cursed */
-	if (one_in_(20) && tval_is_wearable(obj)) {
+	if (one_in_(20) && (tval_is_wearable(obj) || tval_is_thrower(obj))) {
 		lev = apply_curse(obj, lev);
 	}
 

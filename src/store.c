@@ -753,6 +753,8 @@ static void mass_produce(struct object *obj)
 		case TV_POLEARM:
 		case TV_HAFTED:
 		case TV_DIGGING:
+		case TV_THROWW:
+		case TV_BONE:
 		case TV_BOW:
 		{
 			if (obj->ego) break;
@@ -1196,8 +1198,9 @@ static bool store_create_random(struct store *store)
 
 		/*** Pre-generation filters ***/
 
-		/* No chests in stores XXX */
+		/* No chests or bones in stores XXX */
 		if (kind->tval == TV_CHEST) continue;
+		if (kind->tval == TV_BONE) continue;
 
 		/*** Generate the item ***/
 
@@ -1551,6 +1554,8 @@ int find_inven(const struct object *obj)
 			case TV_HAFTED:
 			case TV_POLEARM:
 			case TV_SWORD:
+			case TV_THROWW:
+			case TV_BONE:
 			case TV_BOOTS:
 			case TV_GLOVES:
 			case TV_HELM:

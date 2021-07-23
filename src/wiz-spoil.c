@@ -186,7 +186,7 @@ static void kind_info(char *buf, size_t buf_len, char *dam, size_t dam_len,
 	dam[0] = '\0';
 
 	/* Damage */
-	if (tval_is_ammo(obj) || tval_is_melee_weapon(obj))
+	if (tval_is_ammo(obj) || tval_is_melee_weapon(obj) || tval_is_thrower(obj))
 		strnfmt(dam, dam_len, "%dd%d", obj->dd, obj->ds);
 	else if (tval_is_armor(obj))
 		strnfmt(dam, dam_len, "%d", obj->ac);

@@ -2,7 +2,7 @@
 
 # name: effect name
 # type: valid object base
-# combat: to_hit : to_dam : to_ac
+# combat: to_hit : to_dam : to_ac : weight
 # effect: random effect : ? parameter : ? parameter : ? parameter
 # dice:dice string
 # expr:dice expression
@@ -69,7 +69,7 @@
 # used to specify all of the conflicting flags.
 
 name:vulnerability
-combat:0:0:-50
+combat:0:0:-50:-2
 type:cloak
 type:soft armor
 type:hard armor
@@ -105,12 +105,12 @@ values:STR[-5] | DEX[-5] | CON[-5]
 desc:makes you frail
 
 name:enveloping
-combat:-5:-5:20
+combat:-5:-5:20:4
 type:cloak
 desc:protects you at the expense of free movement
 
 name:irritation
-combat:-15:-15:0
+combat:-15:-15:0:0
 type:cloak
 flags:AGGRAVATE
 desc:annoys monsters and makes it hard for you to hit them
@@ -142,6 +142,7 @@ type:digger
 type:hafted
 type:polearm
 type:sword
+type:bone
 type:boots
 type:gloves
 type:helm
@@ -165,6 +166,7 @@ type:digger
 type:hafted
 type:polearm
 type:sword
+type:bone
 type:boots
 type:gloves
 type:helm
@@ -188,6 +190,7 @@ type:digger
 type:hafted
 type:polearm
 type:sword
+type:bone
 type:boots
 type:gloves
 type:helm
@@ -242,6 +245,7 @@ type:digger
 type:hafted
 type:polearm
 type:sword
+type:bone
 effect:SUMMON:DEMON
 dice:1
 time:1d500
@@ -253,6 +257,7 @@ type:digger
 type:hafted
 type:polearm
 type:sword
+type:bone
 effect:SUMMON:UNDEAD
 dice:1
 time:1d500
@@ -311,6 +316,7 @@ type:digger
 type:hafted
 type:polearm
 type:sword
+type:throwing weapon
 effect:DAMAGE
 dice:$B
 expr:B:WEAPON_DAMAGE:+ 0
@@ -359,15 +365,26 @@ type:dragon armor
 type:light
 type:amulet
 type:ring
-combat:0:0:20
+combat:0:0:20:0
 values:RES_ELEC[-1] | RES_SHARD[1]
 desc:makes your skin harder to damage, but conduct electricity
 
 name:air swing
-combat:-20:0:0
+combat:-20:0:0:-4
 type:digger
 type:hafted
 type:polearm
 type:sword
+type:throwing weapon
 desc:makes it hard to hit anything
 
+name:heaviness
+combat:-4:5:0:100
+values:STR[1] | DEX[-3]
+type:bow
+type:throwing weapon
+type:boots
+type:shield
+type:hard armor
+type:dragon armor
+desc:weighs you down

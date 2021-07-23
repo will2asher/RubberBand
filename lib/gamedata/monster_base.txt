@@ -268,7 +268,7 @@ desc:Naga
 name:nulx
 glyph:N
 pain:2
-flags:BASH_DOOR | CLEAR_WEB | RUBBER
+flags:BASH_DOOR | CLEAR_WEB
 flags:IM_ACID | IM_WATER | IM_SLIME | WATER_HIDE
 desc:Nulx (swamp monsters) and other tentacled horrors
 #(WATER_HIDE isn't finished yet)

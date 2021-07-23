@@ -1678,7 +1678,7 @@ void calc_digging_chances(struct player_state *state, int chances[DIGGING_MAX])
  *
  * N.B. state->num_blows is now 100x the number of blows.
  */
-int calc_blows(struct player *p, const struct object *obj,
+int calc_blows(struct player *p, struct object *obj,
 			   struct player_state *state, int extra_blows)
 {
 	int blows;
@@ -1691,6 +1691,11 @@ int calc_blows(struct player *p, const struct object *obj,
 
 	/* Enforce a minimum "weight" (tenth pounds) */
 	div = (weight < min_weight) ? min_weight : weight;
+
+	if (obj) { /* (to prevent NULL pointer error when there's no obj) */
+		/* Throwing weapons aren't as effective in melee and Bones are cumbersome as weapons */
+		if (tval_is_thrower(obj) || (obj->tval == TV_BONE)) div = div * 3;
+	}
 
 	/* Get the strength vs weight */
 	str_index = adj_str_blow[state->stat_ind[STAT_STR]] *
@@ -1706,6 +1711,9 @@ int calc_blows(struct player *p, const struct object *obj,
 	blow_energy = blows_table[str_index][dex_index];
 
 	blows = MIN((10000 / blow_energy), (100 * p->class->max_attacks));
+
+	/* Throwing weapons aren't as effective in melee */
+	if ((tval_is_thrower(obj)) && (blows > 3)) blows = 3;
 
 	/* Require at least one blow, two for O-combat */
 	return MAX(blows + (100 * extra_blows),
@@ -1974,7 +1982,7 @@ void calc_bonuses(struct player *p, struct player_state *state, bool known_only,
 					state->to_d += obj->to_d;
 				}
 			}
-			/* Any weapon in shield slot can be used for blocking at least a little bit */
+			/* Any weapon in shield slot can be used for blocking at least a little bit (?) */
 			if (slot_type_is(i, EQUIP_SHIELD) && (tval_is_melee_weapon(obj))) state->ac++;
 
 			/* Move to any unprocessed curse object */

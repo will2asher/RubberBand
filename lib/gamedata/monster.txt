@@ -375,6 +375,7 @@ experience:0
 blow:DROOL
 flags:MALE | ROAM | GOODMON
 flags:RAND_25 | OPEN_DOOR | TAKE_ITEM
+drop:bone:Human Skull:2:1:1
 #NON_AGR
 desc:Ugly doesn't begin to describe him.
 
@@ -393,6 +394,8 @@ experience:0
 blow:DROOL
 flags:MALE | ROAM
 flags:RAND_25 | TAKE_ITEM
+drop:bone:Human Skull:2:1:1
+drop:bone:broken bottle:3:1:1
 desc:Drooling and comical, but then, what do you expect?
 
 name:pitiful hungry beggar
@@ -410,6 +413,7 @@ experience:0
 blow:BEG
 flags:MALE | ROAM | GOODMON
 flags:RAND_25 | OPEN_DOOR | TAKE_ITEM
+drop:bone:Human Skull:2:1:1
 #NONAGR
 desc:You just can't help feeling sorry for him.
 
@@ -468,6 +472,8 @@ flags:MALE | ROAM | GOODMON
 flags:DROP_40 | ONLY_GOLD
 flags:RAND_50 | OPEN_DOOR | TAKE_ITEM
 #NONAGR
+drop:bone:Human Skull:1:1:1
+drop:bone:broken bottle:40:1:1
 desc:He makes you glad to be sober.
 
 name:aimless-looking merchant
@@ -510,6 +516,7 @@ blow:HIT:HURT:1d10
 flags:MALE | S_EVIL2
 flags:DROP_40 | ROAM
 flags:RAND_50 | OPEN_DOOR | BASH_DOOR | TAKE_ITEM
+drop:bone:Human Skull:2:1:1
 desc:No job is too low for him.
 
 name:village witch
@@ -530,6 +537,7 @@ flags:FEMALE | EVIL | TOWN_OR_DUN | ROAM
 flags:DROP_40 | ONLY_ITEM
 flags:RAND_25 | OPEN_DOOR | BASH_DOOR | TAKE_ITEM
 #(has spell power line to prevent spell power of zero)
+drop:bone:Human Skull:4:1:1
 spell-freq:11
 spell-power:1
 spells:HEAL | WOUND | BA_POIS | CURSE_PC
@@ -644,6 +652,7 @@ blow:HIT:HURT:1d6
 flags:UNIQUE | MALE | EVIL | FORCE_SLEEP | TOWN_OR_DUN
 flags:ONLY_ITEM | DROP_1 | ROAM
 flags:OPEN_DOOR | BASH_DOOR | TAKE_ITEM
+drop:bone:Human Skull:2:1:1
 friends:35:1d1:squint-eyed rogue
 friends:45:1d3:mean-looking mercenary
 desc:Gatekeeper of Bree and one of Bill Ferny's bandits.
@@ -959,6 +968,7 @@ blow:HIT:HURT:1d7
 blow:HIT:HURT:1d7
 flags:MALE | S_EVIL1 | OPEN_DOOR
 flags:DROP_60
+drop:bone:Human Skull:2:1:1
 friends-base:20:1d3:person
 friends-base:40:1d3:person
 friends-base:80:1d3:person
@@ -983,6 +993,7 @@ flags:MALE | S_EVIL2
 flags:DROP_40
 flags:OPEN_DOOR | TAKE_ITEM
 drop:scroll:Phase Door:35:1:2
+drop:bone:Human Skull:2:1:1
 friends-base:20:1d3:person
 friends-base:40:1d3:person
 friends-base:80:1d3:person
@@ -1008,6 +1019,7 @@ flags:DROP_40 | OPEN_DOOR
 spell-freq:12
 spells:HEAL | SCARE
 drop-base:prayer book:5:1:1
+drop:bone:Human Skull:2:1:1
 friends-base:20:1d3:person
 friends-base:40:1d3:person
 friends-base:80:1d3:person
@@ -1033,6 +1045,7 @@ flags:DROP_40 | OPEN_DOOR
 spell-freq:12
 spells:BLIND | BLINK | CONF | MISSILE
 drop-base:magic book:5:1:1
+drop:bone:Human Skull:2:1:1
 friends-base:20:1d3:person
 friends-base:40:1d3:person
 friends-base:80:1d3:person
@@ -1132,8 +1145,10 @@ experience:4
 blow:HIT:HURT:1d8
 flags:TAKE_ITEM | BASH_DOOR | MALE | TOWN_OR_DUN
 flags:RAND_25 | DROP_40 | ONLY_ITEM
-desc:A quiet and easily-angered drunkard who often wonders into the dungeon to see if the kobolds
-desc: have better booze.
+drop:bone:Human Skull:2:1:1
+drop:bone:broken bottle:4:1:1
+desc:A quiet and easily-angered drunkard who often wonders into the dungeon to see if the
+desc: kobolds have better booze.
 
 name:Grip, Farmer Maggot's Dog
 base:canine
@@ -1359,6 +1374,7 @@ blow:HIT:HURT:1d4
 blow:TOUCH:EAT_GOLD
 flags:MALE | S_EVIL1 | TOWN_OR_DUN
 flags:DROP_60 | TAKE_ITEM | ROAM
+drop:bone:broken bottle:2:1:1
 desc:A short little guy, in bedraggled clothes.  He appears to be looking for a
 desc: good tavern.
 
@@ -1575,6 +1591,7 @@ spell-freq:11
 spells:ARROW | HASTE
 drop-base:nature book:3:1:1
 drop-base:arrow:4:2:10
+drop:bone:Human Skull:2:1:1
 friends-base:20:1d3:person
 friends-base:35:1d3:person
 friends-base:80:1d3:person
@@ -1598,6 +1615,7 @@ blow:HIT:HURT:1d7
 blow:HIT:HURT:1d7
 flags:MALE | FORCE_SLEEP
 flags:DROP_60 | OPEN_DOOR | GOODMON
+drop:bone:Human Skull:2:1:1
 spell-freq:10
 spells:HEAL
 drop-base:prayer book:3:1:1
@@ -1623,6 +1641,7 @@ experience:17
 blow:HIT:HURT:1d2
 blow:HIT:HURT:1d2
 flags:OPEN_DOOR | FORCE_SLEEP | GOODMON
+drop:bone:Human Skull:2:1:1
 spell-freq:8
 spells:HASTE | SLOW | CONF
 drop-base:nature book:5:1:1
@@ -1950,8 +1969,7 @@ sleepiness:1
 depth:5
 rarity:3
 experience:15
-flags:NEVER_MOVE | NEVER_BLOW
-flags:SCALE
+flags:NEVER_MOVE | NEVER_BLOW | SCALE
 innate-freq:5
 spells:ARROW
 desc:A piece of Angband's defence system.
@@ -2266,6 +2284,7 @@ experience:15
 blow:HIT:HURT:1d8
 flags:DROP_20
 flags:HURT_LIGHT | ROAM
+drop:bone:Orc Skull:1:1:1
 innate-freq:15
 spells:ARROW
 friends:30:1d3:Crow
@@ -2472,6 +2491,7 @@ experience:23
 blow:HIT:HURT:1d8
 blow:CRUSH:HURT:2d4
 flags:DROP_40 | RAND_25 | HURT_LIGHT | ORC | SILLY
+drop:bone:Orc Skull:1:1:1
 desc:A large serpent with the torso of a lesser orc. It's a snaga naga.
 
 name:poison sprite
@@ -2631,6 +2651,7 @@ rarity:1
 experience:20
 blow:HIT:HURT:1d8
 flags:DROP_20 | HURT_LIGHT
+drop:bone:Orc Skull:1:1:1
 innate-freq:13
 spells:ARROW
 friends:50:1d8:snaga
@@ -2673,7 +2694,27 @@ rarity:2
 experience:33
 blow:BITE:HURT:1d6
 blow:BITE:HURT:1d6
+drop:bone:Lizard tooth:1:1:1
 desc:It is a black lizard with overlapping scales and a powerful jaw.
+
+name:cave boar
+base:quadruped
+color:B
+speed:114
+hit-points:33
+size:3
+hearing:20
+smell:20
+armor-class:38
+sleepiness:14
+depth:7
+rarity:5
+experience:27
+blow:BUTT:HURT:4d2
+blow:BUTT:HURT:2d3
+flags:ANIMAL | ROAM
+drop:bone:Boar tusk:3:1:1
+desc:A wild animal which becomes good food when cooked.
 
 name:eastern dwarf
 plural:eastern dwarves
@@ -2692,7 +2733,8 @@ blow:HIT:HURT:1d6
 blow:HIT:HURT:1d6
 flags:MALE | S_EVIL2 | ROAM
 flags:DROP_60 | FORCE_SLEEP
-spell-freq:10
+drop:bone:Dwarf Skull:2:1:1
+spell-freq:11
 spells:CONF | DARKNESS
 desc:A dwarf of one of the eastern kindreds who has fallen under the sway of
 desc: Morgoth.
@@ -2716,6 +2758,7 @@ blow:CLAW:HURT:1d4
 blow:BITE:HURT:1d6
 flags:NO_FEAR | REGENERATE | BASH_DOOR
 flags:CLIGHT | WATER_HIDE
+drop:bone:Lizard tooth:1:1:1
 desc:A less magical form of the water-dwelling zhelung-lizard.
 
 name:baby salamander
@@ -2895,6 +2938,7 @@ blow:HIT:HURT:2d5
 flags:ORC | EMPTY_MIND
 flags:OPEN_DOOR | BASH_DOOR
 flags-off:NO_STUN | NO_CONF
+drop:bone:Orc Skull:10:1:1
 desc:It is an animated orc skeleton.
 
 name:lemure
@@ -2932,6 +2976,7 @@ experience:24
 blow:HIT:HURT:1d8
 flags:DROP_20
 flags:HURT_LIGHT
+drop:bone:Orc Skull:1:1:1
 innate-freq:12
 spells:ARROW
 friends:45:1d2:Same
@@ -2951,6 +2996,7 @@ rarity:3
 experience:27
 blow:HIT:POISON:1d4
 flags:SMART | S_EVIL1 | DROP_40 | TAKE_ITEM
+drop:bone:Human Skull:2:1:1
 spell-freq:8
 spells:BLINK | CONF | BA_POIS | HEAL
 drop-base:potion:70:1:2
@@ -2974,6 +3020,8 @@ blow:HIT:HURT:2d4
 flags:MALE | S_EVIL2
 flags:DROP_1 | TAKE_ITEM
 drop-base:shot:3:2:11
+drop:bone:Human Skull:2:1:1
+drop:bone:broken bottle:1:1:1
 innate-freq:8
 spells:SHOT | WHIP
 desc:An uncultured brute with a club, a sling and a whip.
@@ -3086,6 +3134,7 @@ blow:INSULT:LOSE_INT:1d1
 flags:UNIQUE | MALE | EVIL | ROAM
 flags:DROP_1 | DROP_GOOD | DROP_GREAT | ONLY_ITEM
 flags:OPEN_DOOR | TAKE_ITEM | FORCE_SLEEP
+drop:bone:Human Skull:2:1:1
 spell-freq:6
 spells:HEAL | SLOW | TRAPS | BA_POIS 
 desc:He's been spying for Saruman. He is a snivelling wretch with no morals and
@@ -3111,6 +3160,7 @@ blow:HIT:HURT:1d10
 blow:HIT:HURT:1d10
 flags:UNIQUE | HURT_LIGHT
 flags:DROP_1 | DROP_GOOD | ONLY_ITEM
+drop:bone:Orc Skull:1:1:1
 friends:80:3d4:Wolf
 friends:100:5d4:snaga:servant
 desc:A captain of a regiment of weaker orcs, Lagduf keeps his troop in order
@@ -3220,6 +3270,7 @@ flags:DROP_60 | ROAM
 flags:HURT_LIGHT | FORCE_SLEEP
 drop-base:magic book:5:1:1
 drop-base:shadow book:5:1:1
+drop:bone:Orc Skull:1:1:1
 spell-freq:8
 spells:BLINK | WOUND | MISSILE
 #HEAL_KIN?
@@ -3337,6 +3388,7 @@ blow:HIT:HURT:1d5
 blow:HIT:HURT:1d6
 flags:MALE | DROP_60 | KEEP_DIST
 drop-base:arrow:10:4:18
+drop:bone:Human Skull:2:1:1
 innate-freq:3
 spells:ARROW
 friends:20:1d3:ruffian
@@ -3411,6 +3463,7 @@ blow:CLAW:HURT:1d3
 blow:BITE:HURT:1d5
 flags:DROP_40 | DROP_1 | ONLY_GOLD
 flags:OPEN_DOOR | BASH_DOOR | IM_ELEC
+drop:bone:Young Blue Dragon Tooth:2:1:1
 innate-freq:12
 spells:BR_ELEC
 desc:This hatchling dragon is still soft, its eyes unaccustomed to light and its
@@ -3434,6 +3487,7 @@ blow:CLAW:HURT:1d3
 blow:BITE:HURT:1d5
 flags:DROP_40 | DROP_1 | ONLY_GOLD
 flags:OPEN_DOOR | BASH_DOOR | IM_COLD
+drop:bone:Young White Dragon Tooth:2:1:1
 innate-freq:12
 spells:BR_COLD
 desc:This hatchling dragon is still soft, its eyes unaccustomed to light and its
@@ -3482,6 +3536,7 @@ blow:BITE:HURT:1d5
 flags:DROP_40 | DROP_1 | ONLY_GOLD
 flags:OPEN_DOOR | BASH_DOOR
 flags:IM_ACID
+drop:bone:Young Black Dragon Tooth:2:1:1
 innate-freq:12
 spells:BR_ACID
 desc:This hatchling dragon is still soft, its eyes unaccustomed to light and its
@@ -3506,6 +3561,7 @@ blow:BITE:HURT:1d5
 flags:DROP_40 | DROP_1 | ONLY_GOLD
 flags:OPEN_DOOR | BASH_DOOR
 flags:IM_FIRE
+drop:bone:Young Red Dragon Tooth:2:1:1
 innate-freq:12
 spells:BR_FIRE
 desc:This hatchling dragon is still soft, its eyes unaccustomed to light and its
@@ -3550,6 +3606,7 @@ experience:90
 blow:BUTT:HURT:4d4
 blow:BUTT:HURT:8d2
 flags:UNIQUE | ANIMAL | NO_SLEEP | ROAM
+drop:bone:Boar tusk:3:1:1
 desc:A large legendary boar which has killed or escaped from many skilled hunters.
 
 name:Brodda, the Easterling
@@ -3571,6 +3628,7 @@ blow:HIT:HURT:1d12
 blow:HIT:HURT:1d12
 flags:UNIQUE | MALE 
 flags:DROP_1 | DROP_GOOD | ONLY_ITEM
+drop:bone:Human Skull:2:1:1
 desc:A nasty piece of work, Brodda picks on defenseless women and children.
 
 ### Dungeon level 10 ###
@@ -3637,6 +3695,7 @@ blow:BITE:POISON:1d7
 blow:BITE:POISON:1d7
 flags:ANIMAL | WEIRD_MIND | BASH_DOOR
 flags:IM_POIS
+drop:bone:Spider Fang:2:1:1
 innate-freq:10
 spells:WEAVE
 desc:It is a vast black spider whose bulbous body is bloated with poison.
@@ -3781,6 +3840,7 @@ experience:31
 blow:HIT:HURT:1d8
 blow:HIT:HURT:1d4
 flags:EMPTY_MIND | NO_FEAR
+drop:bone:Human Skull:2:1:1
 desc:It is a shambling human corpse dropping chunks of flesh behind it.
 
 name:blacklock mage
@@ -3797,9 +3857,9 @@ rarity:1
 experience:46
 blow:HIT:HURT:1d6
 blow:HIT:HURT:1d6
-flags:MALE | EVIL
+flags:MALE | EVIL | FORCE_SLEEP
 flags:DROP_60 | ONLY_ITEM
-flags:FORCE_SLEEP
+drop:bone:Dwarf Skull:2:1:1
 spell-freq:5
 spells:BLIND | CONF | DARKNESS | MISSILE
 spells:BA_POIS
@@ -3822,8 +3882,8 @@ rarity:1
 experience:50
 blow:HIT:HURT:1d8
 blow:HIT:HURT:1d8
-flags:MALE | EVIL
-flags:DROP_60
+flags:MALE | EVIL | DROP_60
+drop:bone:Dwarf Skull:2:1:1
 desc:A dwarf of the east in a coat of iron rings and wielding an axe.
 
 name:wererabbit
@@ -3896,6 +3956,7 @@ blow:HIT:HURT:1d12
 blow:HIT:HURT:1d10
 flags:UNIQUE
 flags:DROP_1 | DROP_GOOD | ONLY_ITEM
+drop:bone:Orc Skull:1:1:1
 friends:50:2d5:snaga:servant
 friends:80:2d7:Wolf
 friends:100:5d4:Hill orc:servant
@@ -3941,6 +4002,7 @@ blow:HIT:HURT:1d7
 blow:HIT:HURT:2d4
 flags:DROP_20 | KEEP_DIST
 drop-base:arrow:2:2:9
+drop:bone:Orc Skull:1:1:1
 innate-freq:5
 spells:ARROW
 friends:46:2d4:snaga
@@ -3967,6 +4029,7 @@ experience:39
 blow:HIT:HURT:2d3
 flags:FEMALE | EVIL | SMART
 flags:DROP_1 | TAKE_ITEM
+drop:bone:Human Skull:4:1:1
 innate-freq:6
 spell-freq:6
 spells:WHIP
@@ -3996,6 +4059,7 @@ experience:31
 blow:HIT:HURT:1d8
 blow:HIT:FIRE:1d4
 flags:DROP_20 | HURT_LIGHT | ROAM
+drop:bone:Orc Skull:1:1:1
 friends:40:1d3:Same
 friends:60:3d3:cave orc
 desc:A cave orc duel-weilding a torch along with his orcish sword.
@@ -4035,6 +4099,7 @@ blow:HIT:HURT:1d6
 blow:HIT:HURT:1d8
 flags:ORC | EMPTY_MIND
 flags:NO_FEAR
+drop:bone:Orc Skull:1:1:1
 desc:It is a shambling orcish corpse leaving behind a trail of flesh.
 
 name:orangatan
@@ -4245,6 +4310,10 @@ flags:DROP_40 | DROP_1 | ONLY_GOLD
 flags:OPEN_DOOR | BASH_DOOR
 flags:IM_ACID | IM_COLD | IM_ELEC | IM_FIRE | IM_POIS
 flags:ATTR_MULTI
+drop:bone:Young Red Dragon Tooth:1:1:1
+drop:bone:Young Black Dragon Tooth:1:1:1
+drop:bone:Young Blue Dragon Tooth:1:1:1
+drop:bone:Young White Dragon Tooth:1:1:1
 innate-freq:12
 spells:BR_ACID | BR_COLD | BR_ELEC | BR_FIRE | BR_POIS
 desc:This hatchling dragon is still soft, its eyes unaccustomed to light and its
@@ -4307,6 +4376,7 @@ blow:HIT:HURT:1d5
 flags:MALE | DROP_60
 flags:FORCE_SLEEP
 #KEEP_DIST?
+drop:bone:Human Skull:1:1:1
 spell-freq:4
 spells:BLINK | DARKNESS | MISSILE
 spells:BO_COLD | S_MONSTER
@@ -4335,6 +4405,7 @@ blow:HIT:HURT:1d10
 flags:UNIQUE | NO_SLEEP
 flags:DROP_2 | ONLY_ITEM 
 #flags:IM_COLD | IM_ELEC | IM_FIRE | IM_POIS Why did he have these?
+drop:bone:Orc Skull:1:1:1
 friends:50:4d4:snaga:servant
 friends:80:2d7:Warg
 friends:30:1d1:Bullroarer the Hobbit
@@ -4425,6 +4496,7 @@ experience:38
 blow:HIT:HURT:1d9
 flags:EMPTY_MIND | ROAM
 flags:OPEN_DOOR | BASH_DOOR
+drop:bone:Human Skull:10:1:1
 desc:A reanimated skeliton, controlled by magic.
 
 name:moaning spirit
@@ -4471,6 +4543,7 @@ spells:HEAL | SCARE | HEAL_KIN
 spells:BA_LIGHT | BA_HOLY | S_KIN
 drop-base:prayer book:8:1:1
 drop-base:prayer book:8:1:1
+drop:bone:Human Skull:2:1:1
 friends:40:1d3:archer
 friends:50:1d2:Illusionist
 friends:50:1d3:warrior
@@ -4493,6 +4566,7 @@ blow:HIT:HURT:1d9
 blow:HIT:HURT:1d10
 flags:MALE | EVIL | SMART | FORCE_SLEEP
 flags:DROP_1 | ONLY_ITEM
+drop:bone:Dwarf Skull:2:1:1
 spell-freq:5
 spells:BLIND | WOUND | CONF | DARKNESS | HEAL
 drop-base:shadow book:8:1:1
@@ -4518,6 +4592,7 @@ flags:MALE | S_EVIL1 | DROP_1
 innate-freq:10
 spells:BOLT
 drop-base:bolt:3:2:11
+drop:bone:Human Skull:2:1:1
 friends:35:1d2:Illusionist
 friends:35:1d2:Priest
 friends:35:1d3:archer
@@ -4684,6 +4759,7 @@ blow:CLAW:HURT:1d4
 blow:BITE:HURT:1d5
 blow:TAIL:HURT:1d3
 flags:BASH_DOOR | ROAM | CLIGHT | WATER_HIDE
+drop:bone:Lizard tooth:1:1:1
 friends:40:2d3:Same
 desc:A type of zhelung-lizard which is much like a reptillian wolf with a spiked tail.
 
@@ -4930,6 +5006,7 @@ experience:50
 blow:HIT:HURT:2d3
 flags:MALE | S_EVIL1 | SMART | FORCE_SLEEP
 flags:DROP_1 | OPEN_DOOR | ROAM
+drop:bone:Human Skull:2:1:1
 spell-freq:3
 spells:BLIND | BLINK | CONF | DARKNESS | HASTE | HOLD
 spells:SLOW | TPORT | TINVIS
@@ -4959,6 +5036,7 @@ blow:HIT:HURT:2d4
 blow:HIT:HURT:2d4
 flags:MALE | SMART | ROAM
 flags:DROP_1 | OPEN_DOOR | FORCE_SLEEP
+drop:bone:Human Skull:2:1:1
 spell-freq:4
 spells:BLIND | HASTE | SLOW | CONF
 spells:BO_POIS | BO_FIRE | SHAPECHANGE
@@ -5053,6 +5131,7 @@ blow:HIT:HURT:3d4
 blow:HIT:HURT:3d4
 flags:UNIQUE
 flags:DROP_1 | DROP_GOOD | ONLY_ITEM
+drop:bone:Orc Skull:1:1:1
 friends:16:1d2:orc zombie
 friends:45:1d2:orc shaman
 friends:70:2d2:hill orc
@@ -5097,6 +5176,7 @@ experience:50
 blow:HIT:HURT:1d8
 blow:HIT:HURT:1d6
 flags:BASH_DOOR | ROAM
+drop:bone:Human Skull:1:1:1
 desc:A shambling humanoid monster with long scars, it was put together
 desc: from choice pieces of different human corpses and brought to life with a
 desc: lightning bolt.
@@ -5116,6 +5196,7 @@ rarity:2
 experience:48
 blow:BITE:HURT:10d3
 flags:BASH_DOOR | HURT_COLD | IM_WATER | WATER_HIDE
+drop:bone:Lizard tooth:1:1:1
 desc:A large swamp-dwelling lizard with extremely powerful jaws.
 
 name:lurker
@@ -5195,6 +5276,7 @@ blow:HIT:HURT:2d4
 blow:HIT:HURT:2d4
 flags:ORC | EMPTY_MIND
 flags:DROP_20 | NO_FEAR
+drop:bone:Orc Skull:1:1:1
 desc:It is an orcish figure covered in wrappings.
 
 name:large tan bat
@@ -5386,6 +5468,7 @@ blow:HIT:HURT:3d4
 blow:HIT:HURT:3d4
 flags:UNIQUE
 flags:DROP_1 | DROP_GOOD | ONLY_ITEM
+drop:bone:Orc Skull:1:1:1
 friends:35:1d1:Radbug of Cirith Ungol
 friends:22:1d2:orc shaman
 friends:65:2d3:hill orc
@@ -5606,6 +5689,7 @@ friends:35:2d3:hill orc
 friends:60:2d4:Warg
 friends:50:1d2:orc tracker
 friends:95:3d5:Same
+drop:bone:Orc Skull:1:1:1
 desc:He is a hideous deformed cross-breed with man and orc, combining man's
 desc: strength and cunning with orcish brutality.  The traitorous wizard Saruman is
 desc: generally believed to be responsible for this abomination.
@@ -5652,6 +5736,7 @@ blow:BITE:POISON:2d3
 blow:BITE:POISON:1d9
 flags:ANIMAL | WEIRD_MIND | BASH_DOOR
 flags:IM_POIS
+drop:bone:Spider Fang:2:1:1
 desc:A giant, fast-moving spider with hairy black and red legs.
 
 name:griffon
@@ -5771,6 +5856,7 @@ blow:BITE:HURT:2d6
 flags:DROP_1 | DROP_20 | MOVE_BODY | IM_FIRE
 flags:ANIMAL | OPEN_DOOR | BASH_DOOR | SCALE
 flags-off:EVIL
+drop:bone:Young Red Dragon Tooth:2:1:1
 innate-freq:10
 spells:BR_FIRE
 friends:16:1d5:Same
@@ -5883,6 +5969,7 @@ experience:60
 blow:HIT:HURT:3d5
 blow:HIT:HURT:3d5
 flags:DROP_20 | ROAM
+drop:bone:Orc Skull:1:1:1
 innate-freq:9
 spells:ARROW | WHIP
 friends:40:1d4:half-orc
@@ -5936,6 +6023,7 @@ flags:DROP_1 | OPEN_DOOR | TAKE_ITEM
 innate-freq:8
 spells:SHOT
 drop:scroll:Phase Door:70:2:5
+drop:bone:Human Skull:2:1:1
 friends:22:1d2:Priest
 friends:26:1d2:ruffian
 friends:45:1d2:Illusionist
@@ -6121,6 +6209,7 @@ blow:HIT:HURT:3d5
 flags:UNIQUE | MALE | EVIL
 flags:DROP_60 | DROP_GOOD | ONLY_ITEM
 flags:OPEN_DOOR | TAKE_ITEM
+drop:bone:Human Skull:2:1:1
 friends:11:1d1:Easterling champion:servant
 friends:90:1d4:warrior:servant
 desc:A short and swarthy Easterling.
@@ -6191,6 +6280,7 @@ blow:HIT:HURT:1d4
 blow:BITE:HURT:1d6
 flags:MALE | HURT_LIGHT | REGENERATE
 flags:DROP_20
+drop:bone:Troll Skull:1:1:1
 friends:98:4d4:Same
 desc:He is green skinned, ugly and stupid.
 
@@ -6286,6 +6376,7 @@ experience:58
 blow:HIT:HURT:2d8
 flags:MALE | S_EVIL2 | ROAM
 flags:BASH_DOOR | DROP_1 | KILL_WALL
+drop:bone:Dwarf Skull:2:1:1
 desc:A dwarf of the east mining for gold, wielding a dwarvish mattock.
 
 name:silver dust bunny
@@ -6430,6 +6521,7 @@ blow:HIT:HURT:3d5
 flags:UNIQUE | MALE | FORCE_SLEEP | ROAM
 flags:DROP_1 | DROP_GOOD | ONLY_ITEM
 flags:IM_COLD | IM_FIRE | IM_POIS | NO_CONF | NO_SLEEP | NO_HOLD
+drop:bone:Dwarf Skull:2:1:1
 spell-freq:6
 spells:BLIND | WOUND | CONF | HEAL | MIND_BLAST
 desc:The friend and companion of the dwarven king Thrór, he went mad with grief
@@ -6493,6 +6585,7 @@ blow:HIT:HURT:3d5
 blow:HIT:HURT:3d5
 blow:HIT:HURT:3d5
 flags:DROP_60
+drop:bone:Orc Skull:1:1:1
 innate-freq:9
 spells:ARROW
 friends:30:1d5:Wolf
@@ -6522,6 +6615,7 @@ experience:75
 blow:HIT:HURT:4d5
 blow:HIT:HURT:5d5
 flags:MALE | S_EVIL2 | DROP_40 | TAKE_ITEM
+drop:bone:Human Skull:2:1:1
 innate-freq:11
 spells:ARROW
 friends:76:3d3:same
@@ -6544,6 +6638,7 @@ blow:HIT:HURT:3d5
 blow:HIT:HURT:3d5
 flags:MALE | EVIL | ROAM
 flags:DROP_1 | FORCE_SLEEP
+drop:bone:Human Skull:3:1:1
 innate-freq:6
 spell-freq:12
 spells:DARKNESS | SCARE 
@@ -6579,6 +6674,7 @@ flags:OPEN_DOOR | BASH_DOOR | TAKE_ITEM
 flags:IM_ACID | IM_COLD | IM_FIRE | IM_POIS
 flags:NO_CONF | NO_SLEEP
 flags-off:HURT_COLD
+drop:bone:Human Skull:1:1:1
 desc:It is a strange, vast gelatinous structure that assumes cubic proportions
 desc: as it lines all four walls of the corridors it patrols.  Through its
 desc: transparent jelly structure you can see treasures it has engulfed, and a
@@ -6846,6 +6942,7 @@ blow:HIT:HURT:3d6
 blow:HIT:HURT:3d6
 flags:UNIQUE | MOVE_BODY | ROAM
 flags:DROP_1 | DROP_40 | DROP_GOOD | ONLY_ITEM
+drop:bone:Orc Skull:1:1:1
 friends:50:3d4:cave orc:servant
 friends:80:2d7:Warg
 friends:100:2d2:orc tracker:servant
@@ -6967,6 +7064,7 @@ blow:HIT:HURT:3d5
 flags:MALE | SMART | DROP_1 | DROP_20
 flags:IM_POIS | TAKE_ITEM | NO_SLEEP
 flags:KEEP_DIST | S_EVIL2 | ROAM | SCALE
+drop:bone:Human Skull:2:1:1
 #DISGUISE
 spell-freq:6
 innate-freq:7
@@ -6995,6 +7093,8 @@ blow:HIT:LOSE_CON:1d9
 flags:EVIL | MALE | DROP_1 | SMART | IM_POIS
 flags:TAKE_ITEM | NO_SLEEP | NO_FEAR
 flags:ROAM | SCALE
+drop:bone:Human Skull:50:1:6
+drop:bone:Orc Skull:20:1:5
 spell-freq:8
 spells:SCARE | WOUND | BA_POIS | SLOW
 friends:6:1d2:imp
@@ -7069,6 +7169,7 @@ blow:BITE:POISON:1d9
 blow:TAIL:HURT:1d3
 flags:BASH_DOOR | FORCE_SLEEP | REGENERATE | SPIRIT | ROAM
 flags:IM_POIS | IM_WATER | CLIGHT | GOODMON | WATER_HIDE
+drop:bone:Lizard tooth:1:1:1
 innate-freq:6
 spell-freq:7
 spells:BR_LIGHT | BLINK
@@ -7148,6 +7249,7 @@ blow:BITE:POISON:3d2
 blow:BITE:HURT:3d3
 flags:EVIL | ANIMAL | BASH_DOOR | WEIRD_MIND
 flags:IM_POIS | GROUP_AI
+drop:bone:Spider Fang:2:1:1
 innate-freq:10
 spells:WEAVE
 friends:98:2d7:Same
@@ -7173,6 +7275,7 @@ blow:HIT:HURT:3d6
 blow:HIT:HURT:3d6
 flags:UNIQUE | ROAM
 flags:DROP_1 | DROP_GOOD | ONLY_ITEM
+drop:bone:Orc Skull:1:1:1
 innate-freq:10
 spells:ARROW
 friends:50:2d2:hill orc:servant
@@ -7483,6 +7586,7 @@ blow:HIT:EAT_LIGHT:3d6
 flags:MALE | EVIL | SMART
 flags:DROP_2 | ONLY_ITEM
 flags:BASH_DOOR | FORCE_SLEEP | ROAM
+drop:bone:Dwarf Skull:2:1:1
 spell-freq:5
 spells:BLIND | CONF | DARKNESS | HASTE | WOUND
 spells:BO_COLD | BO_FIRE 
@@ -7520,6 +7624,7 @@ spells:BO_COLD | S_ANIMAL
 drop-base:nature book:5:1:1
 drop-base:nature book:5:1:1
 drop-base:arrow:5:2:12
+drop:bone:Human Skull:2:1:1
 friends:40:1d1:Easterling champion
 friends:40:1d1:rogue
 friends:40:1d2:Illusionist
@@ -7552,6 +7657,7 @@ spell-freq:5
 spells:BOLT | HEAL | SLOW | BLIND | HEAL_KIN
 drop-base:prayer book:5:1:1
 drop-base:prayer book:5:1:1
+drop:bone:Human Skull:2:1:1
 friends:34:1d1:Illusionist
 friends:34:1d1:rogue
 friends:34:1d2:Easterling champion
@@ -7581,6 +7687,7 @@ blow:HIT:HURT:3d5
 blow:HIT:HURT:3d5
 flags:UNIQUE
 flags:DROP_1 | DROP_20 | DROP_GOOD | ONLY_ITEM
+drop:bone:Orc Skull:1:1:1
 innate-freq:10
 spells:ARROW
 friends:50:3d4:Half-orc:servant
@@ -7791,6 +7898,7 @@ blow:HIT:HURT:3d6
 blow:HIT:HURT:3d7
 flags:UNIQUE | MOVE_BODY | NO_CONF | NO_SLEEP 
 flags:DROP_2 | DROP_GOOD | ONLY_ITEM
+drop:bone:Orc Skull:1:1:1
 friends:50:1d3:hill orc:servant
 friends:40:3d2:snaga:servant
 friends:80:2d4:cave orc:servant
@@ -7820,6 +7928,7 @@ blow:HIT:HURT:3d8
 flags:UNIQUE | MOVE_BODY 
 flags:IM_POIS | IM_FIRE | NO_CONF | NO_SLEEP
 flags:DROP_2 | DROP_GOOD | ONLY_ITEM
+drop:bone:Orc Skull:1:1:1
 innate-freq:8
 spells:ARROW
 friends:50:1d3:orc shaman:servant
@@ -7944,6 +8053,7 @@ blow:HIT:HURT:2d4
 blow:HIT:HURT:2d4
 flags:EMPTY_MIND | NO_FEAR
 flags:DROP_60 | ONLY_ITEM
+drop:bone:Human Skull:2:1:1
 desc:It is a human form encased in mouldy wrappings.
 
 name:camel-dog
@@ -8053,6 +8163,7 @@ blow:GAZE:EAT_FOOD:2d2
 blow:GAZE:PARALYZE:2d2
 flags:EVIL | FORCE_SLEEP
 flags:RAND_25 | IM_POIS | BR_STRONG
+drop:bone:Basilisk Fang:1:1:1
 innate-freq:6
 spells:RGAZE | BR_POIS
 desc:It appears to be a lizard with a rooster's head and wings.  It's poison is enough to
@@ -8074,6 +8185,7 @@ experience:70
 blow:HIT:HURT:6d5
 blow:HIT:HURT:6d5
 flags:MALE | S_EVIL2 | DROP_1 | TAKE_ITEM
+drop:bone:Human Skull:2:1:1
 innate-freq:6
 spells:BOLT
 friends:12:1d4:same
@@ -8139,6 +8251,7 @@ blow:HIT:HURT:3d5
 flags:UNIQUE | MOVE_BODY
 flags:DROP_1 | DROP_20 | DROP_GOOD | ONLY_ITEM
 flags:IM_COLD | IM_FIRE | IM_POIS | NO_CONF | NO_SLEEP | NO_HOLD
+drop:bone:Orc Skull:1:1:1
 innate-freq:9
 spells:ARROW
 friends:50:2d4:Half-orc:servant
@@ -8255,6 +8368,7 @@ blow:HIT:EAT_GOLD:4d4
 blow:HIT:EAT_ITEM:4d4
 flags:MALE | S_EVIL2 | ROAM | DROP_2 | TAKE_ITEM
 drop-base:shot:5:3:12
+drop:bone:Human Skull:2:1:1
 innate-freq:4
 spells:SHOT
 friends:40:1d1:Ranger
@@ -8282,6 +8396,7 @@ blow:CLAWB:LOSE_CON:3d2
 flags:DROP_1 | DROP_20
 flags:FORCE_SLEEP | NONLIVING | SMART
 flags:IM_COLD | HURT_LIGHT | NO_HOLD | NO_STUN | BR_STRONG
+drop:bone:Human Skull:1:1:1
 innate-freq:6
 spell-freq:7
 spells:BR_SHAR | SCARE | BLINK | DARKNESS
@@ -8349,6 +8464,7 @@ blow:BITE:HURT:3d4
 flags:TROLL | EMPTY_MIND | REGENERATE
 flags:OPEN_DOOR | BASH_DOOR | HURT_LIGHT
 #RETURNS
+drop:bone:Troll Skull:10:1:1
 desc:It is a troll skeleton animated by dark dweomers.
 
 name:soothing moss
@@ -8438,6 +8554,7 @@ blow:HIT:HURT:3d8
 blow:HIT:HURT:4d8
 flags:UNIQUE | MOVE_BODY
 flags:DROP_2 | DROP_GOOD | ONLY_ITEM
+drop:bone:Orc Skull:1:1:1
 friends:50:2d4:hill orc:servant
 friends:80:2d7:Warg
 friends:100:2d2:orc tracker
@@ -8734,6 +8851,7 @@ blow:HIT:HURT:4d6
 flags:UNIQUE | MALE | EVIL | FORCE_SLEEP
 flags:DROP_60 | DROP_1 | DROP_GOOD | ONLY_ITEM
 flags:IM_ELEC | IM_FIRE | NO_CONF | NO_SLEEP | NO_HOLD
+drop:bone:Human Skull:2:1:1
 spell-freq:5
 spells:CONF | SLOW
 friends:40:1d1:Angamaitë of Umbar
@@ -8759,6 +8877,7 @@ blow:HIT:HURT:4d6
 flags:UNIQUE | MALE | EVIL | FORCE_SLEEP
 flags:DROP_60 | DROP_1 | DROP_GOOD | ONLY_ITEM
 flags:IM_ELEC | IM_FIRE | NO_CONF | NO_SLEEP | NO_HOLD
+drop:bone:Human Skull:2:1:1
 spell-freq:5
 spells:CONF | SLOW
 friends:40:1d1:Sangahyando of Umbar
@@ -8872,6 +8991,7 @@ blow:HIT:HURT:2d4
 flags:MALE | EVIL | SMART
 flags:DROP_60 | ONLY_ITEM
 flags:OPEN_DOOR | FORCE_SLEEP
+drop:bone:Human Skull:4:1:2
 spell-freq:5
 spells:BLIND | WOUND | DARKNESS | SCARE
 spells:BO_NETH | S_UNDEAD
@@ -8899,6 +9019,7 @@ blow:HIT:HURT:4d7
 blow:HIT:HURT:7d4
 flags:MALE | S_EVIL2 | FORCE_SLEEP | ROAM
 flags:DROP_60 | NO_FEAR | TAKE_ITEM
+drop:bone:Human Skull:1:1:1
 innate-freq:10
 spells:ARROW
 friends:62:2d4:Same
@@ -8969,6 +9090,7 @@ blow:HIT:HURT:1d6
 blow:BITE:HURT:3d4
 flags:MALE | REGENERATE | DROP_20
 flags:HURT_ROCK | HURT_LIGHT
+drop:bone:Troll Skull:1:1:1
 friends:45:2d3:Earth hound
 friends:100:3d3:Same
 desc:A typical stupid troll.  They hoard treasure, kill for pleasure, and eat raw
@@ -9089,6 +9211,7 @@ blow:HIT:DISENCHANT
 flags:UNIQUE | MALE | FORCE_SLEEP
 flags:DROP_1 | DROP_GOOD | ONLY_ITEM
 flags:IM_COLD | IM_FIRE | NO_SLEEP | NO_HOLD
+drop:bone:Dwarf Skull:2:1:1
 spell-freq:7
 spells:HEAL | SLOW | BO_COLD
 friends:3:1d1:Khîm, son of Mîm
@@ -9114,6 +9237,7 @@ blow:HIT:DISENCHANT
 flags:UNIQUE | MALE | FORCE_SLEEP
 flags:DROP_1 | DROP_GOOD | ONLY_ITEM
 flags:IM_COLD | IM_FIRE | NO_SLEEP | NO_HOLD
+drop:bone:Dwarf Skull:2:1:1
 spell-freq:8
 spells:HEAL | SLOW | BO_FIRE
 friends:3:1d1:Ibun, son of Mîm
@@ -9183,6 +9307,7 @@ blow:HIT:ELEC:3d6
 blow:HIT:EAT_GOLD:3d3
 flags:MALE | EVIL | SMART | FORCE_SLEEP | ROAM | ATTR_FLICKER
 flags:DROP_2 | TAKE_ITEM | IM_ELEC | IM_POIS
+drop:bone:Human Skull:2:1:1
 spell-freq:12
 spells:BO_ELEC | BO_POIS | SLOW
 desc:A bandit and dabbler in magic who relies more on speed and
@@ -9438,6 +9563,7 @@ blow:HIT:POISON:4d4
 flags:MALE | S_EVIL2 | SMART | INVISIBLE | KEEP_DIST
 flags:TAKE_ITEM | DROP_60 | DROP_20 | SCALE
 drop-base:arrow:5:4:12
+drop:bone:Human Skull:2:1:1
 innate-freq:3
 spell-freq:6
 spells:ARROW | BO_POIS | BLINK | TPORT
@@ -9509,6 +9635,7 @@ blow:CLAW:POISON:3d3
 blow:BITE:HURT:2d4
 flags:DROP_20
 flags:IM_POIS | HURT_LIGHT
+drop:bone:Troll Skull:2:1:1
 friends:30:1d5:stone troll
 friends:33:1d5:Forest Troll
 friends:85:2d4:Same
@@ -9696,7 +9823,30 @@ blow:HIT:HURT:2d6
 blow:HIT:HURT:3d5
 flags:TROLL | EMPTY_MIND | STUPID | REGENERATE
 #RETURNS
+drop:bone:Troll Skull:2:1:1
 desc:It is an animated troll corpse. If a troll could get stupider, it has.
+
+name:large nulx
+plural:large nulxes
+base:nulx
+color:U
+element:6
+speed:114
+hit-points:364
+size:5
+hearing:10
+smell:10
+armor-class:44
+sleepiness:42
+depth:27
+rarity:3
+experience:203
+blow:HIT:HURT:2d4
+blow:CRUSH:BHOLD:4d5
+blow:BITE:ACID:4d7
+flags:ANIMAL | MOVE_SLOW
+desc:A nulx is a tentacled swamp monster with acid under its skin. This one is about 14 feet
+desc: long (not including tentacles).
 
 name:giant python
 base:snake
@@ -9812,6 +9962,7 @@ flags:UNIQUE | MALE | EVIL | FORCE_SLEEP
 flags:DROP_2 | DROP_GOOD | DROP_GREAT | ONLY_ITEM
 flags:IM_ACID | IM_COLD | IM_ELEC | IM_FIRE
 flags:NO_SLEEP | NO_CONF | NO_HOLD
+drop:bone:Dwarf Skull:2:1:1
 spell-freq:6
 spells:HEAL | SCARE | BA_ACID | BO_ACID
 friends:45:1d1:Ibun, Son of Mîm
@@ -9839,6 +9990,7 @@ blow:HIT:HURT:4d6
 blow:HIT:HURT:5d6
 flags:UNIQUE | EVIL | MALE | MOVE_BODY | ROAM
 flags:TAKE_ITEM | ONLY_ITEM | DROP_1 | DROP_GOOD
+drop:bone:Human Skull:2:1:1
 friends-base:35:1d1:knight
 friends:11:1d1:spy
 friends-base:50:1d1:knight
@@ -9898,6 +10050,7 @@ spells:BLIND | CONF | TPORT | TELE_AWAY
 spells:BO_COLD | BO_ELEC | BO_FIRE | S_MONSTER
 drop-base:magic book:10:1:1
 drop-base:magic book:7:1:1
+drop:bone:Human Skull:2:1:1
 friends-base:10:1d1:golem
 friends-base:100:1d1:golem
 desc:A mage of some power - you can tell by the size of his hat.
@@ -9994,6 +10147,7 @@ spell-freq:8
 spells:BLIND | WOUND | DARKNESS | SCARE
 drop-base:shadow book:8:1:1
 drop-base:shadow book:8:1:1
+drop:bone:Human Skull:2:1:1
 friends:40:1d1:green knight
 friends:40:1d1:brigand
 friends:40:1d1:Ranger
@@ -10023,6 +10177,7 @@ blow:BITE:LOSE_DEX:3d8
 flags:DROP_1 | ONLY_ITEM | FORCE_SLEEP
 flags:OPEN_DOOR | BASH_DOOR | POWERFUL
 flags:IM_POIS | HURT_COLD | NO_CONF | NO_HOLD
+drop:bone:Basilisk Fang:2:1:1
 innate-freq:8
 spells:BR_POIS
 desc:It's name means king of lizards, it is giant snake with dripping fangs and
@@ -10050,6 +10205,7 @@ blow:BITE:COLD:2d6
 blow:BITE:COLD:2d6
 flags:MALE | DROP_20 | REGENERATE
 flags:HURT_LIGHT | IM_COLD
+drop:bone:Troll Skull:1:1:1
 friends:16:1d4:troll scavenger
 friends:16:1d4:stone troll
 friends:40:2d3:Cold hound
@@ -10151,28 +10307,6 @@ flags:NO_CONF | NO_SLEEP | MULTIPLY | PASS_DOOR | WATER_HIDE
 desc:Have you heard of puddings made for a tasty dessert, but enchanted to walk off
 desc: the dinner table and frighten the guests?
 
-name:large nulx
-plural:large nulxes
-base:nulx
-color:U
-element:6
-speed:114
-hit-points:364
-size:5
-hearing:10
-smell:10
-armor-class:43
-sleepiness:42
-depth:28
-rarity:3
-experience:203
-blow:HIT:HURT:2d4
-blow:CRUSH:BHOLD:4d5
-blow:BITE:ACID:4d7
-flags:ANIMAL | RAND_25 | MOVE_SLOW
-desc:A nulx is a tentacled swamp monster with acid under its skin. This one is about 14 feet
-desc: long (not including tentacles).
-
 name:ghost
 base:ghost
 color:s
@@ -10193,6 +10327,7 @@ blow:CLAW:LOSE_WIS:2d3
 flags:DROP_40 | DROP_1 | FORCE_SLEEP | PASS_DOOR
 flags:IM_COLD | RAND_25 | S_EVIL2
 flags-off:EVIL | PASS_WALL
+drop:bone:Human Skull:1:1:1
 spell-freq:12
 spells:BLIND | DRAIN_MANA | SLOW | SCARE
 desc:You don't believe in it.  But it believes in you...
@@ -10217,6 +10352,7 @@ blow:HIT:HURT:4d6
 flags:UNIQUE | MALE | EVIL
 flags:DROP_1 | DROP_GOOD | ONLY_ITEM
 flags:OPEN_DOOR | TAKE_ITEM
+drop:bone:Human Skull:2:1:1
 spell-freq:10
 spells:S_KIN
 friends:35:1d5:Easterling champion
@@ -10487,6 +10623,28 @@ desc: them.
 ##RETURNS
 #desc:It is an animated corpse which keeps putting itself back together.
 
+name:gibbering mouther
+base:nulx
+color:y
+element:7
+speed:116
+hit-points:283
+size:4
+hearing:10
+armor-class:51
+sleepiness:42
+depth:29
+rarity:4
+experience:334
+blow:GAZE:CONFUSE:3d4
+blow:BITE:SLIME:3d6
+flags:NO_FEAR | NO_CONF | STUPID | MOVE_SLOW
+innate-freq:5
+spell-freq:9
+spells:RGAZE | CONF | INSANITY
+desc:A strange blob covered in eyes and mouths, constantly jabbering
+desc: nonsense. Its words don't have meaning, but they do have magic behind them.
+
 name:young blue dragon
 base:dragon
 color:b
@@ -10506,6 +10664,7 @@ blow:CLAW:HURT:2d4
 blow:BITE:HURT:2d6
 flags:DROP_2
 flags:OPEN_DOOR | BASH_DOOR | IM_ELEC
+drop:bone:Young Blue Dragon Tooth:2:1:1
 innate-freq:15
 spell-freq:20
 spells:BR_ELEC | SCARE
@@ -10531,6 +10690,7 @@ blow:CLAW:HURT:2d4
 blow:BITE:HURT:2d6
 flags:DROP_2
 flags:OPEN_DOOR | BASH_DOOR | IM_COLD
+drop:bone:Young White Dragon Tooth:2:1:1
 innate-freq:15
 spell-freq:20
 spells:BR_COLD | SCARE
@@ -10638,8 +10798,8 @@ blow:HIT:HURT:2d6
 blow:HIT:HURT:2d6
 blow:BITE:HURT:3d10
 blow:STING:HURT:3d7
-flags:EVIL | MALE | FORCE_SLEEP
-flags:BASH_DOOR
+flags:EVIL | MALE | FORCE_SLEEP | BASH_DOOR
+drop:bone:Manticore spike:10:1:6
 innate-freq:5
 spells:ARROW
 desc:It is a winged lion's body with a human torso and a tail covered in vicious
@@ -10909,6 +11069,7 @@ flags:UNIQUE | MALE | REGENERATE
 flags:DROP_1 | DROP_GOOD | ONLY_ITEM
 flags:MOVE_BODY | TAKE_ITEM
 flags:HURT_ROCK | HURT_LIGHT | IM_COLD
+drop:bone:Troll Skull:1:1:1
 innate-freq:7
 spells:BOULDER
 #friends:3:1d1:undying troll
@@ -10941,6 +11102,7 @@ flags:UNIQUE | MALE | REGENERATE
 flags:DROP_1 | DROP_GOOD | ONLY_ITEM
 flags:MOVE_BODY | TAKE_ITEM
 flags:HURT_ROCK | HURT_LIGHT | IM_COLD
+drop:bone:Troll Skull:1:1:1
 innate-freq:7
 spells:BOULDER
 #friends:3:1d1:undying troll
@@ -10973,6 +11135,7 @@ flags:UNIQUE | MALE | REGENERATE
 flags:DROP_1 | DROP_GOOD | ONLY_ITEM
 flags:MOVE_BODY | TAKE_ITEM
 flags:HURT_ROCK | HURT_LIGHT | IM_COLD
+drop:bone:Troll Skull:1:1:1
 innate-freq:7
 spells:BOULDER
 #friends:3:1d1:undying troll
@@ -11223,6 +11386,7 @@ blow:CLAW:HURT:2d6
 blow:BITE:HURT:2d8
 flags:DROP_3 | IM_ACID
 flags:OPEN_DOOR | BASH_DOOR
+drop:bone:Young Black Dragon Tooth:2:1:1
 innate-freq:15
 spell-freq:20
 spells:SCARE | BR_ACID
@@ -11274,6 +11438,7 @@ blow:CLAW:HURT:2d6
 blow:BITE:HURT:2d8
 flags:DROP_3 | IM_FIRE
 flags:OPEN_DOOR | BASH_DOOR
+drop:bone:Young Red Dragon Tooth:2:1:1
 innate-freq:15
 spell-freq:20
 spells:SCARE | BR_FIRE
@@ -11577,6 +11742,7 @@ blow:BITE:POISON:4d6
 blow:TAIL:HURT:1d6
 flags:BASH_DOOR | FORCE_SLEEP | REGENERATE
 flags:IM_POIS | IM_WATER | NO_HOLD | CLIGHT | ROAM | WATER_HIDE
+drop:bone:Lizard tooth:1:1:1
 innate-freq:6
 spell-freq:7
 spells:BR_LIGHT | BR_NEXU 
@@ -11603,6 +11769,7 @@ blow:HIT:POISON:3d4
 blow:HIT:LOSE_STR:3d4
 flags:MALE | EVIL | SMART | OPEN_DOOR
 flags:DROP_1 | IM_POIS | NO_CONF | NO_SLEEP
+drop:bone:Human Skull:2:1:1
 spell-freq:8
 spells:BO_POIS | BOLT | SLOW | TINVIS
 friends:8:1d1:nightmare doctor
@@ -11678,6 +11845,10 @@ blow:BITE:HURT:3d8
 flags:DROP_3 | OPEN_DOOR | BASH_DOOR
 flags:IM_ACID | IM_COLD | IM_ELEC | IM_FIRE | IM_POIS
 flags:ATTR_MULTI
+drop:bone:Young White Dragon Tooth:1:1:1
+drop:bone:Young Red Dragon Tooth:1:1:1
+drop:bone:Young Blue Dragon Tooth:1:1:1
+drop:bone:Young Black Dragon Tooth:1:1:1
 innate-freq:8
 spell-freq:30
 spells:SCARE
@@ -11738,6 +11909,7 @@ spells:S_ANIMAL | S_MONSTER | S_SPIDER
 #HEAL_OTHER
 drop-base:nature book:8:1:1
 drop-base:nature book:8:1:1
+drop:bone:Human Skull:2:1:1
 desc:A short, stocky man with an uncanny connection with nature.
 
 name:stone giant
@@ -11782,6 +11954,7 @@ blow:BITE:HURT:1d8
 blow:BITE:HURT:1d8
 flags:MALE | REGENERATE
 flags:HURT_LIGHT | DROP_20
+drop:bone:Troll Skull:1:1:1
 friends:10:1d4:snow troll
 #friends:9:1d3:undying troll
 friends:30:1d5:stone troll
@@ -11834,6 +12007,7 @@ blow:BITE:HURT:3d5
 blow:BITE:HURT:3d5
 flags:MALE | REGENERATE | DROP_60
 flags:HURT_LIGHT | NO_SLEEP | FORCE_SLEEP
+drop:bone:Troll Skull:1:1:1
 spell-freq:6
 spells:BA_POIS | BO_COLD | WOUND | DARKNESS | SCARE
 drop-base:prayer book:5:1:1
@@ -12122,6 +12296,7 @@ blow:BITE:HURT:2d8
 blow:BITE:HURT:2d8
 flags:MALE | REGENERATE
 flags:DROP_20 | ONLY_ITEM
+drop:bone:Troll Skull:1:1:1
 spell-freq:6
 spell-power:30
 spells:HASTE | SCARE | WOUND | DARKNESS
@@ -12176,6 +12351,7 @@ blow:HIT:EAT_ITEM:4d5
 flags:MALE | S_EVIL2 | ROAM
 flags:DROP_2 | TAKE_ITEM
 #DISGUISE
+drop:bone:Human Skull:2:1:1
 innate-freq:10
 spell-freq:5
 spells:BOLT | BLINK | TRAPS | TINVIS
@@ -12238,6 +12414,7 @@ flags:DROP_1 | DROP_20 | HURT_LIGHT
 spell-freq:4
 spells:BLIND | BLINK | WOUND | DRAIN_MANA | HOLD | BRAIN_SMASH
 spells:SCARE | SLOW | TELE_AWAY | TELE_TO | S_UNDEAD
+drop:bone:Human Skull:1:1:1
 friends-base:75:1d1:skeleton
 friends-base:65:1d2:skeleton
 desc:Once human, the performance of unspeakably vile rites has turned it
@@ -12333,6 +12510,7 @@ desc: lure the toughest seaman to his death.
 #flags:EMPTY_MIND | STUPID | NONLIVING
 ##RETURNS
 #flags-off:NO_CONF | NO_STUN
+#drop:bone:Human Skull:5:1:1
 #innate-freq:11
 #spells:THROW | ARROW
 #friends:70:2d5:same
@@ -12449,6 +12627,7 @@ blow:HIT:HURT:5d6
 flags:UNIQUE | MALE | EVIL
 flags:DROP_2 | DROP_GOOD | ONLY_ITEM
 flags:OPEN_DOOR | TAKE_ITEM
+drop:bone:Human Skull:2:1:1
 spell-freq:10
 spells:S_KIN
 friends:60:1d3:Mumak
@@ -12479,6 +12658,7 @@ blow:HIT:HURT:2d9
 blow:BITE:HURT:2d4
 blow:BITE:HURT:2d4
 flags:MALE | REGENERATE | DROP_20
+drop:bone:Troll Skull:1:1:1
 friends:100:4d4:Same
 desc:Clad only in close-fitting mesh of horny scales (unless that is his skin)
 desc: this troll strides toward you roaring like a beast, wielding a heavy
@@ -12582,6 +12762,7 @@ blow:BUTT:HURT:4d6
 blow:BUTT:HURT:4d6
 blow:CRUSH:HURT:4d4
 flags:ANIMAL
+drop:bone:Mumak tusk:2:1:1
 friends:100:2d7:Same
 desc:A massive elephantine form with eyes twisted by madness.
 desc:  The hobbits call it an oliphaunt.
@@ -12861,6 +13042,7 @@ blow:CLAW:HURT:2d9
 blow:BITE:HURT:3d3
 blow:BITE:HURT:3d3
 flags:DROP_40 | NO_FEAR | REGENERATE | ROAM
+drop:bone:Troll Skull:1:1:1
 friends:100:4d4:Olog
 desc:It is a massive intelligent troll with needle-sharp fangs.
 
@@ -13020,6 +13202,7 @@ blow:HIT:HURT:3d6
 flags:MALE | EVIL | SMART
 flags:DROP_1 | ONLY_ITEM
 flags:OPEN_DOOR | FORCE_SLEEP
+drop:bone:Human Skull:4:1:1
 spell-freq:2
 spells:BLIND | WOUND | DARKNESS | HOLD | SCARE
 spells:TPORT | BO_NETH | S_UNDEAD
@@ -13046,6 +13229,7 @@ blow:HIT:HURT:3d6
 flags:MALE | EVIL | SMART
 flags:DROP_1 | ONLY_ITEM
 flags:OPEN_DOOR | FORCE_SLEEP
+drop:bone:Human Skull:4:1:1
 spell-freq:2
 spells:HOLD | TPORT | SCARE | BO_FIRE | S_DEMON
 drop-base:magic book:8:1:1
@@ -13121,6 +13305,7 @@ flags:UNIQUE | MALE | EVIL | OPEN_DOOR | MOVE_BODY
 flags:DROP_2 | DROP_GOOD | ONLY_ITEM
 flags:IM_ACID | IM_ELEC | IM_POIS
 flags:NO_SLEEP | NO_HOLD | NO_CONF | FORCE_SLEEP
+drop:bone:Human Skull:2:1:1
 spell-freq:4
 spells:TELE_TO | S_MONSTER | S_MONSTERS
 #S_warriors
@@ -13317,6 +13502,7 @@ blow:PUNCH:HURT:8d4
 blow:KICK:HURT:5d4
 blow:KICK:HURT:5d4
 flags:DROP_40 | REGENERATE | NO_CONF | NO_SLEEP
+drop:bone:Troll Skull:1:1:1
 innate-freq:9
 spells:BOULDER
 friends:22:1d4:same
@@ -13522,6 +13708,7 @@ flags:MALE | SMART | REGENERATE | POWERFUL
 flags:DROP_2 | ONLY_ITEM | FORCE_SLEEP
 flags:MOVE_BODY | TAKE_ITEM | NO_CONF | NO_STUN
 flags:IM_ACID | IM_ELEC | NO_FEAR
+drop:bone:Human Skull:1:1:1
 innate-freq:9
 spell-freq:3
 spells:SHRIEK | BR_DARK | BR_FEAR | MIND_BLAST
@@ -13606,6 +13793,7 @@ blow:HIT:HURT:3d6
 blow:HIT:HURT:3d8
 blow:HIT:HURT:4d6
 blow:HIT:HURT:4d6
+drop:bone:Troll Skull:1:1:2
 flags:GIANT | DROP_1 | ONLY_ITEM
 flags:NO_CONF | NO_SLEEP
 desc:A massive two-headed troll of huge strength, ettens are stupid but violent.
@@ -13631,6 +13819,7 @@ blow:STING:POISON:2d6
 blow:BITE:CONFUSE:1d3
 flags:EVIL | ANIMAL | SMART | FORCE_SLEEP
 flags:WEIRD_MIND | HURT_LIGHT | IM_POIS
+drop:bone:Spider Fang:2:1:1
 innate-freq:6
 spell-freq:6
 spells:WEAVE | CONF | SLOW | BLIND
@@ -13766,6 +13955,7 @@ blow:HIT:HURT:5d5
 flags:UNIQUE | MALE | EVIL | SMART | FORCE_SLEEP
 flags:DROP_2 | DROP_GOOD | ONLY_ITEM
 flags:OPEN_DOOR | BASH_DOOR | TAKE_ITEM
+drop:bone:Human Skull:2:1:1
 spell-freq:2
 spells:HEAL | TRAPS
 spells:BO_COLD | BO_ELEC | BO_FIRE | BO_ICE
@@ -13891,6 +14081,7 @@ blow:HIT:POISON:4d5
 flags:MALE | EVIL | OPEN_DOOR | KEEP_DIST
 flags:DROP_1 | NO_CONF | NO_SLEEP
 drop-base:arrow:6:5:18
+drop:bone:Human Skull:2:1:1
 innate-freq:2
 spells:ARROW
 friends:16:1d3:same
@@ -13920,6 +14111,7 @@ spell-freq:5
 spells:BLIND | WOUND | SCARE | BO_NETH | S_MONSTERS
 drop-base:shadow book:8:1:1
 drop-base:shadow book:8:1:1
+drop:bone:Human Skull:2:1:1
 friends:55:1d1:Imp
 desc:It is a humanoid figure dressed in armour of an ancient form.  From beneath
 desc: its helmet, eyes glow a baleful red and seem to pierce you like lances of
@@ -14019,6 +14211,7 @@ blow:BUTT:HURT:6d5
 blow:CRUSH:EXP_10:4d5
 flags:S_EVIL2 | SILLY | ANIMAL | FORCE_SLEEP | REGENERATE | KILL_BODY
 flags:IM_ELEC | IM_POIS | NO_SLEEP | NO_STUN
+drop:bone:Mumak tusk:2:1:1
 spell-freq:12
 spells:BA_POIS | HASTE | S_KIN | DARKNESS
 friends:55:1d5:mumak
@@ -14070,6 +14263,7 @@ blow:BITE:HURT:4d8
 flags:DROP_4
 flags:OPEN_DOOR | BASH_DOOR
 flags:IM_COLD | NO_CONF | NO_SLEEP
+drop:bone:White Dragon Tooth:2:1:1
 innate-freq:12
 spell-freq:20
 spells:SCARE | BR_COLD
@@ -14096,6 +14290,7 @@ blow:CLAW:HURT:3d8
 blow:BITE:HURT:4d8
 flags:DROP_4 | BASH_DOOR
 flags:IM_ELEC | NO_CONF | NO_SLEEP
+drop:bone:Blue Dragon Tooth:2:1:1
 innate-freq:12
 spell-freq:20
 spells:SCARE | BR_ELEC
@@ -14284,6 +14479,7 @@ blow:HIT:FIRE:3d6
 flags:MALE | EVIL | OPEN_DOOR | FORCE_SLEEP
 flags:DROP_3 | ONLY_ITEM
 flags:NO_CONF | NO_SLEEP | NO_HOLD
+drop:bone:Human Skull:2:1:1
 spell-freq:2
 spells:BLIND | BLINK | WOUND | CONF | TELE_TO | TRAPS
 spells:BA_COLD | BA_FIRE | BO_FIRE | BO_ACID
@@ -14441,6 +14637,7 @@ blow:BITE:HURT:3d6
 blow:BITE:HURT:3d6
 flags:SMART | IM_POIS | NO_FEAR
 flags:DROP_1 | MOVE_BODY | TAKE_ITEM
+drop:bone:Troll Skull:1:1:1
 friends:35:2d2:snow troll:servant
 friends:45:2d3:forest troll:servant
 friends:35:2d3:troll scavenger:servant
@@ -14645,6 +14842,7 @@ blow:CLAW:HURT:3d10
 blow:BITE:HURT:4d10
 flags:DROP_4 | BASH_DOOR
 flags:IM_FIRE | NO_CONF | NO_SLEEP
+drop:bone:Red Dragon Tooth:2:1:1
 innate-freq:12
 spell-freq:20
 spells:SCARE | BR_FIRE
@@ -14695,6 +14893,7 @@ blow:CLAW:HURT:3d10
 blow:BITE:HURT:4d10
 flags:DROP_4 | BASH_DOOR
 flags:IM_ACID | NO_CONF | NO_SLEEP
+drop:bone:Black Dragon Tooth:2:1:1
 innate-freq:12
 spell-freq:20
 spells:SCARE | BR_ACID
@@ -14720,6 +14919,7 @@ blow:HIT:HURT:2d8
 flags:MALE | EVIL | SMART | FORCE_SLEEP
 flags:DROP_3 | ONLY_ITEM | BASH_DOOR
 flags:NO_CONF | NO_SLEEP | ROAM
+drop:bone:Dwarf Skull:2:1:1
 spell-freq:2
 spells:BLIND | BLINK | WOUND | CONF | DARKNESS | HEAL
 spells:BA_COLD | BA_FIRE | BO_ACID
@@ -14845,6 +15045,7 @@ desc: ancient dark fairy spirits with powerful magic.
 #blow:HIT:HURT:5d9
 #flags:DROP_1 | OPEN_DOOR | BASH_DOOR
 #flags:EMPTY_MIND | STUPID | NONLIVING | IM_ELEC
+#drop:bone:Human Skull:2:1:1
 ##RETURNS
 #innate-freq:9
 #spell-freq:9
@@ -14929,6 +15130,7 @@ blow:HIT:DISENCHANT:6d8
 flags:UNIQUE | MALE | SMART | FORCE_SLEEP
 flags:DROP_2 | DROP_GOOD | ONLY_ITEM | OPEN_DOOR
 flags:IM_ACID | IM_COLD | IM_ELEC | IM_POIS | NO_CONF | NO_SLEEP | NO_HOLD
+drop:bone:Human Skull:2:1:1
 spell-freq:2
 spells:WOUND | BO_MANA | BO_WATE
 desc:This sad creature - once a mighty warrior - betrayed his former friends to
@@ -14958,6 +15160,10 @@ flags:UNIQUE | MALE | POWERFUL
 flags:DROP_4 | DROP_GOOD | ONLY_ITEM | OPEN_DOOR | BASH_DOOR
 flags:IM_ACID | IM_COLD | IM_ELEC | IM_FIRE | IM_NEXUS | NO_CONF
 flags:NO_SLEEP | NO_STUN | NO_HOLD
+drop:bone:White Dragon Tooth:1:1:1
+drop:bone:Red Dragon Tooth:1:1:1
+drop:bone:Blue Dragon Tooth:1:1:1
+drop:bone:Black Dragon Tooth:1:1:1
 innate-freq:4
 spells:BR_ACID | BR_COLD | BR_CHAO | BR_ELEC | BR_FIRE | BR_GRAV
 spells:BR_NEXU | BR_SHAR | BR_SOUN
@@ -15243,6 +15449,7 @@ blow:SPIT:ACID:4d8
 flags:UNIQUE | MALE | REGENERATE
 flags:DROP_3 | DROP_GOOD | ONLY_ITEM
 flags:IM_COLD | MOVE_BODY | TAKE_ITEM
+drop:bone:Troll Skull:1:1:1
 innate-freq:7
 spells:BOULDER
 #friends:35:1d4:undying troll:servant
@@ -15330,6 +15537,10 @@ blow:BITE:HURT:4d12
 flags:DROP_4 | NO_SLEEP | NO_CONF | ATTR_MULTI
 flags:OPEN_DOOR | BASH_DOOR
 flags:IM_ACID | IM_COLD | IM_ELEC | IM_FIRE | IM_POIS
+drop:bone:Blue Dragon Tooth:1:1:1
+drop:bone:Black Dragon Tooth:1:1:1
+drop:bone:White Dragon Tooth:1:1:1
+drop:bone:Red Dragon Tooth:1:1:1
 innate-freq:10
 spell-freq:15
 spells:BLIND | CONF | SCARE
@@ -15434,6 +15645,7 @@ flags:SMART | BASH_DOOR | FORCE_SLEEP | REGENERATE
 flags:IM_POIS | IM_ACID | IM_COLD | IM_WATER | IM_NEXUS
 flags:NO_HOLD | NO_CONF | NO_SLEEP | NO_STUN
 flags:CLIGHT | GOODMON | WATER_HIDE
+drop:bone:Lizard tooth:1:1:1
 innate-freq:6
 spell-freq:6
 spells:BR_LIGHT | BR_GRAV
@@ -15926,6 +16138,7 @@ blow:BITE:POISON:2d12
 flags:EVIL | POWERFUL | ATTR_FLICKER
 flags:DROP_1 | ONLY_ITEM | OPEN_DOOR | BASH_DOOR
 flags:IM_POIS | IM_NEXUS | NO_CONF | NO_SLEEP | NO_HOLD
+drop:bone:Basilisk Fang:2:1:1
 innate-freq:8
 spells:BR_DARK | BR_NEXU | BR_POIS
 desc:A large basilisk, whose shape resembles that of a great wyrm.
@@ -16193,6 +16406,7 @@ blow:BUTT:HURT:10d8
 blow:BUTT:HURT:10d6
 blow:CRUSH:HURT:7d5
 flags:ANIMAL | IM_POIS | KILL_BODY
+drop:bone:Mastodon tusk:3:1:1
 desc:Similar to a giant mumak, its tusks alone are about 5 meters long.  Fun fact:
 desc: Their name means "nipple tooth."
 
@@ -16249,6 +16463,7 @@ blow:BITE:POISON:5d6
 blow:BITE:POISON:5d6
 flags:EVIL | ANIMAL | SMART | SPIRIT | FORCE_SLEEP
 flags:OPEN_DOOR | HURT_LIGHT | IM_POIS
+drop:bone:Spider Fang:2:1:1
 innate-freq:20
 spell-freq:6
 spells:WOUND | DRAIN_MANA | HEAL | HOLD | SLOW | S_KIN | S_SPIDER
@@ -16641,6 +16856,7 @@ blow:CLAW:HURT:6d8
 blow:CLAW:HURT:6d8
 blow:BITE:ELEC:7d8
 flags:BASH_DOOR | IM_ELEC
+drop:bone:Blue Dragon Tooth:2:1:1
 innate-freq:12
 spell-freq:8
 spells:BR_ELEC | BLIND | CONF | SCARE
@@ -16663,6 +16879,7 @@ blow:CLAW:HURT:6d8
 blow:CLAW:HURT:6d8
 blow:BITE:COLD:7d8
 flags:BASH_DOOR | IM_COLD
+drop:bone:White Dragon Tooth:2:1:1
 innate-freq:12
 spell-freq:8
 spells:BR_COLD | BLIND | CONF | SCARE
@@ -16738,6 +16955,7 @@ blow:CLAW:HURT:6d9
 blow:CLAW:HURT:6d9
 blow:BITE:ACID:7d9
 flags:BASH_DOOR | IM_ACID
+drop:bone:Black Dragon Tooth:2:1:1
 innate-freq:12
 spell-freq:8
 spells:BR_ACID | BLIND | CONF | SCARE
@@ -16761,6 +16979,7 @@ blow:CLAW:HURT:6d9
 blow:CLAW:HURT:6d9
 blow:BITE:FIRE:7d9
 flags:BASH_DOOR | IM_FIRE
+drop:bone:Red Dragon Tooth:2:1:1
 innate-freq:12
 spell-freq:8
 spells:BR_FIRE | BLIND | CONF | SCARE
@@ -17204,6 +17423,7 @@ blow:BITE:FIRE:4d15
 blow:BITE:FIRE:4d15
 flags:UNIQUE | MALE | BASH_DOOR | IM_FIRE
 flags:DROP_GOOD | ONLY_ITEM
+drop:bone:Red Dragon Tooth:2:1:1
 innate-freq:8
 spell-freq:8
 spells:BR_FIRE | WOUND | CONF
@@ -17232,6 +17452,7 @@ flags:EVIL | MALE | DEMON | UNIQUE | FORCE_SLEEP | WATER_HIDE
 flags:NO_STUN | NO_FEAR | IM_FIRE | IM_ACID | IM_WATER
 flags:ONLY_ITEM | DROP_4 | DROP_GOOD
 flags:SMART | BASH_DOOR | MOVE_BODY | POWERFUL
+drop:bone:Lizard tooth:1:1:1
 spell-freq:11
 spells:SCARE | SLOW | BO_WATE
 desc:A water dwelling crockodile-like demon of pride.  "Who can strip off his outer garment? 
@@ -17289,6 +17510,10 @@ blow:CLAW:HURT:6d10
 blow:BITE:HURT:7d10
 flags:ONLY_ITEM | BASH_DOOR | ATTR_MULTI
 flags:IM_ACID | IM_COLD | IM_ELEC | IM_FIRE | IM_POIS
+drop:bone:Blue Dragon Tooth:1:1:1
+drop:bone:Black Dragon Tooth:1:1:1
+drop:bone:White Dragon Tooth:1:1:1
+drop:bone:Red Dragon Tooth:1:1:1
 innate-freq:6
 spell-freq:13
 spells:BLIND | CONF | SCARE
@@ -17387,6 +17612,7 @@ blow:CLAW:COLD:4d15
 blow:BITE:COLD:4d15
 flags:UNIQUE | MALE | BASH_DOOR | IM_COLD
 flags:DROP_GOOD | ONLY_ITEM
+drop:bone:White Dragon Tooth:2:1:1
 innate-freq:8
 spell-freq:8
 spells:BR_COLD | WOUND | CONF
@@ -17626,6 +17852,7 @@ blow:BITE:FIRE:7d14
 blow:GAZE:PARALYZE
 flags:ANIMAL | ONLY_ITEM | BASH_DOOR
 flags:IM_ACID | IM_FIRE | IM_NEXUS
+drop:bone:Basilisk Fang:2:1:1
 innate-freq:10
 spell-freq:12
 spells:RGAZE | BR_FIRE | BR_NEXU | HOLD | SCARE
@@ -17708,6 +17935,7 @@ blow:STING:LOSE_STR:5d6
 flags:UNIQUE | FEMALE | EVIL | SMART | SPIRIT
 flags:DROP_2 | DROP_GOOD | ONLY_ITEM | FORCE_SLEEP
 flags:HURT_LIGHT | IM_ACID | IM_POIS | NO_CONF | NO_SLEEP | NO_HOLD
+drop:bone:Spider Fang:2:1:1
 innate-freq:13
 spell-freq:6
 spells:WEAVE | BLIND | WOUND | CONF | HEAL | SCARE | S_KIN
@@ -18585,6 +18813,7 @@ blow:BITE:FIRE:7d14
 blow:BITE:FIRE:7d14
 flags:UNIQUE | MALE | IM_FIRE
 flags:BASH_DOOR | DROP_GOOD | ONLY_ITEM
+drop:bone:Red Dragon Tooth:3:1:1
 innate-freq:5
 spell-freq:8
 spells:BR_FIRE | WOUND | CONF
@@ -18649,6 +18878,7 @@ blow:STING:LOSE_STR:5d4
 flags:FEMALE | EVIL | SMART | SPIRIT | FORCE_SLEEP
 flags:DROP_2 | DROP_GOOD | ONLY_ITEM
 flags:HURT_LIGHT | IM_ACID | IM_POIS | NO_CONF | NO_SLEEP | NO_HOLD
+drop:bone:Spider Fang:2:1:1
 innate-freq:20
 spell-freq:5
 spells:WEAVE | BLIND | WOUND | CONF | HEAL | SCARE | SLOW
@@ -19414,6 +19644,7 @@ blow:BITE:ELEC:6d14
 blow:BITE:ELEC:6d14
 flags:ATTR_FLICKER
 flags:ONLY_ITEM | BASH_DOOR | IM_ELEC
+drop:bone:Blue Dragon Tooth:2:1:1
 innate-freq:7
 spell-freq:6
 spells:BR_ELEC | BLIND | CONF | SCARE
@@ -19442,6 +19673,7 @@ blow:BITE:COLD:6d14
 blow:BITE:COLD:6d14
 flags:ATTR_FLICKER
 flags:ONLY_ITEM | BASH_DOOR | IM_COLD
+drop:bone:White Dragon Tooth:2:1:1
 innate-freq:7
 spell-freq:6
 spells:BR_COLD | BLIND | CONF | SCARE
@@ -19793,6 +20025,7 @@ blow:BITE:FIRE:6d14
 blow:BITE:FIRE:6d14
 flags:ATTR_FLICKER
 flags:ONLY_ITEM | BASH_DOOR | IM_FIRE
+drop:bone:Red Dragon Tooth:2:1:1
 innate-freq:8
 spell-freq:5
 spells:BR_FIRE | BLIND | CONF | SCARE
@@ -19821,6 +20054,7 @@ blow:BITE:ACID:6d14
 blow:BITE:ACID:6d14
 flags:ATTR_FLICKER
 flags:ONLY_ITEM | BASH_DOOR | IM_ACID
+drop:bone:Black Dragon Tooth:2:1:1
 innate-freq:8
 spell-freq:5
 spells:BR_ACID | BLIND | CONF | SCARE
@@ -20222,6 +20456,7 @@ blow:BITE:FIRE:8d14
 flags:UNIQUE | MALE
 flags:DROP_GOOD | DROP_GREAT | ONLY_ITEM
 flags:BASH_DOOR | IM_FIRE | IM_POIS
+drop:bone:Red Dragon Tooth:2:1:1
 innate-freq:5
 spell-freq:3
 spells:BR_FIRE | BR_POIS | BRAIN_SMASH | BLIND | SCARE | S_HI_DRAGON
@@ -20675,6 +20910,10 @@ blow:BITE:HURT:7d14
 blow:BITE:HURT:7d14
 flags:ONLY_ITEM | BASH_DOOR | ATTR_MULTI
 flags:IM_ACID | IM_COLD | IM_ELEC | IM_FIRE | IM_POIS
+drop:bone:Red Dragon Tooth:1:1:1
+drop:bone:White Dragon Tooth:1:1:1
+drop:bone:Blue Dragon Tooth:1:1:1
+drop:bone:Black Dragon Tooth:1:1:1
 innate-freq:5
 spell-freq:5
 spells:BLIND | CONF | SCARE | S_DRAGON | S_HI_DRAGON
@@ -20819,6 +21058,7 @@ blow:BITE:ELEC:7d14
 blow:BITE:HURT:7d14
 flags:ATTR_FLICKER | ONLY_ITEM | BASH_DOOR
 flags:IM_COLD | NO_STUN
+drop:bone:Blue Dragon Tooth:2:1:1
 innate-freq:5
 spell-freq:9
 spells:BLIND | CONF | S_DRAGON | S_HI_DRAGON
@@ -21029,6 +21269,7 @@ blow:BITE:HURT:10d14
 flags:UNIQUE | MALE | BASH_DOOR
 flags:DROP_GOOD | DROP_GREAT | ONLY_ITEM
 flags:IM_ACID | IM_COLD | IM_ELEC | IM_FIRE | IM_POIS
+drop:bone:Black Dragon Tooth:2:1:1
 innate-freq:4
 spell-freq:10
 spells:BR_ACID | BR_COLD | BR_ELEC | BR_FIRE | BR_POIS
@@ -21161,6 +21402,7 @@ blow:STING:LOSE_STR:6d11
 flags:UNIQUE | FEMALE | EVIL | SMART | SPIRIT | FORCE_SLEEP
 flags:DROP_4 | DROP_GOOD | ONLY_ITEM | POWERFUL
 flags:HURT_LIGHT | IM_ACID | IM_POIS | NO_CONF | NO_SLEEP | NO_HOLD
+drop:bone:Spider Fang:2:1:1
 innate-freq:10
 spell-freq:5
 spells:BLIND | CONF | HEAL | HOLD | BA_DARK | S_KIN

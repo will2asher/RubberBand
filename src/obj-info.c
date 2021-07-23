@@ -1369,9 +1369,12 @@ static bool describe_combat(textblock *tb, const struct object *obj)
 	int range, break_chance;
 	bool thrown_effect, heavy;
 
+	/* flasks of oil & grenades are also throwing weapons */
+	if (tval_is_fuel(obj)) throwing_weapon = true;
+
 	obj_known_misc_combat(obj, &thrown_effect, &range, &break_chance, &heavy);
 
-	if (!weapon && !ammo && !rock) {
+	if (!weapon && !ammo && !rock && !throwing_weapon) {
 		if (thrown_effect) {
 			textblock_append(tb, "It can be thrown at creatures with damaging effect.\n");
 			return true;

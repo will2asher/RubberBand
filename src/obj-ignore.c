@@ -50,6 +50,7 @@ static quality_ignore_struct quality_mapping[] =
 	{ ITYPE_SHARP,					TV_POLEARM,		"" },
 	{ ITYPE_BLUNT,					TV_HAFTED,		"" },
 	{ ITYPE_BLUNT,					TV_STAFF,		"" },
+	{ ITYPE_THROWER,				TV_THROWW,		"" },
 	{ ITYPE_SLING,					TV_BOW,			"Sling" },
 	{ ITYPE_BOW,					TV_BOW,			"Bow" },
 	{ ITYPE_CROSSBOW,				TV_BOW,			"Crossbow" },

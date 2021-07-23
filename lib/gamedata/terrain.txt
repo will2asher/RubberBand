@@ -116,7 +116,7 @@ desc:valuable time by locking them.
 name:open door
 graphics:':U
 priority:15
-flags:LOS | PROJECT | PASSABLE | DOOR_ANY | INTERESTING | CLOSABLE | EASY
+flags:LOS | PROJECT | PASSABLE | DOOR_ANY | INTERESTING | CLOSABLE | OBJECT | EASY
 look-in-preposition:in
 desc:A door that is already open.  Player, monster, spell and missile can pass 
 desc:through as long as it stays open.
@@ -125,7 +125,7 @@ desc:through as long as it stays open.
 name:broken door
 graphics:':u
 priority:15
-flags:LOS | PROJECT | PASSABLE | DOOR_ANY | TRAP | INTERESTING | EASY
+flags:LOS | PROJECT | PASSABLE | DOOR_ANY | TRAP | INTERESTING | OBJECT | EASY
 look-in-preposition:in
 desc:A door so broken that it cannot be shut.
 
@@ -310,11 +310,11 @@ die-msg:burning to a cinder in lava
 confused-msg:burns itself in lava
 resist-flag:IM_FIRE
 
-#Make a (very heavy) pile of rubble object than can be picked up in any "passible rubble" grid.
+#Make a (very heavy) pile of rubble object than can be picked up in any "passible rubble" grid. (ignored by default)
 name:pile of passable rubble
 graphics:::u
 priority:13
-flags:ROCK | PASSABLE | INTERESTING | TORCH | SLOWS
+flags:ROCK | PASSABLE | INTERESTING | TORCH | OBJECT | SLOWS
 info:0:1
 desc:Ends LOS, stops missiles, bolts, and beams, and reduces the radius of ball 
 desc:spells.  May dissolve or be tunnelled to normal floor, and can be walked 
@@ -375,7 +375,7 @@ confused-msg:burns itself in a fire
 resist-flag:IM_FIRE
 
 #usually only created by earthquakes or disarming a pit trap
-#putting in a pile of rubble (or maybe a bunch of other objects) can turn it into normal floor.
+#Todo: putting in a pile of rubble (or maybe a bunch of other objects) should turn it into normal floor.
 #Chance of damage isn't high and it doesn't do much damage even when it does damage.
 name:open pit
 graphics:^:D
@@ -390,7 +390,7 @@ die-msg:a pit
 desc:Disarming a pit often just keeps the pit from being hidden.
 desc: You can walk through its grid around it, but you still have a chance of
 desc: falling in for a small amount of damage (depending on dexterity).
-desc: You can drop a pile of rubble here to make it into normal floor.
+#desc: You can drop a pile of rubble here to make it into normal floor.
 
 #Doesn't do actual hp damage, but may cause sliming.
 name:puddle of slime
@@ -416,18 +416,18 @@ desc:A small pool of glowing acid.
 
 #todo: WATER_HIDE effect
 name:water
-graphics:/:B
+graphics:.:B
 priority:7
 flags:INTERESTING | LOS | PROJECT | PASSABLE | OBJECT | TORCH | NO_SCENT | SLOWS | WATER
 desc:Water shallow enough to wade through easily, but deep enough to conceal smaller water-dwelling monsters.
-desc: (In real life, you'd have no way of telling how deep it was. Lucky for you, this isn't real life.)
+#desc: (In real life, you'd have no way of telling how deep it was. Lucky for you, this isn't real life.)
 
 #There's currently no way to enter deep water, but I'll probably change that at some point.
 #(May remove the permanent flag at some point in the future)
 name:deep water
-graphics:/:b
+graphics:.:b
 priority:11
-flags:LOS | PROJECT | NO_FLOW | NO_SCENT | PERMANENT | TORCH | WATER
+flags:LOS | PROJECT | NO_SCENT | PERMANENT | TORCH | WATER
 walk-msg:You can't swim.  Really step in the deep water? 
 run-msg:Deep water blocks your path.  Step into it? 
 hurt-msg:You sink in the water!
@@ -435,17 +435,17 @@ die-msg:drowning in water
 confused-msg:slips into deep water and drowns
 #resist-flag:WATER_HIDE | FLY
 desc:Deep water. It looks black in the dim light of the dungeon.
-desc: (In real life, this would look the same as shallow water. Lucky for you, this isn't real life.)
+#desc: (In real life, this would look the same as shallow water. Lucky for you, this isn't real life.)
 
 #todo: SLIP terrain flag
 #name:ice
-#graphics:/:Z
+#graphics:.:Z
 #priority:7
 #flags:INTERESTING | LOS | PROJECT | PASSABLE | OBJECT | SLOWS | SLIP
 ##resist-flag:IM_COLD
 #desc:Slippery ice covers the floor here.
 
-#mud puddle not generated yet
+#mud puddle not used yet
 name:mud puddle
 graphics:.:m
 priority:9
@@ -521,7 +521,7 @@ desc:A chasm. As far as you can tell, it may be bottomless.
 
 # Later: use this as an alternate border for the town. (same as deep water in most ways)
 #name:sea
-#graphics:/:b
+#graphics:.:b
 #priority:11
 #flags:LOS | PROJECT | NO_FLOW | NO_SCENT | PERMANENT | WATER
 #walk-msg:You can't swim.  Really step in the deep water? 
