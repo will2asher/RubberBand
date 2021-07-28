@@ -358,6 +358,7 @@ struct ego_item {
 	random_value to_h;		/* Extra to-hit bonus */
 	random_value to_d;		/* Extra to-dam bonus */
 	random_value to_a;		/* Extra to-ac bonus */
+	int weight;
 
 	int min_to_h;			/* Minimum to-hit value */
 	int min_to_d;			/* Minimum to-dam value */

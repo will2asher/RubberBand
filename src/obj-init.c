@@ -2151,6 +2151,7 @@ static enum parser_error parse_ego_combat(struct parser *p) {
 	struct random td = parser_getrand(p, "td");
 	struct random ta = parser_getrand(p, "ta");
 	struct ego_item *e = parser_priv(p);
+	int eweight = parser_getint(p, "eww");
 
 	if (!e)
 		return PARSE_ERROR_MISSING_RECORD_HEADER;
@@ -2158,6 +2159,7 @@ static enum parser_error parse_ego_combat(struct parser *p) {
 	e->to_h = th;
 	e->to_d = td;
 	e->to_a = ta;
+	e->weight = eweight;
 
 	return PARSE_ERROR_NONE;
 }
@@ -2415,7 +2417,7 @@ struct parser *init_parse_ego(void) {
 	parser_reg(p, "alloc int common str minmax", parse_ego_alloc);
 	parser_reg(p, "type sym tval", parse_ego_type);
 	parser_reg(p, "item sym tval sym sval", parse_ego_item);
-	parser_reg(p, "combat rand th rand td rand ta", parse_ego_combat);
+	parser_reg(p, "combat rand th rand td rand ta int eww", parse_ego_combat);
 	parser_reg(p, "min-combat int th int td int ta", parse_ego_min);
 	parser_reg(p, "effect sym eff ?sym type ?int radius ?int other", parse_ego_effect);
 	parser_reg(p, "dice str dice", parse_ego_dice);

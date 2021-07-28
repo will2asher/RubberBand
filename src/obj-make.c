@@ -427,6 +427,7 @@ void ego_apply_magic(struct object *obj, int level)
 	obj->to_h += randcalc(obj->ego->to_h, level, RANDOMISE);
 	obj->to_d += randcalc(obj->ego->to_d, level, RANDOMISE);
 	obj->to_a += randcalc(obj->ego->to_a, level, RANDOMISE);
+	obj->weight += obj->ego->weight; /* Usually negative if on an ego */
 
 	/* Apply modifiers */
 	for (i = 0; i < OBJ_MOD_MAX; i++) {
