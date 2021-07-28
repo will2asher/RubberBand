@@ -1056,6 +1056,7 @@ bool kind_is_good(const struct object_kind *kind)
 		/* Weapons -- Good unless damaged */
 		case TV_BOW:
 		case TV_SWORD:
+		case TV_THROWW:
 		case TV_HAFTED:
 		case TV_POLEARM:
 		case TV_DIGGING:

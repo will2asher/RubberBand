@@ -345,6 +345,7 @@ static int monster_spell_failrate(struct monster *mon)
 /**
  * Calculate the base to-hit value for a monster attack based on race only.
  * See also: chance_of_spell_hit_base
+ * (Why do these have their own functions? It just makes the code harder to read.)
  *
  * \param race The monster race
  * \param effect The attack
@@ -362,14 +363,12 @@ int chance_of_monster_hit_base(const struct monster_race *race,
  * \param effect The attack
  */
 int chance_of_monster_hit(const struct monster *mon,
-	const struct blow_effect *effect)
+	const struct blow_effect *effect, int accuracy)
 {
 	int to_hit = chance_of_monster_hit_base(mon->race, effect);
 
-	/* Apply stun hit reduction if applicable */
-	if (mon->m_timed[MON_TMD_STUN]) {
-		to_hit = to_hit * (100 - STUN_HIT_REDUCTION) / 100;
-	}
+	/* (Stun is already factored into accuracy) 75% if stunned, 120% if monster has a hold on the PC, 95% if stunned monster is holding the PC */
+	to_hit = to_hit * accuracy / 100;
 
 	return to_hit;
 }
@@ -578,6 +577,7 @@ bool make_attack_normal(struct monster *mon, struct player *p)
 	char m_name[80];
 	char ddesc[80];
 	bool blinked = false;
+	int accuracy = 100 - (mon->m_timed[MON_TMD_STUN] ? STUN_HIT_REDUCTION : 0);
 
 	/* Not allowed to attack */
 	if (rf_has(mon->race->flags, RF_NEVER_BLOW)) return (false);
@@ -618,7 +618,7 @@ bool make_attack_normal(struct monster *mon, struct player *p)
 		/* Monster hits player */
 		assert(effect);
 		if (streq(effect->name, "NONE") ||
-			check_hit(p, chance_of_monster_hit(mon, effect))) {
+			check_hit(p, chance_of_monster_hit(mon, effect, accuracy))) {
 			melee_effect_handler_f effect_handler;
 
 			/* Always disturbing */
@@ -627,8 +627,10 @@ bool make_attack_normal(struct monster *mon, struct player *p)
 			/* Hack -- Apply "protection from evil" */
 			if (p->timed[TMD_PROTEVIL] > 0) {
 				/* Learn about the evil flag */
-				if (monster_is_visible(mon))
-					rf_on(lore->flags, RF_EVIL);
+				if (monster_is_visible(mon)) {
+					if (rf_has(mon->race->flags, RF_EVIL)) rf_on(lore->flags, RF_EVIL);
+					mon->pcmet = true;
+				}
 
 				if (monster_is_evil(mon) && p->lev >= rlev &&
 				    randint0(100) + p->lev > 50) {
@@ -816,6 +818,7 @@ bool monster_attack_monster(struct monster *mon, struct monster *t_mon)
 	char m_name[80];
 	char t_name[80];
 	bool blinked = false;
+	int accuracy = 100 - (mon->m_timed[MON_TMD_STUN] ? STUN_HIT_REDUCTION : 0);
 
 	/* Not allowed to attack */
 	if (rf_has(mon->race->flags, RF_NEVER_BLOW)) return (false);
@@ -847,7 +850,7 @@ bool monster_attack_monster(struct monster *mon, struct monster *t_mon)
 		/* Monster hits monster */
 		assert(effect);
 		if (streq(effect->name, "NONE") ||
-			test_hit(chance_of_monster_hit(mon, effect), t_mon->race->ac)) {
+			test_hit(chance_of_monster_hit(mon, effect, accuracy), t_mon->race->ac)) {
 			melee_effect_handler_f effect_handler;
 
 			/* Describe the attack method */

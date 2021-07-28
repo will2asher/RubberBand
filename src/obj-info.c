@@ -1418,6 +1418,12 @@ static bool describe_combat(textblock *tb, const struct object *obj)
 		else if ((obj->weight <= 65) && (obj->weight / 10 <= player->state.stat_use[STAT_STR] / 4))
 			offhandok = true;
 
+		/* No wielding throwing weapons in the off-hand */
+		if (tval_is_thrower(obj)) offhandok = false;
+		/* No wielding skulls or broken bottles in the off-hand */
+		if ((obj->tval == TV_BONE) && ((obj->kind->d_char == '~') || (obj->kind->d_char == '!')))
+			offhandok = false;
+
 		if (offhandok)
 			textblock_append_c(tb, COLOUR_L_WHITE, "You may wield this weapon in the off-hand (shield slot).\n");
 	}

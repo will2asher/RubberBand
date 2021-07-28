@@ -1475,7 +1475,7 @@ experience:14
 blow:HIT:HURT:1d2
 blow:CLAWB:HURT:2d3
 flags:DROP_40 | S_EVIL2 | ROAM
-spell-freq:14
+spell-freq:15
 spells:TINVIS
 friends:20:1d3:feline kobold
 desc:This kobold has catlike features instead of doglike ones.

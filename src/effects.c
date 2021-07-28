@@ -88,6 +88,10 @@ struct effect_kind {
 	const char *menu_name;       /* Format string for short name */
 };
 
+/**
+ * Set value for a chain of effects
+ */
+static int set_value = 0;
 
 /**
  * Stat adjectives
@@ -1205,6 +1209,58 @@ static bool effect_handler_DRAIN_STAT(effect_handler_context_t *context)
 	return (true);
 }
 
+/*
+ * Potion of Mediocrity
+ */
+bool effect_handler_MEDIOC(effect_handler_context_t* context)
+{
+	msg("You feel drab.");
+
+	/* Luck */
+	if ((player->p_luck > 0) && (randint0(6) - 3 < player->p_luck)) player->p_luck -= 1;
+	else if (player->p_luck < -1) player->p_luck += 1;
+
+	/* Stats: STR (damage if over 16, raise if lower than 12) */
+	/* (check base stats without equipment bonuses) */
+	if (player->state.stat_use[STAT_STR] - player->state.stat_add[STAT_STR] > 16) {
+		effect_simple(EF_DRAIN_STAT, context->origin, "0", STAT_STR, 0, 0, 0, 0, NULL);
+	}
+	else if (player->state.stat_use[STAT_STR] - player->state.stat_add[STAT_STR] < 12) {
+		effect_simple(EF_GAIN_STAT, context->origin, "0", STAT_STR, 0, 0, 0, 0, NULL);
+	}
+	/* INT */
+	if (player->state.stat_use[STAT_INT] - player->state.stat_add[STAT_INT] > 16) {
+		effect_simple(EF_DRAIN_STAT, context->origin, "0", STAT_INT, 0, 0, 0, 0, NULL);
+	}
+	else if (player->state.stat_use[STAT_INT] - player->state.stat_add[STAT_INT] < 12) {
+		effect_simple(EF_GAIN_STAT, context->origin, "0", STAT_INT, 0, 0, 0, 0, NULL);
+	}
+	/* WIS */
+	if (player->state.stat_use[STAT_WIS] - player->state.stat_add[STAT_WIS] > 16) {
+		effect_simple(EF_DRAIN_STAT, context->origin, "0", STAT_WIS, 0, 0, 0, 0, NULL);
+	}
+	else if (player->state.stat_use[STAT_WIS] - player->state.stat_add[STAT_WIS] < 12) {
+		effect_simple(EF_GAIN_STAT, context->origin, "0", STAT_WIS, 0, 0, 0, 0, NULL);
+	}
+	/* DEX */
+	if (player->state.stat_use[STAT_DEX] - player->state.stat_add[STAT_DEX] > 16) {
+		effect_simple(EF_DRAIN_STAT, context->origin, "0", STAT_DEX, 0, 0, 0, 0, NULL);
+	}
+	else if (player->state.stat_use[STAT_DEX] - player->state.stat_add[STAT_DEX] < 12) {
+		effect_simple(EF_GAIN_STAT, context->origin, "0", STAT_DEX, 0, 0, 0, 0, NULL);
+	}
+	/* CON */
+	if (player->state.stat_use[STAT_CON] - player->state.stat_add[STAT_CON] > 16) {
+		effect_simple(EF_DRAIN_STAT, context->origin, "0", STAT_CON, 0, 0, 0, 0, NULL);
+	}
+	else if (player->state.stat_use[STAT_CON] - player->state.stat_add[STAT_CON] < 12) {
+		effect_simple(EF_GAIN_STAT, context->origin, "0", STAT_CON, 0, 0, 0, 0, NULL);
+	}
+
+	context->ident = true;
+	return true;
+}
+
 /**
  * Lose a stat point permanently, in a stat other than the one specified
  * in context->subtype.
@@ -1279,6 +1335,99 @@ static bool effect_handler_GAIN_EXP(effect_handler_context_t *context)
 	}
 	context->ident = true;
 
+	return true;
+}
+
+/* Luck (simple) */
+bool effect_handler_GAIN_LUCK(effect_handler_context_t* context)
+{
+	int amount = effect_calculate_value(context, false);
+
+	if (player->p_luck < 5) {
+		msg("You feel lucky.");
+		player->p_luck += amount;
+
+		/* Max luck is 5 */
+		if (player->p_luck > 5) player->p_luck = 5;
+	}
+	else msg("You're already as lucky as you can be.");
+	context->ident = true;
+
+	return true;
+}
+
+/* Chance to Slime (for slime molds and slime mold juice) */
+bool effect_handler_SLIME_CHANCE(effect_handler_context_t* context)
+{
+	int chance = effect_calculate_value(context, false);
+	int die = randint0(100);
+	/* bad luck factor */
+	if (player->p_luck < 0) chance += ABS(player->p_luck) * 2;
+
+	if (die < chance / 5) player->slimed += 2;
+	else if (die < chance) player->slimed += 1;
+	if (die < chance) msg("You feel slimy.");
+
+	context->ident = true;
+	return true;
+}
+
+/* Heal slime */
+bool effect_handler_HEAL_SLIME(effect_handler_context_t* context)
+{
+	int amount = effect_calculate_value(context, false);
+	bool anyslime = false;
+	if (player->slimed > 0) anyslime = true;
+
+	player->slimed -= amount;
+
+	if (player->slimed < 1) {
+		player->slimed = 0;
+		/* Message only if player had any sliming beforehand */
+		if (anyslime) msg("You feel free of slime.");
+	}
+	else msg("You feel less slimy.");
+
+	context->ident = true;
+	return true;
+}
+
+/* Extra Herbal Curing effects for Ranger/Druid spell */
+bool effect_handler_HERBALC(effect_handler_context_t* context)
+{
+	int eplev = MIN(player->lev * 6 / 5, 50);
+	int chance = 17 + player->p_luck * 6 + eplev;
+	bool anyslime = false;
+	int die = randint0(100);
+	if (player->slimed > 0) anyslime = true;
+
+	/* effect is stronger for druids */
+	if (player_has(player, PF_DRUCHARM)) chance += 17;
+
+	if (die < chance/4) {
+		player->slimed -= 2;
+		(void)player_clear_timed(player, TMD_CUT, true);
+	}
+	if (die < chance) {
+		player->slimed -= 1;
+		(void)player_dec_timed(player, TMD_CUT, chance / 2, true);
+		(void)player_clear_timed(player, TMD_AMNESIA, true);
+		(void)player_clear_timed(player, TMD_FRENZY, true);
+		(void)player_clear_timed(player, TMD_DISEASE, true);
+	}
+	else {
+		(void)player_dec_timed(player, TMD_CUT, chance / 9, true);
+		(void)player_dec_timed(player, TMD_DISEASE, 2, true);
+	}
+
+	if (player->slimed < 1) {
+		player->slimed = 0;
+		/* Message only if player had any sliming beforehand */
+		if (anyslime) msg("You feel free of slime.");
+	}
+	else msg("You feel less slimy.");
+
+	context->ident = true;
 	return true;
 }
 
@@ -4739,13 +4888,88 @@ static bool effect_handler_BRAND_BOLTS(effect_handler_context_t *context)
 
 
 /**
- * Turn a staff into arrows
+ * Turn a staff into (usually ordinary) arrows
  */
-static bool effect_handler_CREATE_ARROWS(effect_handler_context_t *context)
+bool effect_handler_CREATE_ARROWS(effect_handler_context_t* context)
 {
-	int lev;
-	struct object *obj, *staff, *arrows;
-	const char *q, *s;
+	int lev, lfac;
+	struct object* obj, * staff, * arrows;
+	const char* q, * s;
+	int itemmode = (USE_INVEN | USE_FLOOR);
+	bool good = false, great = false;
+	bool none_left = false;
+	int elev = player->lev;
+
+	/* Get an item */
+	q = "Make arrows from which staff? ";
+	s = "You have no staff to use.";
+	if (context->cmd) {
+		if (cmd_get_item(context->cmd, "tgtitem", &obj, q, s,
+			item_tester_hook_staff, itemmode)) {
+			return false;
+		}
+	}
+	else if (!get_item(&obj, q, s, 0, item_tester_hook_staff,
+		itemmode)) {
+		return false;
+	}
+
+	/* Extract the object "level" */
+	lev = obj->kind->level;
+	/* ego staffs are better */
+	if (obj->ego) {
+		lev += 3;
+		elev += 2;
+	}
+
+	/* luck factor */
+	lfac = 0;
+	if (player->p_luck > 0) lfac += (player->p_luck + 1) / 2;
+	else if (player->p_luck < -1) lfac = -1;
+
+	/* Roll for good (less than half the chance as the stronger spell for "good" or "great" arrows) */
+	if (randint1(lev) > 58 - lfac) {
+		good = true;
+		/* Roll for great (maybe) */
+		if (randint1(lev) > 88 - lfac) {
+			elev += 2;
+			if (randint0(100) < 70) great = true;
+		}
+	}
+
+	/* Destroy the staff */
+	if (object_is_carried(player, obj)) {
+		staff = gear_object_for_use(obj, 1, true, &none_left);
+	}
+	else {
+		staff = floor_object_for_use(obj, 1, true, &none_left);
+	}
+
+	if (staff->known) object_delete(&staff->known);
+	object_delete(&staff);
+
+	if (elev > 3) elev = elev * 3 / 4;
+	/* Make some arrows */
+	arrows = make_object(cave, elev, good, great, false, NULL, TV_ARROW);
+
+	/* Make it less likely (but still possible) to get a large stack with the weaker spell */
+	if (arrows->number > 22) arrows->number = 21 + randint1(arrows->number - 21);
+
+	drop_near(cave, &arrows, 0, player->grid, true, true);
+
+	return true;
+}
+
+
+/**
+ * Turn a staff into (usually good) arrows
+ */
+bool effect_handler_MAGIC_ARROWS(effect_handler_context_t* context)
+{
+	int lev, lfac;
+	int elev = player->lev;
+	struct object* obj, * staff, * arrows;
+	const char* q, * s;
 	int itemmode = (USE_INVEN | USE_FLOOR);
 	bool good = false, great = false;
 	bool none_left = false;
@@ -4755,40 +4979,52 @@ static bool effect_handler_CREATE_ARROWS(effect_handler_context_t *context)
 	s = "You have no staff to use.";
 	if (context->cmd) {
 		if (cmd_get_item(context->cmd, "tgtitem", &obj, q, s,
-				item_tester_hook_staff, itemmode)) {
+			item_tester_hook_staff, itemmode)) {
 			return false;
 		}
-	} else if (!get_item(&obj, q, s, 0, item_tester_hook_staff,
-				  itemmode)) {
+	}
+	else if (!get_item(&obj, q, s, 0, item_tester_hook_staff,
+		itemmode)) {
 		return false;
 	}
 
 	/* Extract the object "level" */
 	lev = obj->kind->level;
+	/* ego staffs are better */
+	if (obj->ego) {
+		lev += 5;
+		elev += 3;
+	}
+
+	/* luck factor */
+	lfac = 0;
+	if (player->p_luck > 0) lfac += player->p_luck;
+	else if (player->p_luck < -1) lfac = -1;
 
 	/* Roll for good */
-	if (randint1(lev) > 25) {
+	if (randint1(lev) > 25 - lfac) {
 		good = true;
+		elev += 2;
 		/* Roll for great */
-		if (randint1(lev) > 50) {
+		if (randint1(lev) > 50 - lfac) {
 			great = true;
+			elev += 3;
 		}
 	}
 
 	/* Destroy the staff */
 	if (object_is_carried(player, obj)) {
 		staff = gear_object_for_use(obj, 1, true, &none_left);
-	} else {
+	}
+	else {
 		staff = floor_object_for_use(obj, 1, true, &none_left);
 	}
 
-	if (staff->known) {
-		object_delete(&staff->known);
-	}
+	if (staff->known) object_delete(&staff->known);
 	object_delete(&staff);
 
 	/* Make some arrows */
-	arrows = make_object(cave, player->lev, good, great, false, NULL, TV_ARROW);
+	arrows = make_object(cave, elev, good, great, false, NULL, TV_ARROW);
 	drop_near(cave, &arrows, 0, player->grid, true, true);
 
 	return true;
@@ -5150,7 +5386,7 @@ static bool effect_handler_MOVE_ATTACK(effect_handler_context_t *context)
 
 	/* Should return some energy if monster dies early */
 	while (blows-- > 0) {
-		if (py_attack_real(player, target, &fear)) break;
+		if (py_attack_real(player, target, &fear, false)) break;
 	}
 
 	return true;
@@ -5241,7 +5477,7 @@ static bool effect_handler_MELEE_BLOWS(effect_handler_context_t *context)
 	while ((blows-- > 0) && mon) {
 		/* Test for damaging the monster */
 		int hp = mon->hp;
-		if (py_attack_real(player, target, &fear)) return true;
+		if (py_attack_real(player, target, &fear, false)) return true;
 		/*mon = square_monster(cave, target); */
 		if (mon && (mon->hp == hp)) continue;
 
@@ -5269,7 +5505,7 @@ static bool effect_handler_SWEEP(effect_handler_context_t *context)
 		for (i = 0; i < 8; i++) {
 			target = loc_sum(player->grid, clockwise_grid[i]);
 			if (square_monster(cave, target) != NULL)
-				py_attack_real(player, target, &fear);
+				py_attack_real(player, target, &fear, false);
 		}
 	}
 
@@ -5519,6 +5755,29 @@ static bool effect_handler_WONDER(effect_handler_context_t *context)
  */
 static bool effect_handler_SELECT(effect_handler_context_t *context)
 {
+	return true;
+}
+
+/**
+ * Dummy effect, to tell the effect code to set a value for a string of
+ * following effects to use, rather than setting their own value.
+ * The value will not use the device boost, which should not be a problem
+ * as it is unlikely to be used for damage (the main use case is to
+ * synchronise the end of timed effects).
+ */
+static bool effect_handler_SET_VALUE(effect_handler_context_t* context)
+{
+	set_value = effect_calculate_value(context, false);
+	return true;
+}
+
+/**
+ * Dummy effect, to tell the effect code to clear a value set by the
+ * SET_VALUE effect.
+ */
+static bool effect_handler_CLEAR_VALUE(effect_handler_context_t* context)
+{
+	set_value = 0;
 	return true;
 }
 

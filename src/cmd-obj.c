@@ -148,22 +148,12 @@ void do_cmd_uninscribe(struct command *cmd)
 {
 	struct object *obj;
 
-<<<<<<< HEAD
 	/* Inscriptions are a UI thing. They should be allowed while shapechanged.
 	*
-	if (player_is_shapechanged(player)) {
-		msg("You cannot do this while in %s form.",	player->shape->name);
-		if (get_check("Do you want to change back? " )) {
-			player_resume_normal_shape(player);
-		} else {
-			return;
-		}
-	} */
-=======
 	if (!player_get_resume_normal_shape(player, cmd)) {
 		return;
 	}
->>>>>>> 3262c3216 (Fix form canceling when casting (#4686))
+	*/
 
 	/* Get arguments */
 	if (cmd_get_item(cmd, "item", &obj,
@@ -191,22 +181,12 @@ void do_cmd_inscribe(struct command *cmd)
 	char prompt[1024];
 	char o_name[80];
 
-<<<<<<< HEAD
 	/* Inscriptions are a UI thing. They should be allowed while shapechanged.
 	* 
-	if (player_is_shapechanged(player)) {
-		msg("You cannot do this while in %s form.",	player->shape->name);
-		if (get_check("Do you want to change back? " )) {
-			player_resume_normal_shape(player);
-		} else {
-			return;
-		}
-	} */
-=======
 	if (!player_get_resume_normal_shape(player, cmd)) {
 		return;
 	}
->>>>>>> 3262c3216 (Fix form canceling when casting (#4686))
+	*/
 
 	/* Get arguments */
 	if (cmd_get_item(cmd, "item", &obj,
@@ -305,7 +285,7 @@ void do_cmd_wield(struct command *cmd)
 			/* Prompt */ "Wear or wield which item?",
 			/* Error  */ "You have nothing to wear or wield.",
 			/* Filter */ obj_can_wear,
-			/* Choice */ USE_INVEN | USE_FLOOR) != CMD_OK)
+			/* Choice */ USE_INVEN | USE_FLOOR | USE_QUIVER) != CMD_OK)
 		return;
 
 	/* Some classes can wield two weapons at once */
@@ -322,8 +302,11 @@ void do_cmd_wield(struct command *cmd)
 		else if ((obj->weight <= 65) && (obj->weight / 10 <= player->state.stat_use[STAT_STR] / 4))
 			offhandok = true;
 
-		/* No wielding throwing weapons or magic staffs in the off-hand */
-		if (tval_is_thrower(obj) || tval_is_staff(obj)) offhandok = false;
+		/* No wielding throwing weapons in the off-hand */
+		if (tval_is_thrower(obj)) offhandok = false;
+		/* No wielding skulls of broken bottles in the off-hand */
+		if ((obj->tval == TV_BONE) && ((obj->kind->d_char == '~') || (obj->kind->d_char == '!')))
+			offhandok = false;
 
 		/* Check if target weapon is light enough to wield in shield slot */
 		if (offhandok) {
@@ -1051,15 +1034,7 @@ void do_cmd_cast(struct command *cmd)
 	int spell_index, dir = 0;
 	const struct class_spell *spell;
 
-<<<<<<< HEAD
-	if (player_is_shapechanged(player)) {
-		if (get_check("Change back to your original form? " )) {
-			player_resume_normal_shape(player);
-		}
-		/* Why does this return even if player changes back to their normal form? (maybe change this) */
-=======
 	if (!player_get_resume_normal_shape(player, cmd)) {
->>>>>>> 3262c3216 (Fix form canceling when casting (#4686))
 		return;
 	}
 

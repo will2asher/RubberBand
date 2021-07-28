@@ -707,6 +707,42 @@ static void project_monster_handler_PLASMA(project_monster_handler_context_t *co
 	project_monster_resist_other(context, RF_IM_PLASMA, 3, true, MON_MSG_RESIST);
 }
 
+/* SLIME */
+static void project_monster_handler_SLIME(project_monster_handler_context_t* context)
+{
+	/* Affect some monsters which don't resist (copied from DISEN function above) */
+	if ((!rf_has(context->mon->race->flags, RF_IM_SLIME)) &&
+		(!rf_has(context->mon->race->flags, RF_NO_STUN)) && (one_in_(5))) {
+		context->mon_timed[MON_TMD_STUN] = adjust_radius(context, 2 + randint1(10));
+	}
+
+	project_monster_resist_other(context, RF_IM_SLIME, 3, true, MON_MSG_RESIST);
+}
+
+/* Fear */
+static void project_monster_handler_FEAR(project_monster_handler_context_t* context)
+{
+	/* Affect some monsters which don't resist */
+	if ((!rf_has(context->mon->race->flags, RF_NO_FEAR)) &&
+		(!rsf_has(context->mon->race->spell_flags, RSF_BR_FEAR)) && (one_in_(5))) {
+		context->mon_timed[MON_TMD_FEAR] = adjust_radius(context, 4 + randint1(10));
+	}
+
+	project_monster_resist_other(context, RF_NO_FEAR, 3, true, MON_MSG_RESIST);
+}
+
+/* Amnesia */
+static void project_monster_handler_AMNESIA(project_monster_handler_context_t* context)
+{
+	/* Affect some monsters which don't resist (acts like disenchantment on other monsters) */
+	if ((!rsf_has(context->mon->race->spell_flags, RSF_BR_AMNS)) &&
+		(!rsf_has(context->mon->race->spell_flags, RSF_FORGET)) && (one_in_(6))) {
+		context->mon_timed[MON_TMD_DISEN] = adjust_radius(context, 4 + randint1(10));
+	}
+
+	project_monster_breath(context, RSF_BR_AMNS, 3);
+}
+
 static void project_monster_handler_METEOR(project_monster_handler_context_t *context)
 {
 }
@@ -1192,16 +1228,8 @@ static void project_m_apply_side_effects(project_monster_handler_context_t *cont
 			place_new_monster(cave, grid, new, false, false, info,
 							  ORIGIN_DROP_POLY);
 			context->mon = square_monster(cave, grid);
-			/*
-			 * Note the appearance of the new one if it is visible
-			 * but the old one wasn't.
-			 */
-			if (!context->seen && context->mon
-					&& monster_is_visible(context->mon)) {
-				add_monster_message(context->mon,
-					MON_MSG_APPEAR, false);
-			}
-		} else if (context->seen) {
+		} 
+		else if (context->seen) {
 			add_monster_message(mon, hurt_msg, false);
 		}
 	} else if (context->teleport_distance > 0) {
@@ -1302,7 +1330,7 @@ void project_m(struct source origin, int r, struct loc grid, int dam, int typ,
 
 	/* Is the source an extra charming player? */
 	bool charm = (origin.what == SRC_PLAYER) ?
-		player_has(player, PF_CHARM) : false;
+		player_has(player, PF_DRUCHARM) : false;
 
 	int m_idx = square(cave, grid)->mon;
 

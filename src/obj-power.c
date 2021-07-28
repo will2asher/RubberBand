@@ -874,14 +874,18 @@ int object_value_real(const struct object *obj, int qty)
 		value = SGN(power) * ((a * power * power) + (b * power));
 
 		/* obj->kind->cost should still have some effect (for non-egos at least) */
+		/* Bones aren't costed by their value as weapons */
+		if ((obj->tval == TV_BONE) && (!obj->ego)) value = (obj->kind->cost * 2 + value) / 3;
 		/* (Golden Crowns should be worth something for their gold, even if they're not useful) */
-		if (!obj->ego) value = (obj->kind->cost + value * 2) / 3;
+		else if (!obj->ego) value = (obj->kind->cost + value * 2) / 3;
 
-		/* Rescale for expendables */
+		/* Rescale for expendables  (AMMO_RESCALER is 18) */
 		if ((tval_is_light(obj) && of_has(obj->flags, OF_BURNS_OUT)
 			 && !obj->ego) || tval_is_ammo(obj) || tval_is_fuel(obj)) {
 			value = value / AMMO_RESCALER;
 		}
+		/* Weapons meant for throwing have reduced cost because they don't work well in melee */
+		if (tval_is_thrower(obj)) value = value * 3 / 4;
 
 		/* Round up to make sure things like cloaks are not worthless */
 		if (value == 0) {

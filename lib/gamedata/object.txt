@@ -406,7 +406,7 @@ graphics:,:r
 level:0
 weight:10
 cost:4
-alloc:9:101 to 109
+alloc:5:101 to 109
 power:0
 msg:That tastes great!  A fine vintage.
 effect:NOURISH:INC_BY

@@ -898,15 +898,22 @@ void do_cmd_wiz_cure_all(struct command *cmd)
 	(void) player_clear_timed(player, TMD_CONFUSED, true);
 	(void) player_clear_timed(player, TMD_POISONED, true);
 	(void) player_clear_timed(player, TMD_AFRAID, true);
+	(void) player_clear_timed(player, TMD_CHARMED, true);
 	(void) player_clear_timed(player, TMD_PARALYZED, true);
 	(void) player_clear_timed(player, TMD_IMAGE, true);
 	(void) player_clear_timed(player, TMD_STUN, true);
 	(void) player_clear_timed(player, TMD_CUT, true);
 	(void) player_clear_timed(player, TMD_SLOW, true);
 	(void) player_clear_timed(player, TMD_AMNESIA, true);
+	(void)player_clear_timed(player, TMD_PHAZED, true);
+	(void)player_clear_timed(player, TMD_BLACKBREATH, true);
+	(void)player_clear_timed(player, TMD_INSANE, true);
+	(void)player_clear_timed(player, TMD_DISEASE, true);
+	(void)player_clear_timed(player, TMD_PCCURSED, true);
 
 	/* No longer hungry */
-	player_set_timed(player, TMD_FOOD, PY_FOOD_FULL - 1, false);
+	/* player_set_timed(player, TMD_FOOD, PY_FOOD_FULL - 5, false); */
+	effect_simple(EF_NOURISH, source_player(), "75", 2, 0, 0, 0, 0, NULL);
 
 	/* Flag what needs to be updated or redrawn */
 	player->upkeep->update |= PU_TORCH | PU_UPDATE_VIEW | PU_MONSTERS;
@@ -1855,6 +1862,10 @@ void do_cmd_wiz_query_feature(struct command *cmd)
 	const int featp[] = { FEAT_PERM };
 	const int featr[] = { FEAT_RUBBLE };
 	const int feata[] = { FEAT_PASS_RUBBLE };
+	const int featw[] = { FEAT_WATER, FEAT_WATER_DEEP };
+	const int featl[] = { FEAT_TREE };
+	const int feats[] = { FEAT_STATUE, FEAT_SM_STATUE };
+	const int featn[] = { FEAT_CHASM };
 
 	if (cmd_get_arg_choice(cmd, "choice", &feature_class) != CMD_OK) {
 		char choice;
@@ -1955,6 +1966,29 @@ void do_cmd_wiz_query_feature(struct command *cmd)
 			selected.n = (int) N_ELEMENTS(feata);
 			break;
 
+		/* Water */
+		case 'w':
+			selected.features = featw;
+			selected.n = (int)N_ELEMENTS(featw);
+			break;
+
+		/* Statue */
+		case 's':
+			selected.features = feats;
+			selected.n = (int)N_ELEMENTS(feats);
+			break;
+
+		/* Trees */
+		case 'l':
+			selected.features = featl;
+			selected.n = (int)N_ELEMENTS(featl);
+			break;
+		/* Chasm */
+		case 'n':
+			selected.features = featn;
+			selected.n = (int)N_ELEMENTS(featn);
+			break;
+
 		/* Invalid entry */
 		default:
 			msg("That was an invalid selection.  Use one of fobuztcdhmqgpra .");
@@ -2032,6 +2066,7 @@ void do_cmd_wiz_query_square_flag(struct command *cmd)
 			case 'i': flag = SQUARE_WALL_INNER; break;
 			case 'o': flag = SQUARE_WALL_OUTER; break;
 			case 'l': flag = SQUARE_WALL_SOLID; break;
+			case 'p': flag = SQUARE_WALL_SPEC; break;
 			case 'x': flag = SQUARE_MON_RESTRICT; break;
 		}
 		cmd_set_arg_choice(cmd, "choice", flag);

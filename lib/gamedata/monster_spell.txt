@@ -42,21 +42,46 @@ lore-color-base:Orange
 message-vis:{name} makes a high-pitched shriek.
 message-invis:Something makes a high-pitched shriek.
 
+#(There's no space between whip and {oftype} on purpose)
 name:WHIP
-hit:100
+hit:90
 effect:LASH:MISSILE:2
 lore:lash you if nearby
 lore-color-base:Orange
 message-vis:{name} lashes at you with a whip{oftype}.
+message-miss:{name} lashes at you with a whip but misses.
 message-invis:You hear a crack.
 
+#(Ranged gaze)
+name:RGAZE
+hit:86
+effect:LASH:MISSILE:3
+lore:gaze at you from a distance
+lore-color-base:Orange
+message-vis:{name} gazes at you.
+message-miss:{name} gazes, but you avert your eyes quickly.
+message-invis:You feel something's eyes on you. 
+
 name:SPIT
-hit:100
+hit:80
 effect:LASH:MISSILE:3
 lore:spit at you from a distance
 lore-color-base:Orange
-message-vis:{name} spits {type} at you.
+message-vis:{name} spits{type} at you.
+message-miss:{name} spits at you but misses.
 message-invis:You hear a soft sound.
+
+name:THROW
+hit:60
+effect:BOLT:ARROW:4
+dice:$Dd4
+expr:D:SPELL_POWER:/ 8 + 1
+lore:throw things at you
+lore-color-base:Orange
+#message-vis:{name} throws a piece of fruit at you. (in the code for trees)
+message-vis:{name} throws a rock at {target}.
+message-miss:{name} throws a rock but misses.
+message-invis:You hear something fly through the air.
 
 name:SHOT
 hit:50
@@ -316,6 +341,26 @@ lore-color-base:Orange
 lore-color-resist:Yellow
 message-vis:{name} breathes force.
 message-invis:You hear a staccato roar.
+
+name:BR_FEAR
+msgt:BR_FEARMS
+hit:100
+effect:BREATH:FEAR:0:30
+lore:fear
+lore-color-base:Orange
+lore-color-resist:Yellow
+message-vis:{name} breathes fear.
+message-invis:You hear a fearsome roar.
+
+name:BR_AMNS
+msgt:BR_AMNESIA
+hit:100
+effect:BREATH:AMNESIA:0:30
+lore:amnesia
+lore-color-base:Orange
+lore-color-resist:Yellow
+message-vis:{name} breathes amnesia.
+message-invis:You think you heard a roar.
 
 name:BR_MANA
 hit:100
@@ -691,7 +736,7 @@ lore:produce poison bolts
 lore-color-base:Orange
 lore-color-resist:Yellow
 lore-color-immune:Light Green
-message-vis:{name} spews a stream of poison.
+message-vis:{name} fires a stream of poison.
 message-invis:Something retches.
 
 name:BO_NETH
@@ -761,13 +806,39 @@ message-invis:Something mumbles.
 name:BE_ELEC
 hit:100
 effect:SHORT_BEAM:ELEC:5
-dice:$B+5d5
+dice:$B+3d7
 expr:B:SPELL_POWER:* 2 + 30
 lore:shoot sparks of lightning
 lore-color-base:Orange
 lore-color-resist:Light Green
 message-vis:{name} shoots a spark of lightning at {target}.
 message-invis:You feel a crackling in the air.
+
+#Weak acid bolt for low-level alchemists and such
+#name:BE_ACID
+#hit:82
+#effect:BOLT:ACID
+#dice:$B+2d9
+#expr:B:SPELL_POWER:/ 3
+#lore:shoot drops of acid
+#lore-color-base:Orange
+#lore-color-resist:Yellow
+#lore-color-immune:Light Green
+#message-vis:{name} shoots a drop of acid.
+#message-invis:Something mumbles.
+
+#Projectile Slime 
+#name:BE_SLIME
+#hit:81
+#effect:BOLT:SLIME
+#dice:$B+3d6
+#expr:B:SPELL_POWER:/ 3
+#lore:shoot drops of slime
+#lore-color-base:Orange
+#lore-color-resist:Yellow
+#lore-color-immune:Light Green
+#message-vis:{name} shoots a drop of slime.
+#message-invis:Something mumbles.
 
 name:BE_NETH
 hit:100
@@ -819,6 +890,43 @@ lore-color-resist:Light Green
 message-vis:{name} conjures up weird things.
 message-invis:Something messes with your mind.
 message-save:You retain your presence of mind.
+
+name:INSANITY
+hit:100
+effect:TIMED_INC:INSANE
+dice:$B+9d5
+expr:B:SPELL_POWER:* 2
+lore:drive you insane
+lore-color-base:Orange
+lore-color-resist:Light Green
+message-vis:{name} conjures up crazy things.
+message-invis:Something messes with your mind.
+message-save:You retain your sanity.
+
+name:DISEASE
+hit:100
+effect:TIMED_INC:DISEASE
+dice:$B+9d5
+expr:B:SPELL_POWER:* 2
+lore:confuse
+lore-color-base:Orange
+lore-color-resist:Light Green
+message-vis:{name} curses your body.
+message-invis:Something mumbles.
+message-save:You retain your health.
+
+#kind of milder effects, but a longer duration than most timed effects
+name:CURSE_PC
+hit:100
+effect:TIMED_INC:PCCURSED
+dice:$B+12d6
+expr:B:SPELL_POWER:* 2
+lore:curse you
+lore-color-base:Orange
+lore-color-resist:Light Green
+message-vis:{name} casts a curse on you.
+message-invis:Something casts a curse on you.
+message-save:You resist the effects.
 
 name:SLOW
 hit:100
@@ -929,15 +1037,28 @@ message-vis:{name} commands {target} to go far away.
 message-invis:Something commands you to go far away.
 message-save:You feel unstable for a second, but it passes.
 
+#The dice affects the player's chances of resisting the blindness
 name:DARKNESS
 hit:100
 effect:DARKEN_AREA
 effect:BALL:DARK_WEAK:3
-dice:10
+dice:10+1d$S
+expr:S:SPELL_POWER:/ 3
 lore:create darkness
 lore-color-base:Light Green
 message-vis:{name} surrounds {target} in darkness.
 message-invis:Something mumbles.
+
+#This is hard coded to give a different message if you can still see the monster after the spell is cast.
+name:TINVIS
+hit:100
+effect:MON_TIMED_INC:TINVIS
+dice:$B+d8
+expr:B:SPELL_POWER:/ 4
+lore:turn itself invisible
+lore-color-base:Yellow
+message-vis:{name} vanishes from view!
+message-invis:Something mutters.
 
 name:TRAPS
 msgt:CREATE_TRAP
@@ -951,7 +1072,7 @@ message-invis:Something cackles evilly.
 name:FORGET
 hit:100
 effect:TIMED_INC:AMNESIA
-dice:3
+dice:2+1d4
 lore:cause amnesia
 lore-color-base:Yellow
 lore-color-resist:Light Green

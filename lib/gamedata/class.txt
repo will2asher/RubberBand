@@ -130,10 +130,10 @@ strength-multiplier:5
 equip:food:Ration of Food:1:3:none
 equip:light:Wooden Torch:1:3:none
 equip:potion:Berserk Strength:1:1:none
-equip:sword:Dagger:1:1:none
+equip:sword:Short Sword:1:1:none
 equip:soft armour:Soft Leather Armour:1:1:none
 equip:scroll:Word of Recall:1:1:birth_no_recall
-player-flags:BRAVERY_30 | NO_MANA | SHIELD_BASH
+player-flags:BRAVERY_30 | NO_MANA | SHIELD_BASH | 2WEAPON
 title:Rookie
 title:Soldier
 title:Swordsman
@@ -438,10 +438,10 @@ max-attacks:4
 min-weight:35
 strength-multiplier:3
 equip:food:Ration of Food:1:3:none
-equip:hafted:Whip:1:1:none
+equip:hafted:Walking Staff:1:1:none
 equip:light:Wooden Torch:1:3:none
 equip:scroll:Word of Recall:1:1:birth_no_recall
-player-flags:ZERO_FAIL | CHOOSE_SPELLS | CHARM
+player-flags:ZERO_FAIL | CHOOSE_SPELLS | DRUCHARM
 title:Wanderer
 title:Tamer
 title:Nurturer
@@ -603,14 +603,17 @@ desc:Speed up digestion to increase regeneration of hitpoints for
 desc: the next 5+1d3 turns (or until hungry).
 
 spell:Herbal Curing:40:20:90:100
-effect:CURE:CUT
 effect:CURE:POISONED
 effect:CURE:STUN
+effect:CURE:IMAGE
 effect:CURE:BLACKBREATH
+effect:HERBALC
 effect:NOURISH:INC_TO
 dice:80
-desc:Cures all cuts, poison, stunning and black breath, and leaves you
-desc: well-nourished.
+desc:Cures all poison, stunning, hallucenation, and black breath, partially cures cuts,
+desc: and leaves you well-nourished. Has a chance to cure a few other negative effects as
+desc: well, depending on your level.
+#HERBALC: partially cures cuts, chance to cure:FRENZY, AMNESIA, DISEASE, and sliming.
 
 book:nature book:dungeon:[Wild Forces]:5:nature
 book-graphics:?:o
@@ -945,7 +948,7 @@ max-attacks:4
 min-weight:35
 strength-multiplier:3
 equip:food:Ration of Food:1:3:none
-equip:sword:Main Gauche:1:1:none
+equip:sword:Long Dagger:1:1:none
 equip:scroll:Word of Recall:1:1:birth_no_recall
 player-flags:ZERO_FAIL | CHOOSE_SPELLS | UNLIGHT | EVIL
 title:Acolyte
@@ -1203,7 +1206,7 @@ min-weight:30
 strength-multiplier:5
 equip:food:Ration of Food:1:3:none
 equip:light:Wooden Torch:1:3:none
-equip:sword:Main Gauche:1:1:none
+equip:sword:Short Sword:1:1:none
 equip:scroll:Protection from Evil:1:1:none
 equip:scroll:Word of Recall:1:1:birth_no_recall
 equip:prayer book:[Novice's Handbook]:1:1:none
@@ -1364,11 +1367,11 @@ min-weight:20
 strength-multiplier:4
 equip:food:Ration of Food:1:3:none
 equip:light:Wooden Torch:1:3:none
-equip:sword:Dagger:1:1:none
+equip:sword:Long Dagger:1:1:none
 equip:soft armour:Soft Leather Armour:1:1:none
 equip:scroll:Word of Recall:1:1:birth_no_recall
 equip:magic book:[First Spells]:1:1:none
-player-flags:CHOOSE_SPELLS | STEAL
+player-flags:CHOOSE_SPELLS | STEAL | 2WEAPON
 title:Vagabond
 title:Cutpurse
 title:Footpad
@@ -1468,12 +1471,12 @@ min-weight:35
 strength-multiplier:4
 equip:food:Ration of Food:1:3:none
 equip:light:Wooden Torch:1:3:none
-equip:sword:Main Gauche:1:1:none
+equip:sword:Dagger:1:1:none
 equip:bow:Short Bow:1:1:none
 equip:arrow:Arrow:15:20:none
 equip:scroll:Word of Recall:1:1:birth_no_recall
 equip:nature book:[Lesser Charms]:1:1:none
-player-flags:FAST_SHOT | CHOOSE_SPELLS
+player-flags:FAST_SHOT | CHOOSE_SPELLS | 2WEAPON
 title:Runner
 title:Strider
 title:Scout
@@ -1500,11 +1503,15 @@ effect-yx:22:40
 desc:Detects all living monsters in the immediate area, for one turn only.
 
 spell:Herbal Curing:9:6:30:4
-effect:CURE:CUT
 effect:CURE:POISONED
 effect:CURE:STUN
+effect:CURE:IMAGE
 effect:CURE:BLACKBREATH
-desc:Cures all cuts, poison, stunning and black breath.
+effect:HERBALC
+desc:Cures all poison, stunning, hallucenation, and black breath, partially cures cuts,
+desc: and leaves you well-nourished. Has a chance to cure a few other negative effects as
+desc: well, depending on your level.
+#HERBALC: partially cures cuts, chance to cure:FRENZY, AMNESIA, DISEASE, and sliming.
 
 spell:Resist Poison:12:10:32:5
 effect:TIMED_INC:OPP_POIS

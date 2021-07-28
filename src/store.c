@@ -782,6 +782,9 @@ static void mass_produce(struct object *obj)
 
 	/* Save the total pile size */
 	obj->number = MIN(size, obj->kind->base->max_stack);
+
+	/* paranoia */
+	if (!obj->number) obj->number = 1;
 }
 
 
@@ -1198,7 +1201,7 @@ static bool store_create_random(struct store *store)
 
 		/*** Pre-generation filters ***/
 
-		/* No chests or bones in stores XXX */
+		/* No chests or bones in stores */
 		if (kind->tval == TV_CHEST) continue;
 		if (kind->tval == TV_BONE) continue;
 
@@ -1911,10 +1914,8 @@ void do_cmd_sell(struct command *cmd)
 
 	/* Get the "apparent" value */
 	dummy = object_value(&dummy_item, amt);
-	/*
-	 * Do not need the dummy any more so release the memory allocated
-	 * within it.
-	 */
+	/* Do not need the dummy any more so release the memory allocated
+	 * within it. */
 	object_wipe(&dummy_item);
 
 	/* Know flavor of consumables */

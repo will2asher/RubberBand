@@ -31,6 +31,7 @@
 #include "player-timed.h"
 #include "player-util.h"
 #include "project.h"
+#include "ui-effect.h"
 
 /**
  * ------------------------------------------------------------------------
@@ -251,6 +252,39 @@ static void spell_check_for_fail_rune(const struct monster_spell *spell)
 	}
 }
 
+
+/**
+ * Calculate the base to-hit value for a monster spell based on race only
+ * See also: chance_of_monster_hit_base
+ *
+ * \param race The monster race
+ * \param spell The spell
+ */
+static int chance_of_spell_hit_base(const struct monster_race* race,
+	const struct monster_spell* spell)
+{
+	return MAX(race->level, 1) * 3 + spell->hit;
+}
+
+/**
+ * Calculate the to-hit value of a monster spell for a specific monster
+ *
+ * \param mon The monster
+ * \param spell The spell
+ */
+static int chance_of_spell_hit(const struct monster* mon,
+	const struct monster_spell* spell)
+{
+	int to_hit = chance_of_spell_hit_base(mon->race, spell);
+
+	/* Apply confusion hit reduction for each level of confusion */
+	for (int i = 0; i < monster_effect_level(mon, MON_TMD_CONF); i++) {
+		to_hit = to_hit * (100 - CONF_HIT_REDUCTION) / 100;
+	}
+
+	return to_hit;
+}
+
 /**
  * Process a monster spell 
  *
@@ -281,8 +315,8 @@ void do_mon_spell(int index, struct monster *mon, bool seen)
 			conf_level--;
 		}
 		if (target_mon > 0) {
-			hits = check_hit_monster(cave_monster(cave, target_mon),
-									 spell->hit, rlev, accuracy);
+			hits = test_hit(chance_of_spell_hit(mon, spell),
+				cave_monster(cave, target_mon)->race->ac);
 		} else {
 			hits = check_hit(player, spell->hit, rlev, accuracy);
 		}

@@ -554,7 +554,9 @@ static void build_tunnel(struct chunk *c, struct loc grid1, struct loc grid2)
 		}
 
 		/* Pierce "outer" walls of rooms */
-		if (square_is_granite_with_flag(c, tmp_grid, SQUARE_WALL_OUTER)) {
+		if ((square_is_granite_with_flag(c, tmp_grid, SQUARE_WALL_OUTER)) ||
+			square_is_granite_with_flag(c, tmp_grid, SQUARE_WALL_SPEC)) {
+
 			int iroom;
 			struct loc nxtdir = loc_diff(grid2, tmp_grid);
 
@@ -570,8 +572,8 @@ static void build_tunnel(struct chunk *c, struct loc grid1, struct loc grid2)
 			 * goal unreachable.
 			 */
 			if (ABS(nxtdir.x) <= 1 && ABS(nxtdir.y) <= 1 &&
-					square_is_granite_with_flag(c, grid2,
-					SQUARE_WALL_OUTER)) {
+				(square_is_granite_with_flag(c, tmp_grid, SQUARE_WALL_OUTER) ||
+				square_is_granite_with_flag(c, tmp_grid, SQUARE_WALL_SPEC))) {
 				continue;
 			}
 			/* See if it is a marked entrance. */
@@ -591,10 +593,8 @@ static void build_tunnel(struct chunk *c, struct loc grid1, struct loc grid2)
 						/* There isn't. */
 						continue;
 					}
-					/*
-					 * There is.  Accept the grid and pierce
-					 * the wall.
-					 */
+					/* There is.  Accept the grid and pierce
+					 * the wall. */
 					grid1 = tmp_grid;
 					pierce_outer_wall(c, grid1);
 				} else {
@@ -620,10 +620,7 @@ static void build_tunnel(struct chunk *c, struct loc grid1, struct loc grid2)
 
 					while (1) {
 						if (ntry >= mtry) {
-							/*
-							 * Didn't find a usable
-							 * exit.
-							 */
+							/* Didn't find a usable exit. */
 							break;
 						}
 						chk = choose_random_entrance(

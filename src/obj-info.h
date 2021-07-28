@@ -34,7 +34,7 @@ typedef enum {
 	OINFO_SPOIL  = 0x10, /* Description is for spoilers */
 } oinfo_detail_t;
 
-
+#if old
 /**
  * Flags for effect descriptions
  */
@@ -61,6 +61,7 @@ enum {
 	EFINFO_TOUCH,
 	EFINFO_TAP
 };
+#endif
 
 textblock *object_info(const struct object *obj, oinfo_detail_t mode);
 textblock *object_info_ego(struct ego_item *ego);

@@ -1160,6 +1160,12 @@ static bool place_new_monster_one(struct chunk *c, struct loc grid,
 	if (mon->race->light != 0)
 		player->upkeep->update |= PU_UPDATE_VIEW | PU_MONSTERS;
 
+	/* Sometimes make a puddle around water monsters (only when placed at level generation and not in a vault) */
+	if ((!character_dungeon) && (!square_isvault(c, grid)) && rf_has(race->flags, RF_WATER_HIDE) &&
+		((randint0(100) < 45) || rf_has(race->flags, RF_UNIQUE))) {
+		make_fountain(c, grid, 2);
+	}
+
 	/* Is this obviously a monster? (Mimics etc. aren't) */
 	if (rf_has(race->flags, RF_UNAWARE))
 		mflag_on(mon->mflag, MFLAG_CAMOUFLAGE);

@@ -70,6 +70,16 @@ graphics:white
 flags:HATES_ACID
 flags:SHOW_DICE
 
+name:throwing weapon:Throwing weapon~
+graphics:white
+# max-stack:1
+flags:HATES_ACID | SHOW_DICE
+
+name:bone:Bone weapon~
+graphics:white
+# max-stack:1
+flags:SHOW_DICE
+
 name:boots:Boot~
 graphics:light umber
 # max-stack:1
