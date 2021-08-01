@@ -840,7 +840,7 @@ static bool obj_known_damage(const struct object *obj, int *normal_damage,
 				continue;
 
 			/* Don't apply off-hand weapon brands to main weapon */
-			if (slot_type_is(i, EQUIP_SHIELD) && (tval_is_melee_weapon(slot_obj))) continue;
+			if (slot_type_is(player, i, EQUIP_SHIELD) && (tval_is_melee_weapon(slot_obj))) continue;
 
 			if (slot_obj->known->brands || slot_obj->known->slays)
 				*nonweap_slay = true;
@@ -1028,7 +1028,7 @@ static bool o_obj_known_damage(const struct object *obj, int *normal_damage,
 				continue;
 
 			/* Don't apply off-hand weapon brands to main weapon */
-			if (slot_type_is(i, EQUIP_SHIELD) && (tval_is_melee_weapon(slot_obj))) continue;
+			if (slot_type_is(player, i, EQUIP_SHIELD) && (tval_is_melee_weapon(slot_obj))) continue;
 
 			if (slot_obj->known->brands || slot_obj->known->slays)
 				*nonweap_slay = true;

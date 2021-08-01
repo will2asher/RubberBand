@@ -87,16 +87,30 @@ int slot_by_type(struct player *p, int type, bool full)
 	return (i != p->body.count) ? i : fallback;
 }
 
-bool slot_type_is(int slot, int type)
+/**
+ * Indicate whether a slot is of a given type.
+ *
+ * \param p is the player to test; if NULL, will assume the default body plan.
+ * \param slot is the slot index for the player.
+ * \param type is one of the EQUIP_* constants from list-equip-slots.h.
+ * \return true if the slot can hold that type; otherwise false
+ */
+bool slot_type_is(struct player* p, int slot, int type)
 {
 	/* Assume default body if no player */
-	struct player_body body = player ? player->body : bodies[0];
+	struct player_body body = p ? p->body : bodies[0];
 
 	return body.slots[slot].type == type ? true : false;
 }
 
+/**
+ * Get the object in a specific slot (if any).  Quit if slot index is invalid.
+ */
 struct object *slot_object(struct player *p, int slot)
 {
+	/* Check bounds */
+	assert(slot >= 0 && slot < p->body.count);
+
 	/* Ensure a valid body */
 	if (p->body.slots && p->body.slots[slot].obj) {
 		return p->body.slots[slot].obj;
@@ -290,11 +304,11 @@ bool minus_ac(struct player *p)
 	/* Count the armor slots */
 	for (i = 0; i < player->body.count; i++) {
 		/* Ignore non-armor */
-		if (slot_type_is(i, EQUIP_WEAPON)) continue;
-		if (slot_type_is(i, EQUIP_BOW)) continue;
-		if (slot_type_is(i, EQUIP_RING)) continue;
-		if (slot_type_is(i, EQUIP_AMULET)) continue;
-		if (slot_type_is(i, EQUIP_LIGHT)) continue;
+		if (slot_type_is(p, i, EQUIP_WEAPON)) continue;
+		if (slot_type_is(p, i, EQUIP_BOW)) continue;
+		if (slot_type_is(p, i, EQUIP_RING)) continue;
+		if (slot_type_is(p, i, EQUIP_AMULET)) continue;
+		if (slot_type_is(p, i, EQUIP_LIGHT)) continue;
 
 		/* Add */
 		count++;
@@ -303,11 +317,11 @@ bool minus_ac(struct player *p)
 	/* Pick one at random */
 	for (i = player->body.count - 1; i >= 0; i--) {
 		/* Ignore non-armor */
-		if (slot_type_is(i, EQUIP_WEAPON)) continue;
-		if (slot_type_is(i, EQUIP_BOW)) continue;
-		if (slot_type_is(i, EQUIP_RING)) continue;
-		if (slot_type_is(i, EQUIP_AMULET)) continue;
-		if (slot_type_is(i, EQUIP_LIGHT)) continue;
+		if (slot_type_is(p, i, EQUIP_WEAPON)) continue;
+		if (slot_type_is(p, i, EQUIP_BOW)) continue;
+		if (slot_type_is(p, i, EQUIP_RING)) continue;
+		if (slot_type_is(p, i, EQUIP_AMULET)) continue;
+		if (slot_type_is(p, i, EQUIP_LIGHT)) continue;
 
 		if (one_in_(count--)) break;
 	}
@@ -591,6 +605,11 @@ int inven_carry_num(const struct object *obj)
 	int n_free_slot = z_info->pack_size - pack_slots_used(player);
 	int num_to_quiver, num_left, i;
 
+	/* Treasure can always be picked up. */
+	if (tval_is_money(obj) && lookup_kind(obj->tval, obj->sval)) {
+		return obj->number;
+	}
+
 	/* Absorb as many as we can in the quiver. */
 	quiver_absorb_num(obj, &n_free_slot, &num_to_quiver);
 
@@ -853,11 +872,11 @@ void inven_takeoff(struct object *obj)
 	object_desc(o_name, sizeof(o_name), obj, ODESC_PREFIX | ODESC_FULL);
 
 	/* Describe removal by slot */
-	if (slot_type_is(slot, EQUIP_WEAPON))
+	if (slot_type_is(player, slot, EQUIP_WEAPON))
 		act = "You were wielding";
-	else if (slot_type_is(slot, EQUIP_BOW))
+	else if (slot_type_is(player, slot, EQUIP_BOW))
 		act = "You were holding";
-	else if (slot_type_is(slot, EQUIP_LIGHT))
+	else if (slot_type_is(player, slot, EQUIP_LIGHT))
 		act = "You were holding";
 	else
 		act = "You were wearing";
@@ -972,10 +991,8 @@ static bool inven_can_stack_partial(const struct object *obj1,
 				1 : z_info->thrown_quiver_mult);
 
 			if (mode & ~OSTACK_QUIVER) {
-				/*
-				 * May be combining between stacks with
-				 * different limits.
-				 */
+				/* May be combining between stacks with
+				 * different limits. */
 				int remainder =
 					total - obj1->kind->base->max_stack;
 
@@ -1008,6 +1025,7 @@ void combine_pack(void)
 {
 	struct object *obj1, *obj2, *prev;
 	bool display_message = false;
+	bool disable_repeat = false;
 
 	/* Combine the pack (backwards) */
 	obj1 = gear_last_item();
@@ -1027,6 +1045,7 @@ void combine_pack(void)
 			/* Can we drop "obj1" onto "obj2"? */
 			if (object_similar(obj2, obj1, stack_mode2)) {
 				display_message = true;
+				disable_repeat = true;
 				object_absorb(obj2->known, obj1->known);
 				obj1->known = NULL;
 				object_absorb(obj2, obj1);
@@ -1042,17 +1061,23 @@ void combine_pack(void)
 
 				if (inven_can_stack_partial(obj2, obj1,
 						stack_mode2 | stack_mode1)) {
-					/*
-					 * Setting this to true spams the
-					 * combine message.
-					 */
-					display_message = false;
+					int oldn2 = obj2->number;
+					int oldn1 = obj1->number;
+					/* Setting this to true spams the
+					 * combine message.?
+					 *
+					display_message = false; */
+
 					object_absorb_partial(obj2->known,
 						obj1->known, stack_mode2,
 						stack_mode1);
 					object_absorb_partial(obj2, obj1,
 						stack_mode2, stack_mode1);
 
+					if (obj2->number != oldn2 ||
+						obj1->number != oldn1) {
+						display_message = true;
+					}
 					/*
 					 * Ensure numbers align (should not be
 					 * necessary, but safer)
@@ -1077,8 +1102,9 @@ void combine_pack(void)
 	if (display_message) {
 		msg("You combine some items in your pack.");
 
-		/* Stop "repeat last command" from working. */
-		cmd_disable_repeat();
+		/* Stop "repeat last command" from working if a stack was
+		 * completely combined with another. */
+		if (disable_repeat) cmd_disable_repeat();
 	}
 }
 
@@ -1131,9 +1157,7 @@ void pack_overflow(struct object *obj)
 
 	/* Describe */
 	object_desc(o_name, sizeof(o_name), obj, ODESC_PREFIX | ODESC_FULL);
-	if (obj->artifact) {
-		artifact = true;
-	}
+	if (obj->artifact) artifact = true;
 
 	/* Message */
 	msg("You drop %s.", o_name);
@@ -1164,11 +1188,29 @@ int preferred_quiver_slot(const struct object *obj)
 	int desired_slot = -1;
 
 	if (obj->note && (tval_is_ammo(obj) ||
-			of_has(obj->flags, OF_THROWING))) {
-		const char *s = strchr(quark_str(obj->note), '@');
+		of_has(obj->flags, OF_THROWING))) {
+		const char* s = strchr(quark_str(obj->note), '@');
+		char fire_key, throw_key;
 
-		if (s && (s[1] == 'f' || s[1] == 'v')) {
-			desired_slot = s[2] - '0';
+		/*
+		 * Would be nice to use cmd_lookup_key() for this, but that is
+		 * part of the ui layer (declared in ui-game.h).  Instead,
+		 * hardwire the keys for the fire and throw commands.
+		 */
+		if (OPT(player, rogue_like_commands)) {
+			fire_key = 't';
+		}
+		else {
+			fire_key = 'f';
+		}
+		throw_key = 'v';
+		while (1) {
+			if (!s) break;
+			if (s[1] == fire_key || s[1] == throw_key) {
+				desired_slot = s[2] - '0';
+				break;
+			}
+			s = strchr(s + 1, '@');
 		}
 	}
 

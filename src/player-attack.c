@@ -780,7 +780,7 @@ bool py_attack_real(struct player *p, struct loc grid, bool *fear, bool offhand)
 			if (obj_local) {
 				/* Don't apply off-hand weapon brands to main weapon */
 				/* (and if we're using an off-hand weapon, we don't need to read it twice) */
-				if (slot_type_is(j, EQUIP_SHIELD) && (tval_is_melee_weapon(obj_local)))
+				if (slot_type_is(player, j, EQUIP_SHIELD) && (tval_is_melee_weapon(obj_local)))
 					/*skip*/;
 				else improve_attack_modifier(obj_local, mon, &b, &s, verb, false);
 			}

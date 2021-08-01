@@ -9,7 +9,7 @@
 
 # name: & object name~
 # graphics: symbol : color
-# type: tval 
+# type: tval
 # level: level
 # weight : weight
 # cost : cost
@@ -549,25 +549,26 @@ desc:Having a clear mind gives a small boost to most skills as well as
 desc: protection against confusion.
 
 #weird but (mostly) good one
-name:First Sight and Second Thoughts
-type:mushroom
-graphics:,:d
-level:0
-weight:1
-cost:200
-alloc:6:5 to 95
-pile:60:1d4
-power:7
-effect:CURE:CONFUSED
-effect:CURE:BLIND
-effect:CURE:CHARMED
-effect:CURE:IMAGE
-effect:TIMED_INC:2NDTHOT
-dice:50+7d7
-effect:NOURISH:INC_BY
-dice:5
-desc:Boosts first sight (infravision and searching) and second thoughts (saving throw),
-desc: but blocks second sight (telepathy and monster detection spells).
+#Why is this causing blindess?
+#name:First Sight and Second Thoughts
+#type:mushroom
+#graphics:,:d
+#level:0
+#weight:1
+#cost:200
+#alloc:6:5 to 95
+#pile:60:1d4
+#power:7
+#effect:TIMED_INC:2NDTHOT
+#dice:50+7d7
+#effect:CURE:CONFUSED
+#effect:CURE:BLIND
+#effect:CURE:CHARMED
+#effect:CURE:IMAGE
+#effect:NOURISH:INC_BY
+#dice:5
+#desc:Boosts first sight (infravision and searching) and second thoughts (saving throw),
+#desc: but blocks second sight (telepathy and monster detection spells).
 
 #weird (mostly) bad one. (this "cures" a few good effects as well as a couple bad ones)
 name:the Singing Drunk
@@ -581,12 +582,11 @@ pile:70:1d4
 power:1
 effect:CURE:FRENZY
 effect:CURE:AFRAID
-effect:CURE:CLEAR_MIND
 effect:CURE:STEALTH
 effect:CURE:OPP_CONF
 effect:CURE:COVERTRACKS
 effect:TIMED_INC:BOLD
-dice:1+2d9
+dice:1+2d7
 effect:TIMED_INC:SDRUNK
 dice:20+7d8
 effect:NOURISH:INC_BY

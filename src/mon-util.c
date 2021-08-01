@@ -807,7 +807,9 @@ void become_aware(struct monster *mon)
 		mon->mimicked_feat = 0;
 
 		/* Update monster and item lists */
-		player->upkeep->update |= (PU_UPDATE_VIEW | PU_MONSTERS);
+		if (mon->race->light != 0) {
+			player->upkeep->update |= (PU_UPDATE_VIEW | PU_MONSTERS);
+		}
 		player->upkeep->redraw |= (PR_MONLIST | PR_ITEMLIST);
 	}
 

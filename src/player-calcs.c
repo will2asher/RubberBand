@@ -1074,7 +1074,7 @@ void calc_inventory(struct player_upkeep *upkeep, struct object *gear,
 							n_pack_remaining) {
 						/*
 						 * Split off the portion that
-						 * go to the pack.  Since the
+						 * goes to the pack.  Since the
 						 * stack in the quiver is
 						 * earlier in the gear list
 						 * it will prefer to remain
@@ -1144,10 +1144,8 @@ void calc_inventory(struct player_upkeep *upkeep, struct object *gear,
 			to_quiver = first;
 		} else if (z_info->quiver_slot_size > 0 &&
 				n_stack_split <= n_pack_remaining) {
-			/*
-			 * As above, split off the portion that goes to the
-			 * pack.
-			 */
+			/* As above, split off the portion that goes to the
+			 * pack. */
 			to_quiver = first;
 			gear_insert_end(object_split(first,
 				first->number - z_info->quiver_slot_size));
@@ -1503,11 +1501,11 @@ static void calc_mana(struct player *p, struct player_state *state, bool update)
 		struct object *obj_local = slot_object(p, i);
 
 		/* Ignore non-armor */
-		if (slot_type_is(i, EQUIP_WEAPON)) continue;
-		if (slot_type_is(i, EQUIP_BOW)) continue;
-		if (slot_type_is(i, EQUIP_RING)) continue;
-		if (slot_type_is(i, EQUIP_AMULET)) continue;
-		if (slot_type_is(i, EQUIP_LIGHT)) continue;
+		if (slot_type_is(p, i, EQUIP_WEAPON)) continue;
+		if (slot_type_is(p, i, EQUIP_BOW)) continue;
+		if (slot_type_is(p, i, EQUIP_RING)) continue;
+		if (slot_type_is(p, i, EQUIP_AMULET)) continue;
+		if (slot_type_is(p, i, EQUIP_LIGHT)) continue;
 
 		/* Add weight */
 		if (obj_local)
@@ -1678,7 +1676,7 @@ void calc_digging_chances(struct player_state *state, int chances[DIGGING_MAX])
  *
  * N.B. state->num_blows is now 100x the number of blows.
  */
-int calc_blows(struct player *p, struct object *obj,
+int calc_blows(struct player *p, const struct object *obj,
 			   struct player_state *state, int extra_blows)
 {
 	int blows;
@@ -1974,7 +1972,7 @@ void calc_bonuses(struct player *p, struct player_state *state, bool known_only,
 			state->ac += obj->ac;
 			if (!known_only || obj->known->to_a)
 				state->to_a += obj->to_a;
-			if (!slot_type_is(i, EQUIP_WEAPON) && !slot_type_is(i, EQUIP_BOW)) {
+			if (!slot_type_is(p, i, EQUIP_WEAPON) && !slot_type_is(p, i, EQUIP_BOW)) {
 				if (!known_only || obj->known->to_h) {
 					state->to_h += obj->to_h;
 				}
@@ -1983,7 +1981,7 @@ void calc_bonuses(struct player *p, struct player_state *state, bool known_only,
 				}
 			}
 			/* Any weapon in shield slot can be used for blocking at least a little bit (?) */
-			if (slot_type_is(i, EQUIP_SHIELD) && (tval_is_melee_weapon(obj))) state->ac++;
+			if (slot_type_is(p, i, EQUIP_SHIELD) && (tval_is_melee_weapon(obj))) state->ac++;
 
 			/* Move to any unprocessed curse object */
 			if (curse) {
