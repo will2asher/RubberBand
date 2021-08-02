@@ -226,6 +226,9 @@ struct monster_race *get_mon_num(int level)
 	if (level > 0 && one_in_(z_info->ood_monster_chance))
 		level += MIN(level / 4 + 2, z_info->ood_monster_amount);
 
+	/* Occasionally produce a TOWN_OR_DUN dungeon monster in the town */
+	if ((!level) && (player->lev > 5) && (randint0(100) < 26)) level += 1 + randint1(player->lev + 1);
+
 	total = 0L;
 
 	/* Process probabilities */
@@ -236,15 +239,28 @@ struct monster_race *get_mon_num(int level)
 		/* Default */
 		table[i].prob3 = 0;
 
-		/* No town monsters in dungeon */
-		if ((level > 0) && (table[i].level <= 0)) continue;
-
 		/* Get the chosen monster */
 		race = &r_info[table[i].index];
 
+		/* Some monsters can appear in the town or dungeon */
+		if (rf_has(race->flags, RF_TOWN_OR_DUN) && (table[i].level == 0)) {
+			/* but they're less common in the dungeon if native to the town */
+			if ((player->depth > 0) && (randint0(level * 2 / 3 + 6) > 4)) continue;
+		}
+		/* No town monsters in dungeon (normally) */
+		else if ((level > 0) && (table[i].level <= 0)) continue;
+
+		/* and Dungeon-native TOWN_OR_DUN monsters are less common in town (depending on player level) */
+		if (rf_has(race->flags, RF_TOWN_OR_DUN) && (table[i].level > 0) && (!player->depth)) {
+			if (randint0(player->lev + 2) < table[i].level) continue;
+		}
+		/* No dungeon monsters in town (normally) */
+		else if ((!rf_has(race->flags, RF_TOWN_OR_DUN)) && (table[i].level > 0) && (!player->depth))
+			continue;
+
 		/* No seasonal monsters outside of Christmas */
 		if (rf_has(race->flags, RF_SEASONAL) &&
-			!(date->tm_mon == 11 && date->tm_mday >= 24 && date->tm_mday <= 26))
+			!(date->tm_mon == 11 && date->tm_mday >= 21 && date->tm_mday <= 27))
 			continue;
 
 		/* Only one copy of a unique must be around at the same time */
@@ -253,6 +269,10 @@ struct monster_race *get_mon_num(int level)
 
 		/* Some monsters never appear out of depth */
 		if (rf_has(race->flags, RF_FORCE_DEPTH) && race->level > player->depth)
+			continue;
+
+		/* Option to use silly monsters */
+		if (rf_has(race->flags, RF_SILLY) && (!OPT(player, birth_sillymon)))
 			continue;
 
 		/* Accept */
@@ -319,7 +339,7 @@ void delete_monster_idx(int m_idx)
 	else mon->race->cur_num--;
 
 	/* Count the number of "reproducers" */
-	if (rf_has(mon->race->flags, RF_MULTIPLY)) {
+	if (rf_has(mon->race->flags, RF_MULTIPLY) || rf_has(mon->race->flags, RF_SMULTIPLY)) {
 		cave->num_repro--;
 	}
 
@@ -1021,7 +1041,8 @@ s16b place_monster(struct chunk *c, struct loc grid, struct monster *mon,
 	update_mon(new_mon, c, true);
 
 	/* Count the number of "reproducers" */
-	if (rf_has(new_mon->race->flags, RF_MULTIPLY)) c->num_repro++;
+	if (rf_has(new_mon->race->flags, RF_MULTIPLY) || rf_has(mon->race->flags, RF_SMULTIPLY))
+		c->num_repro++;
 
 	/* Count racial occurrences */
 	if (new_mon->original_race) new_mon->original_race->cur_num++;
@@ -1065,11 +1086,12 @@ s16b place_monster(struct chunk *c, struct loc grid, struct monster *mon,
 static bool place_new_monster_one(struct chunk *c, struct loc grid,
 								  struct monster_race *race, bool sleep,
 								  struct monster_group_info group_info,
-								  byte origin)
+								  byte origin, bool newraceok)
 {
 	int i;
 	struct monster *mon;
 	struct monster monster_body;
+	int racesleep;
 
 	assert(square_in_bounds(c, grid));
 	assert(race && race->name);
@@ -1080,9 +1102,12 @@ static bool place_new_monster_one(struct chunk *c, struct loc grid,
 	/* Not where the player already is */
 	if (loc_eq(player->grid, grid)) return false;
 
-	/* Prevent monsters from being placed where they cannot walk, but allow
-	 * other feature types */
-	if (!square_is_monster_walkable(c, grid)) return false;
+	/* Allow water monsters to be placed in deep water (which isn't "walkable") (doesn't apply yet) */
+	if (square_iswater(c, grid) && (rf_has(race->flags, RF_WATER_HIDE) || rf_has(race->flags, RF_WATER_ONLY)))
+		/*okay*/;
+
+	/* Prevent monsters from being placed where they cannot walk, but allow other feature types. */
+	else if (!square_is_monster_walkable(c, grid)) return false;
 
 	/* No creation on glyphs */
 	if (square_iswarded(c, grid) || square_isdecoyed(c, grid)) return false;
@@ -1094,6 +1119,21 @@ static bool place_new_monster_one(struct chunk *c, struct loc grid,
 	/* Depth monsters may NOT be created out of depth */
 	if (rf_has(race->flags, RF_FORCE_DEPTH) && player->depth < race->level)
 		return false;
+
+	/* Don't create HURT_WATER monsters in water */
+	if (square_iswater(c, grid) && (rf_has(race->flags, RF_HURT_WATER))) {
+		/* If the water is shallow and not in a vault, maybe just remove it */
+		if ((!square_isvault(c, grid)) && square_is_monster_walkable(c, grid) && (randint0(10) < 6))
+			square_set_feat(c, grid, FEAT_FLOOR);
+
+		/* if this monster is a member of a group, then fail */
+		/* if (group_info.index) return false; /* It appears there is always a group index even if it's a single monster, hmmm */
+		/* sometimes just fail */
+		else if (one_in_(5)) return false;
+
+		/* otherwise pick a new monster race and try again */
+		else return pick_and_place_monster(c, grid, race->level, sleep, false, origin);
+	}
 
 	/* Add to level feeling, note uniques for cheaters */
 	c->mon_rating += race->level * race->level;
@@ -1122,10 +1162,38 @@ static bool place_new_monster_one(struct chunk *c, struct loc grid,
 	/* Save the race */
 	mon->race = race;
 
+	/* normal sleepiness maxes out at 255 */
+	if (race->sleep > 255) {
+		racesleep = 255;
+		/* monster is non-agressive */
+		mon->nonagr = 1;
+	}
+	else {
+		racesleep = race->sleep;
+		mon->nonagr = 0;
+	}
+
 	/* Enforce sleeping if needed */
-	if (sleep && race->sleep) {
-		int val = race->sleep;
-		mon->m_timed[MON_TMD_SLEEP] = ((val * 2) + randint1(val * 10));
+	if (sleep && racesleep) {
+		int val = racesleep;
+
+		/* TOWN_OR_DUN town monsters have to be more alert when they're in the dungeon */
+		if ((race->level == 0) && (player->depth > 0)) {
+			val -= player->depth / 5;
+			val = val * 2 / 3;
+			/* Don't reduce it too much */
+			if (val < race->sleep / 4) val = race->sleep / 4;
+		}
+
+		/* TOWN_OR_DUN dungeon monsters may be less alert when they're in town */
+		if ((race->level > 0) && (player->depth == 0)) {
+			if (randint0(player->lev + 1) < 6) val += 4 + randint1(8);
+			if (player->lev == 1) val += 2 + randint1(8);
+		}
+
+		/* Put monster to sleep (higher minimum in town) */
+		if (player->depth == 0) mon->m_timed[MON_TMD_SLEEP] = ((val * 3) + randint1(val * 9));
+		else mon->m_timed[MON_TMD_SLEEP] = ((val * 2) + randint1(val * 10));
 	}
 
 	/* Uniques get a fixed amount of HP */
@@ -1156,6 +1224,23 @@ static bool place_new_monster_one(struct chunk *c, struct loc grid,
 	if (rf_has(race->flags, RF_FORCE_SLEEP))
 		mflag_on(mon->mflag, MFLAG_NICE);
 
+	/* Mark the monster as evil or not */
+	/* Some monster races are always evil */
+	if (rf_has(race->flags, RF_EVIL)) mon->isevil = 1;
+	/* Some monster races are sometimes evil and sometimes not */
+	else if ((rf_has(race->flags, RF_S_EVIL1)) || (rf_has(race->flags, RF_S_EVIL2))) {
+		int evilc = 34;
+		if (rf_has(race->flags, RF_S_EVIL2)) evilc = 66;
+		if (randint0(100) < evilc) mon->isevil = 1;
+		else mon->isevil = 0;
+	}
+	/* otherwise not evil */
+	else mon->isevil = 0;
+
+	/* The player has not met this monster yet and it has not been charmed */
+	mon->pcmet = 0;
+	mon->acharmed = 0;
+
 	/* Affect light? */
 	if (mon->race->light != 0)
 		player->upkeep->update |= PU_UPDATE_VIEW | PU_MONSTERS;
@@ -1167,10 +1252,44 @@ static bool place_new_monster_one(struct chunk *c, struct loc grid,
 	}
 
 	/* Is this obviously a monster? (Mimics etc. aren't) */
-	if (rf_has(race->flags, RF_UNAWARE))
-		mflag_on(mon->mflag, MFLAG_CAMOUFLAGE);
-	else
-		mflag_off(mon->mflag, MFLAG_CAMOUFLAGE);
+	if (rf_has(race->flags, RF_UNAWARE)) mflag_on(mon->mflag, MFLAG_CAMOUFLAGE);
+	/* WATER_HIDE monsters can hide in water (if they're not too big) */
+	else if (rf_has(race->flags, RF_WATER_HIDE) && square_iswater(c, grid)) {
+		/* deep water isn't passable except by water monsters */
+		/* (monsters are never placed in deep water yet, but that'll probably change...) */
+		if ((race->msize <= 3) || (!square_ispassable(c, grid)))
+			mflag_on(mon->mflag, MFLAG_CAMOUFLAGE);
+		else mflag_off(mon->mflag, MFLAG_CAMOUFLAGE);
+	}
+	else mflag_off(mon->mflag, MFLAG_CAMOUFLAGE);
+
+	/*if (rf_has(race->flags, RF_DISGUISE))		(I'll do the DISGUISE flag later) */
+
+	/* Not obviously a monster but doesn't mimic an object, so it must mimic something else */
+	/*else*/ if (rf_has(race->flags, RF_UNAWARE) && (!mon->race->mimic_kinds))
+	{
+		/* Wall monsters mimic granite */
+		if (mon->race->d_char == '#') mon->mimicked_feat = 1;
+		/* Rubble mimics mimic lava -just kidding, they mimic rubble */
+		if (mon->race->d_char == ':') mon->mimicked_feat = 2;
+		/* Dryads mimic trees */
+		if (mon->race->d_char == 'y') mon->mimicked_feat = 7;
+		/* Lurkers/trappers mimic the floor (without needing help here) */
+		/* Gargoyles mimic statues */
+		if (mon->race->d_char == 'x') {
+			if (mon->race->elem == 4) mon->mimicked_feat = 5; /* fountain (elem 4 is water) */
+			else if (mon->race->msize < 3) mon->mimicked_feat = 3; /* small statue */
+			else if (mon->race->msize == 3) mon->mimicked_feat = 3 + randint0(2); /* small or large */
+			else mon->mimicked_feat = 4; /* large statue */
+			mon->statued = randint1(20); /* placeholder for statue description (which I haven't done yet...) */
+		}
+		else mon->statued = 0; /* not mimicking a statue */
+	}
+	else {
+		/* Monster is not disguised */
+		mon->mimicked_feat = 0;
+		mon->statued = 0;
+	}
 
 	/* Set the color if necessary */
 	if (rf_has(race->flags, RF_ATTR_RAND))
@@ -1234,7 +1353,7 @@ static bool place_new_monster_group(struct chunk *c, struct loc grid,
 			if (!square_isempty(c, try)) continue;
 
 			/* Attempt to place another monster */
-			if (place_new_monster_one(c, try, race, sleep, group_info, origin)){
+			if (place_new_monster_one(c, try, race, sleep, group_info, origin, false)){
 				/* Add it to the "hack" set */
 				loc_list[loc_num] = try;
 				loc_num++;
@@ -1325,7 +1444,7 @@ static bool place_friends(struct chunk *c, struct loc grid, struct monster_race 
 
 			/* Place the monsters */
 			bool success = place_new_monster_one(c, new, friends_race, sleep,
-												 group_info, origin);
+												 group_info, origin, false);
 			if (total > 1)
 				success = place_new_monster_group(c, new, friends_race, sleep,
 												  group_info, total, origin);
@@ -1357,6 +1476,7 @@ bool place_new_monster(struct chunk *c, struct loc grid,
 	struct monster_friends *friends;
 	struct monster_friends_base *friends_base;
 	int total;
+	struct monster *monb;
 
 	assert(c);
 	assert(race);
@@ -1368,9 +1488,14 @@ bool place_new_monster(struct chunk *c, struct loc grid,
 	}
 
 	/* Place one monster, or fail */
-	if (!place_new_monster_one(c, grid, race, sleep, group_info, origin)) {
+	if (!place_new_monster_one(c, grid, race, sleep, group_info, origin, true)) {
 		return (false);
 	}
+
+	/* make sure we made the monster we expected to make... If not, don't make a group */
+	/* (If it tries to make a HURT_WATER monster on a water grid, it may choose a new monster race) */
+	monb = square_monster(c, grid);
+	if (monb->race != race) return (true);
 
 	/* We're done unless the group flag is set */
 	if (!group_ok) return (true);

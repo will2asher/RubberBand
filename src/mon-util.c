@@ -804,6 +804,11 @@ void become_aware(struct monster *mon)
 		else if (mon->mimicked_feat == 2) msg("The pile of rubble was really a monster!");
 		else if (mon->mimicked_feat == 7) msg("The tree was really a monster!");
 		else if ((mon->mimicked_feat >= 3) && (mon->mimicked_feat <= 5)) msg("The statue was really a monster!");
+		/* or maybe it was only hiding in water */
+		else if (rf_has(mon->race->flags, RF_WATER_HIDE) && square_iswater(cave, mon->grid))
+			msg("There was a monster hiding in the water!");
+
+		/* monster is no longer mimicing */
 		mon->mimicked_feat = 0;
 
 		/* Update monster and item lists */

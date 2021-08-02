@@ -391,6 +391,9 @@ static void place_stairs(struct chunk *c, struct loc grid, int feat)
 		square_set_feat(c, grid, FEAT_MORE);
 	else if (is_quest(c->depth) || c->depth >= z_info->max_depth - 1)
 		square_set_feat(c, grid, FEAT_LESS);
+	/* Slides have a certain level range */
+	else if ((feat == FEAT_SLIDE) && ((c->depth < 12) || (c->depth > 94)))
+		square_set_feat(c, grid, FEAT_MORE);
 	else
 		square_set_feat(c, grid, feat);
 }
@@ -548,10 +551,8 @@ void alloc_stairs(struct chunk *c, int feat, int num, int minsep, bool sepany,
 
 	nav = 0;
 	if (minsep > 0) {
-		/*
-		 * Get the locations of the stairs already there that'll have
-		 * to be avoided.
-		 */
+		/* Get the locations of the stairs already there that'll have
+		 * to be avoided. */
 		square_predicate tester = (sepany) ? square_isstairs :
 			((feat == FEAT_MORE) ?
 			square_isdownstairs : square_isupstairs);
@@ -696,8 +697,13 @@ bool alloc_object(struct chunk *c, int set, int typ, int depth, byte origin)
 		/* If we are ok with a corridor and we're in one, we're done */
 		if (set & SET_CORR && !square_isroom(c, grid)) break;
 
-		/* If we are ok with a room and we're in one, we're done */
-		if (set & SET_ROOM && square_isroom(c, grid)) break;
+		/* If we are ok with a room and we're in one, we're done (unless...) */
+		if (set & SET_ROOM) {
+			/* Between two walls is not a good place for a tree or statue */
+			if (((typ == TYP_STATU) || (typ == TYP_TREE)) && possible_doorway(c, grid, true)) continue;
+
+			if (square_isroom(c, grid)) break;
+		}
 	}
 
 	if (tries == 2000) return false;
@@ -705,7 +711,23 @@ bool alloc_object(struct chunk *c, int set, int typ, int depth, byte origin)
 	/* Place something */
 	switch (typ) {
 	case TYP_RUBBLE: place_rubble(c, grid); break;
+	case TYP_TREE: {
+		if (!randint0(8 - depth / 15)) square_set_feat(c, grid, FEAT_DEAD_TREE);
+		else square_set_feat(c, grid, FEAT_TREE);
+		break;
+	}
+	case TYP_STATU: {
+		int sdie = randint0(100);
+		if (sdie < 40) square_set_feat(c, grid, FEAT_STATUE);
+		else if (sdie < 80) square_set_feat(c, grid, FEAT_SM_STATUE);
+		else make_fountain(c, grid, 1);
+		break;
+	}
+				  /* make_fountain mode 2 is puddle of water, mode 3 is puddle of lava */
+	case TYP_WATER: make_fountain(c, grid, 2); break;
+	case TYP_LAVA: make_fountain(c, grid, 3); break;
 	case TYP_TRAP: place_trap(c, grid, -1, depth); break;
+	case TYP_NEXUSST: square_set_feat(c, grid, FEAT_NEXUS_STONE); break;
 	case TYP_GOLD: place_gold(c, grid, depth, origin); break;
 	case TYP_OBJECT: place_object(c, grid, depth, false, false, origin, 0);
 		break;

@@ -73,6 +73,7 @@
 #include "mon-spell.h"
 #include "mon-util.h"
 #include "player-util.h"
+#include "player-timed.h"
 #include "store.h"
 #include "trap.h"
 #include "z-queue.h"
@@ -498,9 +499,7 @@ static void build_tunnel(struct chunk *c, struct loc grid1, struct loc grid2)
 	struct loc start = grid1, tmp_grid, offset;
 	/* Used to prevent random bends for a while. */
 	int bend_intvl = 0;
-	/*
-	 * Used to prevent excessive door creation along overlapping corridors.
-	 */
+	/* Used to prevent excessive door creation along overlapping corridors */
 	bool door_flag = false;
 
 	/* Reset the arrays */
@@ -556,7 +555,6 @@ static void build_tunnel(struct chunk *c, struct loc grid1, struct loc grid2)
 		/* Pierce "outer" walls of rooms */
 		if ((square_is_granite_with_flag(c, tmp_grid, SQUARE_WALL_OUTER)) ||
 			square_is_granite_with_flag(c, tmp_grid, SQUARE_WALL_SPEC)) {
-
 			int iroom;
 			struct loc nxtdir = loc_diff(grid2, tmp_grid);
 
@@ -582,11 +580,9 @@ static void build_tunnel(struct chunk *c, struct loc grid1, struct loc grid2)
 				/* It is. */
 				assert(iroom >= 0 && iroom < dun->cent_n);
 				if (square_isroom(c, grid1)) {
-					/*
-					 * The tunnel is coming from inside the
+					/* The tunnel is coming from inside the
 					 * room.  See if there's somewhere on
-					 * the outside to go.
-					 */
+					 * the outside to go. */
 					nxtdir = find_normal_to_wall(c,
 						tmp_grid, false);
 					if (nxtdir.x == 0 && nxtdir.y == 0) {
@@ -635,9 +631,7 @@ static void build_tunnel(struct chunk *c, struct loc grid1, struct loc grid2)
 							c, chk, false);
 						if (nxtdir.x != 0 ||
 								nxtdir.y != 0) {
-							/*
-							 * Found a usable exit.
-							 */
+							/* Found a usable exit. */
 							break;
 						}
 						++ntry;
@@ -648,16 +642,12 @@ static void build_tunnel(struct chunk *c, struct loc grid1, struct loc grid2)
 						/* No usable exit was found. */
 						continue;
 					}
-					/*
-					 * Pierce the wall at the original
-					 * entrance.
-					 */
+					/* Pierce the wall at the original
+					 * entrance. */
 					pierce_outer_wall(c, tmp_grid);
-					/*
-					 * And at the exit which is also the
+					/* And at the exit which is also the
 					 * continuation point for the rest of
-					 * the tunnel.
-					 */
+					 * the tunnel. */
 					pierce_outer_wall(c, chk);
 					grid1 = chk;
 				}
@@ -761,7 +751,7 @@ static void build_tunnel(struct chunk *c, struct loc grid1, struct loc grid2)
  *
  * TODO: count stairs, open doors, closed doors?
  */
-static int next_to_corr(struct chunk *c, struct loc grid)
+static int next_to_corr(struct chunk *c, struct loc grid, bool roomok)
 {
 	int i, k = 0;
 	assert(square_in_bounds(c, grid));
@@ -771,8 +761,8 @@ static int next_to_corr(struct chunk *c, struct loc grid)
 		/* Extract the location */
 		struct loc grid1 = loc_sum(grid, ddgrid_ddd[i]);
 
-		/* Count only floors which aren't part of rooms */
-		if (square_isfloor(c, grid1) && !square_isroom(c, grid1)) k++;
+		/* Count only floors which aren't part of rooms (unless rooms are allowed) */
+		if (square_isfloor(c, grid1) && (roomok || !square_isroom(c, grid1))) k++;
 	}
 
 	/* Return the number of corridors */
@@ -788,10 +778,10 @@ static int next_to_corr(struct chunk *c, struct loc grid)
  * To have a doorway, a space must be adjacent to at least two corridors and be
  * between two walls.
  */
-static bool possible_doorway(struct chunk *c, struct loc grid)
+bool possible_doorway(struct chunk *c, struct loc grid, bool roomok)
 {
 	assert(square_in_bounds(c, grid));
-	if (next_to_corr(c, grid) < 2)
+	if (next_to_corr(c, grid, roomok) < 2)
 		return false;
 	else if (square_isstrongwall(c, next_grid(grid, DIR_N)) &&
 			 square_isstrongwall(c, next_grid(grid, DIR_S)))
@@ -819,9 +809,9 @@ static void try_door(struct chunk *c, struct loc grid)
 	if (square_isplayertrap(c, grid)) return;
 	if (square_isdoor(c, grid)) return;
 
-	if (randint0(100) < dun->profile->tun.jct && possible_doorway(c, grid))
+	if (randint0(100) < dun->profile->tun.jct && possible_doorway(c, grid, false))
 		place_random_door(c, grid);
-	else if (randint0(500) < dun->profile->tun.jct && possible_doorway(c, grid))
+	else if (randint0(500) < dun->profile->tun.jct && possible_doorway(c, grid, false))
 		place_trap(c, grid, -1, c->depth);
 }
 
@@ -955,6 +945,12 @@ static void handle_level_stairs(struct chunk *c, struct player *p,
 		minsep = 0;
 	}
 	if (!persistent || !chunk_find_adjacent(p, false)) {
+		/* Sometimes replace a downstair with a slide */
+		if ((c->depth > 8) && (one_in_(20 - c->depth / 20))) {
+			if ((down_count > 3) || (one_in_(15 - c->depth / 20))) down_count -= 1;
+			alloc_stairs(c, FEAT_SLIDE, 1, minsep, false,
+				dun->one_off_below);
+		}
 		alloc_stairs(c, FEAT_MORE, down_count, minsep, false,
 			dun->one_off_below);
 	}
@@ -1125,6 +1121,7 @@ struct chunk *classic_gen(struct player *p, int min_height, int min_width) {
 	int by, bx = 0, tby, tbx, key, rarity, built;
 	int num_rooms, size_percent;
 	int dun_unusual = dun->profile->dun_unusual;
+	int dvault = 0;
 
 	bool **blocks_tried;
 	struct chunk *c;
@@ -1214,8 +1211,14 @@ struct chunk *classic_gen(struct player *p, int min_height, int min_width) {
 		 * the room. This number has a (50+depth/2)/DUN_UNUSUAL chance
 		 * of being > 0, a (50+depth/2)^2/DUN_UNUSUAL^2 chance of
 		 * being > 1, up to MAX_RARITY. */
+		 /* (DUN_UNUSUAL is usually 200) */
 		i = 0;
 		rarity = 0;
+		/* Treasure map effect makes special rooms more common */
+		if ((player->timed[TMD_TREASMAP]) && (dun_unusual > 180) &&
+			(player->depth >= 10) && (dvault < randint1(2))) {
+			dun_unusual -= 30;
+		}
 		while (i == rarity && i < dun->profile->max_rarity) {
 			if (randint0(dun_unusual) < 50 + c->depth / 2) rarity++;
 			i++;
@@ -1233,6 +1236,8 @@ struct chunk *classic_gen(struct player *p, int min_height, int min_width) {
 			
 			if (room_build(c, by, bx, profile, false)) {
 				built++;
+				/* Count vaults */
+				if ((profile.rarity > 1) && (profile.level >= 10)) dvault++;
 				break;
 			}
 		}
@@ -1292,6 +1297,19 @@ struct chunk *classic_gen(struct player *p, int min_height, int min_width) {
 		Rand_normal(z_info->both_item_av, 3), c->depth, ORIGIN_FLOOR);
 	alloc_objects(c, SET_BOTH, TYP_GOLD,
 		Rand_normal(z_info->both_gold_av, 3), c->depth, ORIGIN_FLOOR);
+
+	/* And occationally some trees, rubble, or statues in rooms */
+	if (randint0(100) < 17 - c->depth / 5) alloc_objects(c, SET_ROOM, TYP_TREE, 3 + randint1(9), c->depth, 0);
+	else if (randint0(100) < 11 + c->depth / 5) alloc_objects(c, SET_ROOM, TYP_RUBBLE, 2 + randint1(8), c->depth, 0);
+	if (randint0(100) < 12) alloc_objects(c, SET_ROOM, TYP_STATU, randint0(9), c->depth, 0);
+
+	/* occational pools of lava (only deep) */
+	if ((c->depth > 65) && (randint0(100) < c->depth / 8)) alloc_objects(c, SET_ROOM, TYP_LAVA, randint0(9), c->depth, 0);
+	/* occational pools of water (unless it's really deep) */
+	else if ((c->depth < 85) && (randint0(100) < 9)) alloc_objects(c, SET_ROOM, TYP_WATER, randint0(9), c->depth, 0);
+
+	/* rare nexus stones */
+	if (one_in_(300)) alloc_objects(c, SET_ROOM, TYP_NEXUSST, randint1(2), c->depth, 0);
 
 	return c;
 }
@@ -2577,6 +2595,10 @@ static void town_gen_layout(struct chunk *c, struct player *p)
 				}
 			}
 		}
+		/* Add some trees and a statue or two */
+		alloc_objects(c, SET_BOTH, TYP_TREE, 3 + randint1(11), 0, 0);
+		alloc_objects(c, SET_BOTH, TYP_STATU, randint0(5), 0, 0);
+
 		success = true;
 	}
 
@@ -2670,6 +2692,7 @@ static struct chunk *modified_chunk(int depth, int height, int width)
 	int num_floors;
 	int num_rooms = dun->profile->n_room_profiles;
 	int dun_unusual = dun->profile->dun_unusual;
+	int dvault = 0;
 
 	/* Make the cave */
 	struct chunk *c = cave_new(height, width);
@@ -2718,6 +2741,12 @@ static struct chunk *modified_chunk(int depth, int height, int width)
 		 * being > 1, up to MAX_RARITY. */
 		i = 0;
 		rarity = 0;
+
+		/* Treasure map effect makes special rooms more common */
+		if ((player->timed[TMD_TREASMAP]) && (dun_unusual > 180) &&
+			(player->depth >= 10) && (dvault < randint1(2))) {
+			dun_unusual -= 30;
+		}
 		while (i == rarity && i < dun->profile->max_rarity) {
 			if (randint0(dun_unusual) < 50 + c->depth / 2) rarity++;
 			i++;
@@ -2849,6 +2878,19 @@ struct chunk *modified_gen(struct player *p, int min_height, int min_width) {
 		Rand_normal(z_info->both_item_av, 3), c->depth, ORIGIN_FLOOR);
 	alloc_objects(c, SET_BOTH, TYP_GOLD,
 		Rand_normal(z_info->both_gold_av, 3), c->depth, ORIGIN_FLOOR);
+
+	/* And occationally some trees or rubble in rooms */
+	if (randint0(100) < 17 - c->depth / 5) alloc_objects(c, SET_ROOM, TYP_TREE, 3 + randint1(9), c->depth, 0);
+	else if (randint0(100) < 11 + c->depth / 5) alloc_objects(c, SET_ROOM, TYP_RUBBLE, 2 + randint1(8), c->depth, 0);
+	if (randint0(100) < 12) alloc_objects(c, SET_ROOM, TYP_STATU, randint0(9), c->depth, 0);
+
+	/* occational pools of lava (only deep) */
+	if ((c->depth > 65) && (randint0(100) < c->depth / 8)) alloc_objects(c, SET_ROOM, TYP_LAVA, randint0(9), c->depth, 0);
+	/* occational pools of water (unless it's really deep) */
+	else if ((c->depth < 85) && (randint0(100) < 9)) alloc_objects(c, SET_ROOM, TYP_WATER, randint0(9), c->depth, 0);
+
+	/* rare nexus stones */
+	if (one_in_(300)) alloc_objects(c, SET_ROOM, TYP_NEXUSST, randint1(2), c->depth, 0);
 
 	return c;
 }
@@ -3046,6 +3088,10 @@ struct chunk *moria_gen(struct player *p, int min_height, int min_width) {
 		Rand_normal(z_info->both_item_av, 3), c->depth, ORIGIN_FLOOR);
 	alloc_objects(c, SET_BOTH, TYP_GOLD,
 		Rand_normal(z_info->both_gold_av, 3), c->depth, ORIGIN_FLOOR);
+
+	if (randint0(100) < 6) alloc_objects(c, SET_ROOM, TYP_STATU, randint0(3), c->depth, 0);
+	/* rare nexus stones */
+	if (one_in_(400)) alloc_objects(c, SET_ROOM, TYP_NEXUSST, randint1(2), c->depth, 0);
 
 	return c;
 }
@@ -3320,6 +3366,8 @@ struct chunk *hard_centre_gen(struct player *p, int min_height, int min_width)
 		ORIGIN_CAVERN);
 	alloc_objects(c, SET_BOTH, TYP_GOOD, randint0(k / 4), c->depth,
 		ORIGIN_CAVERN);
+
+	if (randint0(100) < 10) alloc_objects(c, SET_ROOM, TYP_STATU, randint0(6), c->depth, 0);
 
 	return c;
 }
@@ -3694,6 +3742,9 @@ struct chunk *gauntlet_gen(struct player *p, int min_height, int min_width) {
 		Rand_normal(z_info->both_item_av, 3), c->depth, ORIGIN_FLOOR);
 	alloc_objects(c, SET_BOTH, TYP_GOLD,
 		Rand_normal(z_info->both_gold_av, 3), c->depth, ORIGIN_FLOOR);
+
+	/* And occationally some rubble in rooms */
+	if (randint0(100) < 11 + c->depth / 5) alloc_objects(c, SET_ROOM, TYP_RUBBLE, 3 + randint1(5), c->depth, 0);
 
 	return c;
 }
