@@ -129,7 +129,7 @@ alloc:10:20 to 127
 item:light:Lantern
 flags:PROT_BLIND | SEE_INVIS
 
-# (I haven't finished implementing true sight yet, but it's more than just see invisible)
+# (I haven't finished implementing true sight yet, but it'll be more than just see invisible)
 #name:of True Sight
 #info:10000:10
 #alloc:4:32 to 127
@@ -757,6 +757,7 @@ type:bone
 type:throwing weapon
 
 #(default hand grenade ego because object.txt doesn't handle brands)
+#(Flasks of oil can also get this ego)
 name:(active)
 info:10:1
 alloc:450:1 to 127

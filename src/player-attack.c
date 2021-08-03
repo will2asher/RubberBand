@@ -136,8 +136,12 @@ static int chance_of_missile_hit_base(const struct player *p,
 				+ bonus * BTH_PLUS_ADJ;
 		}
 	} else {
+		bool sling = false;
+		if (kf_has(launcher->kind->kind_flags, KF_SHOOTS_SHOTS)) sling = true;
 		bonus += p->state.to_h + launcher->to_h;
-		chance = p->state.skills[SKILL_TO_HIT_BOW] + bonus * BTH_PLUS_ADJ;
+		/* Slings use throwing skill */
+		if (sling) chance = p->state.skills[SKILL_TO_HIT_THROW] + bonus * BTH_PLUS_ADJ;
+		else chance = p->state.skills[SKILL_TO_HIT_BOW] + bonus * BTH_PLUS_ADJ;
 	}
 
 	return chance;
@@ -748,7 +752,7 @@ bool py_attack_real(struct player *p, struct loc grid, bool *fear, bool offhand)
 	success = test_hit(chance_of_melee_hit(p, obj, mon), mon->race->ac);
 
 	/* Disturb the monster (monster has a small chance to stay asleep if you miss) */
-	if ((success) || (randint1(200) > p->state.skills[SKILL_STEALTH] + p->p_luck)) {
+	if ((success) || (randint1(250) > (p->state.skills[SKILL_STEALTH] + p->p_luck * 2) * 2)) {
 		monster_wake(mon, false, 100);
 		mon_clear_timed(mon, MON_TMD_HOLD, MON_TMD_FLG_NOTIFY);
 	}
@@ -939,7 +943,7 @@ bool attempt_shield_bash(struct player* p, struct loc grid, bool* fear, bool off
 	/* Attack with off-hand weapon slightly more often than shield bash anyway */
 	else if (offhandhit) bash_chance += p->lev / 8 + 1;
 
-	/* Try to get in a shield bash. */
+	/* Try to get in a shield bash. (Why does it use monster race level here rather than ac?) */
 	if (bash_chance <= randint0(200 + mon->race->level)) {
 		return false;
 	}
