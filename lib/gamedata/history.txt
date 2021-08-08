@@ -30,6 +30,9 @@
 #   Half-Orc      --> 19 --> 20 -->  2 -->  3 --> 50 --> 51 --> 52 --> 53
 #   Half-Troll    --> 21 --> 22 --> 62 --> 63 --> 64 --> 65 --> 66
 #   Kobold        --> 23 --> 24 --> 25 --> 26 --> 67 --> 68 --> 69
+# Added races for RB:
+#	Hobglib		  --> 70  -> 71  -> 72  -> 73 
+#	Goblin		  --> 
 
 # This table *must* be correct or the history may look very silly.
 
@@ -216,6 +219,8 @@ chart:22:62:99
 phrase:Shaman.  
 chart:22:62:100
 phrase:Clan Chief.  
+
+# Kobolds: 
 
 chart:23:24:20
 phrase:You are the runt of 
@@ -410,4 +415,76 @@ chart:69:0:90
 phrase:and small, sharp teeth.
 chart:69:0:100
 phrase:and large, sharp teeth.
+
+# Hobglibs: 
+
+chart:70:71:10
+phrase:You killed your parents for use in experiments. 
+chart:70:73:40
+phrase:You don't know nor care who your parents are. 
+chart:70:73:70
+phrase:You've forgotten who your parents are. 
+chart:70:71:77
+phrase:One of your parents grudgingly let you live with them growing up. 
+chart:70:71:85
+phrase:Your parents grudgingly let you live with them growing up. 
+chart:70:71:93
+phrase:You were brought up by one of your parents. 
+chart:70:71:100
+phrase:You were brought up by your parents. 
+
+chart:71:72:10
+phrase:You are the child of a hobglib rogue 
+chart:71:72:30
+phrase:You are the child of a hobglib trickster 
+chart:71:72:45
+phrase:You are the child of a hobglib poisonmaker 
+chart:71:72:60
+phrase:You are the child of a hobglib breeder 
+chart:71:72:80
+phrase:You are the child of a hobglib alchemist 
+chart:71:72:100
+phrase:You are the child of a hobglib magician 
+
+chart:72:73:11
+phrase:who used you for experiments. 
+chart:72:73:36
+phrase:who mostly ignored you. 
+chart:72:73:51
+phrase:who treated you like a slave. 
+chart:72:73:71
+phrase:who made you act as their assistant. 
+chart:72:73:81
+phrase:who treated you like a valued servant. 
+chart:72:73:100
+phrase:who taught you everything he knew. 
+
+chart:73:0:9
+phrase:You are a hated outcast. 
+chart:73:0:25
+phrase:You are hermit, ignored by the nearby villagers. 
+chart:73:0:40
+phrase:You are a feared loner. 
+chart:73:0:55
+phrase:You are a respected loner. 
+chart:73:0:75
+phrase:People have reluctantly accepted you into their town.
+chart:73:0:95
+phrase:You are a traveller.
+chart:73:0:100
+phrase:People have accepted you into their community.
+
+# Goblins: (I'll finish these later)
+
+chart:74:75:10
+phrase:Goblin is a goblin. 
+chart:74:75:100
+phrase:Goblin is a goblin. 
+
+chart:75:0:47
+phrase:You love pouring sour milk out on the floor. 
+chart:75:0:99
+phrase:You ate the neighbor's cat. 
+chart:75:0:100
+phrase:You're David Bowie's right hand man. 
 

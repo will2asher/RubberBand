@@ -2776,6 +2776,7 @@ static bool effect_handler_SUMMON(effect_handler_context_t *context)
 	int message_type = summon_message_type(summon_type);
 	int fallback_type = summon_fallback_type(summon_type);
 	int count = 0, val = 0, attempts = 0;
+	int edep = player->depth;
 
 	sound(message_type);
 
@@ -2785,9 +2786,17 @@ static bool effect_handler_SUMMON(effect_handler_context_t *context)
 	/* Monster summon */
 	if (context->origin.what == SRC_MONSTER) {
 		struct monster *mon = cave_monster(cave, context->origin.which.monster);
-		int rlev;
+		int rlev = mon->race->level;
 
 		assert(mon);
+
+		/* Allow "Scroll of Aquirement" town monster to summon in town */
+		if (edep < 1) {
+			edep = 1;
+			/* But weaken summons from any other summoners who somehow end up in town. */
+			if (rlev > 3) rlev /= 4;
+			else if (rlev > 1) rlev = 1;
+		}
 
 		/* Set the kin_base if necessary */
 		if (summon_type == summon_name_to_idx("KIN")) {
@@ -2795,8 +2804,7 @@ static bool effect_handler_SUMMON(effect_handler_context_t *context)
 		}
 
 		/* Continue summoning until we reach the current dungeon level */
-		rlev = mon->race->level;
-		while ((val < player->depth * rlev) && (attempts < summon_max)) {
+		while ((val < edep * rlev) && (attempts < summon_max)) {
 			int temp;
 
 			/* Get a monster */
@@ -2809,8 +2817,7 @@ static bool effect_handler_SUMMON(effect_handler_context_t *context)
 			attempts++;
 
 			/* Increase count of summoned monsters */
-			if (val > 0)
-				count++;
+			if (val > 0) count++;
 		}
 
 		/* If the summon failed and there's a fallback type, use that */
@@ -2829,14 +2836,12 @@ static bool effect_handler_SUMMON(effect_handler_context_t *context)
 				attempts++;
 
 				/* Increase count of summoned monsters */
-				if (val > 0)
-					count++;
+				if (val > 0) count++;
 			}
 		}
 
 		/* Summoner failed */
-		if (!count)
-			msg("But nothing comes.");
+		if (!count) msg("But nothing comes.");
 	} else {
 		/* If not a monster summon, it's simple */
 		while (summon_max) {
@@ -2852,7 +2857,7 @@ static bool effect_handler_SUMMON(effect_handler_context_t *context)
 	/* Message for the blind */
 	if (count && player->timed[TMD_BLIND])
 		msgt(message_type, "You hear %s appear nearby.",
-			 (count > 1 ? "many things" : "something"));
+			 (count > 1 ? "some things" : "something"));
 
 	return true;
 }

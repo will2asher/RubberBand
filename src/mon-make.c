@@ -1277,7 +1277,10 @@ static bool place_new_monster_one(struct chunk *c, struct loc grid,
 		/* Lurkers/trappers mimic the floor (without needing help here) */
 		/* Gargoyles mimic statues */
 		if (mon->race->d_char == 'x') {
-			if (mon->race->elem == 4) mon->mimicked_feat = 5; /* fountain (elem 4 is water) */
+			if (mon->race->elem == 4) {
+				mon->mimicked_feat = 5; /* fountain (elem 4 is water) */
+				make_fountain(c, grid, 2); /* make a puddle around fountain gargoyles */
+			}
 			else if (mon->race->msize < 3) mon->mimicked_feat = 3; /* small statue */
 			else if (mon->race->msize == 3) mon->mimicked_feat = 3 + randint0(2); /* small or large */
 			else mon->mimicked_feat = 4; /* large statue */
