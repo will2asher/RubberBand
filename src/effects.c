@@ -365,6 +365,9 @@ static bool item_tester_hook_weapon(const struct object *obj)
  */
 static bool item_tester_hook_armour(const struct object *obj)
 {
+	/* special case for the main gauche. todo: make an object flag for this. */
+	/* (ugly: include weight check or else it'll include the *thancs and any blade with an ego that adds an ac bonus) */
+	if ((obj->tval == TV_SWORD) && (obj->weight == 25) && (obj->ac > 0)) return true;
 	return tval_is_armor(obj);
 }
 
@@ -804,9 +807,9 @@ static bool effect_handler_MON_HEAL_HP(effect_handler_context_t *context)
 		mon->hp = mon->maxhp;
 
 		if (seen)
-			msg("%s looks REALLY healthy!", m_name);
+			msg("%s looks fully healthy!", m_name);
 		else
-			msg("%s sounds REALLY healthy!", m_name);
+			msg("%s sounds fully healthy!", m_name);
 	} else if (seen) { /* Partially healed */
 		msg("%s looks healthier.", m_name);
 	} else {
@@ -861,7 +864,7 @@ static bool effect_handler_MON_HEAL_KIN(effect_handler_context_t *context)
 
 	if (seen) {
 		if (mon->hp == mon->maxhp) {
-			msg("%s looks REALLY healthy!", m_name);
+			msg("%s looks fully healthy!", m_name);
 		} else if (seen) { /* Partially healed */
 			msg("%s looks healthier.", m_name);
 		}
@@ -1799,6 +1802,12 @@ static bool effect_handler_READ_MINDS(effect_handler_context_t *context)
 	int dist_x = context->x ? context->x : context->value.sides;
 	bool found = false;
 
+	/* downside of first sight and second thoughts */
+	if (player->timed[TMD_2NDTHOT]) {
+		msg("Your first sight blocks the effect!");
+		return false;
+	}
+
 	/* Scan monsters */
 	for (i = 1; i < cave_monster_max(cave); i++) {
 		struct monster *mon = cave_monster(cave, i);
@@ -2025,6 +2034,12 @@ static bool effect_handler_DETECT_GOLD(effect_handler_context_t *context)
 
 	bool gold_buried = false;
 
+	/* downside of first sight and second thoughts */
+	if (player->timed[TMD_2NDTHOT]) {
+		msg("Your first sight blocks the effect!");
+		return false;
+	}
+
 	/* Pick an area to detect */
 	y1 = player->grid.y - context->y;
 	y2 = player->grid.y + context->y;
@@ -2166,6 +2181,12 @@ static bool effect_handler_DETECT_OBJECTS(effect_handler_context_t *context)
 
 	bool objects = false;
 
+	/* downside of first sight and second thoughts */
+	if (player->timed[TMD_2NDTHOT]) {
+		msg("Your first sight blocks the effect!");
+		return false;
+	}
+
 	/* Pick an area to detect */
 	y1 = player->grid.y - context->y;
 	y2 = player->grid.y + context->y;
@@ -2256,8 +2277,14 @@ static bool detect_monsters(int y_dist, int x_dist, monster_predicate pred)
 
 			/* Note invisible monsters */
 			if (monster_is_invisible(mon)) {
-				struct monster_lore *lore = get_lore(mon->race);
-				rf_on(lore->flags, RF_INVISIBLE);
+				struct monster_lore* lore = get_lore(mon->race);
+				if (rf_has(mon->race->flags, RF_INVISIBLE)) rf_on(lore->flags, RF_INVISIBLE);
+				else rsf_on(lore->spell_flags, RSF_TINVIS);
+			}
+			/* Note evil monsters */
+			if (pred == monster_is_evil) {
+				/* This means that the player has learned whether the individual monster is evil or not */
+				mon->pcmet = 1;
 			}
 
 			/* Update monster recall window */
@@ -2271,6 +2298,19 @@ static bool detect_monsters(int y_dist, int x_dist, monster_predicate pred)
 			/* Detect */
 			monsters = true;
 		}
+		/* If we can see the monster but didn't detect it with the spell, we might learn something about it */
+		/* (is_obvious means visible and not camouflaged) */
+		else if ((monster_is_in_view(mon)) && (monster_is_obvious(mon))) {
+
+			/* learn whether this individual is evil or not */
+			if (pred == monster_is_evil) mon->pcmet = 1;
+
+			/* learn whether this monster is immune to fear */
+			if ((pred == monster_is_fearful) || (pred == monster_is_living_and_fearful)) {
+				struct monster_lore* lore = get_lore(mon->race);
+				if (rf_has(mon->race->flags, RF_NO_FEAR)) rf_on(lore->flags, RF_NO_FEAR);
+			}
+		}
 	}
 
 	return monsters;
@@ -2283,7 +2323,20 @@ static bool detect_monsters(int y_dist, int x_dist, monster_predicate pred)
  */
 static bool effect_handler_DETECT_LIVING_MONSTERS(effect_handler_context_t *context)
 {
-	bool monsters = detect_monsters(context->y, context->x, monster_is_living);
+	bool monsters;
+
+	/* downside of first sight and second thoughts (more likely to work than other monster detection spells) */
+	if ((player->timed[TMD_2NDTHOT]) && (randint1(10) > 6 + player->p_luck * 2)) {
+		msg("Your first sight blocks the effect!");
+		return false;
+	}
+	if (player->timed[TMD_2NDTHOT]) {
+		msg("(Your first sight limits the effect to visible monsters.)");
+		monsters = detect_monsters(context->y, context->x, monster_is_living_and_visible);
+	}
+	else {
+		monsters = detect_monsters(context->y, context->x, monster_is_living);
+	}
 
 	if (monsters)
 		msg("You sense life!");
@@ -2305,8 +2358,20 @@ static bool effect_handler_DETECT_LIVING_MONSTERS(effect_handler_context_t *cont
  */
 static bool effect_handler_DETECT_VISIBLE_MONSTERS(effect_handler_context_t *context)
 {
-	bool monsters = detect_monsters(context->y, context->x,
-									monster_is_not_invisible);
+	bool monsters;
+
+	/* downside of first sight and second thoughts */
+	if ((randint1(10) > 4 + player->p_luck * 2) && (player->timed[TMD_2NDTHOT])) {
+		msg("Your first sight blocks the effect!");
+		return false;
+	}
+	if (player->timed[TMD_2NDTHOT]) {
+		msg("(Your first sight limits the effect to living monsters.)");
+		monsters = detect_monsters(context->y, context->x, monster_is_living_and_visible);
+	}
+	else {
+		monsters = detect_monsters(context->y, context->x, monster_is_not_invisible);
+	}
 
 	if (monsters)
 		msg("You sense the presence of monsters!");
@@ -2325,6 +2390,12 @@ static bool effect_handler_DETECT_VISIBLE_MONSTERS(effect_handler_context_t *con
  */
 static bool effect_handler_DETECT_INVISIBLE_MONSTERS(effect_handler_context_t *context)
 {
+	/* downside of first sight and second thoughts */
+	if (player->timed[TMD_2NDTHOT]) {
+		msg("Your first sight blocks the effect!");
+		return false;
+	}
+
 	bool monsters = detect_monsters(context->y, context->x,
 									monster_is_invisible);
 
@@ -2344,7 +2415,20 @@ static bool effect_handler_DETECT_INVISIBLE_MONSTERS(effect_handler_context_t *c
  */
 static bool effect_handler_DETECT_FEARFUL_MONSTERS(effect_handler_context_t *context)
 {
-	bool monsters = detect_monsters(context->y, context->x, monster_is_fearful);
+	bool monsters;
+	/* downside of first sight and second thoughts */
+	if ((randint1(10) > 4 + player->p_luck * 2) && (player->timed[TMD_2NDTHOT])) {
+		msg("Your first sight blocks the effect!");
+		return false;
+	}
+	if (player->timed[TMD_2NDTHOT]) {
+		/* Most monsters susceptible to fear are living monsters, so don't mention the limitation */
+		/* msg("(Your first sight limits the effect to living monsters.)"); */
+		monsters = detect_monsters(context->y, context->x, monster_is_living_and_fearful);
+	}
+	else {
+		monsters = detect_monsters(context->y, context->x, monster_is_fearful);
+	}
 
 	if (monsters)
 		msg("These monsters could provide good sport.");
@@ -2362,6 +2446,11 @@ static bool effect_handler_DETECT_FEARFUL_MONSTERS(effect_handler_context_t *con
  */
 static bool effect_handler_DETECT_EVIL(effect_handler_context_t *context)
 {
+	/* downside of first sight and second thoughts */
+	if (player->timed[TMD_2NDTHOT]) {
+		msg("Your first sight blocks the effect!");
+		return false;
+	}
 	bool monsters = detect_monsters(context->y, context->x, monster_is_evil);
 
 	if (monsters)
@@ -2380,6 +2469,11 @@ static bool effect_handler_DETECT_EVIL(effect_handler_context_t *context)
  */
 static bool effect_handler_DETECT_SOUL(effect_handler_context_t *context)
 {
+	/* downside of first sight and second thoughts */
+	if (player->timed[TMD_2NDTHOT]) {
+		msg("Your first sight blocks the effect!");
+		return false;
+	}
 	bool monsters = detect_monsters(context->y, context->x, monster_has_spirit);
 
 	if (monsters)
@@ -2997,6 +3091,9 @@ static bool effect_handler_PROBE(effect_handler_context_t *context)
 			/* Describe the monster */
 			msg("%s has %d hit point%s.", m_name, mon->hp, (mon->hp == 1) ? "" : "s");
 
+			/* Learn whether the individual is evil or not */
+			mon->pcmet = 1;
+
 			/* Learn all of the non-spell, non-treasure flags */
 			lore_do_probe(mon);
 
@@ -3046,6 +3143,9 @@ static bool effect_handler_TELEPORT(effect_handler_context_t *context)
 
 	/* No teleporting in arena levels */
 	if (player->upkeep->arena_level) return true;
+
+	/* teleport distance is halved in the town */
+	if (!player->depth) dis = dis / 2 + 1;
 
 	/* Establish the coordinates to teleport from, if we don't know already */
 	if (!loc_is_zero(start)) {
@@ -3480,7 +3580,7 @@ static bool effect_handler_GRANITE(effect_handler_context_t *context)
 
 /**
  * The destruction effect
- *
+ * RBTODO: tweak this effect.
  * This effect "deletes" monsters (instead of killing them).
  *
  * This is always an effect centred on the player; it is similar to the
@@ -3589,6 +3689,7 @@ static bool effect_handler_DESTRUCTION(effect_handler_context_t *context)
 /**
  * Induce an earthquake of the radius context->radius centred on the instigator.
  *
+ * RBTODO: tweak this effect.
  * This will turn some walls into floors and some floors into walls.
  *
  * The player will take damage and jump into a safe grid if possible,
@@ -4342,13 +4443,15 @@ static bool effect_handler_SHORT_BEAM(effect_handler_context_t *context)
  * Crack a whip, or spit at the player; actually just a finite length beam
  * Affect grids, objects, and monsters
  * context->radius is length of beam
+ * (removed PROJECT_ITEM)
  */
 static bool effect_handler_LASH(effect_handler_context_t *context)
 {
 	int dam = effect_calculate_value(context, false);
 	int rad = context->radius;
+	bool gazelash = false;
 
-	int flg = PROJECT_GRID | PROJECT_ITEM | PROJECT_KILL | PROJECT_ARC;
+	int flg = PROJECT_GRID | PROJECT_KILL | PROJECT_ARC;
 	int type;
 
 	struct loc target = loc(-1, -1);
@@ -4356,6 +4459,10 @@ static bool effect_handler_LASH(effect_handler_context_t *context)
 	/* Diameter of source is the same as the radius, so the effect is
 	 * essentially full strength for its entire length. */
 	int diameter_of_source = rad;
+
+	/* (hacky) Gaze attacks are a little different from other LASHes */
+	/* (not finished RBTODO) */
+	if (context->beam) gazelash = true;
 
 	/* Monsters only */
 	if (context->origin.what == SRC_MONSTER) {
@@ -4391,6 +4498,8 @@ static bool effect_handler_LASH(effect_handler_context_t *context)
 			dam += randcalc(dice, mon->race->level, RANDOMISE) / (i ? 2 : 1);
 			if (!mon->race->blow[i].next) break;
 		}
+		/* ranged gaze attacks are meant for status/timed effects, not primarily for damage */
+		if (gazelash) dam = dam * 3 / 4;
 
 		/* No damaging blows */
 		if (!dam) return false;
@@ -4399,9 +4508,7 @@ static bool effect_handler_LASH(effect_handler_context_t *context)
 	}
 
 	/* Check bounds */
-	if (diameter_of_source > 25) {
-		diameter_of_source = 25;
-	}
+	if (diameter_of_source > 25) diameter_of_source = 25;
 
 	/* Lash the target */
 	if (project(context->origin, rad, target, dam, type, flg, 0,
@@ -4958,7 +5065,7 @@ bool effect_handler_CREATE_ARROWS(effect_handler_context_t* context)
 	arrows = make_object(cave, elev, good, great, false, NULL, TV_ARROW);
 
 	/* Make it less likely (but still possible) to get a large stack with the weaker spell */
-	if (arrows->number > 22) arrows->number = 21 + randint1(arrows->number - 21);
+	if (arrows->number > 21) arrows->number = 20 + randint1(arrows->number - 20);
 
 	drop_near(cave, &arrows, 0, player->grid, true, true);
 

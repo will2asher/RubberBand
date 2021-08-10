@@ -1000,7 +1000,7 @@ bool attempt_shield_bash(struct player* p, struct loc grid, bool* fear, bool off
 	nostumble = 35 + adj_dex_th[p->state.stat_ind[STAT_DEX]];
 
 	/* stumble less often during an off-hand weapon attack */
-	nostumble += ((adj_dex_th[p->state.stat_ind[STAT_DEX]] + 1) * 2 / 3) + p->state.skills[SKILL_TO_HIT_MELEE] / 6;
+	if (offhandhit) nostumble += ((adj_dex_th[p->state.stat_ind[STAT_DEX]] + 1) * 2 / 3) + p->state.skills[SKILL_TO_HIT_MELEE] / 6;
 
 	if (nostumble < randint1(60)) {
 		/* Lose 26-75% of a turn due to stumbling after shield bash. */

@@ -1038,6 +1038,12 @@ void lore_append_movement(textblock *tb, const struct monster_race *race,
 		textblock_append_c(tb, COLOUR_L_GREEN,
 						   "does not deign to chase intruders");
 	}
+	/* Some monsters move slower than it attacks */
+	else if (rf_has(known_flags, RF_MOVE_SLOW)) {
+		textblock_append(tb, ", but ");
+		textblock_append_c(tb, COLOUR_L_GREEN,
+			"moves slower than it attacks/casts");
+	}
 
 	/* End this sentence */
 	textblock_append(tb, ".  ");
@@ -1160,6 +1166,9 @@ void lore_append_exp(textblock *tb, const struct monster_race *race,
 	/* Mention the dependance on the player's level */
 	textblock_append(tb, " for %s %u%s level character.  ", article,
 					 level, ordinal);
+	if (rf_has(race->flags, RF_TOWN_OR_DUN)) {
+		textblock_append(tb, " (which is halved when you're in the town)");
+	}
 }
 
 /**
@@ -1310,6 +1319,8 @@ void lore_append_abilities(textblock *tb, const struct monster_race *race,
 	if (rf_has(known_flags, RF_MULTIPLY))
 		textblock_append_c(tb, COLOUR_ORANGE, "%s breeds explosively.  ",
 						   initial_pronoun);
+	if (rf_has(known_flags, RF_SMULTIPLY))
+		textblock_append_c(tb, COLOUR_ORANGE, "%s breeds.  ", initial_pronoun);
 	if (rf_has(known_flags, RF_REGENERATE))
 		textblock_append(tb, "%s regenerates quickly.  ", initial_pronoun);
 
@@ -1352,9 +1363,8 @@ void lore_append_abilities(textblock *tb, const struct monster_race *race,
 	else
 		my_strcpy(start, format("%s resists ", initial_pronoun), sizeof(start));
 	lore_append_clause(tb, current_flags, COLOUR_L_UMBER, start, "and", "");
-	if (!rf_is_empty(current_flags)) {
-		prev = true;
-	}
+
+	if (!rf_is_empty(current_flags)) prev = true;
 
 	/* Collect known but average susceptibilities */
 	rf_wipe(current_flags);
@@ -1407,8 +1417,7 @@ void lore_append_abilities(textblock *tb, const struct monster_race *race,
 		prev = true;
 	}
 
-	if (prev)
-		textblock_append(tb, ".  ");
+	if (prev) textblock_append(tb, ".  ");
 }
 
 /**

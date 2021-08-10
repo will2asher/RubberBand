@@ -96,7 +96,8 @@ static void project_feature_handler_KILL_WALL(project_feature_handler_context_t 
 	if (square_isperm(cave, grid)) return;
 
 	/* Not all non-passable features are made of rock... */
-	if (square_isatree(cave, context->grid) || square_iswater(cave, context->grid)) return;
+	if (square_isatree(cave, context->grid) || square_iswater(cave, context->grid) ||
+		square_isachasm(cave, context->grid)) return;
 
 	/* Different treatment for different walls */
 	if (square_isrubble(cave, grid) || square_has_statue(cave, grid)) {
@@ -266,8 +267,7 @@ static void project_feature_handler_MAKE_DOOR(project_feature_handler_context_t 
 	square_add_door(cave, grid, true);
 
 	/* Observe */
-	if (square_isknown(cave, grid))
-		context->obvious = true;
+	if (square_isknown(cave, grid)) context->obvious = true;
 
 	/* Update the visuals */
 	player->upkeep->update |= (PU_UPDATE_VIEW | PU_MONSTERS);

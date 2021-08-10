@@ -296,10 +296,10 @@ void do_cmd_wield(struct command *cmd)
 
 		/* Sword are easier to wield in the off-hand than other weapons */
 		/* max weight to wield off-hand is 11lbs or 1/3 of your strength for swords */
-		if ((obj->tval == TV_SWORD) && (obj->weight <= 110) && (obj->weight / 10 <= player->state.stat_use[STAT_STR] / 3))
+		if ((obj->tval == TV_SWORD) && (obj->weight <= 110) && (obj->weight / 10 <= (player->state.stat_ind[STAT_STR] + 3) / 3))
 			offhandok = true;
 		/* max weight to wield off-hand is 6.5lbs or 1/4 of your strength for other weapons */
-		else if ((obj->weight <= 65) && (obj->weight / 10 <= player->state.stat_use[STAT_STR] / 4))
+		else if ((obj->weight <= 65) && (obj->weight / 10 <= (player->state.stat_ind[STAT_STR] + 3) / 4))
 			offhandok = true;
 
 		/* No wielding throwing weapons in the off-hand */
@@ -315,11 +315,11 @@ void do_cmd_wield(struct command *cmd)
 		}
 
 		/* Check if main weapon is too heavy to wield an off-hand weapon at the same time */
-		/* (Also easier for swords than other weapons: max 17lbs or (STR - 3) ) */
+		/* (Also easier for swords than other weapons: max 17lbs or (STR - 3) ) -Keep in mind "stat_ind" is 3 less than actual stat */
 		/* (I used the bastard sword as a reference: It weighs 14lbs,
 		/*  so you need at least 17 STR to wield a bastard sword with one hand.) */
 		if (weapon) {
-			if ((obj->tval == TV_SWORD) && (weapon->weight >= 170) || (weapon->weight / 10 + 3 > player->state.stat_ind[STAT_STR]))
+			if ((obj->tval == TV_SWORD) && (weapon->weight >= 170) || (weapon->weight / 10 > player->state.stat_ind[STAT_STR]))
 				offhandok = false;
 			/* max 14.5lbs or (STR - 4) for non-swords (a battle axe is 14.5lbs) */
 			else if ((weapon->weight >= 145) || (weapon->weight / 10 + 4 > player->state.stat_ind[STAT_STR]))

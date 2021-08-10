@@ -8,7 +8,7 @@ Please choose one of the following help files:
 
     (a) Available commands
     (b) Available symbols
-
+    (r) Readme file for Rubberband with differences from vanilla Angband.
 
 
 
@@ -24,3 +24,5 @@ Browser/help commands:
 .. menu:: [a] commands.txt
 
 .. menu:: [b] symbols.txt
+
+.. menu:: [r] RubberBandReadme.txt
