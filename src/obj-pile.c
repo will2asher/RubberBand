@@ -520,8 +520,14 @@ bool object_similar(const struct object *obj1, const struct object *obj2,
 					return false;
 				}
 			} else {
-				if (total > z_info->quiver_slot_size /
-						z_info->thrown_quiver_mult) {
+				int mult = z_info->thrown_quiver_mult;
+				/* Very small throwing weapons take up less than 5 slots */
+				if ((mult > 1) && (obj1->weight < 30)) {
+					if (obj1->weight < 10) mult = MIN(2, z_info->thrown_quiver_mult);
+					else if (obj1->weight < 20) mult = MIN(3, z_info->thrown_quiver_mult);
+					else mult = MIN(4, z_info->thrown_quiver_mult);
+				}
+				if (total > z_info->quiver_slot_size / mult) {
 					return false;
 				}
 			}
@@ -649,9 +655,16 @@ void object_absorb_partial(struct object *obj1, struct object *obj2,
 
 	/* The quiver can have stricter limits. */
 	if (mode1 & OSTACK_QUIVER) {
-		int limit = z_info->quiver_slot_size /
-			(tval_is_ammo(obj1) ?
-			1 : z_info->thrown_quiver_mult);
+		int limit;
+		int mult = (tval_is_ammo(obj1) ? 1 : z_info->thrown_quiver_mult);
+
+		/* Very small throwing weapons take up less than 5 slots */
+		if ((mult > 1) && (obj1->weight < 30)) {
+			if (obj1->weight < 10) mult = MIN(2, z_info->thrown_quiver_mult);
+			if (obj1->weight < 20) mult = MIN(3, z_info->thrown_quiver_mult);
+			if (obj1->weight < 30) mult = MIN(4, z_info->thrown_quiver_mult);
+		}
+		limit = z_info->quiver_slot_size / mult;
 
 		if (mode2 & OSTACK_QUIVER) {
 			int difference = limit - largest;
@@ -666,9 +679,16 @@ void object_absorb_partial(struct object *obj1, struct object *obj2,
 		}
 	} else if (mode2 & OSTACK_QUIVER) {
 		/* Handle the possibly different limits. */
-		int limit = z_info->quiver_slot_size /
-			(tval_is_ammo(obj2) ?
-			1 : z_info->thrown_quiver_mult);
+		int limit;
+		int mult = (tval_is_ammo(obj2) ? 1 : z_info->thrown_quiver_mult);
+		/* Very small throwing weapons take up less than 5 slots */
+		if ((mult > 1) && (obj2->weight < 30)) {
+			if (obj2->weight < 10) mult = MIN(2, z_info->thrown_quiver_mult);
+			if (obj2->weight < 20) mult = MIN(3, z_info->thrown_quiver_mult);
+			if (obj2->weight < 30) mult = MIN(4, z_info->thrown_quiver_mult);
+		}
+
+		limit = z_info->quiver_slot_size / mult;
 
 		newsz1 = (largest + smallest) - limit;
 		newsz2 = limit;

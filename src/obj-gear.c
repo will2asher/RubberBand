@@ -189,9 +189,15 @@ int pack_slots_used(struct player *p)
 					of_has(obj->flags, OF_THROWING)) {
 				for (i = 0; i < z_info->quiver_size; i++) {
 					if (p->upkeep->quiver[i] == obj) {
-						quiver_ammo += obj->number *
-							(tval_is_ammo(obj) ?
-							1 : z_info->thrown_quiver_mult);
+						int mult = (tval_is_ammo(obj) ? 1 : z_info->thrown_quiver_mult);
+						/* Very small throwing weapons take up less than 5 slots */
+						if ((mult > 1) && (obj->weight < 30)) {
+							if (obj->weight < 10) mult = MIN(2, z_info->thrown_quiver_mult);
+							if (obj->weight < 20) mult = MIN(3, z_info->thrown_quiver_mult);
+							if (obj->weight < 30) mult = MIN(4, z_info->thrown_quiver_mult);
+						}
+						quiver_ammo += obj->number * mult;
+
 						found = true;
 						break;
 					}
@@ -527,7 +533,13 @@ static void quiver_absorb_num(const struct object *obj, int *n_add_pack,
 			struct object *quiver_obj = player->upkeep->quiver[i];
 			if (quiver_obj) {
 				int mult = tval_is_ammo(quiver_obj) ?
-					1 : z_info->thrown_quiver_mult;
+					1 : z_info->thrown_quiver_mult; /* (5) */
+				/* Very small throwing weapons take up less than 5 slots */
+				if ((mult > 1) && (quiver_obj->weight < 30)) {
+					if (quiver_obj->weight < 10) mult = MIN(2, z_info->thrown_quiver_mult);
+					if (quiver_obj->weight < 20) mult = MIN(3, z_info->thrown_quiver_mult);
+					if (quiver_obj->weight < 30) mult = MIN(4, z_info->thrown_quiver_mult);
+				}
 
 				quiver_count += quiver_obj->number * mult;
 				if (object_stackable(quiver_obj, obj, OSTACK_PACK)) {
@@ -570,10 +582,8 @@ static void quiver_absorb_num(const struct object *obj, int *n_add_pack,
 		 */
 		if (space_free && ((displaces && n_empty) || !displaces)) {
 			int mult = ammo ? 1 : z_info->thrown_quiver_mult;
-			/*
-			 * When quiver_count % quiver_slot_size is zero, adding
-			 * anything will require a pack slot.
-			 */
+			/* When quiver_count % quiver_slot_size is zero, adding
+			 * anything will require a pack slot. */
 			int remainder = quiver_count % z_info->quiver_slot_size;
 			int limit_from_pack = (remainder) ?
 				z_info->quiver_slot_size - remainder : 0;
@@ -581,6 +591,12 @@ static void quiver_absorb_num(const struct object *obj, int *n_add_pack,
 			if (*n_add_pack > 0) {
 				limit_from_pack += *n_add_pack *
 					z_info->quiver_slot_size;
+			}
+			/* Very small throwing weapons take up less than 5 slots */
+			if ((mult > 1) && (obj->weight < 30)) {
+				if (obj->weight < 10) mult = MIN(2, z_info->thrown_quiver_mult);
+				if (obj->weight < 20) mult = MIN(3, z_info->thrown_quiver_mult);
+				if (obj->weight < 30) mult = MIN(4, z_info->thrown_quiver_mult);
 			}
 
 			/* Return the number or amount that fits. */
@@ -986,9 +1002,15 @@ static bool inven_can_stack_partial(const struct object *obj1,
 
 		/* The quiver may have stricter limits. */
 		if (mode & OSTACK_QUIVER) {
-			int limit = z_info->quiver_slot_size /
-				(tval_is_ammo(obj1) ?
-				1 : z_info->thrown_quiver_mult);
+			int limit;
+			int mult = (tval_is_ammo(obj1) ? 1 : z_info->thrown_quiver_mult);
+			/* Very small throwing weapons take up less than 5 slots */
+			if ((mult > 1) && (obj1->weight < 30)) {
+				if (obj1->weight < 10) mult = MIN(2, z_info->thrown_quiver_mult);
+				if (obj1->weight < 20) mult = MIN(3, z_info->thrown_quiver_mult);
+				if (obj1->weight < 30) mult = MIN(4, z_info->thrown_quiver_mult);
+			}
+			limit = z_info->quiver_slot_size / mult;
 
 			if (mode & ~OSTACK_QUIVER) {
 				/* May be combining between stacks with
@@ -996,9 +1018,7 @@ static bool inven_can_stack_partial(const struct object *obj1,
 				int remainder =
 					total - obj1->kind->base->max_stack;
 
-				if (remainder > limit) {
-					return false;
-				}
+				if (remainder > limit) return false;
 			} else {
 				int remainder = total - limit;
 

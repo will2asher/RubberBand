@@ -139,6 +139,7 @@ carry-cap:quiver-size:11
 carry-cap:quiver-slot-size:50
 
 # For computing quiver capacity, is the multiplier for non-ammo thrown items
+# (Very lightweight throwing items (shuriken and regular daggers) use a smaller multiplier)
 carry-cap:thrown-quiver-mult:5
 
 # Maximum number of objects allowed in a single dungeon grid.

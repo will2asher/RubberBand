@@ -1057,6 +1057,13 @@ void calc_inventory(struct player_upkeep *upkeep, struct object *gear,
 					1 : z_info->thrown_quiver_mult;
 				struct object *to_quiver;
 
+				/* Very small throwing weapons take up less than 5 slots */
+				if ((mult > 1) && (current->weight < 30)) {
+					if (current->weight < 10) mult = MIN(2, z_info->thrown_quiver_mult);
+					else if (current->weight < 20) mult = MIN(3, z_info->thrown_quiver_mult);
+					else mult = MIN(4, z_info->thrown_quiver_mult);
+				}
+
 				/*
 				 * Split the stack if necessary.  Don't allow
 				 * splitting if it could result in overfilling
