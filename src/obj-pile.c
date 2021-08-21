@@ -21,6 +21,7 @@
 #include "effects.h"
 #include "cmd-core.h"
 #include "game-input.h"
+#include "game-world.h"
 #include "generate.h"
 #include "grafmode.h"
 #include "init.h"
@@ -941,13 +942,13 @@ static struct object *floor_get_oldest_ignored(struct chunk *c, struct loc grid)
  * Optionally put the object at the top or bottom of the pile
  */
 bool floor_carry(struct chunk *c, struct loc grid, struct object *drop,
-				 bool *note)
+				 bool *note, bool terrain)
 {
 	int n = 0;
 	struct object *obj, *ignore = floor_get_oldest_ignored(c, grid);
 
-	/* Fail if the square can't hold objects */
-	if (!square_isobjectholding(c, grid))
+	/* Fail if the square can't hold objects (but terrain objects get placed anyway when the terrain is placed) */
+	if ((!square_isobjectholding(c, grid)) && (!terrain) && (!character_dungeon))
 		return false;
 
 	/* Scan objects in that grid for combination */
@@ -998,6 +999,19 @@ bool floor_carry(struct chunk *c, struct loc grid, struct object *drop,
 
 	/* Record in the level list */
 	list_object(c, drop);
+
+	/* Player is placing terrain (if (!character_dungeon) then the terrain is being placed elsewhere) */
+	if ((drop->tval == TV_TERRAIN) && (character_dungeon)) {
+		/* This is the only way I know how to do this since we can't see the numbers for svals anymore */
+		/* (unless I put a different flag on each terrain object, but that seems silly */
+		if (drop->weight == 3200) square_set_feat(cave, grid, FEAT_SM_STATUE);
+		if (drop->weight == 5100) square_set_feat(cave, grid, FEAT_STATUE);
+		/* (We can move fountains, creating water. That could be fun...) */
+		if (drop->weight == 5500) make_fountain(cave, grid, 1);
+		if (drop->weight == 4000) square_set_feat(cave, grid, FEAT_PASS_RUBBLE);
+		if (drop->weight == 8500) square_set_feat(cave, grid, FEAT_RUBBLE);
+		if (drop->weight == 3800) square_set_feat(cave, grid, FEAT_DEAD_TREE);
+	}
 
 	/* If there's a known version, put it in the player's view of the
 	 * cave but at an unknown location.  square_note_spot() will move
@@ -1179,7 +1193,7 @@ void drop_near(struct chunk *c, struct object **dropped, int chance,
 
 	/* Find the best grid and drop the item, destroying if there's no space */
 	drop_find_grid(*dropped, prefer_pile, &best);
-	if (floor_carry(c, best, *dropped, &dont_ignore)) {
+	if (floor_carry(c, best, *dropped, &dont_ignore, false)) {
 		sound(MSG_DROP);
 		if (dont_ignore && (square(c, best)->mon < 0)) {
 			msg("You feel something roll beneath your feet.");
@@ -1211,6 +1225,9 @@ void push_object(struct loc grid)
 		 * and try to delete the original which will orphan it to
 		 * serve as a placeholder for the known version. */
 		struct object *newobj = object_new();
+
+		/* skip terrain objects (don't move them) */
+		if (of_has(obj->flags, OF_BIGTHING)) continue;
 
 		object_copy(newobj, obj);
 		newobj->oidx = 0;
@@ -1256,10 +1273,8 @@ void push_object(struct loc grid)
 			int ntry = 0;
 
 			assert(mimic);
-			/*
-			 * Reset since the current value is a dangling
-			 * reference to a deleted object.
-			 */
+			/* Reset since the current value is a dangling
+			 * reference to a deleted object. */
 			mimic->mimicked_obj = NULL;
 
 			while (1) {
@@ -1281,11 +1296,9 @@ void push_object(struct loc grid)
 				if (square_isempty(cave, newgrid)) {
 					bool dummy = true;
 
-					if (floor_carry(cave, newgrid, obj, &dummy)) {
-						/*
-						 * Move the monster and give it
-						 * the object.
-						 */
+					if (floor_carry(cave, newgrid, obj, &dummy, false)) {
+						/* Move the monster and give it
+						 * the object. */
 						monster_swap(grid, newgrid);
 						mimic->mimicked_obj = obj;
 						break;
@@ -1388,6 +1401,9 @@ int scan_distant_floor(struct object **items, int max_size, struct loc grid)
 
 		/* Visible */
 		if (ignore_known_item_ok(obj)) continue;
+
+		/* Don't show terrain objects */
+		if (of_has(obj->flags, OF_BIGTHING)) continue;
 
 		/* Accept this item's base object */
 		items[num++] = cave->objects[obj->oidx];

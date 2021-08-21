@@ -19,6 +19,7 @@
 #include "angband.h"
 #include "cave.h"
 #include "game-world.h"
+#include "generate.h"
 #include "init.h"
 #include "monster.h"
 #include "obj-knowledge.h"
@@ -1265,12 +1266,6 @@ void square_set_feat(struct chunk *c, struct loc grid, int feat)
 		sqinfo_on(square(c, grid)->info, SQUARE_GLOW);
 	}
 
-#if 0
-	/* Assign random statue descriptions (I don't know how I'm gonna do this...) */
-	if (feat_is_statue(feat)) {
-	}
-#endif
-
 	/* Make the new terrain feel at home */
 	if (character_dungeon) {
 		/* Remove traps if necessary */
@@ -1301,7 +1296,11 @@ void make_fountain(struct chunk *c, struct loc grid, int mode)
 	int flood = FEAT_WATER;
 
 	/* Place fountain, water, or lava */
-	if (mode == 1) square_set_feat(c, grid, FEAT_FOUNTAIN);
+	if (mode == 1) {
+		struct object_kind* kind = lookup_kind(TV_TERRAIN, lookup_sval(TV_TERRAIN, "Fountain"));
+		square_set_feat(c, grid, FEAT_FOUNTAIN);
+		place_terrain_object(kind, c, grid);
+	}
 	else if (mode == 2) square_set_feat(c, grid, FEAT_WATER);
 	/* mode 3 is lava pool */
 	else { 
@@ -1476,18 +1475,54 @@ void square_destroy_decoy(struct chunk *c, struct loc grid)
 /* Why have two functions that are exactly the same here? */
 void square_tunnel_wall(struct chunk *c, struct loc grid)
 {
+	/* If a terrain is destroyed, its terrain object should be deleted */
+	bool terrainobj = (square_isrubble(cave, grid) || square_has_statue(cave, grid));
+	/* also dead trees */
+	if (square_isatree(cave, grid) && square_ispassable(cave, grid)) terrainobj = true;
+
 	square_set_feat(c, grid, FEAT_FLOOR);
+
+	if (terrainobj) {
+		/* delete the dead tree / statue / rubble object */
+		struct object* obj = square_object(cave, grid);
+		while (obj) {
+			struct object* next = obj->next;
+			if (obj->tval == TV_TERRAIN)
+				square_delete_object(cave, grid, obj, true, true);
+
+			/* Next object */
+			obj = next;
+		}
+	}
 }
 
 void square_destroy_wall(struct chunk *c, struct loc grid)
 {
+	/* If a terrain is destroyed, its terrain object should be deleted */
+	bool terrainobj = (square_isrubble(cave, grid) || square_has_statue(cave, grid));
+	/* also dead trees */
+	if (square_isatree(cave, grid) && square_ispassable(cave, grid)) terrainobj = true;
+
 	square_set_feat(c, grid, FEAT_FLOOR);
+
+	if (terrainobj) {
+		/* delete the dead tree / statue / rubble object */
+		struct object* obj = square_object(cave, grid);
+		while (obj) {
+			struct object* next = obj->next;
+			if (obj->tval == TV_TERRAIN)
+				square_delete_object(cave, grid, obj, true, true);
+
+			/* Next object */
+			obj = next;
+		}
+	}
 }
 
 void square_smash_wall(struct chunk *c, struct loc grid)
 {
 	int i;
-	square_set_feat(c, grid, FEAT_FLOOR);
+	square_destroy_wall(c, grid);
 
 	for (i = 0; i < 8; i++) {
 		/* Extract adjacent location */
@@ -1515,23 +1550,41 @@ void square_smash_wall(struct chunk *c, struct loc grid)
 		}
 
 		/* Remove it */
-		square_set_feat(c, adj_grid, FEAT_FLOOR);
+		square_destroy_wall(c, grid);
 	}
 }
 
 void square_destroy(struct chunk *c, struct loc grid) {
+	/* If a terrain is destroyed, its terrain object should be deleted */
+	bool terrainobj = (square_isrubble(cave, grid) || square_has_statue(cave, grid));
+	/* also dead trees */
+	if (square_isatree(cave, grid) && square_ispassable(cave, grid)) terrainobj = true;
 	int feat = FEAT_FLOOR;
 	int r = randint0(200);
 
-	/* Add chance of rubble here */
-	if (r < 20)
+	if (r < 10)
 		feat = FEAT_GRANITE;
-	else if (r < 70)
+	else if (r < 35)
 		feat = FEAT_QUARTZ;
-	else if (r < 100)
+	else if (r < 60)
 		feat = FEAT_MAGMA;
+	else if (r < 105)
+		place_rubble(c, grid);
 
-	square_set_feat(c, grid, feat);
+	if ((r < 60) || (r >= 105)) square_set_feat(c, grid, feat);
+
+	if (terrainobj) {
+		/* delete the dead tree / statue / rubble object */
+		struct object* obj = square_object(cave, grid);
+		while (obj) {
+			struct object* next = obj->next;
+			if (obj->tval == TV_TERRAIN)
+				square_delete_object(cave, grid, obj, true, true);
+
+			/* Next object */
+			obj = next;
+		}
+	}
 }
 
 void square_earthquake(struct chunk *c, struct loc grid) {
@@ -1539,18 +1592,19 @@ void square_earthquake(struct chunk *c, struct loc grid) {
 	int f;
 
 	if (!square_ispassable(c, grid)) {
-		square_set_feat(c, grid, FEAT_FLOOR);
+		square_destroy_wall(c, grid);
 		return;
 	}
 
-	/* Add chance of rubble here */
-	if (t < 20)
+	if (t < 50) /* && >= 30 */
 		f = FEAT_GRANITE;
-	else if (t < 70)
+	else if (t < 78)
 		f = FEAT_QUARTZ;
 	else
 		f = FEAT_MAGMA;
-	square_set_feat(c, grid, f);
+
+	if (t < 30) place_rubble(c, grid);
+	else square_set_feat(c, grid, f);
 }
 
 /**
@@ -1566,8 +1620,8 @@ void square_upgrade_mineral(struct chunk *c, struct loc grid)
 
 /* (also used to destroy statues) */
 void square_destroy_rubble(struct chunk *c, struct loc grid) {
-	/* assert(square_isrubble(c, grid)); */
-	square_set_feat(c, grid, FEAT_FLOOR);
+	/* assert(square_isrubble(c, grid)); Why? */
+	square_destroy_wall(c, grid);
 }
 
 void square_force_floor(struct chunk *c, struct loc grid) {

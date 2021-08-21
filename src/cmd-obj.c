@@ -304,7 +304,7 @@ void do_cmd_wield(struct command *cmd)
 
 		/* No wielding throwing weapons in the off-hand */
 		if (tval_is_thrower(obj)) offhandok = false;
-		/* No wielding skulls of broken bottles in the off-hand */
+		/* No wielding skulls or broken bottles in the off-hand */
 		if ((obj->tval == TV_BONE) && ((obj->kind->d_char == '~') || (obj->kind->d_char == '!')))
 			offhandok = false;
 

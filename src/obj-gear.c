@@ -929,8 +929,7 @@ void inven_drop(struct object *obj, int amt)
 	char label;
 
 	/* Error check */
-	if (amt <= 0)
-		return;
+	if (amt <= 0) return;
 
 	/* Check it is still held, in case there were two drop commands queued
 	 * for this item.  This is in theory not ideal, but in practice should
@@ -982,8 +981,7 @@ void inven_drop(struct object *obj, int amt)
 	drop_near(cave, &dropped, 0, player->grid, false, true);
 
 	/* Sound for quiver objects */
-	if (quiver)
-		sound(MSG_QUIVER);
+	if (quiver) sound(MSG_QUIVER);
 
 	event_signal(EVENT_INVENTORY);
 	event_signal(EVENT_EQUIPMENT);

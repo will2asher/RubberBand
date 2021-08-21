@@ -934,7 +934,7 @@ void mon_create_mimicked_object(struct chunk *c, struct monster *mon, int index)
 	mon->mimicked_obj = obj;
 
 	/* Put the object on the floor if it goes, otherwise no mimicry */
-	if (floor_carry(c, mon->grid, obj, &dummy)) {
+	if (floor_carry(c, mon->grid, obj, &dummy, false)) {
 		list_object(c, obj);
 	} else {
 		/* Clear the mimicry */
@@ -1284,7 +1284,7 @@ static bool place_new_monster_one(struct chunk *c, struct loc grid,
 			else if (mon->race->msize < 3) mon->mimicked_feat = 3; /* small statue */
 			else if (mon->race->msize == 3) mon->mimicked_feat = 3 + randint0(2); /* small or large */
 			else mon->mimicked_feat = 4; /* large statue */
-			mon->statued = randint1(20); /* placeholder for statue description (which I haven't done yet...) */
+			mon->statued = 25 + randint1(8); /* 26-33 */
 		}
 		else mon->statued = 0; /* not mimicking a statue */
 	}

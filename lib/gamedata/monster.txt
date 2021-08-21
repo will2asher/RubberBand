@@ -944,7 +944,7 @@ smell:15
 armor-class:16
 sleepiness:35
 depth:2
-rarity:4
+rarity:3
 experience:4
 blow:BITE:HURT:1d2
 blow:STING:POISON:1d3
@@ -1240,7 +1240,7 @@ desc:"Ribbit"
 name:cave python
 base:snake
 color:g
-speed:103
+speed:104
 hit-points:20
 size:2
 hearing:6
@@ -1769,7 +1769,7 @@ desc:It is about three feet long and carnivorous.
 name:wolf spider
 base:spider
 color:u
-speed:115
+speed:114
 hit-points:21
 size:2
 hearing:8
@@ -2135,7 +2135,7 @@ name:angry apple tree
 base:tree
 color:r
 element:10
-speed:120
+speed:118
 hit-points:350
 size:4
 hearing:4
@@ -2179,7 +2179,7 @@ hit-points:60
 size:2
 hearing:16
 armor-class:16
-sleepiness:30
+sleepiness:34
 depth:5
 rarity:3
 experience:92
@@ -9259,7 +9259,7 @@ hearing:11
 armor-class:23
 sleepiness:16
 depth:26
-rarity:4
+rarity:5
 experience:16
 blow:CRAWL:EXP_10:1d5
 flags:EVIL | WEIRD_MIND | MULTIPLY | STUPID
@@ -17640,7 +17640,7 @@ blow:PUNCH:HURT:10d5
 blow:PUNCH:HURT:10d5
 blow:CRUSH:HURT:4d8
 blow:CRUSH:HURT:4d8
-flags:DROP_2 | BASH_DOOR | MOVE_BODY | KILL_ITEM | CLIGHT
+flags:DROP_2 | BASH_DOOR | MOVE_BODY | CLIGHT
 flags:IM_ACID | IM_COLD | NO_STUN | NO_SLOW | NO_SLEEP
 friends:85:2d4:huorn
 spell-freq:15
@@ -19610,7 +19610,7 @@ speed:117
 hit-points:429
 size:2
 hearing:12
-armor-class:100
+armor-class:105
 sleepiness:4
 depth:70
 rarity:6
@@ -19618,7 +19618,7 @@ experience:703
 blow:CRAWL:ACID:9d3
 blow:CRAWL:PARALYZE:9d3
 blow:STING:POISON:9d4
-flags:STUPID | KILL_WALL | MULTIPLY | WEIRD_MIND | RAND_50
+flags:STUPID | KILL_WALL | SMULTIPLY | WEIRD_MIND | RAND_50
 flags:NO_SLEEP | IM_ACID | IM_POIS | IM_SLIME | ROAM
 desc:A giant acidic centapede native to the deepest depths.
 desc:  It gnaws through the walls.
@@ -20487,33 +20487,6 @@ spells:S_ANIMAL | S_HI_DEMON | S_HI_DRAGON | S_HI_UNDEAD | S_MONSTERS
 desc:A giant seething mass of flesh, overwhelming you with monster after
 desc: monster.
 
-name:hound of Tindalos
-plural:hounds of Tindalos
-base:zephyr hound
-color:t
-element:8
-speed:130
-hit-points:495
-size:4
-hearing:30
-smell:50
-armor-class:136
-sleepiness:1
-depth:76
-rarity:6
-experience:7650
-blow:CLAW:HURT:2d12
-blow:CLAW:HURT:2d12
-blow:BITE:HURT:3d12
-blow:BITE:HURT:3d12
-flags:INVISIBLE | PASS_WALL | FORCE_SLEEP
-flags:NO_CONF | NO_SLEEP | NO_HOLD | IM_NETHER | IM_SLIME
-innate-freq:5
-spells:BR_NETH | BR_DISE | BR_CHAO
-friends:92:2d6:Same
-desc:Bodies of death, receptacles of all foulness, they emerge like smoke from
-desc: the angles of time, ravenous and snarling and unsatisfied.
-
 name:Makar, the Warrior
 base:maia
 color:D
@@ -20525,7 +20498,7 @@ hearing:30
 armor-class:192
 sleepiness:15
 depth:76
-rarity:3
+rarity:4
 experience:37000
 blow:HIT:SHATTER:13d13
 blow:HIT:CONFUSE:13d13
@@ -20636,6 +20609,33 @@ desc: risen from the dead to continue his foul plots and schemes.
 
 ### Dungeon level 78 ###
 
+name:hound of Tindalos
+plural:hounds of Tindalos
+base:zephyr hound
+color:t
+element:8
+speed:130
+hit-points:495
+size:4
+hearing:30
+smell:50
+armor-class:138
+sleepiness:1
+depth:78
+rarity:7
+experience:7650
+blow:CLAW:HURT:2d12
+blow:CLAW:HURT:2d12
+blow:BITE:HURT:3d12
+blow:BITE:HURT:3d12
+flags:INVISIBLE | PASS_WALL | FORCE_SLEEP
+flags:NO_CONF | NO_SLEEP | NO_HOLD | IM_NETHER | IM_SLIME
+innate-freq:5
+spells:BR_NETH | BR_DISE | BR_CHAO
+friends:92:2d6:Same
+desc:Bodies of death, receptacles of all foulness, they emerge like smoke from
+desc: the angles of time, ravenous and snarling and unsatisfied.
+
 #Why was it hard of hearing?
 name:serpent of chaos
 plural:serpents of chaos
@@ -20737,7 +20737,7 @@ hearing:30
 armor-class:1
 sleepiness:0
 depth:79
-rarity:3
+rarity:4
 experience:20000
 flags:UNIQUE | ATTR_MULTI
 flags:DROP_4 | DROP_GOOD | ONLY_ITEM
@@ -20752,7 +20752,7 @@ name:Wiruin, the Maelstrom
 base:vortex
 color:z
 element:4
-speed:138
+speed:140
 hit-points:3500
 size:5
 hearing:50
@@ -21080,8 +21080,8 @@ armor-class:190
 sleepiness:40
 depth:84
 rarity:2
-experience:45000
-blow:GAZE:EXP_80:5d5
+experience:45001
+blow:GAZE:EXP_80:6d5
 blow:GAZE:EXP_80:5d5
 blow:TOUCH:SICKEN:5d5
 blow:TOUCH:SICKEN:5d6
@@ -21089,9 +21089,10 @@ flags:UNIQUE | MALE | SMART | SPIRIT | ATTR_FLICKER | MOVE_SLOW
 flags:DROP_4 | DROP_GOOD | DROP_GREAT | ONLY_ITEM
 flags:OPEN_DOOR | BASH_DOOR | IM_FIRE | FORCE_SLEEP
 #(MOVE_SLOW is a relative thing...)
+innate-freq:6
 spell-freq:2
 spell-power:106
-spells:BRAIN_SMASH | WOUND | SCARE
+spells:RGAZE | BRAIN_SMASH | WOUND | SCARE
 spells:BA_NETH | BA_DARK | BO_ICE | BO_MANA | S_HI_UNDEAD
 friends-base:85:1d1:skeleton
 desc:A legion of evil undead druj animating the skeleton of a once mighty
@@ -21123,6 +21124,7 @@ spells:BR_ACID | BR_SOUN
 friends:3:1d3:same
 desc:This playful young behemoth is between 50 and 80 feet long and growing.
 
+#KILL_WALL?
 name:greater Balrog
 base:major demon
 color:P
@@ -21142,7 +21144,7 @@ blow:HIT:FIRE:8d12
 blow:CRUSH:HURT:9d12
 blow:TOUCH:DRAIN_CHARGES
 flags:POWERFUL | SMART | ATTR_FLICKER | FLY
-flags:DROP_4 | MOVE_BODY | KILL_WALL
+flags:DROP_4 | MOVE_BODY | NO_CONF
 flags:IM_ELEC | IM_FIRE | IM_POIS | IM_PLASMA
 innate-freq:5
 spell-freq:4
@@ -21313,7 +21315,7 @@ friends:50:1d4:Maia of Oromë:servant
 friends:50:1d4:Maia of Aulë:servant
 friends:50:1d3:Lesser titan:servant
 friends:50:1d2:titan:servant
-friends:100:1d1:Makar, the Warrior
+friends:80:1d1:Makar, the Warrior
 desc:Sister of Makar the Warrior, she would shout encouragement to the
 desc: warriors of their hall and heal their wounds so they could battle on,
 desc: until her arms were reddened to the elbow.  Meássë is delighted by
@@ -21340,7 +21342,8 @@ blow:HIT:FIRE:8d12
 blow:CRUSH:HURT:8d12
 blow:TOUCH:DRAIN_CHARGES
 flags:UNIQUE | MALE | POWERFUL | MOVE_BODY | KILL_WALL
-flags:DROP_4 | DROP_GOOD | IM_FIRE | IM_PLASMA
+flags:DROP_4 | DROP_GOOD | NO_CONF
+flags:IM_ELEC | IM_FIRE | IM_POIS | IM_PLASMA
 innate-freq:12
 spell-freq:6
 spells:BR_FIRE | BR_PLAS | BLIND | CONF | SCARE | S_HI_DEMON | S_UNDEAD
@@ -21627,9 +21630,9 @@ blow:ENGULF:EXP_80:5d7
 blow:ENGULF:DRAIN_CHARGES:5d7
 blow:ENGULF:DISENCHANT:5d7
 blow:ENGULF:LOSE_ALL:5d7
-flags:KILL_WALL | IM_DISEN | ATTR_MULTI
+flags:IM_DISEN | ATTR_MULTI
 innate-freq:3
-spells:BR_CHAO | BR_DISE | BR_AMNS
+spells:BR_CHAO | BR_DISE | BR_AMNS | BLINK
 desc:Howling through the disintegrating dungeon, this whirlpool of Unmagic rips
 desc: the enchantments from everything it touches.
 
@@ -21838,15 +21841,15 @@ base:zephyr hound
 color:g
 element:5
 speed:125
-hit-points:2391
+hit-points:2193
 size:4
 hearing:30
 smell:50
 armor-class:99
 sleepiness:1
 depth:102
-rarity:3
-experience:9919
+rarity:4
+experience:9909
 blow:KICK:HURT:20d2
 blow:KICK:HURT:20d3
 blow:BITE:PARALYZE:4d12
@@ -21854,8 +21857,8 @@ blow:BITE:PARALYZE:4d12
 flags:FORCE_SLEEP | SMART | BASH_DOOR | POWERFUL | IM_NEXUS | FLY
 flags:NO_CONF | NO_STUN | IM_FIRE | IM_COLD | IM_ELEC | IM_ACID | IM_SLIME
 innate-freq:5
-spell-freq:9
-spells:BR_GRAV | BR_INER | BR_NEXU | BR_WALL | BR_PLAS | BLINK | TELE_TO
+spell-freq:8
+spells:BR_GRAV | BR_INER | BR_NEXU | BR_WALL | BR_PLAS | BLINK | TELE_TO | TELE_SELF_TO
 friends:99:2d5:same
 desc:It defies the laws of science in every way.
 
@@ -21864,15 +21867,15 @@ base:zephyr hound
 color:i
 element:15
 speed:125
-hit-points:2389
+hit-points:2192
 size:4
 hearing:30
 smell:50
 armor-class:101
 sleepiness:1
 depth:102
-rarity:3
-experience:9919
+rarity:4
+experience:9909
 blow:CLAW:DRAIN_CHARGES:6d7
 blow:CLAW:DRAIN_CHARGES:6d7
 blow:BITE:DISENCHANT:4d12
@@ -21890,15 +21893,15 @@ base:zephyr hound
 color:U
 element:8
 speed:125
-hit-points:2386
+hit-points:2189
 size:4
 hearing:30
 smell:50
 armor-class:103
 sleepiness:1
-depth:102
-rarity:3
-experience:9923
+depth:103
+rarity:4
+experience:9913
 blow:CLAW:TERRIFY:3d12
 blow:CLAW:SICKEN:3d12
 blow:CLAW:EXP_80:4d12
@@ -21987,7 +21990,7 @@ flags:ONLY_GOLD | DROP_3 | POWERFUL | HURT_ROCK
 flags:IM_COLD | IM_FIRE | IM_ACID | KILL_ITEM | KILL_BODY
 innate-freq:4
 spells:BOULDER
-friends:99:1d3:same
+friends:95:1d3:same
 desc:A giant relative of the xorn, the giant xarens play catch with boulders in the
 desc: centre of the earth.
 
@@ -22013,7 +22016,7 @@ flags:ONLY_GOLD | DROP_3 | POWERFUL
 flags:IM_COLD | IM_FIRE | IM_ACID | KILL_ITEM | KILL_BODY | HURT_WATER
 spell-freq:4
 spells:BA_FIRE
-friends:99:1d3:same
+friends:95:1d3:same
 desc:A giant vaguely humanoid fire elemental, the giant effretti play catch with
 desc: fireballs at the centre of the earth.
 
@@ -22035,14 +22038,14 @@ blow:ENGULF:SLIME:9d12
 blow:ENGULF:ACID:9d13
 blow:ENGULF:LOSE_ALL:6d16
 flags:FORCE_SLEEP | POWERFUL | NO_STUN | KILL_ITEM | KILL_BODY
-flags:IM_POIS | IM_ACID | MULTIPLY | PASS_DOOR | PUDDLE
+flags:IM_POIS | IM_ACID | SMULTIPLY | PASS_DOOR | PUDDLE
 innate-freq:6
 spell-freq:6
 spells:BR_POIS | BR_ACID | TELE_TO | S_KIN
 #BR_SLIME?
-friends-base:99:1d2:worm
-friends-base:99:1d2:mushroom
-friends-base:99:1d3:jelly
+friends-base:96:1d2:worm
+friends-base:95:1d2:mushroom
+friends-base:96:1d3:jelly
 friends:50:1d2:same
 desc:An huge acidic ooze that melts everything that comes near into a puddle of, well, ooze.
 
@@ -22118,7 +22121,7 @@ size:5
 hearing:8
 armor-class:200
 sleepiness:51
-depth:108
+depth:109
 rarity:3
 experience:11000
 blow:GAZE:TERRIFY:2d11
@@ -22144,7 +22147,7 @@ size:7
 hearing:18
 armor-class:104
 sleepiness:83
-depth:112
+depth:111
 rarity:3
 experience:50000
 blow:DROOL:BLIND:9d9
@@ -22155,11 +22158,11 @@ blow:BITE:ACID:11d14
 flags:BASH_DOOR | RAND_50 | REGENERATE | POWERFUL | FORCE_SLEEP
 flags:DROP_2 | DROP_GOOD | KILL_ITEM | KILL_BODY | KILL_WALL
 flags:NO_STUN | NO_FEAR | IM_COLD | IM_POIS | IM_ACID | PUDDLE
-innate-freq:5
-spell-freq:6
-spells:BR_ACID | BR_SOUN | BR_POIS | BA_ACID | BA_WATE
-spells:BRAIN_SMASH
-#EXPLODE | BR_SLIME?
+innate-freq:6
+spell-freq:8
+spells:BR_ACID | BR_SOUN | BR_POIS | BR_SLIME
+spells:BRAIN_SMASH | BA_ACID | BA_WATE
+#EXPLODE
 desc:An even bigger monster of a hippo, it could be mistaken for a mountian
 desc: but for its odd pinkish orange color. It rarely notices things as small
 desc: as humans, but it could very easily step on you by accident with a foot

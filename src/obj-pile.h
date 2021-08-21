@@ -74,7 +74,7 @@ struct object *object_split(struct object *src, int amt);
 struct object *floor_object_for_use(struct object *obj, int num, bool message,
 									bool *none_left);
 bool floor_carry(struct chunk *c, struct loc grid, struct object *drop,
-				 bool *note);
+				 bool *note, bool terrain);
 void drop_near(struct chunk *c, struct object **dropped, int chance,
 			   struct loc grid, bool verbose, bool prefer_pile);
 void push_object(struct loc grid);

@@ -164,7 +164,9 @@ struct square {
 	byte feat;
 	bitflag *info;
 	int light;
+
 	s16b mon;
+
 	struct object *obj;
 	struct trap *trap;
 };

@@ -1774,8 +1774,7 @@ static void monster_turn(struct chunk *c, struct monster *mon)
 		/* Break a decoy if there is one */
 		if (square_isdecoyed(c, new)) {
 			/* Learn about if the monster attacks */
-			if (monster_is_visible(mon))
-				rf_on(lore->flags, RF_NEVER_BLOW);
+			if (monster_is_visible(mon)) rf_on(lore->flags, RF_NEVER_BLOW);
 
 			/* Some monsters never attack */
 			if (rf_has(mon->race->flags, RF_NEVER_BLOW))

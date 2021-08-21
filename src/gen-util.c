@@ -365,15 +365,61 @@ void new_player_spot(struct chunk *c, struct player *p)
 	player_place(c, p, grid);
 }
 
+/*
+ * Place a terrain object (statue, pile of rubble, etc)
+ * (mostly copied from wiz_create_item_object_from_kind)
+ */
+bool place_terrain_object(struct object_kind *kind, struct chunk *c, struct loc grid)
+{
+	struct object* obj;
+
+	/* Create the item */
+	/* Get object */
+	obj = object_new();
+	object_prep(obj, kind, player->depth, RANDOMISE);
+
+	/* Apply magic (no messages, no artifacts) */
+	/* (At the moment this only applies to big rocks.) */
+	apply_magic(obj, player->depth, false, false, false, false);
+
+	/* Statue descriptions are kept in the pval */
+	if (of_has(obj->flags, OF_STATUE)) obj->pval = randint1(33);
+
+	if (!floor_carry(c, grid, obj, false, true)) {
+		object_delete(&obj);
+		return false;
+	}
+
+	return true;
+}
 
 /**
  * Place rubble at a given location.
  * \param c current chunk
  * \param grid location
  */
-static void place_rubble(struct chunk *c, struct loc grid)
+void place_rubble(struct chunk *c, struct loc grid)
 {
-	square_set_feat(c, grid, one_in_(2) ? FEAT_RUBBLE : FEAT_PASS_RUBBLE);
+	struct object_kind* kind;
+	int bigc;
+	if (one_in_(2))	{
+		square_set_feat(c, grid, FEAT_RUBBLE);
+		kind = lookup_kind(TV_TERRAIN, lookup_sval(TV_TERRAIN, "large pile of rubble"));
+		place_terrain_object(kind, c, grid);
+		bigc = 75;
+	}
+	else {
+		square_set_feat(c, grid, FEAT_PASS_RUBBLE);
+		kind = lookup_kind(TV_TERRAIN, lookup_sval(TV_TERRAIN, "small pile of rubble"));
+		place_terrain_object(kind, c, grid);
+		bigc = 25;
+	}
+
+	/* sometimes include a big rock with the rubble */
+	if (randint0(100) < bigc) {
+		kind = lookup_kind(TV_BONE, lookup_sval(TV_BONE, "big rock"));
+		place_terrain_object(kind, c, grid);
+	}
 }
 
 
@@ -392,7 +438,7 @@ static void place_stairs(struct chunk *c, struct loc grid, int feat)
 	else if (is_quest(c->depth) || c->depth >= z_info->max_depth - 1)
 		square_set_feat(c, grid, FEAT_LESS);
 	/* Slides have a certain level range */
-	else if ((feat == FEAT_SLIDE) && ((c->depth < 12) || (c->depth > 94)))
+	else if ((feat == FEAT_SLIDE) && ((c->depth < 11) || (c->depth > 94)))
 		square_set_feat(c, grid, FEAT_MORE);
 	else
 		square_set_feat(c, grid, feat);
@@ -439,7 +485,7 @@ void place_object(struct chunk *c, struct loc grid, int level, bool good,
 	new_obj->origin_depth = c->depth;
 
 	/* Give it to the floor */
-	if (!floor_carry(c, grid, new_obj, &dummy)) {
+	if (!floor_carry(c, grid, new_obj, &dummy, false)) {
 		if (new_obj->artifact) {
 			new_obj->artifact->created = false;
 		}
@@ -447,13 +493,11 @@ void place_object(struct chunk *c, struct loc grid, int level, bool good,
 		return;
 	} else {
 		list_object(c, new_obj);
-		if (new_obj->artifact) {
-			c->good_item = true;
-		}
+		if (new_obj->artifact) c->good_item = true;
+
 		/* Avoid overflows */
-		if (rating > 2500000) {
-			rating = 2500000;
-		}
+		if (rating > 2500000) rating = 2500000;
+
 		c->obj_rating += (rating / 100) * (rating / 100);
 	}
 }
@@ -478,7 +522,7 @@ void place_gold(struct chunk *c, struct loc grid, int level, byte origin)
 	money->origin = origin;
 	money->origin_depth = level;
 
-	if (!floor_carry(c, grid, money, &dummy)) {
+	if (!floor_carry(c, grid, money, &dummy, false)) {
 		object_delete(&money);
 	} else {
 		list_object(c, money);
@@ -712,15 +756,33 @@ bool alloc_object(struct chunk *c, int set, int typ, int depth, byte origin)
 	switch (typ) {
 	case TYP_RUBBLE: place_rubble(c, grid); break;
 	case TYP_TREE: {
-		if (!randint0(8 - depth / 15)) square_set_feat(c, grid, FEAT_DEAD_TREE);
+		if (!randint0(9 - depth / 15)) {
+			struct object_kind* kind = lookup_kind(TV_TERRAIN, lookup_sval(TV_TERRAIN, "dead tree"));
+			square_set_feat(c, grid, FEAT_DEAD_TREE);
+			place_terrain_object(kind, c, grid);
+		}
 		else square_set_feat(c, grid, FEAT_TREE);
 		break;
 	}
 	case TYP_STATU: {
 		int sdie = randint0(100);
-		if (sdie < 40) square_set_feat(c, grid, FEAT_STATUE);
-		else if (sdie < 80) square_set_feat(c, grid, FEAT_SM_STATUE);
-		else make_fountain(c, grid, 1);
+		struct object_kind* kind;
+		if (sdie < 40) {
+			square_set_feat(c, grid, FEAT_STATUE); 
+			kind = lookup_kind(TV_TERRAIN, lookup_sval(TV_TERRAIN, "Statue"));
+			place_terrain_object(kind, c, grid);
+
+		}
+		else if (sdie < 80) {
+			square_set_feat(c, grid, FEAT_SM_STATUE);
+			kind = lookup_kind(TV_TERRAIN, lookup_sval(TV_TERRAIN, "Small Statue"));
+			place_terrain_object(kind, c, grid);
+		}
+		else {
+			make_fountain(c, grid, 1);
+			kind = lookup_kind(TV_TERRAIN, lookup_sval(TV_TERRAIN, "Fountain"));
+			place_terrain_object(kind, c, grid);
+		}
 		break;
 	}
 				  /* make_fountain mode 2 is puddle of water, mode 3 is puddle of lava */

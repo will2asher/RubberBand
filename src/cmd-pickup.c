@@ -256,6 +256,10 @@ static void player_pickup_aux(struct player *p, struct object *obj,
 			square_excise_object(p->cave, p->grid, obj->known);
 			delist_object(p->cave, obj->known);
 		}
+		/* If you pick up a terrain object, it means you're picking up the actual terrain, so clear it. */
+		if (obj->tval == TV_TERRAIN) {
+			square_set_feat(cave, p->grid, FEAT_FLOOR);
+		}
 		square_excise_object(cave, p->grid, obj);
 		delist_object(cave, obj);
 		inven_carry(p, obj, true, domsg);
@@ -386,10 +390,8 @@ static byte player_pickup_item(struct player *p, struct object *obj, bool menu)
 		objs_picked_up = 1;
 	}
 
-	/*
-	 * If requested, call this function recursively.  Count objects picked
-	 * up.  Force the display of a menu in all cases.
-	 */
+	/* If requested, call this function recursively.  Count objects picked
+	 * up.  Force the display of a menu in all cases. */
 	if (call_function_again)
 		objs_picked_up += player_pickup_item(p, NULL, true);
 
@@ -419,8 +421,8 @@ int do_autopickup(struct player *p)
 	while (obj) {
 		next = obj->next;
 
-		/* Ignore all hidden objects and non-objects */
-		if (!ignore_item_ok(obj)) {
+		/* Ignore all hidden objects, terrain objects, and non-objects */
+		if ((!ignore_item_ok(obj)) && (!of_has(obj->flags, OF_BIGTHING))) {
 			int auto_num;
 
 			/* Hack -- disturb */

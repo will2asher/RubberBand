@@ -1220,7 +1220,7 @@ bool effect_handler_MEDIOC(effect_handler_context_t* context)
 	msg("You feel drab.");
 
 	/* Luck */
-	if ((player->p_luck > 0) && (randint0(6) - 3 < player->p_luck)) player->p_luck -= 1;
+	if ((player->p_luck > 0) && (randint1(6) - 3 < player->p_luck)) player->p_luck -= 1;
 	else if (player->p_luck < -1) player->p_luck += 1;
 
 	/* Stats: STR (damage if over 16, raise if lower than 12) */
@@ -1347,7 +1347,8 @@ bool effect_handler_GAIN_LUCK(effect_handler_context_t* context)
 	int amount = effect_calculate_value(context, false);
 
 	if (player->p_luck < 5) {
-		msg("You feel lucky.");
+		if (player->p_luck > 0) msg("You feel lucky.");
+		else msg("You feel less unlucky.");
 		player->p_luck += amount;
 
 		/* Max luck is 5 */

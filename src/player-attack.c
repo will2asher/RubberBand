@@ -453,7 +453,7 @@ static int o_critical_melee(const struct player *p,
 /**
  * Determine standard melee damage.
  *
- * Factor in damage dice, to-dam and any brand or slay.
+ * Factor in damage dice, to-dam and any brand or slay (but STR bonus is added later not here)
  */
 static int melee_damage(const struct monster *mon, struct object *obj, int b, int s)
 {

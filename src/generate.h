@@ -421,6 +421,8 @@ void dump_level_header(ang_file *fo, const char *title);
 void dump_level_body(ang_file *fo, const char *title, struct chunk *c,
 	int **dist);
 void dump_level_footer(ang_file *fo);
+bool place_terrain_object(struct object_kind *kind, struct chunk *c, struct loc grid);
+void place_rubble(struct chunk* c, struct loc grid);
 
 /* gen-monster.c */
 bool mon_restrict(const char *monster_type, int depth, bool unique_ok);

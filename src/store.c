@@ -1201,9 +1201,8 @@ static bool store_create_random(struct store *store)
 
 		/*** Pre-generation filters ***/
 
-		/* No chests or bones in stores */
-		if (kind->tval == TV_CHEST) continue;
-		if (kind->tval == TV_BONE) continue;
+		/* Some item types never appear in stores */
+		if ((kind->tval == TV_CHEST) || (kind->tval == TV_BONE) || (kind->tval == TV_TERRAIN)) continue;
 
 		/*** Generate the item ***/
 

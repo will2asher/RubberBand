@@ -95,6 +95,8 @@ static const grouper group_item[] =
 	{ TV_POLEARM,	  NULL },
 	{ TV_HAFTED,	  NULL },
 	{ TV_DIGGING,	  NULL },
+	{ TV_THROWW,	  NULL },
+	{ TV_BONE,		  NULL },
 
 	{ TV_SOFT_ARMOR,	"Armour (Body)" },
 	{ TV_HARD_ARMOR,	  NULL },
@@ -129,6 +131,7 @@ static const grouper group_item[] =
 
 	{ TV_LIGHT,		  "Lights and fuel" },
 	{ TV_FLASK,		  NULL },
+	{ TV_TERRAIN,	  "Terrain objects" },
 
 	{ 0, "" }
 };

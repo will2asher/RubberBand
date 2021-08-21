@@ -305,7 +305,7 @@ static ui_event target_set_interactive_aux(int y, int x, int mode)
 	int floor_max = z_info->floor_size;
 	struct object **floor_list = mem_zalloc(floor_max * sizeof(*floor_list));
 	int floor_num;
-	int mimicfeat;
+	int statdesc = 0, mimicfeat = 0;
 
 	ui_event press;
 
@@ -519,7 +519,10 @@ static ui_event target_set_interactive_aux(int y, int x, int mode)
 				s2 = "on ";
 			}
 			/* Monster mimicking a terrain feature */
-			else if (mon->mimicked_feat) mimicfeat = mon->mimicked_feat;
+			else if (mon->mimicked_feat) {
+				mimicfeat = mon->mimicked_feat;
+				statdesc = mon->statued;
+			}
 		}
 
 		/* A trap */
@@ -683,12 +686,35 @@ static ui_event target_set_interactive_aux(int y, int x, int mode)
 		if (mimicfeat == 2) name = "pile of passable rubble";
 		if (mimicfeat == 7) name = "tree";
 
-		/* TODO: statue descriptions here */
-#if statuesdesc /* (later) */
-		if ((mimicfeat >= 3) || (mimicfeat <= 5) || square_has_statue(cave, loc(x, y))) {
+		/* Get statue descriptions */
+		if (((mimicfeat >= 3) && (mimicfeat <= 5)) || square_has_statue(cave, loc(x, y))) {
+			/* for gargoyles mimicing a statue */
+			int statuetype = mimicfeat;
+			/* (statdesc is set by the monster (gargoyle) earlier) */
 
+			/* for real statues */
+			if (square_has_statue(cave, loc(x, y))) {
+				/* find the statue object */
+				struct object* obj = square_object(cave, loc(x, y));
+					while (obj) {
+						struct object* next = obj->next;
+						if ((obj->tval == TV_TERRAIN) && of_has(obj->flags, OF_STATUE)) {
+							/* description kept in object pval */
+							statdesc = obj->pval;
+							if (obj->weight < 4000) statuetype = 3;
+							else if (obj->weight < 5400) statuetype = 4;
+							else statuetype = 5;
+							break;
+						}
+
+						/* Next object */
+						obj = next;
+					}
+			}
+			/* in obj-desc.c */
+			name = get_statue_desc(statdesc, statuetype);
 		}
-#else
+#if nodescriptions
 		if (mimicfeat == 3) name = "small statue";
 		if (mimicfeat == 4) name = "statue";
 		if (mimicfeat == 5) name = "fountain";

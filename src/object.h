@@ -415,7 +415,7 @@ struct curse_data {
  * Note that object records are not now copied, but allocated on object
  * creation and freed on object destruction.  These records are handed
  * around between player and monster inventories and the floor on a fairly
- * regular basis, and care must be taken when handling such objects.
+ * regular basis, and care must be taken when handling such objects.;
  */
 struct object {
 	struct object_kind *kind;	/**< Kind of the object */

@@ -504,7 +504,12 @@ static bool twall(struct loc grid)
 	square_forget(cave, grid);
 
 	/* chopping down a live tree produces a dead tree (which can then be chopped up again) */
-	if ((digtree) && (!small)) square_set_feat(cave, grid, FEAT_DEAD_TREE);
+	if ((digtree) && (!small)) { 
+		struct object_kind* kind;
+		square_set_feat(cave, grid, FEAT_DEAD_TREE);
+		kind = lookup_kind(TV_TERRAIN, lookup_sval(TV_TERRAIN, "dead tree"));
+		place_terrain_object(kind, cave, grid);
+	}
 
 	/* Remove the feature */
 	else square_tunnel_wall(cave, grid);
@@ -1397,8 +1402,10 @@ void do_cmd_walk(struct command *cmd)
 		/* Clear the web, finish turn */
 		msg("You clear the web.");
 		square_destroy_trap(cave, player->grid);
-		/* clearing a web shouldn't take a whole turn */
-		player->upkeep->energy_use = z_info->move_energy * 3 / 4;
+		/* clearing a web shouldn't take a whole turn (unless you're confused, drunk, or in a frenzy) */
+		if (!(player->timed[TMD_CONFUSED] || player->timed[TMD_SDRUNK] || player->timed[TMD_FRENZY]))
+			player->upkeep->energy_use = z_info->move_energy * 3 / 4;
+		else player->upkeep->energy_use = z_info->move_energy;
 		return;
 	}
 
@@ -1591,10 +1598,8 @@ void do_cmd_rest(struct command *cmd)
 	if (cmd_get_arg_choice(cmd, "choice", &n) != CMD_OK)
 		return;
 
-	/* 
-	 * A little sanity checking on the input - only the specified negative 
-	 * values are valid. 
-	 */
+	/* A little sanity checking on the input - only the specified negative 
+	 * values are valid.  */
 	if (n < 0 && !player_resting_is_special(n))
 		return;
 

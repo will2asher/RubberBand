@@ -214,7 +214,7 @@ pile:70:1d5
 attack:2d4:0:0
 armor:0:0
 flags:EXPLODE | THROWING | SHOW_DICE
-#brand:FIRE_2 (this file doesn't include brands...)
+#brand:FIRE_2 (object.txt doesn't include brands...)
 desc:When thrown at an enemy, it explodes in a burst of fire and shrapnel.
 
 ##### Food #####
@@ -3090,7 +3090,7 @@ graphics:?:w
 level:5
 weight:5
 cost:10
-alloc:50:4 to 104
+alloc:40:3 to 104
 pile:100:2d3
 power:5
 effect:NOURISH:INC_TO
@@ -3138,7 +3138,7 @@ graphics:?:w
 level:10
 weight:5
 cost:60
-alloc:35:9 to 60
+alloc:34:9 to 60
 pile:25:2d3
 power:6
 effect:TOUCH:KILL_DOOR
@@ -3318,7 +3318,7 @@ level:30
 weight:4
 cost:8100
 alloc:30:30 to 110
-pile:10:2
+pile:8:2
 power:20000
 effect:RESTORE_STAT:STR
 effect:GAIN_STAT:STR
@@ -3332,7 +3332,7 @@ level:30
 weight:4
 cost:8000
 alloc:30:30 to 110
-pile:10:2
+pile:8:2
 power:20000
 effect:RESTORE_STAT:INT
 effect:GAIN_STAT:INT
@@ -3346,7 +3346,7 @@ level:30
 weight:4
 cost:8000
 alloc:30:30 to 110
-pile:10:2
+pile:8:2
 power:20000
 effect:RESTORE_STAT:WIS
 effect:GAIN_STAT:WIS
@@ -3360,7 +3360,7 @@ level:30
 weight:4
 cost:8000
 alloc:30:30 to 110
-pile:10:2
+pile:8:2
 power:20000
 effect:RESTORE_STAT:DEX
 effect:GAIN_STAT:DEX
@@ -3374,7 +3374,7 @@ level:30
 weight:4
 cost:8050
 alloc:30:30 to 110
-pile:10:2
+pile:8:2
 power:20000
 effect:RESTORE_STAT:CON
 effect:GAIN_STAT:CON
@@ -3387,7 +3387,7 @@ graphics:!:d
 level:40
 weight:4
 cost:42000
-alloc:20:40 to 110
+alloc:18:40 to 110
 attack:1d1:0:0
 armor:0:0
 power:20000
@@ -3802,7 +3802,7 @@ graphics:!:d
 level:1
 weight:4
 cost:10
-alloc:40:1 to 90
+alloc:35:1 to 90
 pile:25:2
 power:2
 effect:CURE:AFRAID
@@ -3845,7 +3845,7 @@ graphics:!:d
 level:30
 weight:4
 cost:33
-alloc:21:29 to 110
+alloc:20:29 to 105
 pile:25:2
 power:4
 effect:TIMED_INC:OPP_ACID
@@ -3892,7 +3892,7 @@ graphics:!:d
 level:3
 weight:4
 cost:20
-alloc:40:3 to 40
+alloc:40:3 to 44
 pile:25:2
 power:5
 effect:TIMED_INC:SINFRA
@@ -3906,7 +3906,7 @@ graphics:!:d
 level:15
 weight:4
 cost:63
-alloc:6:15 to 71
+alloc:8:15 to 71
 pile:20:2d2
 power:6
 effect:TIMED_INC:DARKVIS
@@ -3921,7 +3921,7 @@ graphics:!:d
 level:0
 weight:4
 cost:2
-alloc:10:1 to 16
+alloc:9:1 to 18
 pile:70:2d3
 power:0
 effect:NOURISH:INC_BY
@@ -3985,7 +3985,7 @@ graphics:!:d
 level:3
 weight:4
 cost:3
-alloc:10:0 to 16
+alloc:11:0 to 16
 pile:70:2d3
 attack:3d4:0:0
 armor:0:0
@@ -5996,6 +5996,93 @@ graphics:$:B
 name:adamantite
 type:gold
 graphics:$:G
+
+### Terrain objects (not done yet)
+# created with their terrain, so they don't use alloc: lines
+# graphics lines should match their terrain graphics
+# For objects of terrain that blocks movement, you get the option to try to pick up the object if you try to move into its space.
+# DON'T CHANGE THE WEIGHTS OF TERRAIN OBJECTS (unless you also change them in floor_carry())
+
+#Statue descriptions are kept in the pval, randomly set at creation
+name:& Small Statue~
+type:terrain object
+graphics:::z
+level:1
+weight:3200
+cost:500
+flags:STATUE
+flags:EASY_KNOW | BIGTHING
+desc:dummy (this should be replaced by random statue description)
+
+name:& Statue~
+type:terrain object
+graphics:::z
+level:1
+weight:5100
+cost:700
+flags:STATUE
+flags:EASY_KNOW | BIGTHING
+desc:dummy (this should be replaced by random statue description)
+
+name:& Large Statue~
+type:terrain object
+graphics:::z
+level:1
+weight:6000
+cost:1000
+flags:STATUE
+flags:EASY_KNOW | BIGTHING
+desc:dummy (this should be replaced by random statue description)
+
+name:& Fountain~
+type:terrain object
+graphics:::B
+level:1
+weight:5500
+cost:1200
+flags:STATUE
+flags:EASY_KNOW | BIGTHING
+desc:dummy (this should be replaced by random statue description)
+
+name:& small pile~ of rubble
+type:terrain object
+graphics:::u
+level:1
+weight:4000
+cost:0
+flags:EASY_KNOW | BIGTHING
+desc:a small pile of rubble
+
+name:& large pile~ of rubble
+type:terrain object
+graphics:::W
+level:10
+weight:8500
+cost:0
+flags:EASY_KNOW | BIGTHING
+desc:a large pile of rubble
+
+name:& big rock~
+type:bone
+graphics:::W
+level:10
+weight:1500
+cost:0
+attack:2d5:0:0
+armor:0:0
+flags:THROWING | EASY_KNOW | BIGTHING
+desc:a big rock which can be thrown at a monster for damage (if you're strong enough).
+
+name:& dead tree~
+type:terrain object
+graphics:1:u
+level:10
+weight:3800
+cost:0
+flags:EASY_KNOW | BIGTHING
+desc:a dead tree.
+
+
 
 
 ##### "Morgoth Artifacts" #####

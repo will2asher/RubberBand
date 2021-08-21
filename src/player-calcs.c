@@ -2387,10 +2387,44 @@ void calc_bonuses(struct player *p, struct player_state *state, bool known_only,
 
 	/* Apply modifier bonuses (Un-inflate stat bonuses) */
 	state->to_a += adj_dex_ta[state->stat_ind[STAT_DEX]];
-	state->to_d += adj_str_td[state->stat_ind[STAT_STR]];
 	state->to_h += adj_dex_th[state->stat_ind[STAT_DEX]];
-	state->to_h += adj_str_th[state->stat_ind[STAT_STR]];
 
+	hold = adj_str_hold[state->stat_ind[STAT_STR]];
+	/* Strength bonus depends on weapon weight */
+	if (weapon) {
+		/* weapon is not too heavy */
+		if (hold >= weapon->weight / 10) {
+			/* Lightweight weapon gets reduced strength bonus */
+			if (weapon->weight < 50) {
+				state->to_d += adj_str_td[state->stat_ind[STAT_STR]] * 4 / 5;
+				state->to_h += adj_str_th[state->stat_ind[STAT_STR]] * 4 / 5;
+			}
+			else if (weapon->weight >= 200) {
+				state->to_d += adj_str_td[state->stat_ind[STAT_STR]] * 3 / 2;
+				state->to_h += adj_str_th[state->stat_ind[STAT_STR]] * 3 / 2;
+			}
+			else if (weapon->weight >= 150) {
+				state->to_d += adj_str_td[state->stat_ind[STAT_STR]] * 5 / 4;
+				state->to_h += adj_str_th[state->stat_ind[STAT_STR]] * 5 / 4;
+			}
+			else if (weapon->weight >= 100) {
+				state->to_d += adj_str_td[state->stat_ind[STAT_STR]] * 10 / 9;
+				state->to_h += adj_str_th[state->stat_ind[STAT_STR]] * 10 / 9;
+			}
+			else { /* weapon->weight between 5 and 10 */
+				state->to_d += adj_str_td[state->stat_ind[STAT_STR]];
+				state->to_h += adj_str_th[state->stat_ind[STAT_STR]];
+			}
+		}
+		else { /* Your strength is focussed on merely holding the weapon */
+			state->to_d += adj_str_td[state->stat_ind[STAT_STR]] * 4 / 5;
+			state->to_h += adj_str_th[state->stat_ind[STAT_STR]] * 4 / 5;
+		}
+	}
+	else { /* bare-handed */
+		state->to_d += adj_str_td[state->stat_ind[STAT_STR]];
+		state->to_h += adj_str_th[state->stat_ind[STAT_STR]];
+	}
 
 	/* Modify skills */
 	state->skills[SKILL_DISARM_PHYS] += adj_dex_dis[state->stat_ind[STAT_DEX]];
@@ -2404,8 +2438,6 @@ void calc_bonuses(struct player *p, struct player_state *state, bool known_only,
 	if (state->skills[SKILL_DIGGING] < 1) state->skills[SKILL_DIGGING] = 1;
 	if (state->skills[SKILL_STEALTH] > 30) state->skills[SKILL_STEALTH] = 30;
 	if (state->skills[SKILL_STEALTH] < 0) state->skills[SKILL_STEALTH] = 0;
-	hold = adj_str_hold[state->stat_ind[STAT_STR]];
-
 
 	/* Analyze launcher */
 	state->heavy_shoot = false;
@@ -2457,6 +2489,7 @@ void calc_bonuses(struct player *p, struct player_state *state, bool known_only,
 		}
 
 		/* Normal weapons */
+		/* RBTODO: this digging bonus should depend on type of weapon: axes and such would work much better than blades */
 		if (!state->heavy_wield) {
 			state->num_blows = calc_blows(p, weapon, state, extra_blows);
 			state->skills[SKILL_DIGGING] += (weapon->weight / 10);

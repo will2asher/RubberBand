@@ -2113,8 +2113,7 @@ void do_cmd_wiz_effect(void)
 
 	effect_simple(index, source_player(), dice, p1, p2, p3, y, x, &ident);
 
-	if (ident)
-		msg("Identified!");
+	if (ident) msg("Identified!");
 }
 
 /**

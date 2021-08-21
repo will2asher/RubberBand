@@ -543,7 +543,7 @@ static void move_mimicked_object(struct chunk *c, struct monster *mon,
 		moved->known->oidx = 0;
 		moved->known->grid = loc(0,0);
 	}
-	if (floor_carry(c, dest, moved, &dummy)) {
+	if (floor_carry(c, dest, moved, &dummy, false)) {
 		mon->mimicked_obj = moved;
 	} else {
 		/* Could not move the object so cancel mimicry. */

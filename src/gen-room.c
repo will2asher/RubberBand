@@ -1518,7 +1518,10 @@ bool build_vault(struct chunk *c, struct loc centre, struct vault *v)
 				/* nexus stone (5%) */
 				else if (featdie < 36) { square_set_feat(c, grid, FEAT_NEXUS_STONE); break; }
 				/* small chance of rubble (3%) */
-				else if (featdie < 39) { square_set_feat(c, grid, one_in_(2) ? FEAT_PASS_RUBBLE : FEAT_RUBBLE); break; }
+				else if (featdie < 39) { 
+					place_rubble(c, grid);
+					break; 
+				}
 				/* small chance of chasm (3%) */
 				else if (featdie < 42) { square_set_feat(c, grid, FEAT_CHASM); break; }
 				/* small chance of lava (3%) */
@@ -1530,8 +1533,17 @@ bool build_vault(struct chunk *c, struct loc centre, struct vault *v)
 				/* else fall through to random statue (40%) */
 			}
 			case '[': { /* random statue */
-				if (one_in_(2)) square_set_feat(c, grid, FEAT_STATUE);
-				else square_set_feat(c, grid, FEAT_SM_STATUE);
+				struct object_kind* kind;
+				if (one_in_(2)) {
+					square_set_feat(c, grid, FEAT_STATUE);
+					kind = lookup_kind(TV_TERRAIN, lookup_sval(TV_TERRAIN, "Small Statue"));
+					place_terrain_object(kind, c, grid);
+				}
+				else {
+					square_set_feat(c, grid, FEAT_SM_STATUE);
+					kind = lookup_kind(TV_TERRAIN, lookup_sval(TV_TERRAIN, "Statue"));
+					place_terrain_object(kind, c, grid);
+				}
 				break;
 			}
 					/* Tree (or tree monster) */
@@ -1544,7 +1556,11 @@ bool build_vault(struct chunk *c, struct loc centre, struct vault *v)
 					/* Place a tree if it fails to find a tree monster (shouldn't happen, but just in case) */
 					if (!sp_vault_monster(c, 'l', v->typ, grid)) square_set_feat(c, grid, FEAT_TREE);
 				}
-				else if (one_in_(6 - player->depth / 29)) square_set_feat(c, grid, FEAT_DEAD_TREE);
+				else if (one_in_(6 - player->depth / 29)) {
+					struct object_kind* kind = lookup_kind(TV_TERRAIN, lookup_sval(TV_TERRAIN, "dead tree"));
+					square_set_feat(c, grid, FEAT_DEAD_TREE);
+					place_terrain_object(kind, c, grid);
+				}
 				else square_set_feat(c, grid, FEAT_TREE);
 				break;
 			}

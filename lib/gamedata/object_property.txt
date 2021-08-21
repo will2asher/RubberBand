@@ -910,3 +910,11 @@ code:COLD
 power:43
 bindui:resist_ui_compact_0<COLD>:0
 
+name:statue
+type:flag
+code:STATUE
+
+name:big thing
+type:flag
+code:BIGTHING
+

@@ -298,8 +298,8 @@ static void cave_light(struct point_set *ps)
 			/* Stupid monsters rarely wake up */
 			if (monster_is_stupid(mon)) chance = 10;
 
-			/* Smart monsters always wake up */
-			if (monster_is_smart(mon)) chance = 100;
+			/* Smart monsters usually wake up */
+			if (monster_is_smart(mon)) chance = 92 - player->p_luck;
 
 			/* Sometimes monsters wake up, and become aware if they do */
 			if (mon->m_timed[MON_TMD_SLEEP] && (randint0(100) < chance)) {

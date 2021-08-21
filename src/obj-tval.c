@@ -374,6 +374,11 @@ bool tval_is_book_k(const struct object_kind *kind)
 	}
 }
 
+bool tval_is_terrain(const struct object* obj)
+{
+	return obj->tval == TV_TERRAIN;
+}
+
 bool tval_is_zapper(const struct object *obj)
 {
 	return obj->tval == TV_WAND || obj->tval == TV_STAFF;

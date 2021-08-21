@@ -101,6 +101,7 @@ static void project_feature_handler_KILL_WALL(project_feature_handler_context_t 
 
 	/* Different treatment for different walls */
 	if (square_isrubble(cave, grid) || square_has_statue(cave, grid)) {
+		bool stat = square_has_statue(cave, grid);
 		/* Message */
 		if (square_isseen(cave, grid)) {
 			if (square_has_statue(cave, grid)) msg("The statue turns into mud!");
@@ -117,7 +118,7 @@ static void project_feature_handler_KILL_WALL(project_feature_handler_context_t 
 		/* Hack -- place an object (this should be done when the rubble or statue is placed) */
 		if (randint0(100) < 10) {
 			if (square_isseen(cave, grid)) {
-				if (square_has_statue(cave, grid)) msg("The was something hidden in the statue!");
+				if (stat) msg("The was something hidden in the statue!");
 				else msg("There was something buried in the rubble!");
 				context->obvious = true;
 			}
@@ -331,13 +332,30 @@ static void project_feature_handler_ELEC(project_feature_handler_context_t *cont
 		/* (small statues are projectable) */
 		bool small = square_isprojectable(cave, context->grid);
 
+		/* delete the statue object */
+		struct object* obj = square_object(cave, context->grid);
+		while (obj) {
+			struct object* next = obj->next;
+			if (obj->tval == TV_TERRAIN)
+				square_delete_object(cave, context->grid, obj, true, true);
+
+			/* Next object */
+			obj = next;
+		}
+
 		/* Forget the statue */
 		square_unmark(cave, context->grid);
+
+		/* Change the feature to rubble & place rubble object */
 		if ((randint0(100) < 20) && !occupied && !small) {
 			square_set_feat(cave, context->grid, FEAT_RUBBLE);
+			struct object_kind* kind= lookup_kind(TV_TERRAIN, lookup_sval(TV_TERRAIN, "large pile of rubble"));
+			place_terrain_object(kind, cave, context->grid);
 		}
 		else {
 			square_set_feat(cave, context->grid, FEAT_PASS_RUBBLE);
+			struct object_kind* kind = lookup_kind(TV_TERRAIN, lookup_sval(TV_TERRAIN, "small pile of rubble"));
+			place_terrain_object(kind, cave, context->grid);
 		}
 	}
 }
@@ -388,7 +406,11 @@ static void project_feature_handler_COLD(project_feature_handler_context_t *cont
 		if (randint0(100) < 11 + context->dam / 5) {
 			square_unmark(cave, context->grid);
 			if (one_in_(2)) square_set_feat(cave, context->grid, FEAT_FLOOR);
-			else square_set_feat(cave, context->grid, FEAT_DEAD_TREE);
+			else {
+				struct object_kind* kind = lookup_kind(TV_TERRAIN, lookup_sval(TV_TERRAIN, "dead tree"));
+				place_terrain_object(kind, cave, context->grid);
+				square_set_feat(cave, context->grid, FEAT_DEAD_TREE);
+			}
 		}
 	}
 
@@ -420,9 +442,11 @@ static void project_feature_handler_POIS(project_feature_handler_context_t *cont
 	}
 
 	/* Can kill trees if powerful enough. (and possibly put out fires if the tree is on fire but whatever -we'll put that down to the force of the air in the breath) */
-	if ((context->dam > randint1(1200) + 350) &&
+	if ((context->dam > randint1(1200) + 350) && (!square_ispassable(cave, context->grid)) && 
 		square_isatree(cave, context->grid)) {
+		struct object_kind* kind = lookup_kind(TV_TERRAIN, lookup_sval(TV_TERRAIN, "dead tree"));
 		square_unmark(cave, context->grid);
+		place_terrain_object(kind, cave, context->grid);
 		square_set_feat(cave, context->grid, FEAT_DEAD_TREE);
 	}
 }
@@ -437,8 +461,11 @@ static void project_feature_handler_LIGHT(project_feature_handler_context_t *con
 static void project_feature_handler_DARK(project_feature_handler_context_t *context)
 {
 	/* Can kill trees if powerful enough. (trees need light to live) */
-	if ((context->dam > randint1(1200) + 350) &&
+	if ((context->dam > randint1(1200) + 350) && (!square_ispassable(cave, context->grid)) &&
 		square_isatree(cave, context->grid)) {
+		struct object_kind* kind = lookup_kind(TV_TERRAIN, lookup_sval(TV_TERRAIN, "dead tree"));
+		square_unmark(cave, context->grid);
+		place_terrain_object(kind, cave, context->grid);
 		square_set_feat(cave, context->grid, FEAT_DEAD_TREE);
 	}
 
@@ -501,7 +528,9 @@ static void project_feature_handler_NETHER(project_feature_handler_context_t *co
 	/* Can kill trees if powerful enough. (and possibly put out fires if the tree is on fire but whatever -we'll put that down to the force of the air in the breath) */
 	if ((context->dam > randint1(1050) + 350) &&
 		square_isatree(cave, context->grid)) {
+		struct object_kind* kind = lookup_kind(TV_TERRAIN, lookup_sval(TV_TERRAIN, "dead tree"));
 		square_unmark(cave, context->grid);
+		place_terrain_object(kind, cave, context->grid);
 		square_set_feat(cave, context->grid, FEAT_DEAD_TREE);
 	}
 }

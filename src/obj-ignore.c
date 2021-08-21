@@ -51,6 +51,8 @@ static quality_ignore_struct quality_mapping[] =
 	{ ITYPE_BLUNT,					TV_HAFTED,		"" },
 	{ ITYPE_BLUNT,					TV_STAFF,		"" },
 	{ ITYPE_THROWER,				TV_THROWW,		"" },
+	{ ITYPE_THROWER, 				TV_FLASK,       "Grenade" },
+	{ ITYPE_BONEWEAP,				TV_BONE,		"" },
 	{ ITYPE_SLING,					TV_BOW,			"Sling" },
 	{ ITYPE_BOW,					TV_BOW,			"Bow" },
 	{ ITYPE_CROSSBOW,				TV_BOW,			"Crossbow" },
@@ -83,6 +85,7 @@ static quality_ignore_struct quality_mapping[] =
 	{ ITYPE_RING,					TV_RING,		"" },
 	{ ITYPE_AMULET,					TV_AMULET,		"" },
 	{ ITYPE_LIGHT, 					TV_LIGHT, 		"" },
+	{ ITYPE_TERRAIN,				TV_TERRAIN,		"" },
 };
 
 
@@ -576,6 +579,9 @@ bool object_is_ignored(const struct object *obj)
 	/* Objects that aren't yet known can't be ignored */
 	if (!obj->known) return false;
 
+	/* (almost) always ignore terrain objects (for now) */
+	if (obj->tval == TV_TERRAIN) return true;
+
 	/* Do ignore individual objects that marked ignore */
 	if (obj->known->notice & OBJ_NOTICE_IGNORE) return true;
 
@@ -618,8 +624,7 @@ bool object_is_ignored(const struct object *obj)
  */
 bool ignore_item_ok(const struct object *obj)
 {
-	if (player->unignoring)
-		return false;
+	if (player->unignoring) return false;
 
 	return object_is_ignored(obj);
 }

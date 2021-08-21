@@ -388,8 +388,6 @@ bool player_restore_mana(struct player *p, int amt) {
 
 /**
  * Return a version of the player's name safe for use in filesystems.
- *
- * XXX This does not belong here.
  */
 void player_safe_name(char *safe, size_t safelen, const char *name, bool strip_suffix)
 {

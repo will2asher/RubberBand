@@ -205,5 +205,8 @@ graphics:light purple
 # max-stack:5
 flags:HATES_FIRE | EASY_KNOW
 
+name:terrain object:Terrain object~
+graphics:slate
+
 name:gold
 graphics:light yellow
