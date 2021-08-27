@@ -857,7 +857,7 @@ void player_take_terrain_damage(struct player *p, struct loc grid)
 		if (player_of_has(p, OF_FEATHER)) slimec = slimec * 2 / 3;
 
 		/* Slime the player */
-		if (die < slimec / 5) p->slimed += 2;
+		if ((die < slimec / 5) && (!player_of_has(p, OF_FEATHER))) p->slimed += 2;
 		else if (die < slimec) p->slimed += 1;
 		/* message */
 		if (die < slimec) msg(square_feat(cave, grid)->hurt_msg);

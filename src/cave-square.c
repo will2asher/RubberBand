@@ -1484,9 +1484,9 @@ void square_tunnel_wall(struct chunk *c, struct loc grid)
 
 	if (terrainobj) {
 		/* delete the dead tree / statue / rubble object */
-		struct object* obj = square_object(cave, grid);
+		struct object *obj = square_object(cave, grid);
 		while (obj) {
-			struct object* next = obj->next;
+			struct object *next = obj->next;
 			if (obj->tval == TV_TERRAIN)
 				square_delete_object(cave, grid, obj, true, true);
 

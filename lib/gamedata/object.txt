@@ -4557,11 +4557,11 @@ type:wand
 graphics:-:d
 level:3
 weight:10
-cost:0
+cost:44
 alloc:10:3 to 54
 attack:1d1:0:0
 armor:0:0
-charges:8+d20
+charges:8+d12
 power:0
 effect:BOLT_STATUS:MON_HEAL
 dice:4d6

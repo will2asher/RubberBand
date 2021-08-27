@@ -348,17 +348,17 @@ static ui_event target_set_interactive_aux(int y, int x, int mode)
 
 		/* Hallucination messes things up */
 		if (player->timed[TMD_IMAGE]) {
-			const char *name_strange = "something strange";
+			const char* name_strange = "something strange";
 
 			/* Display a message */
 			if (player->wizard)
 				strnfmt(out_val, sizeof(out_val),
-						"%s%s%s%s, %s (%d:%d, noise=%d, scent=%d).", s1, s2, s3,
-						name_strange, coords, y, x, (int)cave->noise.grids[y][x],
-						(int)cave->scent.grids[y][x]);
+					"%s%s%s%s, %s (%d:%d, noise=%d, scent=%d).", s1, s2, s3,
+					name_strange, coords, y, x, (int)cave->noise.grids[y][x],
+					(int)cave->scent.grids[y][x]);
 			else
 				strnfmt(out_val, sizeof(out_val), "%s%s%s%s, %s.",
-						s1, s2, s3, name_strange, coords);
+					s1, s2, s3, name_strange, coords);
 
 			prt(out_val, 0, 0);
 			move_cursor_relative(y, x);
@@ -375,8 +375,8 @@ static ui_event target_set_interactive_aux(int y, int x, int mode)
 
 		/* Actual monsters */
 		if (square(cave, loc(x, y))->mon > 0) {
-			struct monster *mon = square_monster(cave, loc(x, y));
-			const struct monster_lore *lore = get_lore(mon->race);
+			struct monster* mon = square_monster(cave, loc(x, y));
+			const struct monster_lore* lore = get_lore(mon->race);
 
 			/* Visible */
 			if (monster_is_obvious(mon)) {
@@ -402,24 +402,26 @@ static ui_event target_set_interactive_aux(int y, int x, int mode)
 					if (recall) {
 						lore_show_interactive(mon->race, lore);
 						press = inkey_m();
-					} else {
+					}
+					else {
 						char buf[80];
 
 						/* Describe the monster */
 						look_mon_desc(buf, sizeof(buf),
-									  square(cave, loc(x, y))->mon);
+							square(cave, loc(x, y))->mon);
 
 						/* Describe, and prompt for recall */
 						if (player->wizard) {
 							strnfmt(out_val, sizeof(out_val),
-									"%s%s%s%s (%s), %s (%d:%d, noise=%d, scent=%d).",
-									s1, s2, s3, m_name, buf, coords, y, x,
-									(int)cave->noise.grids[y][x],
-									(int)cave->scent.grids[y][x]);
-						} else {
+								"%s%s%s%s (%s), %s (%d:%d, noise=%d, scent=%d).",
+								s1, s2, s3, m_name, buf, coords, y, x,
+								(int)cave->noise.grids[y][x],
+								(int)cave->scent.grids[y][x]);
+						}
+						else {
 							strnfmt(out_val, sizeof(out_val),
-									"%s%s%s%s (%s), %s.",
-									s1, s2, s3, m_name, buf, coords);
+								"%s%s%s%s (%s), %s.",
+								s1, s2, s3, m_name, buf, coords);
 						}
 
 						prt(out_val, 0, 0);
@@ -436,10 +438,10 @@ static ui_event target_set_interactive_aux(int y, int x, int mode)
 						&& (KEY_GRID_X(press) == x) && (KEY_GRID_Y(press) == y))
 						recall = !recall;
 					else
-					if ((press.type == EVT_KBRD) && (press.key.code == 'r'))
-						recall = !recall;
-					else
-						break;
+						if ((press.type == EVT_KBRD) && (press.key.code == 'r'))
+							recall = !recall;
+						else
+							break;
 				}
 
 				if (press.type == EVT_MOUSE) {
@@ -449,7 +451,8 @@ static ui_event target_set_interactive_aux(int y, int x, int mode)
 
 					/* Sometimes stop at "space" key */
 					if (press.mouse.button && !(mode & (TARGET_LOOK))) break;
-				} else {
+				}
+				else {
 					/* Stop on everything but "return"/"space" */
 					if (press.key.code != KC_ENTER && press.key.code != ' ')
 						break;
@@ -475,13 +478,13 @@ static ui_event target_set_interactive_aux(int y, int x, int mode)
 
 						/* Obtain an object description */
 						object_desc(o_name, sizeof(o_name), obj,
-									ODESC_PREFIX | ODESC_FULL);
+							ODESC_PREFIX | ODESC_FULL);
 
 						strnfmt(out_val, sizeof(out_val),
-								"%s%s%s%s, %s (%d:%d, noise=%d, scent=%d).",
-								s1, s2, s3, o_name, coords, y, x,
-								(int)cave->noise.grids[y][x],
-								(int)cave->scent.grids[y][x]);
+							"%s%s%s%s, %s (%d:%d, noise=%d, scent=%d).",
+							s1, s2, s3, o_name, coords, y, x,
+							(int)cave->noise.grids[y][x],
+							(int)cave->scent.grids[y][x]);
 
 						prt(out_val, 0, 0);
 						move_cursor_relative(y, x);
@@ -495,7 +498,8 @@ static ui_event target_set_interactive_aux(int y, int x, int mode)
 							/* Sometimes stop at "space" key */
 							if (press.mouse.button && !(mode & (TARGET_LOOK)))
 								break;
-						} else {
+						}
+						else {
 							/* Stop on everything but "return"/"space" */
 							if ((press.key.code != KC_ENTER) &&
 								(press.key.code != ' '))
@@ -527,7 +531,7 @@ static ui_event target_set_interactive_aux(int y, int x, int mode)
 
 		/* A trap */
 		if (square_isvisibletrap(cave, loc(x, y))) {
-			struct trap *trap = square(cave, loc(x, y))->trap;
+			struct trap* trap = square(cave, loc(x, y))->trap;
 
 			/* Not boring */
 			boring = false;
@@ -538,7 +542,8 @@ static ui_event target_set_interactive_aux(int y, int x, int mode)
 				if (square(cave, loc(x, y))->mon < 0) {
 					s1 = "You are ";
 					s2 = "on ";
-				} else {
+				}
+				else {
 					s1 = "You see ";
 					s2 = "";
 				}
@@ -549,13 +554,14 @@ static ui_event target_set_interactive_aux(int y, int x, int mode)
 				/* Describe, and prompt for recall */
 				if (player->wizard) {
 					strnfmt(out_val, sizeof(out_val),
-							"%s%s%s%s, %s (%d:%d, noise=%d, scent=%d).", s1, s2,
-							s3, trap->kind->name, coords, y, x,
-							(int)cave->noise.grids[y][x],
-							(int)cave->scent.grids[y][x]);
-				} else {
-					strnfmt(out_val, sizeof(out_val), "%s%s%s%s, %s.", 
-							s1, s2, s3, trap->kind->desc, coords);
+						"%s%s%s%s, %s (%d:%d, noise=%d, scent=%d).", s1, s2,
+						s3, trap->kind->name, coords, y, x,
+						(int)cave->noise.grids[y][x],
+						(int)cave->scent.grids[y][x]);
+				}
+				else {
+					strnfmt(out_val, sizeof(out_val), "%s%s%s%s, %s.",
+						s1, s2, s3, trap->kind->desc, coords);
 				}
 
 				prt(out_val, 0, 0);
@@ -565,119 +571,123 @@ static ui_event target_set_interactive_aux(int y, int x, int mode)
 
 				/* Command */
 				press = inkey_m();
-		
+
 				/* Stop on everything but "return"/"space" */
 				if ((press.key.code != KC_ENTER) && (press.key.code != ' '))
 					break;
-		
+
 				/* Sometimes stop at "space" key */
 				if ((press.key.code == ' ') && !(mode & (TARGET_LOOK)))
 					break;
 			}
 		}
-	
+
 		/* Double break */
 		if (square_isvisibletrap(cave, loc(x, y))) break;
-	
-		/* Scan all sensed objects in the grid */
-		floor_num = scan_distant_floor(floor_list, floor_max, loc(x, y));
-		if ((floor_num > 0) &&
-		    (!(player->timed[TMD_BLIND]) || loc_eq(loc(x, y), player->grid))) {
-			/* Not boring */
-			boring = false;
 
-			track_object(player->upkeep, floor_list[0]);
-			handle_stuff(player);
+		/* Objects can be hidden in rubble */
+		if (!square_isrubble(cave, loc(x, y))) {
+			/* Scan all sensed objects in the grid */
+			floor_num = scan_distant_floor(floor_list, floor_max, loc(x, y));
+			if ((floor_num > 0) &&
+				(!(player->timed[TMD_BLIND]) || loc_eq(loc(x, y), player->grid))) {
+				/* Not boring */
+				boring = false;
 
-			/* If there is more than one item... */
-			if (floor_num > 1) {
-				while (1) {
-					/* Describe the pile */
-					if (player->wizard) {
-						strnfmt(out_val, sizeof(out_val),
+				track_object(player->upkeep, floor_list[0]);
+				handle_stuff(player);
+
+				/* If there is more than one item... */
+				if (floor_num > 1) {
+					while (1) {
+						/* Describe the pile */
+						if (player->wizard) {
+							strnfmt(out_val, sizeof(out_val),
 								"%s%s%sa pile of %d objects, %s (%d:%d, noise=%d, scent=%d).",
-								s1, s2, s3, floor_num, coords, y, x,
-								(int)cave->noise.grids[y][x],
-								(int)cave->scent.grids[y][x]);
-					} else {
-						strnfmt(out_val, sizeof(out_val),
+								s1, s2, s3, floor_num, coords, y, x, 
+								(int)cave->noise.grids[y][x], (int)cave->scent.grids[y][x]);
+						}
+						else {
+							strnfmt(out_val, sizeof(out_val),
 								"%s%s%sa pile of %d objects, %s.",
 								s1, s2, s3, floor_num, coords);
-					}
-
-					prt(out_val, 0, 0);
-					move_cursor_relative(y, x);
-					press = inkey_m();
-
-					/* Display objects */
-					if (((press.type == EVT_MOUSE) && (press.mouse.button == 1)
-						 && (KEY_GRID_X(press) == x) && 
-						 (KEY_GRID_Y(press) == y)) ||
-						((press.type == EVT_KBRD) && (press.key.code == 'r'))) {
-						int rdone = 0;
-						int pos;
-						while (!rdone) {
-							/* Save screen */
-							screen_save();
-
-							/* Use OLIST_DEATH to show item labels */
-							show_floor(floor_list, floor_num, (OLIST_DEATH
-									| OLIST_WEIGHT | OLIST_GOLD), NULL);
-
-							/* Describe the pile */
-							prt(out_val, 0, 0);
-							press = inkey_m();
-
-							/* Load screen */
-							screen_load();
-
-							if (press.type == EVT_MOUSE) {
-								pos = press.mouse.y-1;
-							} else {
-								pos = press.key.code - 'a';
-							}
-							if (0 <= pos && pos < floor_num) {
-								track_object(player->upkeep, floor_list[pos]);
-								handle_stuff(player);
-								continue;
-							}
-							rdone = 1;
 						}
 
-						/* Now that the user's done with the display loop,
-						 * let's do the outer loop over again */
-						continue;
+						prt(out_val, 0, 0);
+						move_cursor_relative(y, x);
+						press = inkey_m();
+
+						/* Display objects */
+						if (((press.type == EVT_MOUSE) && (press.mouse.button == 1)
+							&& (KEY_GRID_X(press) == x) &&
+							(KEY_GRID_Y(press) == y)) ||
+							((press.type == EVT_KBRD) && (press.key.code == 'r'))) {
+							int rdone = 0;
+							int pos;
+							while (!rdone) {
+								/* Save screen */
+								screen_save();
+
+								/* Use OLIST_DEATH to show item labels */
+								show_floor(floor_list, floor_num, (OLIST_DEATH
+									| OLIST_WEIGHT | OLIST_GOLD), NULL);
+
+								/* Describe the pile */
+								prt(out_val, 0, 0);
+								press = inkey_m();
+
+								/* Load screen */
+								screen_load();
+
+								if (press.type == EVT_MOUSE) {
+									pos = press.mouse.y - 1;
+								}
+									else {
+										pos = press.key.code - 'a';
+									}
+									if (0 <= pos && pos < floor_num) {
+										track_object(player->upkeep, floor_list[pos]);
+										handle_stuff(player);
+										continue;
+									}
+									rdone = 1;
+								}
+
+							/* Now that the user's done with the display loop,
+							 * let's do the outer loop over again */
+							continue;
+						}
+
+						/* Done */
+						break;
 					}
-
-					/* Done */
-					break;
 				}
-			} else {
-				/* Only one object to display */
-				struct object *obj_local = floor_list[0];
+				else {
+					/* Only one object to display */
+					struct object* obj_local = floor_list[0];
 
-				/* Allow user to recall an object */
-				press = target_recall_loop_object(obj_local, y, x, out_val, s1, s2,
-												  s3, coords);
+					/* Allow user to recall an object */
+					press = target_recall_loop_object(obj_local, y, x, out_val, s1, s2,
+						s3, coords);
 
-				/* Stop on everything but "return"/"space" */
-				if ((press.key.code != KC_ENTER) && (press.key.code != ' '))
-					break;
+					/* Stop on everything but "return"/"space" */
+					if ((press.key.code != KC_ENTER) && (press.key.code != ' '))
+						break;
 
-				/* Sometimes stop at "space" key */
-				if ((press.key.code == ' ') && !(mode & (TARGET_LOOK))) break;
+					/* Sometimes stop at "space" key */
+					if ((press.key.code == ' ') && !(mode & (TARGET_LOOK))) break;
 
-				/* Plurals */
-				s1 = VERB_AGREEMENT(obj_local->number, "It is ", "They are ");
+					/* Plurals */
+					s1 = VERB_AGREEMENT(obj_local->number, "It is ", "They are ");
 
-				/* Preposition */
-				s2 = "on ";
+					/* Preposition */
+					s2 = "on ";
+				}
+
 			}
-
+			/* Double break */
+			if (obj) break;
 		}
-
-		/* Double break */
-		if (obj) break;
 
 		name = square_apparent_name(cave, player, loc(x, y));
 

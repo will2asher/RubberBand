@@ -113,10 +113,11 @@ desc:but you can also take a pickaxe to them, or blast them open
 desc:with magic.  Monsters are also slowed down by doors; you can earn yourself 
 desc:valuable time by locking them.
 
+#This should not have the OBJECT flag because of the ugly way the code pushes objects off a square
 name:open door
 graphics:':U
 priority:15
-flags:LOS | PROJECT | PASSABLE | DOOR_ANY | INTERESTING | CLOSABLE | OBJECT | EASY
+flags:LOS | PROJECT | PASSABLE | DOOR_ANY | INTERESTING | CLOSABLE | EASY
 look-in-preposition:in
 desc:A door that is already open.  Player, monster, spell and missile can pass 
 desc:through as long as it stays open.

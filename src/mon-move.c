@@ -1550,8 +1550,8 @@ static void monster_turn_grab_objects(struct chunk *c, struct monster *mon,
 			continue;
 		}
 
-		/* Skip mimicked objects */
-		if (obj->mimicking_m_idx) {
+		/* Skip mimicked objects and terrain objects */
+		if ((obj->mimicking_m_idx) || (obj->tval == TV_TERRAIN)) {
 			obj = next;
 			continue;
 		}
@@ -1560,8 +1560,7 @@ static void monster_turn_grab_objects(struct chunk *c, struct monster *mon,
 		object_desc(o_name, sizeof(o_name), obj, ODESC_PREFIX | ODESC_FULL);
 
 		/* React to objects that hurt the monster */
-		if (react_to_slay(obj, mon))
-			safe = true;
+		if (react_to_slay(obj, mon)) safe = true;
 
 		/* Try to pick up, or crush */
 		if (safe) {
@@ -1572,11 +1571,9 @@ static void monster_turn_grab_objects(struct chunk *c, struct monster *mon,
 				msg("%s tries to pick up %s, but fails.", m_name, o_name);
 			}
 		} else if (rf_has(mon->race->flags, RF_TAKE_ITEM)) {
-			/*
-			 * Make a copy so the original can remain as a
+			/* Make a copy so the original can remain as a
 			 * placeholder if the player remembers seeing the
-			 * object.
-			 */
+			 * object. */
 			struct object *taken = object_new();
 
 			object_copy(taken, obj);
@@ -1918,12 +1915,21 @@ static void monster_reduce_sleep(struct chunk *c, struct monster *mon)
 	int player_noise = 1 << (30 - stealth);
 	int notice = randint0(1024);
 	struct monster_lore *lore = get_lore(mon->race);
+	bool aggro = player_of_has(player, OF_AGGRAVATE);
 
-	/* Certain monsters wake especially easily */
-	if (mon->race->sleep == 1) notice = 500 + randint0(524);
+	/* Some monsters wake especially easily */
+	if (mon->race->sleep == 1) {
+		if ((mon->cdis < 4 - stealth / 4 + randint1(6 - stealth / 2)) && monster_is_in_view(mon)) {
+			/* Sometimes wake automatically if the player is very close and not very stealthy */
+			if ((mon->cdis <= 2) && (stealth < randint0(10))) aggro = true;
+			else notice = 900 + randint0(124);
+		}
+		else if (monster_is_in_view(mon)) notice = 705 - (stealth * 16) + randint0(324 + stealth * 8);
+		else notice = 600 - (stealth * 16) + randint0(424 + stealth * 8);
+	}
 
 	/* Aggravation */
-	if (player_of_has(player, OF_AGGRAVATE)) {
+	if (aggro) {
 		char m_name[80];
 
 		/* Wake the monster, make it aware */

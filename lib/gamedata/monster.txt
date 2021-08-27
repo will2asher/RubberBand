@@ -3189,7 +3189,7 @@ name:terrified goblin runt
 base:dark fairy
 color:i
 element:13
-speed:111
+speed:113
 hit-points:29
 size:2
 hearing:18
@@ -7165,9 +7165,11 @@ rarity:4
 experience:120
 blow:CLAW:HURT:1d4
 blow:CLAW:HURT:1d4
-blow:BITE:POISON:1d9
+blow:BITE:HURT:1d9
 blow:TAIL:HURT:1d3
-flags:BASH_DOOR | FORCE_SLEEP | REGENERATE | SPIRIT | ROAM
+#removed POISON. I'd like a zhelung to do something special with its attacks
+#but poison seems wrong for it.
+flags:BASH_DOOR | FORCE_SLEEP | REGENERATE | SPIRIT
 flags:IM_POIS | IM_WATER | CLIGHT | GOODMON | WATER_HIDE
 drop:bone:Lizard tooth:1:1:1
 innate-freq:6
@@ -8436,7 +8438,7 @@ hit-points:90
 size:1
 hearing:15
 armor-class:60
-sleepiness:1
+sleepiness:0
 depth:22
 rarity:4
 experience:101
@@ -15341,14 +15343,14 @@ hearing:15
 armor-class:30
 sleepiness:14
 depth:42
-rarity:5
+rarity:4
 experience:346
 blow:SPIT:ACID:3d4
 blow:SPIT:POISON:3d6
 blow:ENGULF:ACID:3d6
 blow:ENGULF:SLIME:3d6
 flags:SMULTIPLY | PASS_DOOR
-flags:NO_STUN | IM_POIS | IM_ACID
+flags:NO_STUN | IM_POIS | IM_ACID | IM_WATER
 innate-freq:8
 spells:SPIT
 desc:A giant acidic slime spreading itself over the dungeon.

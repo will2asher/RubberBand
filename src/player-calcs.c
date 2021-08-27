@@ -444,9 +444,9 @@ static const int adj_str_wgt[STAT_RANGE] =
 	30	/* 18/170-18/179 */,
 	30	/* 18/180-18/189 */,
 	30	/* 18/190-18/199 */,
-	30	/* 18/200-18/209 */,
-	30	/* 18/210-18/219 */,
-	30	/* 18/220+ */
+	31	/* 18/200-18/209 */,
+	31	/* 18/210-18/219 */,
+	31	/* 18/220+ */
 };
 
 
@@ -1568,8 +1568,8 @@ static void calc_hitpoints(struct player *p)
 	bonus = adj_con_mhp[p->state.stat_ind[STAT_CON]];
 
 	/* HP penalty for sliming (doubled if slime >= 20) */
-	if (p->slimed > 0) bonus -= p->slimed * 5;
-	if (p->slimed >= 20) bonus -= p->slimed * 5;
+	if (p->slimed > 4) bonus -= p->slimed * 5;
+	if (p->slimed >= 20) bonus -= p->slimed * 6;
 
 	/* Calculate hitpoints */
 	mhp = p->player_hp[p->lev-1] + (bonus * p->lev / 100);
@@ -2145,12 +2145,12 @@ void calc_bonuses(struct player *p, struct player_state *state, bool known_only,
 	/* Other timed effects */
 	player_flags_timed(p, state->flags);
 
-	/* effects of slime (also affects max HP and if you get 50 points of slime, you lose HP fast) */
+	/* effects of slime (also affects max HP and if you get >=46 points of slime, you lose HP fast) */
 	if (p->slimed >= 4) {
 		state->to_h -= p->slimed/4;
-		if (p->slimed >= 14) {
-			state->speed -= p->slimed / 14;
-			state->skills[SKILL_STEALTH] -= p->slimed / 14;
+		if (p->slimed >= 10) {
+			state->speed -= p->slimed / 12;
+			state->skills[SKILL_STEALTH] -= p->slimed / 10;
 		}
 	}
 

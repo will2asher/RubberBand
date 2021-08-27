@@ -1000,7 +1000,7 @@ bool floor_carry(struct chunk *c, struct loc grid, struct object *drop,
 	/* Record in the level list */
 	list_object(c, drop);
 
-	/* Player is placing terrain (if (!character_dungeon) then the terrain is being placed elsewhere) */
+	/* Player is placing terrain (if (!character_dungeon) then the terrain is being placed at generation) */
 	if ((drop->tval == TV_TERRAIN) && (character_dungeon)) {
 		/* This is the only way I know how to do this since we can't see the numbers for svals anymore */
 		/* (unless I put a different flag on each terrain object, but that seems silly */
@@ -1095,7 +1095,7 @@ static void drop_find_grid(struct object *drop, bool prefer_pile, struct loc *gr
 			if ((dist > 10) ||
 				!square_in_bounds_fully(cave, try) ||
 				!los(cave, start, try) ||
-				!square_isfloor(cave, try) ||
+				!square_isobjectholding(cave, try) ||
 				square_istrap(cave, try))
 				continue;
 
@@ -1217,6 +1217,7 @@ void push_object(struct loc grid)
 	struct object *obj = square_object(cave, grid);
 	struct queue *queue = q_new(z_info->floor_size);
 	struct trap *trap = square_trap(cave, grid);
+	bool bigt = false;
 
 	/* Push all objects on the square, stripped of pile info, into the queue */
 	while (obj) {
@@ -1227,7 +1228,12 @@ void push_object(struct loc grid)
 		struct object *newobj = object_new();
 
 		/* skip terrain objects (don't move them) */
-		if (of_has(obj->flags, OF_BIGTHING)) continue;
+		if (of_has(obj->flags, OF_BIGTHING)) {
+			obj = next;
+			bigt = true;
+			square_set_obj(cave, grid, obj);	/* RB Not sure this is needed? */
+			continue;
+		}
 
 		object_copy(newobj, obj);
 		newobj->oidx = 0;
@@ -1247,10 +1253,10 @@ void push_object(struct loc grid)
 		obj = next;
 	}
 
-	/* Disassociate the objects from the square */
-	square_set_obj(cave, grid, NULL);
+	/* Disassociate the objects from the square (except terrain objects) */
+	if (!bigt) square_set_obj(cave, grid, NULL);
 
-	/* Set feature to an open door */
+	/* Set feature to an open door.  RB: This is uglier than anything I've noticed in V that's marked as a "hack" */
 	square_force_floor(cave, grid);
 	square_add_door(cave, grid, false);
 
@@ -1281,10 +1287,8 @@ void push_object(struct loc grid)
 				struct loc newgrid = grid;
 
 				if (ntry > 150) {
-					/*
-					 * Give up.  Destroy both the mimic
-					 * and the object.
-					 */
+					/* Give up.  Destroy both the mimic
+					 * and the object. */
 					delete_monster_idx(obj->mimicking_m_idx);
 					if (obj->known) {
 						object_delete(&obj->known);

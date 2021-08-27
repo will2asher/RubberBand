@@ -903,6 +903,9 @@ static int apply_curse(struct object *obj, int lev)
 
 	if (of_has(obj->flags, OF_BLESSED)) return lev;
 
+	/* reduce likeliness of more than two curses */
+	if ((randint0(100) < 62) && (max_curses > 2)) max_curses -= randint0(max_curses);
+
 	while (max_curses--) {
 		/* Try to curse it */
 		int tries = 3;

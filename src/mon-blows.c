@@ -1208,13 +1208,13 @@ static void melee_effect_handler_SLIME(melee_effect_handler_context_t* context)
 	/* Attempt a saving throw */
 	if (randint0(98 + context->rlev) < savechance) {
 		msg("You resist the effects.");
-		/* reduce damage */
+		/* slightly reduce damage */
 		context->damage = context->damage * 5 / 6;
 	}
 	else {
-		/* slime (50 points of slime kills) */
-		int amount = ((context->damage * 3 / 2) + context->rlev / 4) / 5;
-		if (context->rlev > 40) amount = ((context->damage * 3 / 2) + 10) / 5;
+		/* slime (>=46 points of slime kills) */
+		int amount = ((context->damage * 4 / 3) + context->rlev / 3) / 5;
+		if (context->rlev >= 30) amount = ((context->damage * 4 / 3) + 8 + context->rlev / 15) / 5;
 
 		/* bounds on sliming hits */
 		if (amount < 1) amount = 1;
@@ -1226,10 +1226,10 @@ static void melee_effect_handler_SLIME(melee_effect_handler_context_t* context)
 		msg("You've been slimed.");
 
 		/* Let they player know why he's dying... */
-		if (player->slimed >= 50) msg("You have a deadly level of slime.");
+		if (player->slimed >= 46) msg("You have a deadly level of slime.");
 
 		/* occational warning message (depending on HP warning setting) */
-		else if ((player->opts.hitpoint_warn > 0) && (player->slimed >= 40 - player->opts.hitpoint_warn) && 
+		else if ((player->opts.hitpoint_warn > 0) && (player->slimed >= 39 - player->opts.hitpoint_warn*2) && 
 			(randint0(300 - (player->opts.hitpoint_warn * 20)) < player->slimed * 2))
 			msg("Your body can't survive much more slime.");
 	}

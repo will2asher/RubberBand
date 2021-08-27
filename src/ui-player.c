@@ -266,7 +266,7 @@ static void configure_char_sheet(void)
 
 /**
  * Returns a "rating" of x depending on y, and sets "attr" to the
- * corresponding "attribute".
+ * corresponding "attribute". (used for stealth)
  */
 static const char *likert(int x, int y, byte *attr)
 {
@@ -809,12 +809,16 @@ static struct panel *get_panel_skills(void) {
 	panel_line(p, attr, "Speed", "%s", show_speed());
 
 	/* Slime */
-	if (player->slimed > 35) attr = COLOUR_L_RED;
-	else if (player->slimed >= 20) attr = COLOUR_YELLOW;
+	if (player->slimed >= 41) attr = COLOUR_L_RED;
+	else if (player->slimed >= 30) attr = COLOUR_RED;
+	else if (player->slimed >= 18) attr = COLOUR_YELLOW;
 	else if (player->slimed >= 5) attr = COLOUR_ORANGE;
 	else if (player->slimed > 0) attr = COLOUR_L_UMBER;
 	else attr = COLOUR_L_GREEN;
-	panel_line(p, attr, "Slime level", "%d", player->slimed);
+
+	if (player->slimed >= 46) panel_line(p, attr, "Slime level", "%d (DEADLY)", player->slimed);
+	else if (player->slimed >= 30) panel_line(p, attr, "Slime level", "%d (DAMAGING)", player->slimed);
+	else panel_line(p, attr, "Slime level", "%d", player->slimed);
 
 	return p;
 }

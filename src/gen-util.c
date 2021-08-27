@@ -367,11 +367,12 @@ void new_player_spot(struct chunk *c, struct player *p)
 
 /*
  * Place a terrain object (statue, pile of rubble, etc)
- * (mostly copied from wiz_create_item_object_from_kind)
+ * (partly copied from wiz_create_item_object_from_kind)
  */
 bool place_terrain_object(struct object_kind *kind, struct chunk *c, struct loc grid)
 {
 	struct object* obj;
+	bool dummy = false;
 
 	/* Create the item */
 	/* Get object */
@@ -385,7 +386,7 @@ bool place_terrain_object(struct object_kind *kind, struct chunk *c, struct loc 
 	/* Statue descriptions are kept in the pval */
 	if (of_has(obj->flags, OF_STATUE)) obj->pval = randint1(33);
 
-	if (!floor_carry(c, grid, obj, false, true)) {
+	if (!floor_carry(c, grid, obj, &dummy, true)) {
 		object_delete(&obj);
 		return false;
 	}
@@ -406,7 +407,7 @@ void place_rubble(struct chunk *c, struct loc grid)
 		square_set_feat(c, grid, FEAT_RUBBLE);
 		kind = lookup_kind(TV_TERRAIN, lookup_sval(TV_TERRAIN, "large pile of rubble"));
 		place_terrain_object(kind, c, grid);
-		bigc = 75;
+		bigc = 70;
 	}
 	else {
 		square_set_feat(c, grid, FEAT_PASS_RUBBLE);

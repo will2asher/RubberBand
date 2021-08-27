@@ -55,9 +55,8 @@ void copy_curses(struct object *obj, int *source)
 
 	if (!source) return;
 
-	if (!obj->curses) {
+	if (!obj->curses)
 		obj->curses = mem_zalloc(z_info->curse_max * sizeof(struct curse_data));
-	}
 
 	for (i = 0; i < z_info->curse_max; i++) {
 		if (!source[i]) continue;

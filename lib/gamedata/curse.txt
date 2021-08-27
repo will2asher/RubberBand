@@ -110,7 +110,7 @@ type:cloak
 desc:protects you at the expense of free movement
 
 name:irritation
-combat:-15:-15:0:0
+combat:-15:-10:0:0
 type:cloak
 flags:AGGRAVATE
 desc:annoys monsters and makes it hard for you to hit them
@@ -378,9 +378,13 @@ type:sword
 type:throwing weapon
 desc:makes it hard to hit anything
 
+#(This doesn't work)
 name:heaviness
-combat:-4:5:0:100
-values:STR[1] | DEX[-3]
+combat:-4:4:0:100
+values:DEX[-2]
+type:hafted
+type:polearm
+type:sword
 type:bow
 type:throwing weapon
 type:boots

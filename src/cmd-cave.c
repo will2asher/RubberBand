@@ -1210,9 +1210,9 @@ bool move_player(int dir, bool disarm)
 
 		/* (No actual hp damage but still harmful: simulate an amount of damage appropriate to danger level) */
 		if (feat == FEAT_SLIME_PUDDLE) {
-			if (player->slimed >= 46) dam_taken = player->slimed * 15; /* 50 is deadly */
-			else if (player->slimed >= 38) dam_taken = player->slimed * 6;
-			else if (player->slimed >= 25) dam_taken = player->slimed * 2;
+			if (player->slimed >= 46) dam_taken = player->slimed * 15; /* 46 is deadly */
+			else if (player->slimed >= 31) dam_taken = player->slimed * 6;
+			else if (player->slimed >= 20) dam_taken = player->slimed * 2;
 			else dam_taken = 1;
 		}
 

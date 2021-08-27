@@ -593,18 +593,18 @@ static int project_player_handler_SLIME(project_player_handler_context_t* contex
 		else {
 			equip_learn_flag(player, OF_PROT_STUN);
 		}
-		/* Slime the player (50 points of slime kills) */
-		if (sdam >= 20) player->slimed += sdam / 10;
+		/* Slime the player (46 points of slime kills) */
+		if (sdam >= 23) player->slimed += 1 + randint0((sdam-12) / 12);
 		else player->slimed += 1;
 		msg("You've been slimed.");
 
 		/* Let they player know why he's dying... */
-		if (player->slimed >= 50) msg("You have a deadly level of slime.");
+		if (player->slimed >= 46) msg("You have a deadly level of slime.");
 
 		/* occational warning message (depending on HP warning setting) */
-		else if ((player->opts.hitpoint_warn > 0) && (player->slimed >= 40 - player->opts.hitpoint_warn) &&
+		else if ((player->opts.hitpoint_warn > 0) && (player->slimed >= 39 - player->opts.hitpoint_warn*2) &&
 			(randint0(300 - (player->opts.hitpoint_warn * 20)) < player->slimed * 2))
-			msg("Your body can't survive much more sliming.");
+			msg("Your body can't survive much more slime.");
 	}
 	return 0;
 }

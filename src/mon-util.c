@@ -525,11 +525,9 @@ static void move_mimicked_object(struct chunk *c, struct monster *mon,
 	struct loc src, struct loc dest)
 {
 	struct object *mimicked = mon->mimicked_obj;
-	/*
-	 * Move a copy so, if necessary, the original can remain as a
+	/* Move a copy so, if necessary, the original can remain as a
 	 * placeholder for the known version of the object in the player's
-	 * view of the cave.
-	 */
+	 * view of the cave. */
 	struct object *moved = object_new();
 	bool dummy = true;
 

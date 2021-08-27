@@ -28,7 +28,8 @@ dryads ('y') like to disguise as trees. (But I'm not sure if this is fully worki
 among other effects. But simply reading ?phase or ?teleport gets you out of the monster's grasp.
 - Some monsters can slime you, a lasting effect that can accumulate to deadly levels (but rarely does in
 my games even without being careful about it at all. I'll likely make it a little stronger in a 
-future version.)
+future version.) Slime level of 10 or more affects your stealth, 12 or more affects speed, and 30 or more
+makes you take damage every turn (like poison except more damage). 
 - A few other timed effects monsters can give you include being charmed (makes you not want to hurt monsters,
 which in effect is similar to fear), making you run around in a careless frenzy (penalties to skills and
 spell fail rate along with a minor increase to damage), disease (temporarily lowers strength and 

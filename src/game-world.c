@@ -609,9 +609,15 @@ void process_world(struct chunk *c)
 
 	/* Slime (only at high levels of sliming and only if not made of rock) */
 	if (!player_has(player, PF_ROCK)) {
-		if (player->slimed >= 50) take_hit(player, player->slimed * 2 / 3, "slime");
-		else if (player->slimed >= 45) take_hit(player, 10, "slime");
-		else if (player->slimed >= 40) take_hit(player, 4, "slime");
+		int sdam = 0;
+		if (player->slimed > 45) sdam = 11 + randint1(player->slimed / 2);					/* 12 - ~39 damage */
+		else if (player->slimed > 40) sdam = 6 + randint0(8);								/* 6 - 13 damage */
+		else if (player->slimed > 30) sdam = 2 + randint0(1 + (player->slimed - 27) / 2);	/* 2 - 8 damage */
+
+		/* damage reduced by CON */
+		sdam -= (adj_con_fix[STAT_CON] + 1 + player->p_luck) / 2;	/* reduced by 7 with both CON and luck maxed (but it's rare to get more than 2 luck) */
+
+		if (sdam) take_hit(player, sdam, "slime");
 	}
 
 	/* Take damage from cuts, worse from serious cuts */
