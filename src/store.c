@@ -1124,6 +1124,9 @@ static bool black_market_ok(const struct object *obj)
 	/* Ego items are always fine */
 	if (obj->ego) return true;
 
+	/* don't stock a worthless staff type unless it has a weapon ego */
+	if ((tval_is_staff(obj)) && (!obj->kind->cost)) return false;
+
 	/* Good items are normally fine */
 	if (obj->to_a > 2) return true;
 	if (obj->to_h > 1) return true;
@@ -1242,7 +1245,7 @@ static bool store_create_random(struct store *store)
 		}
 
 		/* No "worthless" items */
-		if (object_value_real(obj, 1) < 1)  {
+		if (object_value_real(obj, 1) < 4)  {
 			object_delete(&known_obj);
 			obj->known = NULL;
 			object_delete(&obj);

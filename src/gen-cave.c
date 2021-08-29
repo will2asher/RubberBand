@@ -1122,6 +1122,8 @@ struct chunk *classic_gen(struct player *p, int min_height, int min_width) {
 	int num_rooms, size_percent;
 	int dun_unusual = dun->profile->dun_unusual;
 	int dvault = 0;
+	int roomobj = z_info->room_item_av;
+	int anyobj = z_info->both_item_av;
 
 	bool **blocks_tried;
 	struct chunk *c;
@@ -1288,13 +1290,20 @@ struct chunk *classic_gen(struct player *p, int min_height, int min_width) {
 	for (; i > 0; i--)
 		pick_and_place_distant_monster(c, p, 0, true, c->depth);
 
+	/* Sometimes increase the number of generated objects */
+	if (((p->timed[TMD_TREASMAP]) && (p->p_luck / 2 + 1 > randint0(6 - c->depth / 26))) || 
+		(p->p_luck/2 + 1 > randint0(9 - c->depth/16))) {
+		if (randint0(100) < 45) roomobj += randint1(2);
+		else anyobj += randint1(2);
+	}
+
 	/* Put some objects in rooms */
 	alloc_objects(c, SET_ROOM, TYP_OBJECT,
-		Rand_normal(z_info->room_item_av, 3), c->depth, ORIGIN_FLOOR);
+		Rand_normal(roomobj, 3), c->depth, ORIGIN_FLOOR);
 
 	/* Put some objects/gold in the dungeon */
 	alloc_objects(c, SET_BOTH, TYP_OBJECT,
-		Rand_normal(z_info->both_item_av, 3), c->depth, ORIGIN_FLOOR);
+		Rand_normal(anyobj, 3), c->depth, ORIGIN_FLOOR);
 	alloc_objects(c, SET_BOTH, TYP_GOLD,
 		Rand_normal(z_info->both_gold_av, 3), c->depth, ORIGIN_FLOOR);
 
@@ -1309,7 +1318,12 @@ struct chunk *classic_gen(struct player *p, int min_height, int min_width) {
 	else if ((c->depth < 85) && (randint0(100) < 9)) alloc_objects(c, SET_ROOM, TYP_WATER, randint0(9), c->depth, 0);
 
 	/* rare nexus stones */
-	if (one_in_(300)) alloc_objects(c, SET_ROOM, TYP_NEXUSST, randint1(2), c->depth, 0);
+	if (one_in_(300)) {
+		int nex = 1;
+		if (randint0(100) < 38) nex += 1;
+		if (randint0(100) < 9) nex += 1;
+		alloc_objects(c, SET_ROOM, TYP_NEXUSST, nex, c->depth, 0);
+	}
 
 	return c;
 }
@@ -2807,6 +2821,8 @@ struct chunk *modified_gen(struct player *p, int min_height, int min_width) {
 	int i, k;
 	int size_percent, y_size, x_size;
 	struct chunk *c;
+	int roomobj = z_info->room_item_av;
+	int anyobj = z_info->both_item_av;
 
 	/* Scale the level */
 	i = randint1(10) + p->depth / 24;
@@ -2869,13 +2885,20 @@ struct chunk *modified_gen(struct player *p, int min_height, int min_width) {
 	for (; i > 0; i--)
 		pick_and_place_distant_monster(c, p, 0, true, c->depth);
 
+	/* Sometimes increase the number of generated objects */
+	if (((p->timed[TMD_TREASMAP]) && (p->p_luck / 2 + 1 > randint0(6 - c->depth / 26))) ||
+		(p->p_luck / 2 + 1 > randint0(9 - c->depth / 16))) {
+		if (randint0(100) < 45) roomobj += randint1(2);
+		else anyobj += randint1(2);
+	}
+
 	/* Put some objects in rooms */
 	alloc_objects(c, SET_ROOM, TYP_OBJECT,
-		Rand_normal(z_info->room_item_av, 3), c->depth, ORIGIN_FLOOR);
+		Rand_normal(roomobj, 3), c->depth, ORIGIN_FLOOR);
 
 	/* Put some objects/gold in the dungeon */
 	alloc_objects(c, SET_BOTH, TYP_OBJECT,
-		Rand_normal(z_info->both_item_av, 3), c->depth, ORIGIN_FLOOR);
+		Rand_normal(anyobj, 3), c->depth, ORIGIN_FLOOR);
 	alloc_objects(c, SET_BOTH, TYP_GOLD,
 		Rand_normal(z_info->both_gold_av, 3), c->depth, ORIGIN_FLOOR);
 

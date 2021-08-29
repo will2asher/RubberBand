@@ -481,7 +481,7 @@ static void wiz_display_item(const struct object* obj, bool all)
 		obj->to_a), 4, j);
 
 	prt(format("kind = %-5d  tval = %-5d  sval = %-5d  wgt = %-3d     timeout = %-d",
-		obj->kind->kidx, obj->tval, obj->sval, obj->weight,
+		obj->kind->kidx, obj->tval, obj->sval, object_weight(obj),
 		obj->timeout), 5, j);
 
 	prt(format("number = %-3d  pval = %-5d  name1 = %-4d  egoidx = %-4d  cost = %ld",
@@ -1300,10 +1300,10 @@ static void wiz_quantity_item(struct object* obj, bool carried)
 		/* Adjust total weight being carried */
 		if (carried) {
 			/* Remove the weight of the old number of objects */
-			player->upkeep->total_weight -= (obj->number * obj->weight);
+			player->upkeep->total_weight -= (obj->number * object_weight(obj));
 
 			/* Add the weight of the new number of objects */
-			player->upkeep->total_weight += (tmp_int * obj->weight);
+			player->upkeep->total_weight += (tmp_int * object_weight(obj));
 		}
 
 		/* Adjust charges/timeouts for devices */

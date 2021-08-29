@@ -612,7 +612,7 @@ static void object_absorb_merge(struct object *obj1, struct object *obj2)
 
 	/* when combining staffs only, disenchant combat bonuses to allow stacking */
 	if (obj1->tval == TV_STAFF) {
-		/* combine bonuses, using the lower of the two */
+		/* combine bonuses, using the lower of the two (unless one is negative) */
 		if (obj1->to_h > obj2->to_h) obj1->to_h = obj2->to_h;
 		else obj2->to_h = obj1->to_h;
 		if (obj1->to_d > obj2->to_d) obj1->to_d = obj2->to_d;

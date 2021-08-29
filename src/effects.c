@@ -227,7 +227,7 @@ static bool project_touch(int dam, int rad, int typ, bool aware,
 }
 
 /**
- * Selects items that have at least one removable curse.
+ * Selects items that have at least one (known) removable curse.
  */
 static bool item_tester_uncursable(const struct object *obj)
 {
@@ -2150,12 +2150,15 @@ static bool effect_handler_SENSE_OBJECTS(effect_handler_context_t *context)
 				forget_remembered_objects(cave, player->cave, grid);
 				continue;
 			}
+			/* (don't detect terrain objects or big rocks) */
+			if (!of_has(obj->flags, OF_BIGTHING)) {
 
-			/* Notice an object is detected */
-			objects = true;
+				/* Notice an object is detected */
+				objects = true;
 
-			/* Mark the pile as aware */
-			square_sense_pile(cave, grid);
+				/* Mark the pile as aware */
+				square_sense_pile(cave, grid);
+			}
 		}
 	}
 
@@ -2215,9 +2218,12 @@ static bool effect_handler_DETECT_OBJECTS(effect_handler_context_t *context)
 			if (!ignore_item_ok(obj)) {
 				objects = true;
 			}
+			/* (don't detect terrain objects or big rocks) */
+			if (!of_has(obj->flags, OF_BIGTHING)) {
 
-			/* Mark the pile as seen */
-			square_know_pile(cave, grid);
+				/* Mark the pile as seen */
+				square_know_pile(cave, grid);
+			}
 		}
 	}
 

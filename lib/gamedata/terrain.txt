@@ -415,7 +415,7 @@ die-msg:melting in acid
 resist-flag:IM_ACID
 desc:A small pool of glowing acid.
 
-#todo: WATER_HIDE effect
+#not sure I want TORCH on these.
 name:water
 graphics:.:B
 priority:7
@@ -454,7 +454,7 @@ flags:INTERESTING | LOS | PROJECT | PASSABLE | EASY | FLOOR | OBJECT | TRAP | SL
 #resist-flag:IM_WATER
 desc:A puddle of mud.
 
-#todo: randomize statue descriptions and maybe fountain descriptions as well.
+#todo: make sure statue descriptions work all the time (check town)
 name:statue
 graphics:::z
 priority:13
@@ -486,7 +486,7 @@ desc:A statue of a gargoyle spouting water from its mouth. (Ends LOS, stops
 desc: missiles, bolts, and beams.  May dissolve or be tunnelled to
 desc: normal floor.)
 
-#disrupts projectiles, but mostly the same as clear floor. (effect not coded yet)
+#disrupts projectiles, but mostly the same as clear floor. (this terrain isn't used yet and it's effect isn't coded)
 name:small whirlwind
 graphics:.:Z
 priority:6
@@ -507,7 +507,8 @@ resist-flag:IM_NEXUS
 desc:Nexus stone. Stepping on it will make you teleport randomly and may have other side effects
 desc: unless you have nexus resistance or teleport control.
 
-#There's currently no way to fall into the chasm, but I'll probably change that at some point.
+#There's currently no way to fall into the chasm (for the PC), but I'll probably change that at some point.
+#Monsters can fall in only if they're confused. (todo: allow monsters & PC to be pushed into it somehow)
 name:chasm
 graphics:#:s
 priority:11

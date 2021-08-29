@@ -72,8 +72,11 @@ int breakage_chance(const struct object *obj, bool hit_target) {
 		!of_has(obj->flags, OF_EXPLODE) &&
 		!tval_is_ammo(obj)) {
 		perc = 1;
+		/* Bone weapons break (somewhat) easily even if they're good for throwing. */
+		if (obj->tval == TV_BONE) perc = obj->kind->base->break_perc / 2; /* 6% */
 	}
-	if (!hit_target) return (perc * perc) / 100;
+	if ((!hit_target) && (obj->tval == TV_BONE)) return perc / 3; /* 2% */
+	else if (!hit_target) return (perc * perc) / 100;
 	return perc;
 }
 
@@ -545,10 +548,12 @@ static int ranged_damage(struct player *p, const struct monster *mon,
 	if (launcher) {
 		dmg += launcher->to_d;
 	} else if (of_has(missile->flags, OF_THROWING)) {
+		/* Don't go overboard in the rare times that the PC can throw big rocks or statues (may need further tweaking) */
+		if (of_has(missile->flags, OF_BIGTHING)) dmg *= 35;
 		/* Adjust damage for throwing weapons.
 		 * This is not the prettiest equation, but it does at least try to
 		 * keep throwing weapons competitive. */
-		dmg *= 2 + missile->weight / 12;
+		else dmg *= 2 + missile->weight / 12;
 	}
 	dmg *= mult;
 
@@ -774,7 +779,7 @@ bool py_attack_real(struct player *p, struct loc grid, bool *fear, bool offhand)
 	if (obj) {
 		int j;
 		int b = 0, s = 0;
-		int weight = obj->weight;
+		int weight = object_weight(obj);
 
 		my_strcpy(verb, "hit", sizeof(verb));
 
@@ -1325,13 +1330,13 @@ static struct attack_result make_ranged_throw(struct player *p,
 
 	if (!OPT(p, birth_percent_damage)) {
 		result.dmg = ranged_damage(p, mon, obj, NULL, b, s);
-		result.dmg = critical_shot(p, mon, obj->weight, obj->to_h,
+		result.dmg = critical_shot(p, mon, object_weight(obj), obj->to_h,
 								   result.dmg, &result.msg_type);
 	} else {
 		result.dmg = o_ranged_damage(p, mon, obj, NULL, b, s, &result.msg_type);
 	}
 
-	/* Direct adjustment for exploding things (flasks of oil) */
+	/* Direct adjustment for exploding things (flasks of oil and grenades) */
 	if (of_has(obj->flags, OF_EXPLODE))
 		result.dmg *= 3;
 
@@ -1446,7 +1451,7 @@ void do_cmd_throw(struct command *cmd) {
 		inven_takeoff(obj);
 	}
 
-	weight = MAX(obj->weight, 10);
+	weight = MAX(object_weight(obj), 10);
 	range = MIN(((str + 20) * 10) / weight, 10);
 
 	ranged_helper(player, obj, dir, range, shots, attack, ranged_hit_types,

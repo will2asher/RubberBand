@@ -69,7 +69,7 @@
 # used to specify all of the conflicting flags.
 
 name:vulnerability
-combat:0:0:-50:-2
+combat:0:0:-50:-5
 type:cloak
 type:soft armor
 type:hard armor
@@ -105,7 +105,7 @@ values:STR[-5] | DEX[-5] | CON[-5]
 desc:makes you frail
 
 name:enveloping
-combat:-5:-5:20:4
+combat:-5:-5:20:10
 type:cloak
 desc:protects you at the expense of free movement
 
@@ -143,6 +143,7 @@ type:hafted
 type:polearm
 type:sword
 type:bone
+type:staff
 type:boots
 type:gloves
 type:helm
@@ -167,6 +168,7 @@ type:hafted
 type:polearm
 type:sword
 type:bone
+type:staff
 type:boots
 type:gloves
 type:helm
@@ -190,6 +192,7 @@ type:digger
 type:hafted
 type:polearm
 type:sword
+type:staff
 type:bone
 type:boots
 type:gloves
@@ -214,6 +217,7 @@ type:digger
 type:hafted
 type:polearm
 type:sword
+type:staff
 type:boots
 type:gloves
 type:helm
@@ -245,6 +249,7 @@ type:digger
 type:hafted
 type:polearm
 type:sword
+type:staff
 type:bone
 effect:SUMMON:DEMON
 dice:1
@@ -257,6 +262,7 @@ type:digger
 type:hafted
 type:polearm
 type:sword
+type:staff
 type:bone
 effect:SUMMON:UNDEAD
 dice:1
@@ -316,6 +322,8 @@ type:digger
 type:hafted
 type:polearm
 type:sword
+type:bone
+type:staff
 type:throwing weapon
 effect:DAMAGE
 dice:$B
@@ -365,12 +373,12 @@ type:dragon armor
 type:light
 type:amulet
 type:ring
-combat:0:0:20:0
+combat:0:0:20:10
 values:RES_ELEC[-1] | RES_SHARD[1]
 desc:makes your skin harder to damage, but conduct electricity
 
 name:air swing
-combat:-20:0:0:-4
+combat:-20:0:0:-3
 type:digger
 type:hafted
 type:polearm
@@ -378,15 +386,16 @@ type:sword
 type:throwing weapon
 desc:makes it hard to hit anything
 
-#(This doesn't work)
+#(This should work now)
 name:heaviness
 combat:-4:4:0:100
-values:DEX[-2]
+values:DEX[-1]
 type:hafted
 type:polearm
 type:sword
 type:bow
 type:throwing weapon
+type:staff
 type:boots
 type:shield
 type:hard armor

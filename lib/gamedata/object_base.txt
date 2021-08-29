@@ -23,7 +23,7 @@ flags:HATES_ACID | HATES_FIRE
 
 name:shot:Shot~
 graphics:light umber
-break:0
+break:9
 # max-stack:40
 flags:SHOW_DICE
 
@@ -36,7 +36,7 @@ flags:SHOW_DICE
 
 name:bolt:Bolt~
 graphics:light umber
-break:20
+break:21
 # max-stack:40
 flags:HATES_ACID
 flags:SHOW_DICE
@@ -77,6 +77,7 @@ flags:HATES_ACID | SHOW_DICE
 
 name:bone:Bone weapon~
 graphics:white
+break:12
 # max-stack:1
 flags:SHOW_DICE
 
@@ -175,13 +176,13 @@ flags:EASY_KNOW
 
 name:food:Food
 graphics:light umber
-break:100
+break:75
 # max-stack:10
 flags:EASY_KNOW
 
 name:mushroom:Mushroom~
 graphics:light umber
-break:100
+break:65
 # max-stack:10
 flags:EASY_KNOW
 

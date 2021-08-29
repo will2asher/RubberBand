@@ -1691,7 +1691,7 @@ int calc_blows(struct player *p, const struct object *obj,
 	int div;
 	int blow_energy;
 
-	int weight = (obj == NULL) ? 0 : obj->weight;
+	int weight = (obj == NULL) ? 0 : object_weight(obj);
 	int min_weight = p->class->min_weight;
 
 	/* Enforce a minimum "weight" (tenth pounds) */

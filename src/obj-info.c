@@ -492,6 +492,9 @@ static void calculate_missile_crits(struct player_state *state, int weight,
 	int k, to_crit = weight + 4 * (state->to_h + plus) + 2 * player->lev;
 	to_crit = MIN(5000, MAX(0, to_crit));
 
+	/* deflate weight of BIGTHINGs */
+	if (weight > 750) weight = 750 + (weight - 750) / 50;
+
 	*mult = *add = 0;
 
 	for (k = weight; k < weight + 500; k++) {
@@ -795,14 +798,14 @@ static bool obj_known_damage(const struct object *obj, int *normal_damage,
 		xtra_precrit += obj->known->to_d * 10;
 		plus += obj->known->to_h;
 
-		calculate_melee_crits(&state, obj->weight, plus, &crit_mult, &crit_add,
+		calculate_melee_crits(&state, object_weight(obj), plus, &crit_mult, &crit_add,
 							  &crit_div);
 
 		old_blows = state.num_blows;
 	} else if (ammo) {
 		plus += obj->known->to_h;
 
-		calculate_missile_crits(&player->state, obj->weight, plus, &crit_mult,
+		calculate_missile_crits(&player->state, object_weight(obj), plus, &crit_mult,
 								&crit_add, &crit_div);
 
 		dam += (obj->known->to_d * 10);
@@ -810,11 +813,12 @@ static bool obj_known_damage(const struct object *obj, int *normal_damage,
 	} else {
 		plus += obj->known->to_h;
 
-		calculate_missile_crits(&player->state, obj->weight, plus, &crit_mult,
+		calculate_missile_crits(&player->state, object_weight(obj), plus, &crit_mult,
 								&crit_add, &crit_div);
 
 		dam += (obj->known->to_d * 10);
-		dam *= 2 + obj->weight / 12;
+		if (of_has(obj->flags, OF_BIGTHING)) dam *= 35;
+		else dam *= 2 + object_weight(obj) / 12;
 	}
 
 	if (ammo) multiplier = player->state.ammo_mult;
@@ -988,7 +992,7 @@ static bool o_obj_known_damage(const struct object *obj, int *normal_damage,
 		dice += o_calculate_missile_crits(player->state, obj, bow);
 	} else {
 		dice += o_calculate_missile_crits(player->state, obj, NULL);
-		dice *= 2 + obj->weight / 12;
+		dice *= 2 + object_weight(obj) / 12;
 	}
 
 	if (ammo) multiplier = player->state.ammo_mult;
@@ -1151,10 +1155,8 @@ static bool describe_damage(textblock *tb, const struct object *obj, bool throw)
 	}
 
 	if (has_brands_or_slays) {
-		/*
-		 * Sort by decreasing damage so entries with the same damage
-		 * can be printed together.
-		 */
+		/* Sort by decreasing damage so entries with the same damage
+		 * can be printed together. */
 		int *sortind = mem_alloc(
 			(z_info->brand_max + z_info->slay_max) *
 			sizeof(*sortind));
@@ -1410,18 +1412,19 @@ static bool describe_combat(textblock *tb, const struct object *obj)
 	/* Some classes can wield weapons in the off-hand */
 	if ((tval_is_melee_weapon(obj)) && (player_has(player, PF_2WEAPON))) {
 		bool offhandok = false;
+		int oweight = object_weight(obj);
 
 		/* Check weapon weight */
-		if ((obj->tval == TV_SWORD) && (obj->weight <= 110) && (obj->weight / 10 <= player->state.stat_use[STAT_STR] / 3))
+		if ((obj->tval == TV_SWORD) && (oweight <= 110) && (oweight / 10 <= player->state.stat_use[STAT_STR] / 3))
 			offhandok = true;
 		/* max weight to wield off-hand is 6.5lbs or 1/4 of your strength for other weapons */
-		else if ((obj->weight <= 65) && (obj->weight / 10 <= player->state.stat_use[STAT_STR] / 4))
+		else if ((oweight <= 65) && (oweight / 10 <= player->state.stat_use[STAT_STR] / 4))
 			offhandok = true;
 
 		/* No wielding throwing weapons in the off-hand */
 		if (tval_is_thrower(obj)) offhandok = false;
-		/* No wielding skulls or broken bottles in the off-hand */
-		if ((obj->tval == TV_BONE) && ((obj->kind->d_char == '~') || (obj->kind->d_char == '!')))
+		/* No wielding skulls in the off-hand */
+		if ((obj->tval == TV_BONE) && (obj->kind->d_char == '~'))
 			offhandok = false;
 
 		if (offhandok)

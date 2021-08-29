@@ -788,6 +788,42 @@ bool obj_needs_aim(struct object *obj)
 			(tval_is_rod(obj) && !object_flavor_is_aware(obj));
 }
 
+/* Modifiers to object weight */
+int object_weight(const struct object* obj)
+{
+	int weight = obj->weight;
+	int index = 0;
+
+	/* Check for curses */
+	struct curse_data* curse = obj ? obj->curses : NULL;
+
+	/* (copied from calc_bonuses()) */
+	while (obj) {
+		/* Curses may affect weight (index zero is original object) */
+		if ((obj->weight) && (index)) weight += obj->weight;
+
+		/* next curse if any */
+		if (curse) {
+			index++;
+			obj = NULL;
+			while (index < z_info->curse_max) {
+				if (curse[index].power) {
+					obj = curses[index].obj;
+					break;
+				}
+				else {
+					index++;
+				}
+			}
+		}
+		else {
+			obj = NULL;
+		}
+	}
+
+	return weight;
+}
+
 /**
  * Can the object fail if used?
  */

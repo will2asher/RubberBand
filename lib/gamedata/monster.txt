@@ -2708,7 +2708,7 @@ smell:20
 armor-class:38
 sleepiness:14
 depth:7
-rarity:5
+rarity:4
 experience:27
 blow:BUTT:HURT:4d2
 blow:BUTT:HURT:2d3

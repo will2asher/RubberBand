@@ -293,13 +293,14 @@ void do_cmd_wield(struct command *cmd)
 		/* Get weapon */
 		struct object* weapon = equipped_item_by_slot_name(player, "weapon");
 		bool offhandok = false;
+		int oweight = object_weight(obj);
 
 		/* Sword are easier to wield in the off-hand than other weapons */
 		/* max weight to wield off-hand is 11lbs or 1/3 of your strength for swords */
-		if ((obj->tval == TV_SWORD) && (obj->weight <= 110) && (obj->weight / 10 <= (player->state.stat_ind[STAT_STR] + 3) / 3))
+		if ((obj->tval == TV_SWORD) && (oweight <= 110) && (oweight / 10 <= (player->state.stat_ind[STAT_STR] + 3) / 3))
 			offhandok = true;
 		/* max weight to wield off-hand is 6.5lbs or 1/4 of your strength for other weapons */
-		else if ((obj->weight <= 65) && (obj->weight / 10 <= (player->state.stat_ind[STAT_STR] + 3) / 4))
+		else if ((oweight <= 65) && (oweight / 10 <= (player->state.stat_ind[STAT_STR] + 3) / 4))
 			offhandok = true;
 
 		/* No wielding throwing weapons in the off-hand */

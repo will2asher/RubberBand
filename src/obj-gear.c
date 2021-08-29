@@ -189,12 +189,13 @@ int pack_slots_used(struct player *p)
 					of_has(obj->flags, OF_THROWING)) {
 				for (i = 0; i < z_info->quiver_size; i++) {
 					if (p->upkeep->quiver[i] == obj) {
+						int oweight = object_weight(obj);
 						int mult = (tval_is_ammo(obj) ? 1 : z_info->thrown_quiver_mult);
 						/* Very small throwing weapons take up less than 5 slots */
-						if ((mult > 1) && (obj->weight < 30)) {
-							if (obj->weight < 10) mult = MIN(2, z_info->thrown_quiver_mult);
-							if (obj->weight < 20) mult = MIN(3, z_info->thrown_quiver_mult);
-							if (obj->weight < 30) mult = MIN(4, z_info->thrown_quiver_mult);
+						if ((mult > 1) && (oweight < 30)) {
+							if (oweight < 10) mult = MIN(2, z_info->thrown_quiver_mult);
+							if (oweight < 20) mult = MIN(3, z_info->thrown_quiver_mult);
+							if (oweight < 30) mult = MIN(4, z_info->thrown_quiver_mult);
 						}
 						quiver_ammo += obj->number * mult;
 
@@ -405,7 +406,7 @@ static bool gear_excise_object(struct object *obj)
 	pile_excise(&player->gear, obj);
 
 	/* Change the weight */
-	player->upkeep->total_weight -= (obj->number * obj->weight);
+	player->upkeep->total_weight -= (obj->number * object_weight(obj));
 
 	/* Make sure it isn't still equipped */
 	for (i = 0; i < player->body.count; i++) {
@@ -459,7 +460,7 @@ struct object *gear_object_for_use(struct object *obj, int num, bool message,
 		usable = object_split(obj, num);
 
 		/* Change the weight */
-		player->upkeep->total_weight -= (num * obj->weight);
+		player->upkeep->total_weight -= (num * object_weight(obj));
 
 		if (message) {
 			object_desc(name, sizeof(name), obj, ODESC_PREFIX | ODESC_FULL);
@@ -532,13 +533,14 @@ static void quiver_absorb_num(const struct object *obj, int *n_add_pack,
 		for (i = 0; i < z_info->quiver_size; i++) {
 			struct object *quiver_obj = player->upkeep->quiver[i];
 			if (quiver_obj) {
+				int qweight = object_weight(quiver_obj);
 				int mult = tval_is_ammo(quiver_obj) ?
 					1 : z_info->thrown_quiver_mult; /* (5) */
 				/* Very small throwing weapons take up less than 5 slots */
-				if ((mult > 1) && (quiver_obj->weight < 30)) {
-					if (quiver_obj->weight < 10) mult = MIN(2, z_info->thrown_quiver_mult);
-					if (quiver_obj->weight < 20) mult = MIN(3, z_info->thrown_quiver_mult);
-					if (quiver_obj->weight < 30) mult = MIN(4, z_info->thrown_quiver_mult);
+				if ((mult > 1) && (qweight < 30)) {
+					if (qweight < 10) mult = MIN(2, z_info->thrown_quiver_mult);
+					if (qweight < 20) mult = MIN(3, z_info->thrown_quiver_mult);
+					if (qweight < 30) mult = MIN(4, z_info->thrown_quiver_mult);
 				}
 
 				quiver_count += quiver_obj->number * mult;
@@ -582,6 +584,7 @@ static void quiver_absorb_num(const struct object *obj, int *n_add_pack,
 		 */
 		if (space_free && ((displaces && n_empty) || !displaces)) {
 			int mult = ammo ? 1 : z_info->thrown_quiver_mult;
+			int oweight = object_weight(obj);
 			/* When quiver_count % quiver_slot_size is zero, adding
 			 * anything will require a pack slot. */
 			int remainder = quiver_count % z_info->quiver_slot_size;
@@ -593,10 +596,10 @@ static void quiver_absorb_num(const struct object *obj, int *n_add_pack,
 					z_info->quiver_slot_size;
 			}
 			/* Very small throwing weapons take up less than 5 slots */
-			if ((mult > 1) && (obj->weight < 30)) {
-				if (obj->weight < 10) mult = MIN(2, z_info->thrown_quiver_mult);
-				if (obj->weight < 20) mult = MIN(3, z_info->thrown_quiver_mult);
-				if (obj->weight < 30) mult = MIN(4, z_info->thrown_quiver_mult);
+			if ((mult > 1) && (oweight < 30)) {
+				if (oweight < 10) mult = MIN(2, z_info->thrown_quiver_mult);
+				if (oweight < 20) mult = MIN(3, z_info->thrown_quiver_mult);
+				if (oweight < 30) mult = MIN(4, z_info->thrown_quiver_mult);
 			}
 
 			/* Return the number or amount that fits. */
@@ -713,7 +716,7 @@ void inven_carry(struct player *p, struct object *obj, bool absorb,
 
 		if (combine_item) {
 			/* Increase the weight */
-			p->upkeep->total_weight += (obj->number * obj->weight);
+			p->upkeep->total_weight += (obj->number * object_weight(obj));
 
 			/* Combine the items, and their known versions */
 			object_absorb(combine_item->known, obj->known);
@@ -742,7 +745,7 @@ void inven_carry(struct player *p, struct object *obj, bool absorb,
 		obj->known->grid = loc(0, 0);
 
 		/* Update the inventory */
-		p->upkeep->total_weight += (obj->number * obj->weight);
+		p->upkeep->total_weight += (obj->number * object_weight(obj));
 		p->upkeep->notice |= (PN_COMBINE);
 
 		/* Hobbits ID mushrooms on pickup, gnomes ID wands and staffs on pickup */

@@ -211,7 +211,7 @@ static void wiz_display_item(const struct object *obj, bool all)
 		4, j);
 
 	prt(format("kind = %-5d  tval = %-5d  sval = %-5d  wgt = %-3d     timeout = %-d",
-		obj->kind->kidx, obj->tval, obj->sval, obj->weight,
+		obj->kind->kidx, obj->tval, obj->sval, object_weight(obj),
 		obj->timeout), 5, j);
 
 	prt(format("number = %-3d  pval = %-5d  name1 = %-4d  egoidx = %-4d  cost = %ld",
@@ -495,17 +495,13 @@ void do_cmd_wiz_change_item_quantity(struct command *cmd)
 		if (cmd_get_arg_choice(cmd, "update", &update) != CMD_OK ||
 				update) {
 			if (object_is_carried(player, obj)) {
-				/*
-				 * Remove the weight of the old number of
-				 * objects.
-				 */
+				/* Remove the weight of the old number of
+				 * objects. */
 				player->upkeep->total_weight -=
-					obj->number * obj->weight;
+					obj->number * object_weight(obj);
 
-				/*
-				 * Add the weight of the new number of objects.
-				 */
-				player->upkeep->total_weight += n * obj->weight;
+				/* Add the weight of the new number of objects. */
+				player->upkeep->total_weight += n * object_weight(obj);
 			}
 			wiz_play_item_standard_upkeep(player, obj);
 		} else {
@@ -1604,25 +1600,21 @@ void do_cmd_wiz_play_item(struct command *cmd)
 				if (object_changed) {
 					/* Mark for updates. */
 					if (object_is_carried(player, obj) &&
-							(obj->number !=
-							orig_obj->number ||
-							obj->weight !=
-							orig_obj->weight)) {
-						/*
-						 * Remove the weight of the old
-						 * version.
-						 */
+							(obj->number != orig_obj->number ||
+							object_weight(obj) !=
+								object_weight(orig_obj))) {
+
+						/* Remove the weight of the old
+						 * version. */
 						player->upkeep->total_weight -=
 							orig_obj->number *
-							orig_obj->weight;
+							object_weight(orig_obj);
 
-						/*
-						 * Add the weight of the new
-						 * version.
-						 */
+						/* Add the weight of the new
+						 * version. */
 						player->upkeep->total_weight +=
 							obj->number *
-							obj->weight;
+							object_weight(obj);
 					}
 					wiz_play_item_standard_upkeep(player,
 						obj);

@@ -227,8 +227,8 @@ bool tval_is_weapon(const struct object *obj)
 		case TV_SHOT:
 			return true;
 		case TV_FLASK:
-			/* grenades */
-			if (obj->kind->level > 4) return true;
+			/* grenades or ego flasks */
+			if ((obj->ego) || (obj->kind->level > 4)) return true;
 		default:
 			return false;
 	}
