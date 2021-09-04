@@ -1655,7 +1655,7 @@ dice:12+d12
 desc:Your mind becomes too focused to be slowed, paralyzed or confused
 desc: for 12+d12 turns.
 
-book:shadow book:town:[Fear and Torment]:5:shadow
+book:shadow book:town:[Fear and Torment]:6:shadow
 
 spell:Maim Foe:15:6:35:14
 effect:MELEE_BLOWS:MON_STUN:6
@@ -1665,13 +1665,19 @@ desc:Attempts a level-dependent number of melee blows against the targeted
 desc: enemy.  You get 1 blow for every 15 levels.  If any of these blows
 desc: damage the enemy, it will be stunned for for 6 turns.
 
-spell:Howl of the Damned:18:8:30:16
+spell:Howl of the Damned:17:8:30:16
 effect:PROJECT_LOS:TURN_ALL
 dice:$B
-expr:B:PLAYER_LEVEL:+ 0
+expr:B:PLAYER_LEVEL:+ 1
 desc:Attempts to scare every monster in line of sight for a duration dependent
 desc: on player level and monster depth.  Monsters that resist fear are not
 desc: affected.
+
+spell:Darkvision:19:9:32:16
+effect:TIMED_INC:DARKVIS
+dice:20+d$B
+expr:B:PLAYER_LEVEL:+ 2
+desc:Allows you to see without light.
 
 spell:Relentless Taunting:24:10:32:20
 effect:TIMED_INC:TAUNT

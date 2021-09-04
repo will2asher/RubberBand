@@ -186,6 +186,7 @@ attack:1d1:0:0
 armor:0:0
 flags:TAKES_FUEL | EASY_KNOW | LIGHT_3 | IGNORE_FIRE
 
+#No longer has EXPLODE unless it gets an ego
 name:& Flask~ of oil
 type:flask
 graphics:!:y
@@ -193,10 +194,10 @@ level:1
 weight:20
 cost:3
 alloc:50:1 to 109
-attack:1d4:0:0
+attack:3d4:0:0
 armor:0:0
 pval:7500
-flags:EXPLODE | THROWING
+flags:THROWING
 flags:HATES_SOUND | HATES_SHARD | HATES_ICE | HATES_FORCE
 desc:It can be used to fuel a lantern with 7500 turns of light, up to
 desc: a maximum of 15000 turns of light.
@@ -209,9 +210,9 @@ graphics:!:R
 level:13
 weight:21
 cost:45
-alloc:9:13 to 110
+alloc:13:13 to 110
 pile:70:1d5
-attack:2d4:0:0
+attack:3d5:0:0
 armor:0:0
 flags:EXPLODE | THROWING | SHOW_DICE
 #brand:FIRE_2 (object.txt doesn't include brands...)

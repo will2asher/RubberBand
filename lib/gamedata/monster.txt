@@ -3626,7 +3626,7 @@ blow:HIT:HURT:1d11
 blow:HIT:HURT:1d11
 blow:HIT:HURT:1d12
 blow:HIT:HURT:1d12
-flags:UNIQUE | MALE 
+flags:UNIQUE | MALE | EVIL
 flags:DROP_1 | DROP_GOOD | ONLY_ITEM
 drop:bone:Human Skull:2:1:1
 desc:A nasty piece of work, Brodda picks on defenseless women and children.

@@ -4565,15 +4565,18 @@ static bool effect_handler_STRIKE(effect_handler_context_t *context)
 	struct loc target = player->grid;
 	int flg = PROJECT_JUMP | PROJECT_GRID | PROJECT_ITEM | PROJECT_KILL;
 
-	/* Ask for a target; if no direction given, the player is struck  */
-	if ((context->dir == DIR_TARGET) && target_okay()) {
-		target_get(&target);
-	}
+	/* other == 9 means this is a grenade explosion (which is already at it's target) */
+	if (context->other != 9) {
+		/* Ask for a target; if no direction given, the player is struck  */
+		if ((context->dir == DIR_TARGET) && target_okay()) {
+			target_get(&target);
+		}
 
-	/* Enforce line of sight */
-	if (!projectable(cave, player->grid, target, PROJECT_NONE) ||
-		!square_isknown(cave, target)) {
-		return false;
+		/* Enforce line of sight */
+		if (!projectable(cave, player->grid, target, PROJECT_NONE) ||
+			!square_isknown(cave, target)) {
+			return false;
+		}
 	}
 
 	/* Aim at the target.  Hurt items on floor. */

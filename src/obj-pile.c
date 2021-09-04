@@ -1217,7 +1217,6 @@ void push_object(struct loc grid)
 	struct object *obj = square_object(cave, grid);
 	struct queue *queue = q_new(z_info->floor_size);
 	struct trap *trap = square_trap(cave, grid);
-	bool bigt = false;
 
 	/* Push all objects on the square, stripped of pile info, into the queue */
 	while (obj) {
@@ -1227,11 +1226,14 @@ void push_object(struct loc grid)
 		 * serve as a placeholder for the known version. */
 		struct object *newobj = object_new();
 
-		/* skip terrain objects (don't move them) */
+		/* Delete terrain objects instead of moving them */
+		/* (Because whenever this function is used, the terrain feature changes anyway) */
 		if (of_has(obj->flags, OF_BIGTHING)) {
+			delist_object(cave, obj);
+			object_delete(&obj);
+
+			/* Next object */
 			obj = next;
-			bigt = true;
-			square_set_obj(cave, grid, obj);	/* RB Not sure this is needed? */
 			continue;
 		}
 
@@ -1253,8 +1255,8 @@ void push_object(struct loc grid)
 		obj = next;
 	}
 
-	/* Disassociate the objects from the square (except terrain objects) */
-	if (!bigt) square_set_obj(cave, grid, NULL);
+	/* Disassociate the objects from the square */
+	square_set_obj(cave, grid, NULL);
 
 	/* Set feature to an open door.  RB: This is uglier than anything I've noticed in V that's marked as a "hack" */
 	square_force_floor(cave, grid);

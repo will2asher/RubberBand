@@ -93,16 +93,15 @@ void map_info(struct loc grid, struct grid_data *g)
 	g->lighting = LIGHTING_LIT;
 	g->unseen_object = false;
 	g->unseen_money = false;
+	g->in_view = (square_isseen(cave, grid)) ? true : false;
+	g->is_player = (square(cave, grid)->mon < 0) ? true : false;
+	g->m_idx = (g->is_player) ? 0 : square(cave, grid)->mon;
+	g->hallucinate = player->timed[TMD_IMAGE] ? true : false;
 
 	/* Use real feature (remove later) */
 	g->f_idx = square(cave, grid)->feat;
 	if (f_info[g->f_idx].mimic)
 		g->f_idx = lookup_feat(f_info[g->f_idx].mimic);
-
-	g->in_view = (square_isseen(cave, grid)) ? true : false;
-	g->is_player = (square(cave, grid)->mon < 0) ? true : false;
-	g->m_idx = (g->is_player) ? 0 : square(cave, grid)->mon;
-	g->hallucinate = player->timed[TMD_IMAGE] ? true : false;
 
 	if (g->in_view) {
 		bool lit = square_islit(cave, grid);
@@ -132,6 +131,19 @@ void map_info(struct loc grid, struct grid_data *g)
 	g->f_idx = square(player->cave, grid)->feat;
 	if (f_info[g->f_idx].mimic)
 		g->f_idx = lookup_feat(f_info[g->f_idx].mimic);
+
+	/* Check for monsters disguised as terrain features */
+	if ((g->m_idx > 0) && square_isseen(cave, grid)) {
+		struct monster* mon = cave_monster(cave, g->m_idx);
+		if (mon->mimicked_feat) {
+			if (mon->mimicked_feat == 1) g->f_idx = lookup_feat("granite wall");
+			if (mon->mimicked_feat == 2) g->f_idx = lookup_feat("pile of passable rubble");
+			if (mon->mimicked_feat == 3) g->f_idx = lookup_feat("small statue");
+			if (mon->mimicked_feat == 4) g->f_idx = lookup_feat("statue");
+			if (mon->mimicked_feat == 5) g->f_idx = lookup_feat("fountain");
+			if (mon->mimicked_feat == 7) g->f_idx = lookup_feat("tree");
+		}
+	}
 
 	/* There is a known trap in this square */
 	if (square_trap(player->cave, grid) && square_isknown(cave, grid)) {
@@ -173,7 +185,7 @@ void map_info(struct loc grid, struct grid_data *g)
 	if (g->m_idx > 0) {
 		/* If the monster isn't "visible", make sure we don't list it.*/
 		struct monster *mon = cave_monster(cave, g->m_idx);
-		if (!monster_is_visible(mon)) g->m_idx = 0;
+		if ((!monster_is_visible(mon)) || (mon->mimicked_feat)) g->m_idx = 0;
 	}
 
 	/* Rare random hallucination on non-outer walls */

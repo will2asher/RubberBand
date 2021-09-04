@@ -510,7 +510,7 @@ desc: unless you have nexus resistance or teleport control.
 #There's currently no way to fall into the chasm (for the PC), but I'll probably change that at some point.
 #Monsters can fall in only if they're confused. (todo: allow monsters & PC to be pushed into it somehow)
 name:chasm
-graphics:#:s
+graphics:#:Z
 priority:11
 flags:LOS | PROJECT | PERMANENT | CHASM
 walk-msg:It looks like a long fall.  Really jump into the chasm? 

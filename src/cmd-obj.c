@@ -624,10 +624,8 @@ static void use_aux(struct command *cmd, struct object *obj, enum use use,
 				obj->timeout = charges;
 			}
 
-			/*
-			 * Quit if the item wasn't used and no knowledge was
-			 * gained
-			 */
+			/* Quit if the item wasn't used and no knowledge was
+			 * gained */
 			if (was_aware || !ident) {
 				if (work_obj->known) {
 					object_delete(&work_obj->known);

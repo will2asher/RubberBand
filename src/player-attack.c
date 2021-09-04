@@ -1321,10 +1321,31 @@ static struct attack_result make_ranged_throw(struct player *p,
 	my_strcpy(hit_verb, "hits", 20);
 
 	/* If we missed then we're done */
-	if (!test_hit(chance_of_missile_hit(p, obj, NULL, mon), mon->race->ac))
+	if (!test_hit(chance_of_missile_hit(p, obj, NULL, mon), mon->race->ac)) {
+
+		/* Grenades (usually) still explode (with reduced damage) if they miss */
+		if ((of_has(obj->flags, OF_EXPLODE)) && (randint0(100) < 91 + player->p_luck)) {
+			result.dmg = ranged_damage(p, mon, obj, NULL, 0, 0);
+			/* Use "STRIKE" effect with "other" param to bypass asking for target and requirement of being in view of the PC. */
+			effect_simple(EF_STRIKE, source_player(), format("%d", result.dmg * 2 / 3), ELEM_SHARD, 2, 9, grid.y, grid.x, NULL);
+			effect_simple(EF_STRIKE, source_player(), format("%d", result.dmg * 2 / 3), ELEM_FIRE, 2, 9, grid.y, grid.x, NULL);
+			return result;
+		}
+
+		/* If we missed then we're done (really now) */
 		return result;
+	}
 
 	result.success = true;
+
+	/* EXPLODEing (with grenades) works separately (half FIRE and half SHARD) (but they have a chance to dud and not explode) */
+	if ((of_has(obj->flags, OF_EXPLODE)) && (randint0(100) < 96 + player->p_luck)) {
+		result.dmg = ranged_damage(p, mon, obj, NULL, 0, 0); /* (doubled) */
+		/* Use "STRIKE" effect with "other" param to bypass asking for target and requirement of being in view of the PC. */
+		effect_simple(EF_STRIKE, source_player(), format("%d", result.dmg), ELEM_SHARD, 2, 9, grid.y, grid.x, NULL);
+		effect_simple(EF_STRIKE, source_player(), format("%d", result.dmg), ELEM_FIRE, 2, 9, grid.y, grid.x, NULL);
+		return result;
+	}
 
 	improve_attack_modifier(obj, mon, &b, &s, result.hit_verb, true);
 
@@ -1336,9 +1357,12 @@ static struct attack_result make_ranged_throw(struct player *p,
 		result.dmg = o_ranged_damage(p, mon, obj, NULL, b, s, &result.msg_type);
 	}
 
+#if noexplode
 	/* Direct adjustment for exploding things (flasks of oil and grenades) */
-	if (of_has(obj->flags, OF_EXPLODE))
-		result.dmg *= 3;
+	if (of_has(obj->flags, OF_EXPLODE)) {
+		/*	result.dmg *= 3;	(old) */
+	}
+#endif
 
 	return result;
 }

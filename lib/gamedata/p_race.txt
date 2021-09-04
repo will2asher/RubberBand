@@ -173,14 +173,14 @@ obj-flags:FREE_ACT
 player-flags:KNOW_ZAPPER
 
 name:Dwarf
-stats:2:-2:2:-2:2
+stats:2:-1:1:-2:2
 skill-disarm-phys:2
 skill-disarm-magic:2
 skill-device:9
 skill-save:9
 skill-stealth:-1
 skill-search:2
-skill-melee:14
+skill-melee:13
 skill-shoot:1
 skill-throw:0
 skill-dig:35

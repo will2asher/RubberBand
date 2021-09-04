@@ -919,7 +919,7 @@ message-save:You retain your health.
 name:CURSE_PC
 hit:100
 effect:TIMED_INC:PCCURSED
-dice:$B+12d6
+dice:$B+12d8
 expr:B:SPELL_POWER:* 2
 lore:curse you
 lore-color-base:Orange

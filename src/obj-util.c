@@ -795,12 +795,12 @@ int object_weight(const struct object* obj)
 	int index = 0;
 
 	/* Check for curses */
-	struct curse_data* curse = obj ? obj->curses : NULL;
+	struct curse_data* curse = obj->curses;
 
 	/* (copied from calc_bonuses()) */
 	while (obj) {
 		/* Curses may affect weight (index zero is original object) */
-		if ((obj->weight) && (index)) weight += obj->weight;
+		if (index) weight += obj->weight;
 
 		/* next curse if any */
 		if (curse) {
@@ -811,14 +811,10 @@ int object_weight(const struct object* obj)
 					obj = curses[index].obj;
 					break;
 				}
-				else {
-					index++;
-				}
+				index++;
 			}
 		}
-		else {
-			obj = NULL;
-		}
+		else obj = NULL;
 	}
 
 	return weight;

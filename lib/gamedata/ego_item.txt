@@ -734,15 +734,7 @@ type:arrow
 type:bolt
 type:bone
 type:throwing weapon
-desc:Ammunition of Wounding often has unusually high to-hit and to-dam values.
-
-#separate Wounding ego for grenades, so it can keep its basic FIRE_2 brand
-name:of Wounding
-info:20:5
-alloc:15:15 to 127
-combat:3+d5:3+d5:0:0
 type:flask
-brand:FIRE_2
 desc:Ammunition of Wounding often has unusually high to-hit and to-dam values.
 
 name:of Backbiting
@@ -755,14 +747,6 @@ type:arrow
 type:bolt
 type:bone
 type:throwing weapon
-
-#(default hand grenade ego because object.txt doesn't handle brands)
-#(Flasks of oil can also get this ego)
-name:(active)
-info:10:1
-alloc:450:1 to 127
-type:flask
-brand:FIRE_2
 
 ### Digging Tools
 
