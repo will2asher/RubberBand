@@ -1306,6 +1306,33 @@ static struct attack_result make_ranged_shot(struct player *p,
 	return result;
 }
 
+/* Get a brand from a grenade */
+int grenade_brand(struct object* obj)
+{
+	int i;
+	/* Brands (copied from improve_attack_modifier()) */
+	for (i = 1; i < z_info->brand_max; i++) {
+		struct brand* b = &brands[i];
+
+		if (!obj->brands[i]) continue;
+		if (b->resist_flag == RF_IM_ACID) return ELEM_ACID;
+		if (b->resist_flag == RF_IM_COLD) return ELEM_COLD;
+		if (b->resist_flag == RF_IM_FIRE) return ELEM_FIRE;
+		if (b->resist_flag == RF_IM_ELEC) return ELEM_ELEC;
+		if (b->resist_flag == RF_IM_POIS) return ELEM_POIS;
+	}
+
+	/* Slays */
+	for (i = 1; i < z_info->slay_max; i++) {
+		struct slay* s = &slays[i];
+
+		if (!obj->slays[i]) continue;
+		/* Only one slay type works for grenades */
+		if (s->race_flag == RF_EVIL) return ELEM_HOLY_ORB;
+	}
+	/* shouldn't get here because this function should only be called if there's a brand on the grenade */
+	return ELEM_FIRE;
+}
 
 /**
  * Helper function used with ranged_helper by do_cmd_throw.
@@ -1325,10 +1352,15 @@ static struct attack_result make_ranged_throw(struct player *p,
 
 		/* Grenades (usually) still explode (with reduced damage) if they miss */
 		if ((of_has(obj->flags, OF_EXPLODE)) && (randint0(100) < 91 + player->p_luck)) {
+			int elem = ELEM_FIRE;
 			result.dmg = ranged_damage(p, mon, obj, NULL, 0, 0);
+			if ((obj->brands) || (obj->slays)) {
+				elem = grenade_brand(obj);
+				if (obj->brands) result.dmg = result.dmg * 3 / 2;
+			}
 			/* Use "STRIKE" effect with "other" param to bypass asking for target and requirement of being in view of the PC. */
 			effect_simple(EF_STRIKE, source_player(), format("%d", result.dmg * 2 / 3), ELEM_SHARD, 2, 9, grid.y, grid.x, NULL);
-			effect_simple(EF_STRIKE, source_player(), format("%d", result.dmg * 2 / 3), ELEM_FIRE, 2, 9, grid.y, grid.x, NULL);
+			effect_simple(EF_STRIKE, source_player(), format("%d", result.dmg * 2 / 3), elem, 2, 9, grid.y, grid.x, NULL);
 			return result;
 		}
 
@@ -1340,10 +1372,17 @@ static struct attack_result make_ranged_throw(struct player *p,
 
 	/* EXPLODEing (with grenades) works separately (half FIRE and half SHARD) (but they have a chance to dud and not explode) */
 	if ((of_has(obj->flags, OF_EXPLODE)) && (randint0(100) < 96 + player->p_luck)) {
+		int elem = ELEM_FIRE;
 		result.dmg = ranged_damage(p, mon, obj, NULL, 0, 0); /* (doubled) */
+		if ((obj->brands) || (obj->slays)) {
+			elem = grenade_brand(obj);
+			/* It's already being doubled, so this makes it x3 */
+			if (obj->brands) result.dmg = (result.dmg * 3 + 1) / 2;
+			/* (The only slay that grenades get is slay evil, and HOLY_ORB damage is increased in project_mon) */
+		}
 		/* Use "STRIKE" effect with "other" param to bypass asking for target and requirement of being in view of the PC. */
 		effect_simple(EF_STRIKE, source_player(), format("%d", result.dmg), ELEM_SHARD, 2, 9, grid.y, grid.x, NULL);
-		effect_simple(EF_STRIKE, source_player(), format("%d", result.dmg), ELEM_FIRE, 2, 9, grid.y, grid.x, NULL);
+		effect_simple(EF_STRIKE, source_player(), format("%d", result.dmg), elem, 2, 9, grid.y, grid.x, NULL);
 		return result;
 	}
 

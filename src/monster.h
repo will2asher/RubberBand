@@ -389,7 +389,7 @@ struct monster {
 
 	byte cdis;							/* Current dis from player */
 
-	/* new for Rubberband: (todo: no effect yet) */
+	/* new for Rubberband: */
 	byte isevil;						/* individual monster is evil */
 	byte pcmet;							/* The player has learned whether this individual is evil or not */
 	byte nonagr;						/* monster is non-agressive (not sure if this works atm) */

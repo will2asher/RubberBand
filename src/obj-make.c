@@ -991,9 +991,11 @@ int apply_magic(struct object *obj, int lev, bool allow_artifacts, bool good,
 			if (make_artifact(obj)) return 3;
 	}
 
-	/* Grenades (almost) always get their FIRE_2 brand if nothing else */
+	/* Grenades are way more likely to get egos */
 	if (tval_is_fuel(obj) && obj->kind->level > 4) {
-		if (power || (randint0(100) < 89)) power = 2;
+		int ech = 45;
+		if (power == 1) ech = 70;
+		if (randint0(100) < ech) power = 2;
 	}
 
 	/* Try to make an ego item */

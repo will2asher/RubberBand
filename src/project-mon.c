@@ -299,13 +299,24 @@ static void project_monster_resist_element(project_monster_handler_context_t *co
  */
 static void project_monster_resist_other(project_monster_handler_context_t *context, int flag, int factor, bool reduce, enum mon_messages msg)
 {
-	if (context->seen) rf_on(context->lore->flags, flag);
+	bool evildam = false;
+	if (context->seen) {
+		rf_on(context->lore->flags, flag);
+		if (flag == RF_EVIL) context->mon->pcmet = 1;
+	}
+	if ((flag == RF_EVIL) && (context->mon->isevil)) evildam = true;
 	if (rf_has(context->mon->race->flags, flag)) {
 		context->hurt_msg = msg;
 		context->dam *= factor;
 
+
 		if (reduce)
 			context->dam /= randint1(6) + 6;
+	}
+	/* Monster is evil when its race isn't inherently evil */
+	else if (evildam) {
+		context->hurt_msg = msg;
+		context->dam = context->dam * 3 / 2;
 	}
 }
 

@@ -209,7 +209,7 @@ type:flask
 graphics:!:R
 level:13
 weight:21
-cost:45
+cost:52
 alloc:13:13 to 110
 pile:70:1d5
 attack:3d5:0:0

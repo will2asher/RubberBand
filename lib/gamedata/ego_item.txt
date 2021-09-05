@@ -628,7 +628,6 @@ type:arrow
 type:bolt
 type:bone
 type:throwing weapon
-item:flask:Hand Grenade
 slay:DEMON_3
 
 name:of Acid
@@ -663,7 +662,6 @@ type:arrow
 type:bolt
 type:bone
 type:throwing weapon
-item:flask:Hand Grenade
 slay:GIANT_3
 
 name:of Slay Dragon
@@ -674,7 +672,6 @@ type:arrow
 type:bolt
 type:bone
 type:throwing weapon
-item:flask:Hand Grenade
 slay:DRAGON_3
 
 name:of Holy Might
@@ -687,7 +684,6 @@ item:arrow:Mithril Arrow
 item:bolt:Seeker Bolt
 item:bolt:Mithril Bolt
 type:throwing weapon
-item:flask:Hand Grenade
 flags:IGNORE_FIRE | IGNORE_ACID
 slay:EVIL_2
 slay:DEMON_3

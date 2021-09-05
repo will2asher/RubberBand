@@ -158,7 +158,7 @@ owner:10000:Mauser the Chemist (Half-Elf)
 owner:10000:Wizzle the Chaotic (Hobbit)
 owner:15000:Ga-nat the Greedy (Gnome)
 owner:15000:Vella the Slender (Human)
-slots:6:10
+slots:6:11
 turnover:9
 always:scroll:Word of Recall
 always:scroll:Phase Door
@@ -179,9 +179,11 @@ normal:potion:Restore Life Levels
 normal:potion:Neutralize Poison
 normal:potion:Cure Serious Wounds
 normal:potion:Cure Critical Wounds
+normal:flask:Hand Grenade
 buy:scroll
 buy:potion
 buy:bone
+buy:flask
 
 # Magic-user's
 store:6:Magic Shop

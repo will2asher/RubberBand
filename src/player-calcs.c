@@ -2025,7 +2025,7 @@ void calc_bonuses(struct player *p, struct player_state *state, bool known_only,
 	calc_light(p, state, update);
 
 	/* Unlight - needs change if anything but resist is introduced for dark */
-	if (player_has(p, PF_UNLIGHT) && character_dungeon) {
+	if ((player_has(p, PF_UNLIGHT) || p->timed[TMD_DARKVIS]) && character_dungeon) {
 		state->el_info[ELEM_DARK].res_level = 1;
 	}
 
@@ -2163,7 +2163,7 @@ void calc_bonuses(struct player *p, struct player_state *state, bool known_only,
 		else if (gluck < 3) bluck += 2;
 		/* (Also hurts spell fail rate) */
 		state->skills[SKILL_DEVICE] = state->skills[SKILL_DEVICE] * 9 / 10;
-		state->skills[SKILL_SEARCH] = state->skills[SKILL_SEARCH] * 9 / 10;
+		state->skills[SKILL_SEARCH] = state->skills[SKILL_SEARCH] * 85 / 100;
 		state->skills[SKILL_SAVE] = state->skills[SKILL_SAVE] * 85 / 100;
 	}
 	/* Primary effect is raising the chances of a vault on next level, but has minor side effects */
@@ -2199,7 +2199,7 @@ void calc_bonuses(struct player *p, struct player_state *state, bool known_only,
 		state->skills[SKILL_DEVICE] = state->skills[SKILL_DEVICE] * 105 / 100;
 	}
 	/* You don't stand out as much if you don't have a light (as long as you can see to not fumble around) */
-	if (p->timed[TMD_DARKVIS] && !state->cur_light) state->skills[SKILL_STEALTH] += 1;
+	if ((p->timed[TMD_DARKVIS] || player_has(p, PF_UNLIGHT)) && !state->cur_light) state->skills[SKILL_STEALTH] += 1;
 
 	if (p->timed[TMD_SHIELD]) {
 		state->to_a += 50;
