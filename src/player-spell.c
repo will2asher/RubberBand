@@ -659,6 +659,7 @@ static void spell_effect_append_value_info(const struct effect *effect,
 			}
 			break;
 		case EF_STRIKE:
+		case EF_GRENADE:
 			/* Append radius */
 			if (effect->radius) {
 				special = format(", rad %d", effect->radius);

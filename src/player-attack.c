@@ -1314,7 +1314,7 @@ int grenade_brand(struct object* obj)
 	for (i = 1; i < z_info->brand_max; i++) {
 		struct brand* b = &brands[i];
 
-		if (!obj->brands[i]) continue;
+		if ((!obj->brands) || (!obj->brands[i])) continue;
 		if (b->resist_flag == RF_IM_ACID) return ELEM_ACID;
 		if (b->resist_flag == RF_IM_COLD) return ELEM_COLD;
 		if (b->resist_flag == RF_IM_FIRE) return ELEM_FIRE;
@@ -1326,7 +1326,7 @@ int grenade_brand(struct object* obj)
 	for (i = 1; i < z_info->slay_max; i++) {
 		struct slay* s = &slays[i];
 
-		if (!obj->slays[i]) continue;
+		if ((!obj->slays) || (!obj->slays[i])) continue;
 		/* Only one slay type works for grenades */
 		if (s->race_flag == RF_EVIL) return ELEM_HOLY_ORB;
 	}
@@ -1359,8 +1359,8 @@ static struct attack_result make_ranged_throw(struct player *p,
 				if (obj->brands) result.dmg = result.dmg * 3 / 2;
 			}
 			/* Use "STRIKE" effect with "other" param to bypass asking for target and requirement of being in view of the PC. */
-			effect_simple(EF_STRIKE, source_player(), format("%d", result.dmg * 2 / 3), ELEM_SHARD, 2, 9, grid.y, grid.x, NULL);
-			effect_simple(EF_STRIKE, source_player(), format("%d", result.dmg * 2 / 3), elem, 2, 9, grid.y, grid.x, NULL);
+			effect_simple(EF_GRENADE, source_player(), format("%d", result.dmg * 2 / 3), ELEM_SHARD, 2, 9, grid.y, grid.x, NULL);
+			effect_simple(EF_GRENADE, source_player(), format("%d", result.dmg * 2 / 3), elem, 2, 9, grid.y, grid.x, NULL);
 			return result;
 		}
 
@@ -1381,8 +1381,8 @@ static struct attack_result make_ranged_throw(struct player *p,
 			/* (The only slay that grenades get is slay evil, and HOLY_ORB damage is increased in project_mon) */
 		}
 		/* Use "STRIKE" effect with "other" param to bypass asking for target and requirement of being in view of the PC. */
-		effect_simple(EF_STRIKE, source_player(), format("%d", result.dmg), ELEM_SHARD, 2, 9, grid.y, grid.x, NULL);
-		effect_simple(EF_STRIKE, source_player(), format("%d", result.dmg), elem, 2, 9, grid.y, grid.x, NULL);
+		effect_simple(EF_GRENADE, source_player(), format("%d", result.dmg), ELEM_SHARD, 2, 9, grid.y, grid.x, NULL);
+		effect_simple(EF_GRENADE, source_player(), format("%d", result.dmg), elem, 2, 9, grid.y, grid.x, NULL);
 		return result;
 	}
 

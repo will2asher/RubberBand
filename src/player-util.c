@@ -865,7 +865,7 @@ void player_take_terrain_damage(struct player *p, struct loc grid)
 
 	if (!dam_taken) return;
 
-	/* Damage the player and inventory */
+	/* Damage the player */
 	take_hit(player, dam_taken, square_feat(cave, grid)->die_msg);
 
 	if (square_isfiery(cave, grid)) {

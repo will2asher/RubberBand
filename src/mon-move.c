@@ -1551,7 +1551,7 @@ static void monster_turn_grab_objects(struct chunk *c, struct monster *mon,
 		}
 
 		/* Skip mimicked objects and terrain objects */
-		if ((obj->mimicking_m_idx) || (obj->tval == TV_TERRAIN)) {
+		if ((obj->mimicking_m_idx) || (of_has(obj->flags, OF_BIGTHING))) {
 			obj = next;
 			continue;
 		}

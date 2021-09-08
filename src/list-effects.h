@@ -89,6 +89,7 @@ EFFECT(ARC, true, "dam", 3, EFINFO_BREATH, "produces a cone of %s with width %d 
 EFFECT(SHORT_BEAM, true, "dam", 3, EFINFO_SHORT, "produces a beam of %s with length %d, dealing %s damage", "produce a beam of %s")
 EFFECT(LASH, true, NULL, 2, EFINFO_LASH, "fires a beam of %s length %d, dealing damage determined by blows", "lash with %s")
 EFFECT(SWARM, true, "dam", 3, EFINFO_BALL, "fires a series of %s balls of radius %d, dealing %s damage at the centre of each", "fire a swarm of %s balls")
+EFFECT(GRENADE, false, "dam", 3, EFINFO_BALL, "creates a ball of %s with radius %d, dealing %s damage at the centre", "strike with %s")
 EFFECT(STRIKE, true, "dam", 3, EFINFO_BALL, "creates a ball of %s with radius %d, dealing %s damage at the centre", "strike with %s")
 EFFECT(STAR, false, "dam", 2, EFINFO_BOLTD, "fires a line of %s in all directions, each dealing %s damage", "fire a line of %s in all directions")
 EFFECT(STAR_BALL, false, "dam", 3, EFINFO_BALL, "fires balls of %s with radius %d in all directions, dealing %s damage at the centre of each", "fire balls of %s in all directions")

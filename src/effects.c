@@ -4556,6 +4556,24 @@ static bool effect_handler_SWARM(effect_handler_context_t *context)
 	return true;
 }
 
+/*
+ * Strike the target with a ball from a thrown grenade (target is already set)
+ */
+static bool effect_handler_GRENADE(effect_handler_context_t* context)
+{
+	int dam = effect_calculate_value(context, true);
+	struct loc target = player->grid;
+	int flg = PROJECT_JUMP | PROJECT_GRID | PROJECT_ITEM | PROJECT_KILL;
+
+	/* Aim at the target.  Hurt items on floor. */
+	if (project(source_player(), context->radius, target, dam, context->subtype,
+		flg, 0, 0, context->obj)) {
+		context->ident = true;
+	}
+
+	return true;
+}
+
 /**
  * Strike the target with a ball from above
  */
@@ -4565,18 +4583,15 @@ static bool effect_handler_STRIKE(effect_handler_context_t *context)
 	struct loc target = player->grid;
 	int flg = PROJECT_JUMP | PROJECT_GRID | PROJECT_ITEM | PROJECT_KILL;
 
-	/* other == 9 means this is a grenade explosion (which is already at it's target) */
-	if (context->other != 9) {
-		/* Ask for a target; if no direction given, the player is struck  */
-		if ((context->dir == DIR_TARGET) && target_okay()) {
-			target_get(&target);
-		}
+	/* Ask for a target; if no direction given, the player is struck  */
+	if ((context->dir == DIR_TARGET) && target_okay()) {
+		target_get(&target);
+	}
 
-		/* Enforce line of sight */
-		if (!projectable(cave, player->grid, target, PROJECT_NONE) ||
-			!square_isknown(cave, target)) {
-			return false;
-		}
+	/* Enforce line of sight */
+	if (!projectable(cave, player->grid, target, PROJECT_NONE) ||
+		!square_isknown(cave, target)) {
+		return false;
 	}
 
 	/* Aim at the target.  Hurt items on floor. */
@@ -6027,6 +6042,7 @@ int effect_subtype(int index, const char *type)
 			case EF_SHORT_BEAM:
 			case EF_LASH:
 			case EF_SWARM:
+			case EF_GRENADE:
 			case EF_STRIKE:
 			case EF_STAR:
 			case EF_STAR_BALL:
@@ -6231,10 +6247,8 @@ bool effect_do(struct effect *effect,
 					if (choice == -1) return false;
 				}
 
-				/*
-				 * If the player chose to use a random effect,
-				 * roll for it.
-				 */
+				/* If the player chose to use a random effect,
+				 * roll for it. */
 				if (choice == -2) {
 					choice = randint0(choice_count);
 				}
