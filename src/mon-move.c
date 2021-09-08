@@ -1550,8 +1550,14 @@ static void monster_turn_grab_objects(struct chunk *c, struct monster *mon,
 			continue;
 		}
 
-		/* Skip mimicked objects and terrain objects */
-		if ((obj->mimicking_m_idx) || (of_has(obj->flags, OF_BIGTHING))) {
+		/* Skip mimicked objects */
+		if (obj->mimicking_m_idx) {
+			obj = next;
+			continue;
+		}
+		/* Skip terrain objects (BIGTHINGs) unless monster is also really big */
+		/* (All terrain objects are BIGTHINGs, but there's one BIGTHING that's not a terrain object) */
+		if ((of_has(obj->flags, OF_BIGTHING)) && (mon->race->msize < 5)) {
 			obj = next;
 			continue;
 		}
@@ -1585,7 +1591,7 @@ static void monster_turn_grab_objects(struct chunk *c, struct monster *mon,
 				taken->known->grid = loc(0, 0);
 			}
 
-			/* Try to carry the copy */
+			/* Try to carry the copy (monster_carry() is always true for now) */
 			if (monster_carry(c, mon, taken)) {
 				/* Describe observable situations */
 				if (square_isseen(c, new) && !ignore_item_ok(obj))
@@ -1593,10 +1599,13 @@ static void monster_turn_grab_objects(struct chunk *c, struct monster *mon,
 
 				/* Delete the object */
 				square_delete_object(c, new, obj, true, true);
-			} else {
-				if (taken->known) {
-					object_delete(&taken->known);
+
+				/* If a terrain object is picked up, it means it's picking up the actual terrain, so clear it. */
+				if (obj->tval == TV_TERRAIN) {
+					square_set_feat(c, new, FEAT_FLOOR);
 				}
+			} else {
+				if (taken->known) object_delete(&taken->known);
 				object_delete(&taken);
 			}
 		} else {
@@ -1606,6 +1615,11 @@ static void monster_turn_grab_objects(struct chunk *c, struct monster *mon,
 
 			/* Delete the object */
 			square_delete_object(c, new, obj, true, true);
+
+			/* Terrain is being destroyed */
+			if (obj->tval == TV_TERRAIN) {
+				square_set_feat(c, new, FEAT_FLOOR);
+			}
 		}
 
 		/* Next object */

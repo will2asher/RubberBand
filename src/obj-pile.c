@@ -1000,7 +1000,7 @@ bool floor_carry(struct chunk *c, struct loc grid, struct object *drop,
 	/* Record in the level list */
 	list_object(c, drop);
 
-	/* Player is placing terrain (if (!character_dungeon) then the terrain is being placed at generation) */
+	/* Player is placing terrain or monster is dropping it (if (!character_dungeon) then the terrain is being placed at generation) */
 	if ((drop->tval == TV_TERRAIN) && (character_dungeon)) {
 		/* This is the only way I know how to do this since we can't see the numbers for svals anymore */
 		/* (unless I put a different flag on each terrain object, but that seems silly */

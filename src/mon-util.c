@@ -1138,10 +1138,8 @@ static void player_kill_monster(struct monster *mon, const char *note)
 		assert(mon->original_race == NULL);
 		mon->race->max_num = 0;
 
-		/*
-		 * This gets the correct name if we slay an invisible
-		 * unique and don't have See Invisible.
-		 */
+		/* This gets the correct name if we slay an invisible
+		 * unique and don't have See Invisible. */
 		monster_desc(unique_name, sizeof(unique_name), mon,
 					 MDESC_DIED_FROM);
 
