@@ -87,7 +87,7 @@ static const int adj_int_dev[STAT_RANGE] =
 /**
  * Stat Table (WIS) -- Saving throw
  */
-static const int adj_wis_sav[STAT_RANGE] =
+const int adj_wis_sav[STAT_RANGE] =
 {
 	0	/* 3 */,
 	0	/* 4 */,

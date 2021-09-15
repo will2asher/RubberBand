@@ -228,6 +228,8 @@ graphics:,:U
 level:0
 weight:2
 cost:1
+pile:10:1d2
+alloc:4:0 to 14
 attack:1d2:0:0
 power:0
 effect:NOURISH:INC_BY
@@ -242,14 +244,14 @@ graphics:,:R
 level:0
 weight:4
 cost:3
-alloc:40:0 to 20
+alloc:39:0 to 20
 pile:10:1d2
 power:0
 msg:That tastes good.
 effect:NOURISH:INC_BY
 dice:10
 effect:HEAL_HP
-dice:2
+dice:1d2
 desc:Wrinkled, but sound and sweet.
 
 name:& Handful~ of Dried Fruits
@@ -264,7 +266,7 @@ msg:That tastes good.
 effect:NOURISH:INC_BY
 dice:14
 effect:HEAL_HP
-dice:3
+dice:1d3
 desc:Fruit roughly chopped and sun-dried, prepared as marching rations for the
 desc: rangers of Ithilien.
 
@@ -279,7 +281,7 @@ pile:100:2d3
 power:0
 msg:That tastes better than nothing.
 effect:NOURISH:INC_BY
-dice:16
+dice:18
 effect:SLIME_CHANCE
 dice:20
 desc:A strange fungal growth, prone to moving if not observed.  Not very tasty
@@ -299,7 +301,7 @@ msg:That tastes good.
 effect:NOURISH:INC_BY
 dice:30
 effect:HEAL_HP
-dice:2
+dice:1d3
 desc:This nutritious but fairly bland food, called cram by the Lake-men who
 desc: make it is familiar to anyone contemplating long journeys.  It is
 desc: sustaining, but uninteresting except as a chewing exercise.
@@ -323,7 +325,7 @@ dice:18
 effect:NOURISH:INC_BY
 dice:11
 effect:NOURISH:SET_TO
-dice:1d4
+dice:1d5
 effect:NOURISH:SET_TO
 dice:6+1d4
 effect:SLIME_CHANCE
@@ -344,7 +346,7 @@ msg:That tastes good.
 effect:NOURISH:INC_BY
 dice:38
 effect:HEAL_HP
-dice:3
+dice:1d3
 desc:A thick slice of pork, salted to keep it from spoiling.  It is very
 desc: filling.
 
@@ -361,7 +363,7 @@ msg:Delicious!
 effect:NOURISH:INC_TO
 dice:60
 effect:HEAL_HP
-dice:4
+dice:2d2
 desc:The Beornings are renowned as the best bakers among men, and their
 desc: honey-cakes are deservedly prized.  Made of wheat flour with nuts and
 desc: honey and twice baked, they will sustain you through a long march.
@@ -462,7 +464,7 @@ msg:Refreshing!
 effect:NOURISH:INC_TO
 dice:60
 effect:HEAL_HP
-dice:4
+dice:2d2
 effect:RESTORE_STAT:STR
 effect:RESTORE_STAT:CON
 effect:GAIN_STAT:STR
@@ -499,7 +501,7 @@ alloc:11:5 to 77
 pile:70:1d4
 power:7
 effect:HEAL_HP
-dice:30
+dice:15+4d5
 effect:CURE:STUN
 effect:CURE:CUT
 effect:CURE:POISONED
@@ -630,7 +632,7 @@ effect:CURE:CHARMED
 effect:CURE:AFRAID
 effect:CURE:CLEAR_MIND
 effect:TIMED_INC:FRENZY
-dice:22+7d8
+dice:23+7d8
 effect:NOURISH:INC_BY
 dice:3
 desc:Its smell gets on your nerves. This will put you in a
@@ -675,9 +677,9 @@ alloc:4:13 to 110
 pile:70:1d3
 power:1
 effect:SLIME_CHANCE
-dice:76
+dice:74
 effect:NOURISH:INC_BY
-dice:1d3
+dice:2d2
 effect:GAIN_LUCK
 dice:1d2
 effect:RANDOM
@@ -686,7 +688,7 @@ effect:TIMED_INC:POISONED
 dice:5+6d4
 effect:DRAIN_STAT:DEX
 effect:TIMED_INC:DISEASE
-dice:41+8d8
+dice:42+8d8
 desc:It smells disgusting.
 
 name:Emergency

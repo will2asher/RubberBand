@@ -68,9 +68,8 @@ int breakage_chance(const struct object *obj, bool hit_target) {
 	int perc = obj->kind->base->break_perc;
 
 	if (obj->artifact) return 0;
-	if (of_has(obj->flags, OF_THROWING) &&
-		!of_has(obj->flags, OF_EXPLODE) &&
-		!tval_is_ammo(obj)) {
+	if (of_has(obj->flags, OF_THROWING) && !tval_is_fuel(obj) &&
+		!of_has(obj->flags, OF_EXPLODE) && !tval_is_ammo(obj)) {
 		perc = 1;
 		/* Bone weapons break (somewhat) easily even if they're good for throwing. */
 		if (obj->tval == TV_BONE) perc = obj->kind->base->break_perc / 2; /* 6% */
@@ -1174,6 +1173,7 @@ static void ranged_helper(struct player *p,	struct object *obj, int dir,
 		mon = square_monster(cave, path_g[i]);
 		if (mon) {
 			int visible = monster_is_obvious(mon);
+			bool gdeath = false;
 
 			bool fear = false;
 			const char *note_dies = monster_is_destroyed(mon) ? 
@@ -1201,7 +1201,9 @@ static void ranged_helper(struct player *p,	struct object *obj, int dir,
 					my_strcpy(hit_verb, "fails to harm", sizeof(hit_verb));
 				}
 
-				if (!visible) {
+				/* Check if monster monster already died from a grenade blast */
+				if (!mon->race) gdeath = true;
+				else if (!visible) {
 					/* Invisible monster */
 					msgt(MSG_SHOOT_HIT, "The %s finds a mark.", o_name);
 				} else {
@@ -1229,14 +1231,14 @@ static void ranged_helper(struct player *p,	struct object *obj, int dir,
 					}
 
 					/* Track this monster */
-					if (monster_is_obvious(mon)) {
+					if ((!gdeath) && monster_is_obvious(mon)) {
 						monster_race_track(p->upkeep, mon->race);
 						health_track(p->upkeep, mon);
 					}
 				}
 
 				/* Hit the monster, check for death */
-				if (!mon_take_hit(mon, dmg, &fear, note_dies)) {
+				if ((!gdeath) && (!mon_take_hit(mon, dmg, &fear, note_dies))) {
 					message_pain(mon, dmg);
 					if (fear && monster_is_obvious(mon)) {
 						add_monster_message(mon, MON_MSG_FLEE_IN_TERROR, true);

@@ -471,10 +471,9 @@ effect:SHAPECHANGE:fox
 desc:Changes you into the shape of a quick and stealthy fox.
 desc:  While shapechanged you cannot use items.
 
-spell:Remove Hunger:2:2:25:2
-effect:NOURISH:INC_TO
-dice:50
-desc:Magically renders you comfortably fed (but not satiated).
+spell:Foraging:2:2:25:2
+effect:FORAGE
+desc:Creates a food item, sometimes more than one. Higher wisdom makes it more likely to get better food.
 
 spell:Stinking Cloud:3:2:27:4
 effect:BALL:POIS:2
@@ -1490,12 +1489,12 @@ title:Ranger Lord
 
 magic:3:400:2
 
-book:nature book:town:[Lesser Charms]:6:nature
+book:nature book:town:[Lesser Charms]:7:nature
 
-spell:Remove Hunger:3:1:25:2
-effect:NOURISH:INC_TO
-dice:50
-desc:Magically renders you comfortably fed (but not satiated).
+#(Replaces unnatural Remove Hunger spell)
+spell:Foraging:3:1:25:2
+effect:FORAGE
+desc:Creates a food item, sometimes more than one. Higher wisdom makes it more likely to get better food.
 
 spell:Detect Life:5:2:23:2
 effect:DETECT_LIVING_MONSTERS
@@ -1525,6 +1524,11 @@ desc:Produces a beam that destroys the first section of wall it hits,
 desc: unless it is a permanent wall.  Each monster caught in the beam that
 desc: is susceptible to rock remover takes 20+1d30 points of damage.
 
+spell:Create Arrows:18:16:40:7
+effect:CREATE_ARROWS
+desc:Allows the player to turn a staff into a stack of arrows, with quality
+desc: depending on staff level and player level. (usually ordinary arrows.)
+
 spell:Sense Surroundings:20:8:35:8
 effect:MAP_AREA
 dice:$Dd$S
@@ -1542,10 +1546,10 @@ expr:B:PLAYER_LEVEL:* 2
 desc:Prevents you from leaving scent for monsters to track you by for a
 desc: level-dependent duration.
 
-spell:Create Arrows:22:20:40:40
-effect:CREATE_ARROWS
+spell:Magic Arrows:22:20:40:40
+effect:MAGIC_ARROWS
 desc:Allows the player to turn a staff into a stack of arrow, with quality
-desc: depending on staff level and player level.
+desc: depending on staff level and player level. (usually good arrows.)
 
 spell:Haste Self:25:12:65:15
 effect:TIMED_INC:FAST:0:5

@@ -371,7 +371,7 @@ void new_player_spot(struct chunk *c, struct player *p)
  */
 bool place_terrain_object(struct object_kind *kind, struct chunk *c, struct loc grid)
 {
-	struct object* obj;
+	struct object *obj;
 	bool dummy = false;
 
 	/* Create the item */

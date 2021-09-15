@@ -2895,7 +2895,7 @@ static bool effect_handler_SUMMON(effect_handler_context_t *context)
 		if (edep < 1) {
 			edep = 1;
 			/* But weaken summons from any other summoners who somehow end up in town. */
-			if (rlev > 3) rlev /= 4;
+			if (rlev > 2) rlev /= 3;
 			else if (rlev > 1) rlev = 1;
 		}
 
@@ -5023,6 +5023,74 @@ static bool effect_handler_BRAND_BOLTS(effect_handler_context_t *context)
 	return (true);
 }
 
+/* Foraging (create food) */
+static bool effect_handler_FORAGE(effect_handler_context_t* context)
+{
+	int fdie = randint1(87 + adj_wis_sav[player->state.stat_ind[STAT_WIS]]) + player->p_luck * 2;
+	bool dummy = false;
+	bool rmush = false;
+	bool rfood = false;
+	bool afew = false;
+	struct object_kind* kind = lookup_kind(TV_FOOD, lookup_sval(TV_FOOD, "Ration of Food")); /* (default) */
+	struct object* obj;
+
+	/* very bad luck only: scrap of flesh */
+	if (fdie < -1) kind = lookup_kind(TV_FOOD, lookup_sval(TV_FOOD, "Scrap of Flesh"));
+	/* bad luck only: random mushroom (any) */
+	else if (fdie < 2) { 
+		rmush = true; 
+		if (fdie == 1) afew = true;
+	}
+	/* Hard biscuit */
+	else if (fdie < 5) {
+		kind = lookup_kind(TV_FOOD, lookup_sval(TV_FOOD, "Hard Biscuit"));
+		afew = true;
+	}
+	/* Slime mold */
+	else if (fdie < 10) kind = lookup_kind(TV_FOOD, lookup_sval(TV_FOOD, "Slime Mold"));
+	/* Apple(s) */
+	else if (fdie < 17) { 
+		kind = lookup_kind(TV_FOOD, lookup_sval(TV_FOOD, "Apple"));
+		afew = true;
+	}
+	/* ,1st sight & 2nd thoughts (when it works) */
+	/* else if (fdie < 22) kind = lookup_kind(TV_MUSHROOM, lookup_sval(TV_MUSHROOM, "First Sight and Second Thoughts")); */
+	/* ,Fast Recovery */
+	else if (fdie < 22) kind = lookup_kind(TV_MUSHROOM, lookup_sval(TV_MUSHROOM, "Fast Recovery"));
+	/* Dried Fruit */
+	else if (fdie < 32) kind = lookup_kind(TV_FOOD, lookup_sval(TV_FOOD, "Handful of Dried Fruits"));
+	/* food ration(s) */
+	else if (fdie < 74) /* (default) */;
+	/* Honey cake */
+	else if (fdie < 82) kind = lookup_kind(TV_FOOD, lookup_sval(TV_FOOD, "Honey-cake"));
+	/* slice of meat */
+	else if (fdie < 90) kind = lookup_kind(TV_FOOD, lookup_sval(TV_FOOD, "Slice of Meat"));
+	/* elvish waybread */
+	else kind = lookup_kind(TV_FOOD, lookup_sval(TV_FOOD, "Piece of Elvish Waybread"));
+
+	/* Create the item */
+	if (rmush) { /* random mushroom */
+		int elev = player->lev + player->p_luck * 4;
+		if (elev < 0) elev = 0;
+		obj = make_object(cave, elev, false, false, false, NULL, TV_MUSHROOM);
+	}
+	else { /* specific food item */
+		/* Get object */
+		obj = object_new();
+		object_prep(obj, kind, player->depth, RANDOMISE);
+	}
+
+	fdie = randint1(87 + adj_wis_sav[player->state.stat_ind[STAT_WIS]]) + player->p_luck * 2;
+	if (afew) fdie = 47 + randint1(40 + adj_wis_sav[player->state.stat_ind[STAT_WIS]]) + player->p_luck * 3;
+	if (fdie > 102) obj->number = 2 + randint1(2);
+	else if (fdie > 74) obj->number = 1 + randint1(2);
+	else if (fdie > 67) obj->number = 2;
+
+	drop_near(cave, &obj, 0, player->grid, true, true);
+
+	context->ident = true;
+	return true;
+}
 
 /**
  * Turn a staff into (usually ordinary) arrows
@@ -5060,9 +5128,8 @@ bool effect_handler_CREATE_ARROWS(effect_handler_context_t* context)
 	}
 
 	/* luck factor */
-	lfac = 0;
-	if (player->p_luck > 0) lfac += (player->p_luck + 1) / 2;
-	else if (player->p_luck < -1) lfac = -1;
+	if (player->p_luck < -1) lfac = -1;
+	else lfac = (player->p_luck + 1) / 2;
 
 	/* Roll for good (less than half the chance as the stronger spell for "good" or "great" arrows) */
 	if (randint1(lev) > 58 - lfac) {
@@ -5070,7 +5137,7 @@ bool effect_handler_CREATE_ARROWS(effect_handler_context_t* context)
 		/* Roll for great (maybe) */
 		if (randint1(lev) > 88 - lfac) {
 			elev += 2;
-			if (randint0(100) < 70) great = true;
+			if (randint0(100) < 65) great = true;
 		}
 	}
 
@@ -5090,7 +5157,7 @@ bool effect_handler_CREATE_ARROWS(effect_handler_context_t* context)
 	arrows = make_object(cave, elev, good, great, false, NULL, TV_ARROW);
 
 	/* Make it less likely (but still possible) to get a large stack with the weaker spell */
-	if (arrows->number > 21) arrows->number = 20 + randint1(arrows->number - 20);
+	if (arrows->number > 20) arrows->number = 19 + randint1(arrows->number - 19);
 
 	drop_near(cave, &arrows, 0, player->grid, true, true);
 
@@ -5136,7 +5203,7 @@ bool effect_handler_MAGIC_ARROWS(effect_handler_context_t* context)
 	/* luck factor */
 	lfac = 0;
 	if (player->p_luck > 0) lfac += player->p_luck;
-	else if (player->p_luck < -1) lfac = -1;
+	else if (player->p_luck < -1) lfac = player->p_luck/2;
 
 	/* Roll for good */
 	if (randint1(lev) > 25 - lfac) {
