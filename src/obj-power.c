@@ -874,8 +874,8 @@ int object_value_real(const struct object *obj, int qty)
 		value = SGN(power) * ((a * power * power) + (b * power));
 
 		/* obj->kind->cost should still have some effect (for non-egos at least) */
-		/* Bones aren't costed by their value as weapons */
-		if ((obj->tval == TV_BONE) && (!obj->ego)) value = (obj->kind->cost * 2 + value) / 3;
+		/* Staffs and bones aren't costed by their value as weapons */
+		if (((obj->tval == TV_STAFF) || (obj->tval == TV_BONE)) && (!obj->ego)) value = (obj->kind->cost * 3 + value) / 4;
 		/* (Golden Crowns should be worth something for their gold, even if they're not useful) */
 		else if (!obj->ego) value = (obj->kind->cost + value * 2) / 3;
 
@@ -888,9 +888,7 @@ int object_value_real(const struct object *obj, int qty)
 		if (tval_is_thrower(obj)) value = value * 3 / 4;
 
 		/* Round up to make sure things like cloaks are not worthless */
-		if (value == 0) {
-			value = 1;
-		}
+		if (value == 0) value = 1;
 
 #ifdef PRICE_DEBUG
 		/* More logging */

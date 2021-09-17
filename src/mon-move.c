@@ -1676,7 +1676,7 @@ static void monster_turn(struct chunk *c, struct monster *mon)
 			/* Except the later ones who have spells and better ranged attacks */
 			if ((mon->race->level > 34) && (mon->cdis < 9)) skipc = mon->cdis * 3 + 3;
 		}
-		else if (mon->mimicked_feat && (mon->cdis < 2)) skipc = 11;
+		else if (mon->mimicked_feat && (mon->cdis < 2)) skipc = 16;
 		if (randint0(100) < skipc) return;
 	}
 
@@ -1928,6 +1928,7 @@ static void monster_reduce_sleep(struct chunk *c, struct monster *mon)
 	int stealth = player->state.skills[SKILL_STEALTH];
 	int player_noise = 1 << (30 - stealth);
 	int notice = randint0(1024);
+	int fnchance = 50;
 	struct monster_lore *lore = get_lore(mon->race);
 	bool aggro = player_of_has(player, OF_AGGRAVATE);
 
@@ -1936,10 +1937,16 @@ static void monster_reduce_sleep(struct chunk *c, struct monster *mon)
 		if ((mon->cdis < 4 - stealth / 4 + randint1(6 - stealth / 2)) && monster_is_in_view(mon)) {
 			/* Sometimes wake automatically if the player is very close and not very stealthy */
 			if ((mon->cdis <= 2) && (stealth < randint0(10))) aggro = true;
-			else notice = 900 + randint0(124);
+			else { notice = randint0(300 + stealth * 8); fnchance = 11; }
 		}
-		else if (monster_is_in_view(mon)) notice = 705 - (stealth * 16) + randint0(324 + stealth * 8);
-		else notice = 600 - (stealth * 16) + randint0(424 + stealth * 8);
+		else if (monster_is_in_view(mon)) { notice = randint0(550 + stealth * 8); fnchance = 20; }
+		else { notice = randint0(650 + stealth * 8); fnchance = 35; }
+
+		if (randint0(100) < fnchance) notice = randint0(1024);
+	}
+	/* Some are especially hard to wake */
+	else if (mon->race->sleep >= 250) { 
+		if (notice < 100 + stealth * 10) notice = randint0(1024);
 	}
 
 	/* Aggravation */
