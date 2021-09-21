@@ -145,6 +145,7 @@ glyph:g
 pain:1
 flags:EMPTY_MIND | CLEAR_WEB | NONLIVING
 flags:NO_FEAR | NO_CONF | NO_SLEEP | NO_STUN
+#flags:NO_SCENT
 desc:Golem
 
 name:humanoid
@@ -167,18 +168,6 @@ pain:1
 flags:SPIRIT | RUBBER | FEY
 flags:OPEN_DOOR | CLEAR_WEB
 desc:Dark Fairy
-
-# (or icky things if VISH option is turned on)
-# ...Having two monster base types use the same glyph doesn't seem to work with
-# the get_vault_monster code.  hmmm... What if I use an ascii character that looks almost like an i but isn't?
-# (Let's the do almost-an-'i' for the dark fairies.)
-# But then I'll want to do something to make it easier to get monster recall, but I'll have to hardcode that part.
-# ...well, that didn't work. I guess I'll just finish cutting out yeeks and icky things.
-#name:icky thing
-#glyph:i
-#pain:1
-#flags:CLEAR_WEB | VISH | IM_SLIME
-#desc:Icky Thing
 
 # Insects are small, a bit fast, weak breeders which bite for various effects
 name:insect
@@ -452,6 +441,7 @@ glyph:x
 pain:1
 flags:SPIRIT | TROLL | S_EVIL1 | IM_WATER | HURT_ROCK | UNAWARE
 flags:FLY | OPEN_DOOR | BASH_DOOR | CLEAR_WEB
+#flags:NO_SCENT
 desc:Gargoyle
 
 # Light Fairies
@@ -461,12 +451,6 @@ pain:1
 flags:SPIRIT | RUBBER | FEY | CLIGHT
 flags:OPEN_DOOR | CLEAR_WEB
 desc:Light Fairy
-
-#name:yeek
-#glyph:y
-#pain:1
-#flags:SPIRIT | VISH | OPEN_DOOR | CLEAR_WEB
-#desc:Yeek
 
 # Yetis are a couple of niche monsters, big furry ape-like creatures
 name:yeti
@@ -514,6 +498,7 @@ pain:1
 flags:COLD_BLOOD | EMPTY_MIND | INVISIBLE | UNAWARE
 flags:NO_FEAR | NO_CONF | NO_SLEEP | IM_SLIME
 flags:CHAR_CLEAR | ATTR_CLEAR
+#flags:NO_SCENT
 desc:Lurker
 
 # Creeping coins are mimics which look like coins until they attack, hit to
@@ -526,6 +511,7 @@ flags:ONLY_GOLD
 flags:BASH_DOOR | CLEAR_WEB
 flags:IM_ELEC | IM_POIS | NO_CONF | NO_SLEEP
 flags:MIMIC_INV
+#flags:NO_SCENT
 desc:Creeping Coins
 
 # Monsters which pretend to be objects.  They don't move but do cast spells,
@@ -537,6 +523,7 @@ flags:COLD_BLOOD | EMPTY_MIND | UNAWARE
 flags:NEVER_MOVE
 flags:NO_FEAR | NO_CONF | NO_SLEEP
 flags:FORCE_SLEEP | ATTR_CLEAR
+#flags:NO_SCENT
 desc:Mimic
 
 # arrow launchers & such
@@ -547,6 +534,7 @@ pain:1
 flags:COLD_BLOOD | FORCE_SLEEP
 flags:EMPTY_MIND | CLEAR_WEB | NONLIVING
 flags:NO_FEAR | NO_CONF | NO_SLEEP | NO_STUN
+#flags:NO_SCENT
 desc:Trap Monster
 
 # mostly very deep
@@ -556,6 +544,7 @@ pain:1
 flags:COLD_BLOOD | EMPTY_MIND | HURT_ROCK
 flags:BASH_DOOR | CLEAR_WEB | NONLIVING
 flags:IM_POIS | NO_CONF | NO_SLEEP | NO_FEAR | NO_STUN | IM_DISEN
+#flags:NO_SCENT
 desc:Wall Monster
 
 ##### Special templates #####

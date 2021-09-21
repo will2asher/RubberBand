@@ -67,13 +67,16 @@
 int breakage_chance(const struct object *obj, bool hit_target) {
 	int perc = obj->kind->base->break_perc;
 
-	if (obj->artifact) return 0;
+	if ((obj->artifact) && !of_has(obj->flags, OF_EXPLODE)) return 0;
 	if (of_has(obj->flags, OF_THROWING) && !tval_is_fuel(obj) &&
 		!of_has(obj->flags, OF_EXPLODE) && !tval_is_ammo(obj)) {
 		perc = 1;
 		/* Bone weapons break (somewhat) easily even if they're good for throwing. */
 		if (obj->tval == TV_BONE) perc = obj->kind->base->break_perc / 2; /* 6% */
 	}
+	/* The grenade (or flask of oil) has exploded */
+	if ((tval_is_fuel(obj) || of_has(obj->flags, OF_EXPLODE)) && hit_target) perc = 100;
+
 	if ((!hit_target) && (obj->tval == TV_BONE)) return perc / 3; /* 2% */
 	else if (!hit_target) return (perc * perc) / 100;
 	return perc;
@@ -548,7 +551,7 @@ static int ranged_damage(struct player *p, const struct monster *mon,
 		dmg += launcher->to_d;
 	} else if (of_has(missile->flags, OF_THROWING)) {
 		/* Don't go overboard in the rare times that the PC can throw big rocks or statues (may need further tweaking) */
-		if (of_has(missile->flags, OF_BIGTHING)) dmg *= 35;
+		if (2 + missile->weight / 12 > 35) dmg *= 35;
 		/* Adjust damage for throwing weapons.
 		 * This is not the prettiest equation, but it does at least try to
 		 * keep throwing weapons competitive. */
@@ -1186,7 +1189,8 @@ static void ranged_helper(struct player *p,	struct object *obj, int dir,
 			my_strcpy(hit_verb, result.hit_verb, sizeof(hit_verb));
 			mem_free(result.hit_verb);
 
-			if (result.success) {
+			/* (If projectile hits or grenade explodes) */
+			if ((result.success) || ((of_has(obj->flags, OF_EXPLODE)) && dmg)) {
 				hit_target = true;
 
 				missile_learn_on_ranged_attack(p, obj);
@@ -1317,6 +1321,9 @@ int grenade_brand(struct object* obj)
 		struct brand* b = &brands[i];
 
 		if ((!obj->brands) || (!obj->brands[i])) continue;
+
+		object_learn_brand(player, obj, i);
+
 		if (b->resist_flag == RF_IM_ACID) return ELEM_ACID;
 		if (b->resist_flag == RF_IM_COLD) return ELEM_COLD;
 		if (b->resist_flag == RF_IM_FIRE) return ELEM_FIRE;
@@ -1330,9 +1337,12 @@ int grenade_brand(struct object* obj)
 
 		if ((!obj->slays) || (!obj->slays[i])) continue;
 		/* Only one slay type works for grenades */
-		if (s->race_flag == RF_EVIL) return ELEM_HOLY_ORB;
+		if (s->race_flag == RF_EVIL) {
+			object_learn_slay(player, obj, i);
+			return ELEM_HOLY_ORB;
+		}
 	}
-	/* shouldn't get here because this function should only be called if there's a brand on the grenade */
+	/* shouldn't get here because this function should only be called if there's a brand (or slay evil) on the grenade */
 	return ELEM_FIRE;
 }
 
@@ -1349,7 +1359,7 @@ static struct attack_result make_ranged_throw(struct player *p,
 
 	my_strcpy(hit_verb, "hits", 20);
 
-	/* If we missed then we're done */
+	/* If we missed then we're done (unless it's a grenade) */
 	if (!test_hit(chance_of_missile_hit(p, obj, NULL, mon), mon->race->ac)) {
 
 		/* Grenades (usually) still explode (with reduced damage) if they miss */
@@ -1387,6 +1397,12 @@ static struct attack_result make_ranged_throw(struct player *p,
 		effect_simple(EF_GRENADE, source_player(), format("%d", result.dmg), elem, 2, 9, grid.y, grid.x, NULL);
 		return result;
 	}
+	/* grenades don't do damage if they dud */
+	else if (of_has(obj->flags, OF_EXPLODE)) {
+		result.dmg = 0;
+		result.success = false;
+		return result;
+	}
 
 	improve_attack_modifier(obj, mon, &b, &s, result.hit_verb, true);
 
@@ -1399,9 +1415,9 @@ static struct attack_result make_ranged_throw(struct player *p,
 	}
 
 #if noexplode
-	/* Direct adjustment for exploding things (flasks of oil and grenades) */
+	/* Direct adjustment for exploding things (flasks of oil) */
 	if (of_has(obj->flags, OF_EXPLODE)) {
-		/*	result.dmg *= 3;	(old) */
+		result.dmg *= 3;	/* (old) */
 	}
 #endif
 
@@ -1491,11 +1507,9 @@ void do_cmd_throw(struct command *cmd) {
 		return;
 	}
 
-	/*
-	 * Get arguments.  Never default to showing the equipment as the first
+	/* Get arguments.  Never default to showing the equipment as the first
 	 * list (since throwing the equipped weapon leaves that slot empty will
-	 * have to choose another source anyways).
-	 */
+	 * have to choose another source anyways). */
 	if (player->upkeep->command_wrk == USE_EQUIP)
 		player->upkeep->command_wrk = USE_INVEN;
 	if (cmd_get_item(cmd, "item", &obj,

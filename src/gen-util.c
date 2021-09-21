@@ -384,7 +384,15 @@ bool place_terrain_object(struct object_kind *kind, struct chunk *c, struct loc 
 	apply_magic(obj, player->depth, false, false, false, false);
 
 	/* Statue descriptions are kept in the pval */
-	if (of_has(obj->flags, OF_STATUE)) obj->pval = randint1(33);
+	if (of_has(obj->flags, OF_STATUE)) {
+		/* Town statue descriptions must stay the same so they can't be random */
+		if (!c->depth) {
+			int weerd = grid.x + grid.y;
+			while (weerd > 33) { weerd -= 33; }
+			obj->pval = weerd;
+		}
+		else obj->pval = randint1(33);
+	}
 
 	if (!floor_carry(c, grid, obj, &dummy, true)) {
 		object_delete(&obj);

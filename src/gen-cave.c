@@ -2489,6 +2489,7 @@ static void build_ruin(struct chunk *c, struct loc xroads, struct loc lot, int l
 
 /**
  * Generate the town for the first time, and place the player
+ * RBTODO: add chance of deep water surrounding the town instead of rock & lava
  * \param c is the current chunk
  * \param p is the player
  */
@@ -2609,10 +2610,6 @@ static void town_gen_layout(struct chunk *c, struct player *p)
 				}
 			}
 		}
-		/* Add some trees and a statue or two */
-		alloc_objects(c, SET_BOTH, TYP_TREE, 3 + randint1(11), 0, 0);
-		alloc_objects(c, SET_BOTH, TYP_STATU, randint0(5), 0, 0);
-
 		success = true;
 	}
 
@@ -2626,6 +2623,10 @@ static void town_gen_layout(struct chunk *c, struct player *p)
 
 	/* Clear previous contents, add down stairs */
 	square_set_feat(c, pgrid, FEAT_MORE);
+
+	/* Add some trees and a statue or two */
+	alloc_objects(c, SET_BOTH, TYP_TREE, 3 + randint1(11), 0, 0);
+	alloc_objects(c, SET_BOTH, TYP_STATU, randint0(5), 0, 0);
 
 	/* Place the player */
 	player_place(c, p, pgrid);
@@ -2663,6 +2664,37 @@ struct chunk *town_gen(struct player *p, int min_height, int min_width)
 			quit_fmt("chunk_copy() level bounds failed!");
 		chunk_list_remove("Town");
 		cave_free(c_old);
+
+		/* Find terrain that needs terrain objects (lame -why lame?) */
+		for (grid.y = 0; grid.y < c_new->height; grid.y++) {
+			for (grid.x = 0; grid.x < c_new->width; grid.x++) {
+				struct object_kind *kind;
+				if (square_has_statue(c_new, grid)) {
+					if (square_feat(c_new, grid)->fidx == FEAT_SM_STATUE)
+						kind = lookup_kind(TV_TERRAIN, lookup_sval(TV_TERRAIN, "Small Statue"));
+					/* (these don't exist yet) */
+					/* else if (square_feat(c_new, grid)->fidx == FEAT_LG_STATUE)
+						kind = lookup_kind(TV_TERRAIN, lookup_sval(TV_TERRAIN, "Large Statue")); */
+					else if (square_feat(c_new, grid)->fidx == FEAT_FOUNTAIN)
+						kind = lookup_kind(TV_TERRAIN, lookup_sval(TV_TERRAIN, "Fountain"));
+					else kind = lookup_kind(TV_TERRAIN, lookup_sval(TV_TERRAIN, "Statue"));
+					/* Place Statue object */
+					place_terrain_object(kind, c_new, grid);
+				}
+				else if (square_feat(c_new, grid)->fidx == FEAT_DEAD_TREE) {
+					kind = lookup_kind(TV_TERRAIN, lookup_sval(TV_TERRAIN, "dead tree"));
+					/* Place dead tree object */
+					place_terrain_object(kind, c_new, grid);
+				}
+				if (square_isrubble(c_new, grid)) {
+					if (square_ispassable(c_new, grid))
+						kind = lookup_kind(TV_TERRAIN, lookup_sval(TV_TERRAIN, "small pile of rubble"));
+					else kind = lookup_kind(TV_TERRAIN, lookup_sval(TV_TERRAIN, "large pile of rubble"));
+					/* Place rubble object */
+					place_terrain_object(kind, c_new, grid);
+				}
+			}
+		}
 
 		/* Find the stairs (lame) */
 		for (grid.y = 0; grid.y < c_new->height; grid.y++) {

@@ -169,7 +169,7 @@ flags:EASY_KNOW
 
 name:flask:Flask~
 graphics:yellow
-break:100
+break:88
 # max-stack:20
 flags:HATES_COLD | HATES_SOUND | HATES_SHARD | HATES_ICE | HATES_FORCE
 flags:EASY_KNOW

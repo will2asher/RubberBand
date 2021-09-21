@@ -146,6 +146,8 @@ bool monster_is_esp_detectable(const struct monster *mon)
 	} else if (rf_has(mon->race->flags, RF_WEIRD_MIND)) {
 		/* Weird mind, one in ten individuals are detectable */
 		if ((mon->midx % 10) != 5) {
+			/* Those that aren't the 1 in 10 are occationally detectable */
+			if (randint1(15) == 5) return true;
 			/* Undetectable */
 			return false;
 		}

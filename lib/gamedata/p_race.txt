@@ -237,7 +237,7 @@ weight:240:60
 obj-flags:SUST_STR | REGEN
 
 name:Dunadan
-stats:1:2:2:2:3
+stats:1:2:1:2:3
 skill-disarm-phys:4
 skill-disarm-magic:4
 skill-device:5

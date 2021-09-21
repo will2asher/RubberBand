@@ -392,6 +392,15 @@ void update_mon(struct monster *mon, struct chunk *c, bool full)
 			/* Learn about intervening squares */
 			path_analyse(c, mon->grid);
 		}
+		/* Kobolds sometimes smell monsters that are out of LOS (smell that uses the noise code...) */
+		/* (This is not at all tested yet) */
+		if ((d < 5 + player->lev / 12) && player_has(player, PF_CANINE_SMELL)) {
+			int noise = (c->noise.grids[mon->grid.y][mon->grid.x]);
+			if ((noise > 0) && (noise < 10 + player->lev / 6) /* && (!rf_has(race->flags, RF_NO_SCENT))*/) {
+				/* detected by smell */
+				flag = true;
+			}
+		}
 	}
 
 	/* If a mimic looks like an ignored item, it's not seen */
