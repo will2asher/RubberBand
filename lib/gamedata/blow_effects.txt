@@ -163,7 +163,7 @@ lore-color-immune:Light Green
 lash-type:ICE
 
 name:SLIME
-power:20
+power:23
 eval:10
 desc:slime
 lore-color-base:Orange

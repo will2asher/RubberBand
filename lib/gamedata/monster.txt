@@ -1263,7 +1263,7 @@ color:G
 element:7
 speed:116
 hit-points:9
-size:0
+size:2
 hearing:8
 armor-class:19
 sleepiness:80
@@ -1884,7 +1884,7 @@ color:B
 element:7
 speed:111
 hit-points:16
-size:0
+size:2
 hearing:8
 armor-class:19
 sleepiness:65
@@ -2194,7 +2194,7 @@ desc:  He can prove a troublesome opponent.
 
 ### Dungeon level 6 ###
 
-#Size 0 because it can change size and squeeze through small spaces
+#Size 0 because it can change size and squeeze through small spaces (this also makes the slime attack stronger)
 name:slime blob
 base:jelly
 element:7
@@ -5382,7 +5382,7 @@ flags:WEIRD_MIND | EVIL
 flags:IM_POIS | COLD_BLOOD
 spell-freq:10
 spells:SLOW | DARKNESS | DRAIN_MANA
-desc:A magical giant worm kept as pets by the black dwarves.
+desc:A magical giant worm kept as pets by evil black dwarves.
 desc: They ooze along the walls and ceilings of dwarf mines, glowing with
 desc: a strange light and feeding off of negative thoughts.
 
@@ -6065,20 +6065,21 @@ desc:It is a lesser type of dark fairy, unrelated to orcs.
 desc: Its ugly head and hands seem oversized compared to its small body.
 desc: They live in the goblin city where they take people to give them nightmares.
 
-name:giant slime blob
+#Size 0 because it can change size and squeeze through small spaces (this also makes the slime attack stronger)
+name:greater slime blob
 base:jelly
 color:t
 element:7
 speed:107
 hit-points:96
-size:3
+size:0
 hearing:4
 armor-class:11
 sleepiness:33
 depth:16
 rarity:2
 experience:31
-blow:TOUCH:SLIME:1d9
+blow:TOUCH:SLIME:2d4
 flags:IM_ACID | IM_POIS | HURT_COLD | NO_CONF | 
 flags:SMULTIPLY
 desc:It is a huge oozing pile of green slime.
@@ -12020,7 +12021,7 @@ name:assault sphere
 base:trap monster
 color:y
 element:12
-speed:121
+speed:122
 hit-points:105
 size:2
 hearing:20
@@ -12033,7 +12034,7 @@ flags:STUPID | RAND_25 | NEVER_BLOW | FORCE_SLEEP
 flags:IM_FIRE | IM_ELEC | IM_POIS | KEEP_DIST | SCALE | FLY
 innate-freq:5
 spell-freq:3
-spells:ARROW | BOLT | BO_ELEC | BE_ELEC | BO_PLAS | TPORT
+spells:ARROW | BOLT | BO_ELEC | BE_ELEC | BO_PLAS | MISSILE | BO_FIRE | BLINK
 desc:A stone-colored sphere that flies around shooting missiles at intruders.
 
 name:goblin hag
@@ -12462,7 +12463,7 @@ blow:BUTT:HURT:9d4
 flags:NO_CONF | NO_FEAR | IM_POIS | IM_ELEC
 flags:ANIMAL | RAND_25 | FORCE_SLEEP
 flags:ROAM | FEY | CLIGHT
-spell-freq:10
+spell-freq:9
 spells:MISSILE
 desc:Not as powerful in fairy magic as the white unicorn, it still holds great magic
 desc: in its spiral horn and a fearsome wildness in its hooves. A unicorn in the flesh
@@ -16758,7 +16759,7 @@ color:z
 element:7
 speed:114
 hit-points:486
-size:4
+size:0
 hearing:16
 armor-class:43
 sleepiness:6

@@ -1151,9 +1151,10 @@ void square_sense_pile(struct chunk *c, struct loc grid)
 
 	if (c != cave) return;
 
-	/* Sense every item on this grid */
+	/* Sense every item on this grid (except BIGTHINGs) */
 	for (obj = square_object(c, grid); obj; obj = obj->next) {
-		object_sense(player, obj);
+		if (!of_has(obj->flags, OF_BIGTHING)) 
+			object_sense(player, obj);
 	}
 }
 

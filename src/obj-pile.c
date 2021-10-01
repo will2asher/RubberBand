@@ -713,7 +713,12 @@ void object_absorb_partial(struct object *obj1, struct object *obj2,
 void object_absorb(struct object *obj1, struct object *obj2)
 {
 	struct object *known = obj2->known;
-	int total = obj1->number + obj2->number;
+	int obj1n = 0, obj2n = 0, total = 0;
+
+	/* (paranoia: maybe this'll fix quiver overflow bug?) */
+	if (obj1->number) obj1n = obj1->number;
+	if (obj2->number) obj2n = obj2->number;
+	total = obj2n + obj1n;
 
 	/* Add together the item counts */
 	obj1->number = MIN(total, obj1->kind->base->max_stack);

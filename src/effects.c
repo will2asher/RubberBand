@@ -1380,17 +1380,21 @@ bool effect_handler_SLIME_CHANCE(effect_handler_context_t* context)
 bool effect_handler_HEAL_SLIME(effect_handler_context_t* context)
 {
 	int amount = effect_calculate_value(context, false);
-	bool anyslime = false;
-	if (player->slimed > 0) anyslime = true;
+	int oslime = player->slimed;
 
 	player->slimed -= amount;
 
-	if (player->slimed < 1) {
-		player->slimed = 0;
-		/* Message only if player had any sliming beforehand */
-		if (anyslime) msg("You feel free of slime.");
+	/* Only if player was slimed before this */
+	if (oslime) {
+		if (player->slimed < 1) {
+			player->slimed = 0;
+			msg("You feel free of slime.");
+		}
+		else msg("You feel less slimy.");
+
+		/* remove nasty slime effects */
+		update_stuff(player);
 	}
-	else msg("You feel less slimy.");
 
 	context->ident = true;
 	return true;
@@ -1400,10 +1404,10 @@ bool effect_handler_HEAL_SLIME(effect_handler_context_t* context)
 bool effect_handler_HERBALC(effect_handler_context_t* context)
 {
 	int eplev = MIN(player->lev * 6 / 5, 50);
-	int chance = 17 + player->p_luck * 6 + eplev;
+	int chance = 16 + player->p_luck * 6 + eplev;
 	bool anyslime = false;
 	int die = randint0(100);
-	if (player->slimed > 0) anyslime = true;
+	int oslime = player->slimed;
 
 	/* effect is stronger for druids */
 	if (player_has(player, PF_DRUCHARM)) chance += 17;
@@ -1424,12 +1428,17 @@ bool effect_handler_HERBALC(effect_handler_context_t* context)
 		(void)player_dec_timed(player, TMD_DISEASE, 2, true);
 	}
 
-	if (player->slimed < 1) {
-		player->slimed = 0;
-		/* Message only if player had any sliming beforehand */
-		if (anyslime) msg("You feel free of slime.");
+	/* Message only if player was slimed beforehand */
+	if (player->slimed < oslime) {
+		if (player->slimed < 1) {
+			player->slimed = 0;
+			msg("You feel free of slime.");
+		}
+		else msg("You feel less slimy.");
+
+		/* remove nasty slime effects */
+		update_stuff(player);
 	}
-	else msg("You feel less slimy.");
 
 	context->ident = true;
 	return true;
@@ -2214,15 +2223,15 @@ static bool effect_handler_DETECT_OBJECTS(effect_handler_context_t *context)
 				continue;
 			}
 
-			/* Notice an object is detected */
-			if (!ignore_item_ok(obj)) {
-				objects = true;
-			}
 			/* (don't detect terrain objects or big rocks) */
 			if (!of_has(obj->flags, OF_BIGTHING)) {
+				/* Notice an object is detected */
+				if (!ignore_item_ok(obj)) {
+					objects = true;
 
-				/* Mark the pile as seen */
-				square_know_pile(cave, grid);
+					/* Mark the pile as seen */
+					square_know_pile(cave, grid);
+				}
 			}
 		}
 	}

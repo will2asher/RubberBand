@@ -1189,6 +1189,9 @@ static void melee_effect_handler_UNLUCKY(melee_effect_handler_context_t* context
 static void melee_effect_handler_SLIME(melee_effect_handler_context_t* context)
 {
 	int savechance = player->state.skills[SKILL_SAVE] / 2;
+	bool blob = false;
+	/* slime blobs have size 0 and are level 6 and 16 */
+	if ((context->mon->race->msize == 0) && (context->rlev < 25)) blob = true;
 
 	/* Most of this only applies to the player */
 	if (!context->p) { 
@@ -1214,12 +1217,14 @@ static void melee_effect_handler_SLIME(melee_effect_handler_context_t* context)
 	else {
 		/* slime (>=46 points of slime kills) */
 		int amount = ((context->damage * 4 / 3) + context->rlev / 3) / 5;
-		if (context->rlev >= 30) amount = ((context->damage * 4 / 3) + 8 + context->rlev / 15) / 5;
+		if (context->rlev >= 30) amount = (context->damage * 4 / 3 + 8 + randint0(context->rlev / 10)) / 5;
+		/* slime blobs do more sliming than other (low-level) things that slime */
+		if ((blob) && (randint0(6 + player->p_luck) < 5)) amount += randint0(context->rlev / 8 + context->damage / 2 + 2);
 
 		/* bounds on sliming hits */
 		if (amount < 1) amount = 1;
-		if (amount > 9) amount = 8 + randint1((amount-8) / 2);
-		if (amount > 20) amount = 20;
+		if (amount > 9) amount = 8 + randint1((amount-7) / 2);
+		if (amount > 20 - player->p_luck/2) amount = 20 - player->p_luck / 2;
 
 		/* slime the player */
 		player->slimed += amount;

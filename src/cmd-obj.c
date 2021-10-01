@@ -320,19 +320,44 @@ void do_cmd_wield(struct command *cmd)
 		/* (I used the bastard sword as a reference: It weighs 14lbs,
 		/*  so you need at least 17 STR to wield a bastard sword with one hand.) */
 		if (weapon) {
-			if ((obj->tval == TV_SWORD) && (weapon->weight >= 170) || (weapon->weight / 10 > player->state.stat_ind[STAT_STR]))
+			int wweight = object_weight(weapon);
+
+			if ((weapon->tval == TV_SWORD) && (wweight >= 170) || (wweight / 10 > player->state.stat_ind[STAT_STR]))
 				offhandok = false;
 			/* max 14.5lbs or (STR - 4) for non-swords (a battle axe is 14.5lbs) */
-			else if ((weapon->weight >= 145) || (weapon->weight / 10 + 4 > player->state.stat_ind[STAT_STR]))
+			else if ((wweight >= 145) || (wweight / 10 + 4 > player->state.stat_ind[STAT_STR]))
 				offhandok = false;
 		}
 
 		/* Wielded weapon too heavy to hold a second weapon (Yet we allow shields, but whatever) */
-		if ((do_two) && (!offhandok)) 
-		{
+		if ((do_two) && (!offhandok)) {
 			object_desc(o_name, sizeof(o_name), weapon, ODESC_BASE);
 			msg("Your %s is too heavy for you to wield a second weapon at the same time.", o_name);
 			return;
+		}
+		else if (!do_two) {
+			struct object* shield = equipped_item_by_slot_name(player, "arm");
+			if (shield) {
+				if (tval_is_melee_weapon(shield) &&
+					(((obj->tval == TV_SWORD) && (oweight >= 170) || (oweight / 10 > player->state.stat_ind[STAT_STR])) ||
+					((oweight >= 145) || (oweight / 10 + 4 > player->state.stat_ind[STAT_STR])))) {
+					object_desc(o_name, sizeof(o_name), obj, ODESC_BASE);
+					msg("The %s is too heavy for you to wield a second weapon at the same time.", o_name);
+					if (get_check("Remove your off-hand weapon?")) {
+						if (!obj_can_takeoff(shield)) {
+							object_desc(o_name, sizeof(o_name), shield, ODESC_BASE);
+							msg("You cannot remove the %s you are %s.", o_name,
+								equip_describe(player, slot_by_type(player, EQUIP_SHIELD, false)));
+							return;
+						}
+						/* remove off-hand weapon */
+						inven_takeoff(shield);
+						combine_pack();
+						pack_overflow(shield);
+					}
+					else return;
+				}
+			}
 		}
 	}
 	/* Put weapon in shield slot */

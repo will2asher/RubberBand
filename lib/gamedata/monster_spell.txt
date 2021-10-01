@@ -796,7 +796,7 @@ message-invis:Something mumbles.
 name:MISSILE
 hit:100
 effect:BOLT:MISSILE
-dice:$B+2d6
+dice:$B+3d4
 expr:B:SPELL_POWER:/ 3
 lore:produce magic missiles
 lore-color-base:Yellow

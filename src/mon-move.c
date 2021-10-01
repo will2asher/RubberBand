@@ -1934,7 +1934,10 @@ static void monster_reduce_sleep(struct chunk *c, struct monster *mon)
 
 	/* Some monsters wake especially easily */
 	if (mon->race->sleep == 1) {
-		if ((mon->cdis < 4 - stealth / 4 + randint1(6 - stealth / 2)) && monster_is_in_view(mon)) {
+		int blah = 6 - stealth / 2;
+		if (blah < 1) blah = 0;
+		else blah = randint1(blah);
+		if ((mon->cdis < 4 - stealth / 4 + blah) && monster_is_in_view(mon)) {
 			/* Sometimes wake automatically if the player is very close and not very stealthy */
 			if ((mon->cdis <= 2) && (stealth < randint0(10))) aggro = true;
 			else { notice = randint0(300 + stealth * 8); fnchance = 11; }
