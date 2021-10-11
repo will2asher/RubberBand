@@ -1105,16 +1105,16 @@ blow:CLAW:HURT:1d4
 flags:ROAM
 desc:A larger than normal feline, hissing loudly. Its velvet paws conceal needles.
 
-#needs BR_STRONG flag or else its light breath will usually do no damage. (was 1_IN_19)
+#needs BR_STRONG flag or else its light breath will usually do no damage.
 name:confused baby bright sprite
 base:light fairy
 color:Y
 element:17
 speed:129
-hit-points:4
+hit-points:3
 size:1
 hearing:15
-armor-class:17
+armor-class:47
 light:2
 sleepiness:27
 depth:2
@@ -1486,10 +1486,10 @@ base:light fairy
 color:u
 element:17
 speed:127
-hit-points:9
+hit-points:8
 size:1
 hearing:23
-armor-class:22
+armor-class:52
 light:2
 sleepiness:22
 depth:3
@@ -1509,7 +1509,7 @@ speed:112
 hit-points:12
 size:2
 hearing:17
-armor-class:17
+armor-class:23
 sleepiness:34
 depth:3
 rarity:5
@@ -1528,7 +1528,7 @@ name:flurry
 base:elemental monster
 color:w
 element:11
-speed:123
+speed:122
 hit-points:6
 size:1
 hearing:12
@@ -1541,7 +1541,7 @@ blow:HIT:COLD:1d3
 flags:COLD_BLOOD | NONLIVING | SEASONAL
 flags:RAND_50 | PASS_DOOR | FLY
 flags:IM_COLD | HURT_FIRE | SCALE
-friends:84:2d7:Same
+friends:82:2d7:Same
 desc:A small elemental creature of winter.
 
 name:Sméagol
@@ -1679,7 +1679,7 @@ speed:103
 hit-points:32
 size:1
 hearing:3
-armor-class:28
+armor-class:30
 sleepiness:11
 depth:4
 rarity:3
@@ -2019,7 +2019,7 @@ speed:112
 hit-points:14
 size:1
 hearing:12
-armor-class:23
+armor-class:24
 sleepiness:5
 depth:5
 rarity:3
@@ -2039,7 +2039,7 @@ speed:113
 hit-points:14
 size:1
 hearing:12
-armor-class:25
+armor-class:26
 sleepiness:4
 depth:5
 rarity:3
@@ -2080,7 +2080,7 @@ hit-points:21
 size:1
 hearing:14
 smell:9
-armor-class:21
+armor-class:22
 sleepiness:31
 depth:5
 rarity:3
@@ -2147,7 +2147,7 @@ experience:40
 blow:HIT:HURT:1d5
 blow:CRUSH:HURT:6d2
 flags:WEIRD_MIND | S_EVIL1 | NEVER_MOVE | NO_FEAR
-flags:TOWN_OR_DUN | CLIGHT
+flags:TOWN_OR_DUN | CLIGHT | SCENTLESS
 #BLOCK_LOS
 innate-freq:11
 spells:THROW
@@ -2258,7 +2258,7 @@ speed:101
 hit-points:51
 size:1
 hearing:3
-armor-class:40
+armor-class:41
 sleepiness:11
 depth:6
 rarity:3
@@ -2319,7 +2319,7 @@ speed:114
 hit-points:16
 size:1
 hearing:12
-armor-class:30
+armor-class:31
 sleepiness:4
 depth:6
 rarity:3
@@ -2339,7 +2339,7 @@ speed:115
 hit-points:17
 size:1
 hearing:12
-armor-class:30
+armor-class:31
 sleepiness:4
 depth:6
 rarity:3
@@ -2463,7 +2463,7 @@ speed:103
 hit-points:43
 size:3
 hearing:6
-armor-class:34
+armor-class:38
 sleepiness:14
 depth:6
 rarity:3
@@ -2502,7 +2502,7 @@ speed:126
 hit-points:13
 size:1
 hearing:19
-armor-class:39
+armor-class:46
 sleepiness:16
 depth:6
 rarity:2
@@ -2705,7 +2705,7 @@ hit-points:33
 size:3
 hearing:20
 smell:20
-armor-class:38
+armor-class:39
 sleepiness:14
 depth:7
 rarity:4
@@ -2715,6 +2715,7 @@ blow:BUTT:HURT:2d3
 flags:ANIMAL | ROAM
 drop:bone:Boar tusk:3:1:1
 desc:A wild animal which becomes good food when cooked.
+#This should drop a slice of meat when killed with fire...
 
 name:eastern dwarf
 plural:eastern dwarves
@@ -2880,7 +2881,7 @@ hearing:2
 armor-class:16
 sleepiness:75
 depth:8
-rarity:1
+rarity:2
 experience:28
 blow:SPORE:TERRIFY:1d4
 flags:IM_ACID | NEVER_MOVE
@@ -3040,10 +3041,10 @@ depth:8
 rarity:4
 experience:28
 blow:HIT:HURT:1d10
-flags:DROP_40 | S_EVIL1 | TAKE_ITEM | SILLY
+flags:DROP_20 | S_EVIL1 | TAKE_ITEM | SILLY
 innate-freq:11
 spells:THROW
-friends:45:1d5:Same
+friends:42:1d4:Same
 desc:An uncultured brute with a club, but no sling or whip.
 desc: It's only about as tall as the average man.
 
@@ -3057,7 +3058,7 @@ hit-points:23
 size:2
 hearing:29
 smell:19
-armor-class:30
+armor-class:32
 sleepiness:29
 depth:8
 rarity:3
@@ -3080,7 +3081,7 @@ size:1
 light:1
 hearing:20
 smell:6
-armor-class:36
+armor-class:39
 sleepiness:19
 depth:8
 rarity:3
@@ -3093,7 +3094,7 @@ innate-freq:9
 spells:WHIP
 desc:It has the body of a sprite, but with red skin and a jeering demonic face.
 
-#invisible but gives off light
+#invisible but gives off light (and not cold-blooded)
 name:clear sprite
 base:light fairy
 color:w
@@ -3103,7 +3104,7 @@ hit-points:14
 size:1
 light:2
 hearing:23
-armor-class:47
+armor-class:57
 sleepiness:21
 depth:8
 rarity:4
@@ -3176,7 +3177,7 @@ speed:120
 hit-points:3
 size:1
 hearing:6
-armor-class:11
+armor-class:14
 sleepiness:11
 depth:9
 rarity:1
@@ -3405,14 +3406,14 @@ speed:120
 hit-points:23
 size:1
 hearing:19
-armor-class:39
+armor-class:42
 sleepiness:24
 depth:9
 rarity:7
 experience:27
 blow:HIT:HURT:1d3
 blow:TOUCH:EAT_GOLD:1d2
-flags:MALE | IM_ACID
+flags:MALE | IM_ACID | SCENTLESS
 flags:NO_CONF | NO_SLEEP | NO_HOLD 
 flags:ONLY_GOLD | DROP_20 | DROP_1
 drop-base:boots:12:1:1
@@ -3432,7 +3433,7 @@ hit-points:26
 size:1
 hearing:16
 smell:11
-armor-class:31
+armor-class:33
 sleepiness:29
 depth:9
 rarity:4
@@ -3642,7 +3643,7 @@ speed:100
 hit-points:78
 size:1
 hearing:5
-armor-class:43
+armor-class:45
 sleepiness:10
 depth:10
 rarity:3
@@ -3748,7 +3749,7 @@ hearing:2
 armor-class:23
 sleepiness:11
 depth:10
-rarity:4
+rarity:6
 experience:40
 blow:SPORE:DISENCHANT:1d6
 flags:EMPTY_MIND | STUPID
@@ -4182,7 +4183,6 @@ blow:BITE:POISON:3d3
 flags:RAND_25 | IM_POIS
 desc:A many-legged bug with a painful and poisonous bite.
 
-#Maybe this should be commented out until I implement RETURNS
 name:scorn cat
 base:feline
 color:p
@@ -4244,11 +4244,11 @@ base:dark fairy
 color:u
 element:13
 speed:118
-hit-points:35
+hit-points:34
 size:1
 hearing:16
 smell:13
-armor-class:39
+armor-class:41
 sleepiness:29
 depth:11
 rarity:4
@@ -4273,7 +4273,7 @@ speed:129
 hit-points:31
 size:0
 hearing:9
-armor-class:26
+armor-class:36
 sleepiness:3
 depth:11
 rarity:4
@@ -4677,11 +4677,11 @@ desc:A hideous, smallish giant that is often found near or with orcs.
 name:giant killer bee
 base:fly
 color:G
-speed:120
+speed:119
 hit-points:21
 size:1
 hearing:8
-armor-class:26
+armor-class:29
 sleepiness:14
 depth:12
 rarity:3
@@ -4701,7 +4701,7 @@ hit-points:27
 size:1
 light:3
 hearing:23
-armor-class:51
+armor-class:57
 sleepiness:17
 depth:12
 rarity:3
@@ -4797,7 +4797,7 @@ depth:12
 rarity:3
 experience:90
 blow:CRUSH:HURT:2d11
-flags:NEVER_MOVE | WEIRD_MIND
+flags:NEVER_MOVE | WEIRD_MIND | SCENTLESS
 flags:NO_STUN | NO_SLOW | NO_FEAR
 spell-freq:12
 spells:CONF
@@ -4857,7 +4857,7 @@ speed:119
 hit-points:3
 size:1
 hearing:8
-armor-class:31
+armor-class:34
 sleepiness:14
 depth:13
 rarity:3
@@ -4875,7 +4875,7 @@ hit-points:31
 size:1
 light:2
 hearing:21
-armor-class:53
+armor-class:54
 sleepiness:16
 depth:13
 rarity:4
@@ -4938,13 +4938,13 @@ speed:114
 hit-points:40
 size:0
 hearing:13
-armor-class:33
+armor-class:39
 sleepiness:4
 depth:13
 rarity:4
 experience:53
 blow:TOUCH:HALLU
-flags:RAND_50 | WEIRD_MIND | NONLIVING | COLD_BLOOD
+flags:RAND_50 | WEIRD_MIND | NONLIVING | COLD_BLOOD | SCENTLESS
 flags:PASS_WALL | NO_HOLD | IM_SLIME | ROAM | FLY
 spell-freq:5
 spells:SCARE | BLIND | BLINK | CONF | DARKNESS | TINVIS
@@ -4978,7 +4978,7 @@ speed:108
 hit-points:93
 size:2
 hearing:5
-armor-class:62
+armor-class:64
 sleepiness:10
 depth:13
 rarity:3
@@ -5329,7 +5329,7 @@ speed:118
 hit-points:4
 size:1
 hearing:8
-armor-class:21
+armor-class:23
 sleepiness:9
 depth:14
 rarity:3
@@ -5343,12 +5343,12 @@ name:storm cloud
 base:vortex
 color:s
 element:5
-speed:106
+speed:107
 hit-points:61
 size:4
 hearing:31
 armor-class:39
-sleepiness:46
+sleepiness:48
 depth:14
 rarity:4
 experience:56
@@ -5417,7 +5417,7 @@ speed:115
 hit-points:19
 size:1
 hearing:13
-armor-class:26
+armor-class:31
 sleepiness:21
 depth:14
 rarity:8
@@ -5495,7 +5495,7 @@ experience:51
 blow:HIT:HURT:1d6
 blow:HIT:HURT:4d2
 flags:EMPTY_MIND | ONLY_GOLD | DROP_20 | DROP_2
-flags:IM_ELEC | IM_POIS | IM_ACID
+flags:IM_ELEC | IM_POIS | IM_ACID | SCENTLESS
 desc:an animated humanoid figure made out of gold.
 
 name:magic mushroom patch
@@ -5804,13 +5804,13 @@ speed:131
 hit-points:42
 size:0
 hearing:12
-armor-class:47
+armor-class:53
 sleepiness:21
 depth:15
 rarity:2
 experience:43
 blow:HIT:HURT:1d7
-flags:COLD_BLOOD | INVISIBLE | NONLIVING
+flags:COLD_BLOOD | INVISIBLE | NONLIVING | SCENTLESS
 flags:RAND_25 | RAND_50 | PASS_DOOR | FLY
 flags:IM_ELEC | IM_SLIME
 desc:A whirlwind of sentient air.
@@ -6093,7 +6093,7 @@ hit-points:44
 size:1
 hearing:35
 smell:29
-armor-class:42
+armor-class:46
 sleepiness:13
 depth:16
 rarity:4
@@ -6319,7 +6319,7 @@ rarity:2
 experience:63
 blow:HIT:HURT:1d8
 blow:HIT:HURT:1d9
-flags:COLD_BLOOD | RAND_25 | PASS_WALL
+flags:COLD_BLOOD | RAND_25 | PASS_WALL | SCENTLESS
 flags:HURT_ROCK | IM_COLD | IM_FIRE
 desc:A whirling form of sentient rock.
 
@@ -6351,7 +6351,7 @@ size:1
 hearing:20
 smell:23
 armor-class:39
-sleepiness:15
+sleepiness:14
 depth:17
 rarity:3
 experience:39
@@ -6369,7 +6369,7 @@ speed:108
 hit-points:56
 size:3
 hearing:20
-armor-class:36
+armor-class:40
 sleepiness:36
 depth:10
 rarity:8
@@ -7142,7 +7142,7 @@ experience:109
 blow:HIT:HURT:1d9
 blow:HIT:HALLU:1d9
 flags:NONLIVING | EMPTY_MIND | FORCE_SLEEP | FLY
-flags:RAND_50 | PASS_WALL | COLD_BLOOD
+flags:RAND_50 | PASS_WALL | COLD_BLOOD | SCENTLESS
 flags:IM_ACID | IM_COLD | IM_ELEC | IM_SLIME
 spell-freq:4
 spells:BLINK | WOUND | CONF | TINVIS
@@ -7288,7 +7288,6 @@ friends:100:2d4:uruk:servant
 desc:an uruk of Isenguard who led a band of orcs to attack a band of
 desc: Rohirrim led by Eomer. (minor unique)
 
-#I want to make this summon more winged monkeys. hmmm
 name:The Wicked Witch of the West
 base:person
 color:G
@@ -8099,7 +8098,7 @@ depth:22
 rarity:17
 experience:23
 blow:TOUCH:BLIND:1d1
-flags:SILLY | WEIRD_MIND | RAND_50 | IM_POIS | IM_ELEC | COLD_BLOOD
+flags:SILLY | WEIRD_MIND | RAND_50 | IM_POIS | IM_ELEC | COLD_BLOOD | SCENTLESS
 flags:MULTIPLY | NO_FEAR | HURT_FIRE | HURT_WATER | ATTR_CLEAR | CHAR_CLEAR
 spell-freq:11
 spells:TINVIS
@@ -8144,7 +8143,7 @@ blow:CRUSH:BHOLD:2d4
 blow:CRUSH:PARALYZE:4d4
 blow:CRUSH:BHOLD:4d4
 flags:WEIRD_MIND | BASH_DOOR | MOVE_SLOW
-flags:NO_FEAR | NO_STUN | CLIGHT
+flags:NO_FEAR | NO_STUN | CLIGHT | SCENTLESS
 friends:5:1d3:same
 desc:It will tangle you in its branches until you can't breathe.
 
@@ -8217,7 +8216,7 @@ blow:TOUCH:PARALYZE:2d7
 blow:CRUSH:BHOLD:9d3
 blow:CRUSH:BHOLD:9d3
 flags:NEVER_MOVE | EVIL | MALE
-flags:WEIRD_MIND | UNIQUE | FORCE_SLEEP
+flags:WEIRD_MIND | UNIQUE | FORCE_SLEEP | SCENTLESS
 flags:IM_POIS | IM_ACID | IM_COLD | NO_FEAR | NO_CONF | NO_STUN
 flags:DROP_1 | DROP_GOOD | ONLY_ITEM | NO_SLEEP
 spell-freq:9
@@ -8320,7 +8319,7 @@ hit-points:203
 size:4
 hearing:20
 smell:15
-armor-class:115
+armor-class:114
 sleepiness:59
 depth:23
 rarity:2
@@ -9281,7 +9280,7 @@ hit-points:7
 size:1
 light:2
 hearing:8
-armor-class:31
+armor-class:34
 sleepiness:10
 depth:26
 rarity:4
@@ -10817,7 +10816,7 @@ size:1
 hearing:21
 smell:23
 armor-class:54
-sleepiness:11
+sleepiness:4
 depth:30
 rarity:4
 experience:56
@@ -11027,7 +11026,7 @@ experience:380
 blow:HIT:HURT:6d4
 blow:HIT:HURT:6d4
 flags:WEIRD_MIND | PASS_WALL | COLD_BLOOD | HURT_ROCK
-flags:IM_COLD | IM_FIRE | IM_POIS
+flags:IM_COLD | IM_FIRE | IM_POIS | SCENTLESS
 desc:A minor earth elemental, able to merge with its element like its cousin, the xorn.
 
 name:ifrit
@@ -13481,7 +13480,7 @@ rarity:2
 experience:800
 blow:ENGULF:HURT:6d6
 #This should have a cutting melee attack
-flags:CLEAR_WEB
+flags:CLEAR_WEB | SCENTLESS
 innate-freq:4
 spells:BR_SHAR
 desc:A howling blast of razor-sharp mountain fragments, kept intact by perilous
@@ -13743,7 +13742,7 @@ blow:HIT:HURT:1d9
 blow:HIT:HURT:1d9
 blow:GAZE:HALLU:1d9
 blow:GAZE:CHARM
-flags:INVISIBLE | FORCE_SLEEP | NONLIVING | COLD_BLOOD
+flags:INVISIBLE | FORCE_SLEEP | NONLIVING | COLD_BLOOD | SCENTLESS
 flags:RAND_50 | PASS_WALL | POWERFUL | ROAM | FLY
 flags:IM_ACID | IM_COLD | IM_ELEC | IM_SLIME
 innate-freq:8
@@ -13773,7 +13772,7 @@ blow:HIT:HURT:5d5
 blow:HIT:HURT:5d5
 flags:DROP_60 | ONLY_GOLD | COLD_BLOOD
 flags:PASS_WALL | KILL_ITEM | WEIRD_MIND
-flags:IM_COLD | IM_FIRE | HURT_ROCK
+flags:IM_COLD | IM_FIRE | HURT_ROCK | SCENTLESS
 innate-freq:10
 spells:BOULDER
 desc:A huge creature of the element Earth.  Able to merge with its element, it
@@ -15782,7 +15781,7 @@ blow:HIT:CONFUSE:4d4
 flags:UNIQUE | COLD_BLOOD | POWERFUL | FLY
 flags:RAND_25 | BASH_DOOR | KILL_BODY | KILL_ITEM
 flags:IM_ACID | IM_COLD | IM_ELEC | IM_SLIME
-flags:FORCE_SLEEP
+flags:FORCE_SLEEP | SCENTLESS
 spell-freq:5
 spells:BA_COLD | BA_ELEC | BO_ELEC | TINVIS
 desc:A towering air elemental, Ariel, avoids your blows with her extreme speed.
@@ -16057,7 +16056,7 @@ blow:HIT:HURT:4d7
 blow:HIT:HURT:7d8
 blow:HIT:HURT:7d8
 flags:DROP_2 | ONLY_GOLD | NONLIVING | POWERFUL
-flags:PASS_WALL | KILL_ITEM | MOVE_BODY
+flags:PASS_WALL | KILL_ITEM | MOVE_BODY | SCENTLESS
 flags:IM_COLD | IM_FIRE | IM_ACID | HURT_ROCK
 innate-freq:12
 spell-freq:15
@@ -16193,7 +16192,7 @@ blow:HIT:HURT:6d7
 blow:HIT:HURT:7d6
 blow:TOUCH:DRAIN_CHARGES:1d10
 flags:WEIRD_MIND | FORCE_SLEEP | DROP_2 | ONLY_ITEM | ATTR_FLICKER
-flags:IM_FIRE | IM_COLD | IM_ELEC | IM_ACID | COLD_BLOOD
+flags:IM_FIRE | IM_COLD | IM_ELEC | IM_ACID | COLD_BLOOD | SCENTLESS
 flags:NO_FEAR | NO_CONF | NO_SLEEP | NO_HOLD
 innate-freq:5
 spell-freq:5
@@ -18910,6 +18909,7 @@ blow:HIT:HURT:10d10
 blow:HIT:ELEC:5d20
 flags:DEMON | EVIL | FORCE_SLEEP | DROP_2 | MOVE_SLOW
 flags:OPEN_DOOR | BASH_DOOR | IM_FIRE | IM_ELEC | IM_POIS | IM_ACID
+flags-off:SCENTLESS
 spell-freq:8
 spells:BO_PLAS | BA_FIRE | MIND_BLAST | BA_ELEC | S_DEMON | TELE_TO
 desc:A gigantic four-armed animated bronze statue of demonic shape, glowing with
@@ -19041,7 +19041,7 @@ hearing:15
 armor-class:140
 sleepiness:50
 depth:65
-rarity:3
+rarity:4
 experience:6500
 blow:HIT:HURT:6d6
 blow:HIT:HURT:6d6
@@ -19067,7 +19067,7 @@ hearing:15
 armor-class:124
 sleepiness:35
 depth:65
-rarity:3
+rarity:4
 experience:6500
 blow:ENGULF:TERRIFY:6d5
 blow:ENGULF:PARALYZE:6d5
@@ -19093,7 +19093,7 @@ hearing:15
 armor-class:130
 sleepiness:45
 depth:65
-rarity:3
+rarity:4
 experience:6500
 blow:HIT:FIRE:8d8
 blow:HIT:FIRE:8d8
@@ -19116,13 +19116,13 @@ hearing:15
 armor-class:130
 sleepiness:45
 depth:65
-rarity:3
+rarity:4
 experience:6500
 blow:HIT:HURT:8d8
 blow:HIT:CONFUSE:5d12
 blow:HIT:ELEC:9d9
 flags:BASH_DOOR | KILL_BODY | KILL_ITEM | POWERFUL | FLY
-flags:IM_ELEC | IM_COLD | IM_SLIME | COLD_BLOOD
+flags:IM_ELEC | IM_COLD | IM_SLIME | COLD_BLOOD | SCENTLESS
 innate-freq:5
 spell-freq:5
 spells:BR_ELEC | BR_INER | BA_ELEC | TINVIS
@@ -19153,7 +19153,7 @@ flags:ONLY_ITEM | DROP_3
 flags:NO_FEAR | IM_ACID | IM_ELEC
 innate-freq:3
 spells:BOLT
-friends:85:2d5:Same
+friends:82:2d5:Same
 desc:A veteran of the battles waged by Fëanor and his sons in pursuit of the
 desc: Silmarils, he attacks you with agility and power.
 
@@ -19229,6 +19229,7 @@ blow:HIT:COLD:5d20
 flags:EVIL | DEMON | FORCE_SLEEP | DROP_2 | DROP_GOOD | MOVE_SLOW
 flags:OPEN_DOOR | BASH_DOOR | IM_COLD | IM_FIRE | IM_ELEC | IM_POIS
 flags:PUDDLE
+flags-off:SCENTLESS
 innate-freq:6
 spell-freq:6
 spells:BR_DISE | BR_CHAO | BR_DARK | BO_MANA | BA_COLD | CONF | TELE_TO | S_DEMON
@@ -19413,6 +19414,7 @@ blow:HIT:SICKEN:6d6
 flags:UNDEAD | COLD_BLOOD | FORCE_SLEEP
 flags:OPEN_DOOR | BASH_DOOR
 flags:IM_COLD | IM_ELEC | IM_POIS | NO_STUN
+flags-off:SCENTLESS
 spell-freq:8
 spells:BRAIN_SMASH | WOUND | DRAIN_MANA | TELE_TO
 spells:BA_NETH | S_UNDEAD
@@ -19900,7 +19902,7 @@ blow:HIT:FIRE:5d19
 flags:DROP_4 | DROP_GOOD | ONLY_ITEM | FORCE_SLEEP
 flags:DEMON | EVIL | UNIQUE | WEIRD_MIND | POWERFUL | MOVE_BODY | FLY
 flags:OPEN_DOOR | BASH_DOOR | IM_ACID | IM_ELEC | IM_POIS | IM_COLD
-flags-off:EMPTY_MIND
+flags-off:EMPTY_MIND | SCENTLESS
 innate-freq:8
 spell-freq:5
 spells:BR_CHAO | BR_WALL | BA_NETH | BA_FIRE | BRAIN_SMASH | BA_DARK | BO_PLAS | TELE_TO
@@ -20403,6 +20405,7 @@ blow:HIT:LOSE_ALL:10d9
 blow:HIT:FIRE:5d20
 flags:EVIL | DEMON | FORCE_SLEEP | DROP_2 | DROP_GOOD | MOVE_SLOW
 flags:OPEN_DOOR | BASH_DOOR | IM_COLD | IM_FIRE | IM_ELEC | IM_ACID | IM_POIS
+flags-off:SCENTLESS
 spell-freq:6
 spells:BA_NETH | BA_FIRE | BRAIN_SMASH | BA_DARK | S_HI_DEMON | S_DEMON | TELE_TO
 #STORM?

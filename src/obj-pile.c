@@ -417,10 +417,8 @@ bool object_stackable(const struct object *obj1, const struct object *obj2,
 	if (obj1->artifact || obj2->artifact) return false;
 
 	/* Analyze the items */
-	if (tval_is_chest(obj1)) {
-		/* Chests never stack */
-		return false;
-	}
+	/* Chests never stack */
+	if (tval_is_chest(obj1)) return false;
 	else if (tval_is_edible(obj1) || tval_is_potion(obj1) ||
 		tval_is_scroll(obj1) || tval_is_rod(obj1)) {
 		/* Food, potions, scrolls and rods all stack nicely,
@@ -517,9 +515,7 @@ bool object_similar(const struct object *obj1, const struct object *obj2,
 		/* The quiver can impose stricter limits. */
 		if (mode & OSTACK_QUIVER) {
 			if (tval_is_ammo(obj1)) {
-				if (total > z_info->quiver_slot_size) {
-					return false;
-				}
+				if (total > z_info->quiver_slot_size) return false;
 			} else {
 				int mult = z_info->thrown_quiver_mult;
 				/* Very small throwing weapons take up less than 5 slots */
@@ -650,14 +646,16 @@ void object_absorb_partial(struct object *obj1, struct object *obj2,
 {
 	int smallest = MIN(obj1->number, obj2->number);
 	int largest = MAX(obj1->number, obj2->number);
-	int newsz1, newsz2;
+	int newsz1, newsz2, ototal;
+
+	ototal = obj1->number + obj2->number;
 
 	assert(!(mode1 & OSTACK_STORE) && !(mode2 & OSTACK_STORE));
 
 	/* The quiver can have stricter limits. */
 	if (mode1 & OSTACK_QUIVER) {
 		int limit;
-		int mult = (tval_is_ammo(obj1) ? 1 : z_info->thrown_quiver_mult);
+		int mult = (tval_is_ammo(obj1) ? 1 : z_info->thrown_quiver_mult); /* thrown_quiver_mult is 5 */
 
 		/* Very small throwing weapons take up less than 5 slots */
 		if ((mult > 1) && (obj1->weight < 30)) {
@@ -665,13 +663,14 @@ void object_absorb_partial(struct object *obj1, struct object *obj2,
 			if (obj1->weight < 20) mult = MIN(3, z_info->thrown_quiver_mult);
 			if (obj1->weight < 30) mult = MIN(4, z_info->thrown_quiver_mult);
 		}
-		limit = z_info->quiver_slot_size / mult;
+		limit = z_info->quiver_slot_size / mult; /* quiver_slot_size is 50 */
 
 		if (mode2 & OSTACK_QUIVER) {
 			int difference = limit - largest;
 
 			newsz1 = largest + difference;
-			newsz2 = smallest - difference;
+			if (smallest - difference < 1) newsz2 = 1;
+			else newsz2 = smallest - difference;
 		} else {
 			/* Handle the possibly different limits. */
 			newsz1 = limit;
@@ -698,11 +697,23 @@ void object_absorb_partial(struct object *obj1, struct object *obj2,
 		int difference = obj1->kind->base->max_stack - largest;
 
 		newsz1 = largest + difference;
-		newsz2 = smallest - difference;
+		if (smallest - difference < 1) newsz2 = 1;
+		else newsz2 = smallest - difference;
 	}
 
 	obj1->number = newsz1;
 	obj2->number = newsz2;
+
+	/* paranoia: make sure the total number is the same at it was */
+	if (obj1->number + obj2->number != ototal) {
+		msg("WARNING. Something went wrong in object_absorb_partial() .");
+		/* take it back to a reasonable number (crudely making some assumptions) */
+		if ((obj1->number + obj2->number > 100) && (ototal < 100)) {
+			obj1->number = 50; 
+			if (ototal - 50 > 0) obj2->number = (ototal - 50);
+			else obj2->number = 1;
+		}
+	}
 
 	object_absorb_merge(obj1, obj2);
 }
@@ -715,7 +726,7 @@ void object_absorb(struct object *obj1, struct object *obj2)
 	struct object *known = obj2->known;
 	int obj1n = 0, obj2n = 0, total = 0;
 
-	/* (paranoia: maybe this'll fix quiver overflow bug?) */
+	/* (paranoia: maybe this'll fix quiver overflow bug? -nope) */
 	if (obj1->number) obj1n = obj1->number;
 	if (obj2->number) obj2n = obj2->number;
 	total = obj2n + obj1n;

@@ -143,9 +143,8 @@ desc:Ghost
 name:golem
 glyph:g
 pain:1
-flags:EMPTY_MIND | CLEAR_WEB | NONLIVING
+flags:EMPTY_MIND | CLEAR_WEB | NONLIVING | SCENTLESS
 flags:NO_FEAR | NO_CONF | NO_SLEEP | NO_STUN
-#flags:NO_SCENT
 desc:Golem
 
 name:humanoid
@@ -440,8 +439,7 @@ name:gargoyle
 glyph:x
 pain:1
 flags:SPIRIT | TROLL | S_EVIL1 | IM_WATER | HURT_ROCK | UNAWARE
-flags:FLY | OPEN_DOOR | BASH_DOOR | CLEAR_WEB
-#flags:NO_SCENT
+flags:FLY | OPEN_DOOR | BASH_DOOR | CLEAR_WEB | SCENTLESS
 desc:Gargoyle
 
 # Light Fairies
@@ -497,8 +495,7 @@ glyph:.
 pain:1
 flags:COLD_BLOOD | EMPTY_MIND | INVISIBLE | UNAWARE
 flags:NO_FEAR | NO_CONF | NO_SLEEP | IM_SLIME
-flags:CHAR_CLEAR | ATTR_CLEAR
-#flags:NO_SCENT
+flags:CHAR_CLEAR | ATTR_CLEAR | SCENTLESS
 desc:Lurker
 
 # Creeping coins are mimics which look like coins until they attack, hit to
@@ -508,10 +505,9 @@ glyph:$
 pain:1
 flags:COLD_BLOOD | METAL | UNAWARE | EMPTY_MIND
 flags:ONLY_GOLD
-flags:BASH_DOOR | CLEAR_WEB
+flags:BASH_DOOR | CLEAR_WEB | SCENTLESS
 flags:IM_ELEC | IM_POIS | NO_CONF | NO_SLEEP
 flags:MIMIC_INV
-#flags:NO_SCENT
 desc:Creeping Coins
 
 # Monsters which pretend to be objects.  They don't move but do cast spells,
@@ -520,10 +516,9 @@ name:mimic
 glyph:?
 pain:1
 flags:COLD_BLOOD | EMPTY_MIND | UNAWARE
-flags:NEVER_MOVE
+flags:NEVER_MOVE | SCENTLESS
 flags:NO_FEAR | NO_CONF | NO_SLEEP
 flags:FORCE_SLEEP | ATTR_CLEAR
-#flags:NO_SCENT
 desc:Mimic
 
 # arrow launchers & such
@@ -532,9 +527,8 @@ name:trap monster
 glyph:^
 pain:1
 flags:COLD_BLOOD | FORCE_SLEEP
-flags:EMPTY_MIND | CLEAR_WEB | NONLIVING
+flags:EMPTY_MIND | CLEAR_WEB | NONLIVING | SCENTLESS
 flags:NO_FEAR | NO_CONF | NO_SLEEP | NO_STUN
-#flags:NO_SCENT
 desc:Trap Monster
 
 # mostly very deep
@@ -542,9 +536,8 @@ name:wall monster
 glyph:#
 pain:1
 flags:COLD_BLOOD | EMPTY_MIND | HURT_ROCK
-flags:BASH_DOOR | CLEAR_WEB | NONLIVING
+flags:BASH_DOOR | CLEAR_WEB | NONLIVING | SCENTLESS
 flags:IM_POIS | NO_CONF | NO_SLEEP | NO_FEAR | NO_STUN | IM_DISEN
-#flags:NO_SCENT
 desc:Wall Monster
 
 ##### Special templates #####

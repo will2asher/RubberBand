@@ -2867,8 +2867,7 @@ bool build_pit(struct chunk *c, struct loc centre, int rating)
 	get_mon_num_prep(NULL);
 
 	/* Oops */
-	if (empty)
-		return false;
+	if (empty) return false;
 
 	ROOM_LOG("Monster pit (%s)", dun->pit_type->name);
 

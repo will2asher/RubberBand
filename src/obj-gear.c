@@ -1084,10 +1084,6 @@ void combine_pack(void)
 						stack_mode2 | stack_mode1)) {
 					int oldn2 = obj2->number;
 					int oldn1 = obj1->number;
-					/* Setting this to true spams the
-					 * combine message.?
-					 *
-					display_message = false; */
 
 					object_absorb_partial(obj2->known,
 						obj1->known, stack_mode2,
@@ -1099,10 +1095,8 @@ void combine_pack(void)
 						obj1->number != oldn1) {
 						display_message = true;
 					}
-					/*
-					 * Ensure numbers align (should not be
-					 * necessary, but safer)
-					 */
+					/* Ensure numbers align (should not be
+					 * necessary, but safer) */
 					obj2->known->number = obj2->number;
 					obj1->known->number = obj1->number;
 

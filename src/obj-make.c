@@ -768,12 +768,30 @@ static void apply_magic_weapon(struct object *obj, int level, int power)
 {
 	if (power <= 0) return;
 
-	obj->to_h += randint1(5) + m_bonus(5, level);
+	obj->to_h += randint1(5) + m_bonus(6, level);
 	obj->to_d += randint1(5) + m_bonus(5, level);
+
+	/* Main gauches can get armor bonus (at the expense of some to_h and to_d) */
+	if ((obj->tval == TV_SWORD) && (obj->weight == 25) && (obj->kind->ac > 0) && (randint0(100) < 65 + player->p_luck * 2)) {
+		obj->to_a += randint0(6) + m_bonus(5, level);
+		obj->to_h = MAX(obj->to_h - obj->to_a / 4, 1);
+		obj->to_d = MAX(obj->to_d - obj->to_a / 3, 1);
+	}
+	/* any weapon can rarely get an armor bonus */
+	else if (randint0(2000) < 4 + player->p_luck) obj->to_a += randint0(6) + m_bonus(5, level);
 
 	if (power > 1) {
 		obj->to_h += m_bonus(10, level);
 		obj->to_d += m_bonus(10, level);
+
+		/* Main gauches can get armor bonus */
+		if ((obj->tval == TV_SWORD) && (obj->weight == 25) && (obj->kind->ac > 0) && (randint0(100) < 40 + player->p_luck * 2)) {
+			obj->to_a += m_bonus(9, level);
+			obj->to_h -= randint1(2);
+			obj->to_d -= randint1(2);
+		}
+		/* any weapon can rarely get an armor bonus */
+		else if (randint0(2000) < 5 + player->p_luck * 2) obj->to_a += m_bonus(9, level);
 
 		if (tval_is_melee_weapon(obj) || tval_is_thrower(obj)) {
 			/* Super-charge the damage dice */

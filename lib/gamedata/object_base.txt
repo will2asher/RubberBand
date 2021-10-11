@@ -24,20 +24,20 @@ flags:HATES_ACID | HATES_FIRE
 name:shot:Shot~
 graphics:light umber
 break:9
-# max-stack:40
+max-stack:50
 flags:SHOW_DICE
 
 name:arrow:Arrow~
 graphics:light umber
 break:35
-# max-stack:40
+max-stack:50
 flags:HATES_ACID | HATES_FIRE
 flags:SHOW_DICE
 
 name:bolt:Bolt~
 graphics:light umber
 break:21
-# max-stack:40
+max-stack:50
 flags:HATES_ACID
 flags:SHOW_DICE
 

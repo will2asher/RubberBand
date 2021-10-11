@@ -393,10 +393,25 @@ void update_mon(struct monster *mon, struct chunk *c, bool full)
 			path_analyse(c, mon->grid);
 		}
 		/* Kobolds sometimes smell monsters that are out of LOS (smell that uses the noise code...) */
-		/* (This is not at all tested yet) */
+		/* (This is barely tested at all) */
 		if ((d < 5 + player->lev / 12) && player_has(player, PF_CANINE_SMELL)) {
 			int noise = (c->noise.grids[mon->grid.y][mon->grid.x]);
-			if ((noise > 0) && (noise < 10 + player->lev / 6) /* && (!rf_has(race->flags, RF_NO_SCENT))*/) {
+			/* Some monsters have weaker scent (lower "noise" means easier to detect) */
+			if (rf_has(mon->race->flags, RF_COLD_BLOOD) || rf_has(mon->race->flags, RF_INVISIBLE) ||
+				(mon->race->d_char == "l") || (mon->race->d_char == "e") || (mon->race->d_char == "F") || (mon->race->d_char == "I"))
+				noise = noise * 3 / 2;
+
+			/* "under water the fish don't stink" */
+			if (rf_has(mon->race->flags, RF_WATER_HIDE) && square_iswater(c, mon->grid))
+				noise = noise * 2;
+
+			/* Some conditions weaken your sense of smell/awareness */
+			if (player->timed[TMD_CONFUSED] || player->timed[TMD_SDRUNK] || player->timed[TMD_FRENZY] || 
+				player->timed[TMD_AMNESIA] || player->timed[TMD_PCCURSED] || player->timed[TMD_IMAGE])
+				noise = noise * 3 / 2;
+
+			if ((noise > 0) && (noise < 1 + randint0(9) + player->lev / 6) && 
+				(!rf_has(mon->race->flags, RF_SCENTLESS))) {
 				/* detected by smell */
 				flag = true;
 			}
@@ -1291,7 +1306,11 @@ bool mon_take_nonplayer_hit(int dam, struct monster *t_mon,
 		if (((t_mon->race->d_char == 'E') || (t_mon->race->d_char == 'X') || (t_mon->race->d_char == 'j') ||
 			rf_has(t_mon->race->flags, RF_PUDDLE)) && (t_mon->race->msize > 4) && (one_in_(8 - t_mon->race->msize))) {
 			/* rock-based elementals leave rubble */
-			if (t_mon->race->elem == 2) square_set_feat(cave, t_mon->grid, FEAT_PASS_RUBBLE);
+			if (t_mon->race->elem == 2) {
+				struct object_kind* kind = lookup_kind(TV_TERRAIN, lookup_sval(TV_TERRAIN, "small pile of rubble"));
+				square_set_feat(cave, t_mon->grid, FEAT_PASS_RUBBLE);
+				place_terrain_object(kind, cave, t_mon->grid);
+			}
 			/* fire-based elementals leave lava */
 			if (t_mon->race->elem == 3) square_set_feat(cave, t_mon->grid, FEAT_LAVA);
 			/* water-based elementals leave water */
@@ -1302,6 +1321,13 @@ bool mon_take_nonplayer_hit(int dam, struct monster *t_mon,
 			if (t_mon->race->elem == 6) square_set_feat(cave, t_mon->grid, FEAT_ACID_PUDDLE);
 			/* slime-based */
 			if (t_mon->race->elem == 7) square_set_feat(cave, t_mon->grid, FEAT_SLIME_PUDDLE);
+		}
+		/* dead trees are dead trees */
+		else if ((t_mon->race->d_char == 'l') && (randint0(100) < 70 + t_mon->race->level/8)) {
+			struct object_kind* kind;
+			square_set_feat(cave, t_mon->grid, FEAT_DEAD_TREE);
+			kind = lookup_kind(TV_TERRAIN, lookup_sval(TV_TERRAIN, "dead tree"));
+			place_terrain_object(kind, cave, t_mon->grid);
 		}
 
 		/* Generate treasure, etc */
@@ -1380,7 +1406,11 @@ bool mon_take_hit(struct monster *mon, int dam, bool *fear, const char *note)
 		if (((mon->race->d_char == 'E') || (mon->race->d_char == 'X') || (mon->race->d_char == 'j') ||
 			rf_has(mon->race->flags, RF_PUDDLE)) && (mon->race->msize >= 4) && (one_in_(8 - mon->race->msize))) {
 			/* rock-based elementals leave rubble */
-			if (mon->race->elem == 2) square_set_feat(cave, mon->grid, FEAT_PASS_RUBBLE);
+			if (mon->race->elem == 2) {
+				struct object_kind* kind = lookup_kind(TV_TERRAIN, lookup_sval(TV_TERRAIN, "small pile of rubble"));
+				square_set_feat(cave, mon->grid, FEAT_PASS_RUBBLE);
+				place_terrain_object(kind, cave, mon->grid);
+			}
 			/* fire-based elementals leave lava */
 			if (mon->race->elem == 3) square_set_feat(cave, mon->grid, FEAT_LAVA);
 			/* water-based elementals leave water */
@@ -1391,6 +1421,13 @@ bool mon_take_hit(struct monster *mon, int dam, bool *fear, const char *note)
 			if (mon->race->elem == 6) square_set_feat(cave, mon->grid, FEAT_ACID_PUDDLE);
 			/* slime-based */
 			if (mon->race->elem == 7) square_set_feat(cave, mon->grid, FEAT_SLIME_PUDDLE);
+		}
+		/* dead trees are dead trees */
+		else if ((mon->race->d_char == 'l') && (randint0(100) < 71 + mon->race->level / 8)) {
+			struct object_kind* kind;
+			square_set_feat(cave, mon->grid, FEAT_DEAD_TREE);
+			kind = lookup_kind(TV_TERRAIN, lookup_sval(TV_TERRAIN, "dead tree"));
+			place_terrain_object(kind, cave, mon->grid);
 		}
 
 		/* It is dead now */

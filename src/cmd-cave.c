@@ -584,17 +584,17 @@ static bool do_cmd_tunnel_aux(struct loc grid)
 			/* Message */
 			msg("You have removed the rubble.");
 
-			/* Place an object (except in town) (TODO: This should happen when the rubble is placed) */
+			/* Place an object (except in town) (RBTODO: This should happen when the rubble is placed) */
 			if ((randint0(100) < 6) && player->depth) {
 				/* Create a simple object */
 				place_object(cave, grid, player->depth, false, false,
 							 ORIGIN_RUBBLE, 0);
 
 				/* Observe the new object */
-				if (!ignore_item_ok(square_object(cave, grid)) &&
+				if ((square(cave, grid)->obj) && !ignore_item_ok(square_object(cave, grid)) &&
 					square_isseen(cave, grid))
 					msg("You have found something!");
-			} 
+			}
 		} else if (gold) {
 			/* Found treasure */
 			place_gold(cave, grid, player->depth, ORIGIN_FLOOR);
